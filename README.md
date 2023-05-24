@@ -13,6 +13,10 @@
 
     - git pull origin main
 
+    - git checkout -b dev
+
+    - git pull origin dev
+
     - git branch --set-upstream-to=origin/dev dev
 ```
 
@@ -23,11 +27,13 @@
 ```
     - git pull origin dev
 
-    - cd client or cd server
+    - cd client
 
     - npm i (To install new packages)
 
-    - git checkout dev (use -b for the first time)
+    - cd server
+
+    - npm i (To install new packages)
 
     - git checkout -b <your_branch_name>
 
@@ -36,6 +42,8 @@
     - git commit -m "your message"
 
     - git push origin <your_branch_name>
+
+    - git checkout dev
 
     - git branch -D <your_branch_name>
 ```
