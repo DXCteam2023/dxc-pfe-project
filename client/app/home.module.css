@@ -1,10 +1,11 @@
 .home {
-    background-image: url('../public/assets/landing-bg.svg');
+    background-image: url('../public/assets/landing-bg.png');
     height: 100vh;
     background-position: top left;
     background-repeat: no-repeat;
     background-size: cover;
   }
+  
   .h1{
     
     
@@ -17,7 +18,7 @@
  
     font-size: 1.5rem;
     font-weight: 550;
-    color: #294B99;
+    color: #5f249f;
     margin-bottom: 0.75rem;
   }
   .container{
@@ -26,15 +27,18 @@
     flex-direction: column;
     justify-content: center;
   }
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&family=Titillium+Web:wght@600&display=swap');
   .button{
-    border: 4px solid  #294B99;
+  
     border-radius: 2.5rem;
     display:inline;
-    width: 15%;
+    width: 30%;
     margin-top: 1rem;
     font-size: 1.25rem;
     font-weight: 550;
+    background: linear-gradient(to right, #5f249f, #8b2d8c);
     padding: 0.25rem 0.5rem;
-    color: #294B99;
+    color: white;
     
   }
+  

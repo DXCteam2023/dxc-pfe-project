@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import logo from "./logo.png";
+import dxc from "./dxc.jpg";
 import { Fragment, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import {
@@ -77,19 +77,23 @@ function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function Header() {
+type propsType = {
+    linksColor?: string;
+};
+
+export default function Header(props: { styleElements: propsType }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
         <header>
             <nav
-                className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+                className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-12"
                 aria-label="Global"
             >
                 <div className="flex lg:flex-1 ">
-                    <Link href="#" className="-m-1.5 p-1.5">
-                        <span className="sr-only">PowerTech Empire</span>
-                        <Image className="h-24 w-auto" src={logo} alt="logo" />
+                    <Link href="/" className="-m-1.5 p-1.5">
+                        <span className="sr-only">DXC TECHNOLOGY MAROC</span>
+                        <Image className="h-20 w-auto" src={dxc} alt="logo" />
                     </Link>
                 </div>
 
@@ -108,12 +112,20 @@ export default function Header() {
                     <Popover.Group className=" flex items-center hidden lg:flex lg:gap-x-12">
                         <Link
                             href="/"
-                            className="text-sm font-semibold leading-6 text-white"
+                            className={
+                                "text-sm font-semibold leading-6 " +
+                                props.styleElements.linksColor
+                            }
                         >
                             Home
                         </Link>
                         <Popover className="relative">
-                            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white">
+                            <Popover.Button
+                                className={
+                                    "flex items-center gap-x-1 text-sm font-semibold leading-6 " +
+                                    props.styleElements.linksColor
+                                }
+                            >
                                 Service IT
                                 <ChevronDownIcon
                                     className="h-5 w-5 flex-none text-white"
@@ -177,7 +189,12 @@ export default function Header() {
                             </Transition>
                         </Popover>
                         <Popover className="relative">
-                            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white">
+                            <Popover.Button
+                                className={
+                                    "flex items-center gap-x-1 text-sm font-semibold leading-6 " +
+                                    props.styleElements.linksColor
+                                }
+                            >
                                 Industrie IT
                                 <ChevronDownIcon
                                     className="h-5 w-5 flex-none text-white"
@@ -243,13 +260,19 @@ export default function Header() {
 
                         <Link
                             href="/about"
-                            className="text-sm font-semibold leading-6 text-white"
+                            className={
+                                "text-sm font-semibold leading-6 " +
+                                props.styleElements.linksColor
+                            }
                         >
                             About US
                         </Link>
                         <Link
                             href="/contact"
-                            className="text-sm font-semibold leading-6 text-white"
+                            className={
+                                "text-sm font-semibold leading-6 " +
+                                props.styleElements.linksColor
+                            }
                         >
                             Contact Us
                         </Link>
@@ -259,7 +282,7 @@ export default function Header() {
                             href="/login"
                             className="text-sm font-semibold leading-6 text-white"
                         >
-                            <login.icon className="h-7 w-7 text-white" />
+                            <login.icon className="h-10 w-10 text-white" />
                         </Link>
                     </div>
                 </div>
@@ -347,10 +370,10 @@ export default function Header() {
                             </div>
                             <div className="py-6">
                                 <Link
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                    href="login"
+                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base  leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    <login.icon className="h-32 w-32 text-dark-500" />
+                                    <login.icon className="h-32 w-32 " />
                                 </Link>
                             </div>
                         </div>
