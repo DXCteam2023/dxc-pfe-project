@@ -1,0 +1,40 @@
+.home {
+    background-image: url('../public/assets/landing-bg.svg');
+    height: 100vh;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .h1{
+    
+    
+    font-size: 3rem;
+    font-weight: 550;
+    color: gray;
+    margin-bottom: 0.5rem;
+  }
+  .h2{
+ 
+    font-size: 1.5rem;
+    font-weight: 550;
+    color: #294B99;
+    margin-bottom: 0.75rem;
+  }
+  .container{
+    height:60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .button{
+    border: 4px solid  #294B99;
+    border-radius: 2.5rem;
+    display:inline;
+    width: 15%;
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: 550;
+    padding: 0.25rem 0.5rem;
+    color: #294B99;
+    
+  }

@@ -1,5 +1,6 @@
 "use client";
-
+import Image from 'next/image';
+import logo from './logo.png';
 import { Fragment, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import {
@@ -10,45 +11,65 @@ import {
     FingerPrintIcon,
     SquaresPlusIcon,
     XMarkIcon,
+    UserCircleIcon
+
 } from "@heroicons/react/24/outline";
 import {
     ChevronDownIcon,
     PhoneIcon,
     PlayCircleIcon,
-} from "@heroicons/react/20/solid";
 
-const products = [
+} from "@heroicons/react/20/solid";
+import Link from 'next/link';
+
+const ServiceIT = [
     {
-        name: "Analytics",
-        description: "Get a better understanding of your traffic",
-        href: "#",
+        name: "Development",
+        description: "Creating software applications or systems it involves activities such as coding, testing, and deployment to meet project requirements and bring ideas to life.",
+        href: "/serviceit/development",
         icon: ChartPieIcon,
     },
     {
-        name: "Engagement",
+        name: "Cloud Computing",
         description: "Speak directly to your customers",
-        href: "#",
+        href: "/serviceit/cloud-computing",
         icon: CursorArrowRaysIcon,
     },
     {
-        name: "Security",
+        name: "SSL Certification",
         description: "Your customers’ data will be safe and secure",
-        href: "#",
+        href: "/serviceit/ssl-certification",
         icon: FingerPrintIcon,
     },
     {
-        name: "Integrations",
+        name: "Backup Solution",
         description: "Connect with third-party tools",
-        href: "#",
+        href: "/serviceit/backup-solution",
         icon: SquaresPlusIcon,
     },
+    
+];
+const IndustrieIT = [
     {
-        name: "Automations",
-        description: "Build strategic funnels that will convert",
-        href: "#",
-        icon: ArrowPathIcon,
+        name: "Integration",
+        description: "Get a better understanding of your traffic",
+        href: "/industrie-it/integration",
+        icon: ChartPieIcon,
+    },
+    {
+        name: "Wifi Survey",
+        description: "Speak directly to your customers",
+        href: "/industrie-it/wifi-survey",
+        icon: CursorArrowRaysIcon,
+    },
+    {
+        name: "Stress testing & modelisation",
+        description: "Your customers’ data will be safe and secure",
+        href: "/industrie-it/stress-testing-and-modelisation",
+        icon: FingerPrintIcon,
     },
 ];
+const login = {icon:UserCircleIcon};
 const callsToAction = [
     { name: "Watch demo", href: "#", icon: PlayCircleIcon },
     { name: "Contact sales", href: "#", icon: PhoneIcon },
@@ -62,21 +83,23 @@ export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className="bg-white">
+        <header >
             <nav
                 className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
                 aria-label="Global"
             >
-                <div className="flex lg:flex-1">
-                    <a href="#" className="-m-1.5 p-1.5">
-                        <span className="sr-only">Your Company</span>
-                        <img
-                            className="h-8 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                            alt=""
+                <div className="flex lg:flex-1 ">
+                    <Link href="#" className="-m-1.5 p-1.5">
+                        <span className="sr-only">PowerTech Empire</span>
+                        <Image
+                            className="h-24 w-auto"
+                            src={logo}
+                            alt="logo"
                         />
-                    </a>
+                    </Link>
                 </div>
+                
+                <div className="flex">
                 <div className="flex lg:hidden">
                     <button
                         type="button"
@@ -87,16 +110,23 @@ export default function Header() {
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
                 </div>
-                <Popover.Group className="hidden lg:flex lg:gap-x-12">
+                
+                <Popover.Group className=" flex items-center hidden lg:flex lg:gap-x-12">
+                <Link
+                        href="/"
+                        className="text-sm font-semibold leading-6 text-white"
+                    >
+                        Home
+                    </Link>
                     <Popover className="relative">
-                        <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                            Product
+                        <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white">
+                            Service IT
                             <ChevronDownIcon
-                                className="h-5 w-5 flex-none text-gray-400"
+                                className="h-5 w-5 flex-none text-white"
                                 aria-hidden="true"
                             />
                         </Popover.Button>
-
+                        
                         <Transition
                             as={Fragment}
                             enter="transition ease-out duration-200"
@@ -108,7 +138,7 @@ export default function Header() {
                         >
                             <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                                 <div className="p-4">
-                                    {products.map((item) => (
+                                    {ServiceIT.map((item) => (
                                         <div
                                             key={item.name}
                                             className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
@@ -120,13 +150,13 @@ export default function Header() {
                                                 />
                                             </div>
                                             <div className="flex-auto">
-                                                <a
+                                                <Link
                                                     href={item.href}
-                                                    className="block font-semibold text-gray-900"
+                                                    className="block font-semibold text-blue-900"
                                                 >
                                                     {item.name}
                                                     <span className="absolute inset-0" />
-                                                </a>
+                                                </Link>
                                                 <p className="mt-1 text-gray-600">
                                                     {item.description}
                                                 </p>
@@ -136,7 +166,7 @@ export default function Header() {
                                 </div>
                                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                                     {callsToAction.map((item) => (
-                                        <a
+                                        <Link
                                             key={item.name}
                                             href={item.href}
                                             className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
@@ -146,39 +176,99 @@ export default function Header() {
                                                 aria-hidden="true"
                                             />
                                             {item.name}
-                                        </a>
+                                        </Link>
                                     ))}
                                 </div>
                             </Popover.Panel>
                         </Transition>
                     </Popover>
-
-                    <a
-                        href="#"
-                        className="text-sm font-semibold leading-6 text-gray-900"
+                    <Popover className="relative">
+                        <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white">
+                            Industrie IT
+                            <ChevronDownIcon
+                                className="h-5 w-5 flex-none text-white"
+                                aria-hidden="true"
+                            />
+                        </Popover.Button>
+                        
+                        <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-200"
+                            enterFrom="opacity-0 translate-y-1"
+                            enterTo="opacity-100 translate-y-0"
+                            leave="transition ease-in duration-150"
+                            leaveFrom="opacity-100 translate-y-0"
+                            leaveTo="opacity-0 translate-y-1"
+                        >
+                            <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+                                <div className="p-4">
+                                    {IndustrieIT.map((item) => (
+                                        <div
+                                            key={item.name}
+                                            className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+                                        >
+                                            <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                                <item.icon
+                                                    className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
+                                            <div className="flex-auto">
+                                                <Link
+                                                    href={item.href}
+                                                    className="block font-semibold text-blue-900"
+                                                >
+                                                    {item.name}
+                                                    <span className="absolute inset-0" />
+                                                </Link>
+                                                <p className="mt-1 text-gray-600">
+                                                    {item.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                                    {callsToAction.map((item) => (
+                                        <Link
+                                            key={item.name}
+                                            href={item.href}
+                                            className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                                        >
+                                            <item.icon
+                                                className="h-5 w-5 flex-none text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </Popover.Panel>
+                        </Transition>
+                    </Popover>
+                    
+                    <Link
+                        href="/about"
+                        className="text-sm font-semibold leading-6 text-white"
                     >
-                        Features
-                    </a>
-                    <a
-                        href="#"
-                        className="text-sm font-semibold leading-6 text-gray-900"
+                        About US
+                    </Link>
+                    <Link
+                        href="/contact"
+                        className="text-sm font-semibold leading-6 text-white"
                     >
-                        Marketplace
-                    </a>
-                    <a
-                        href="#"
-                        className="text-sm font-semibold leading-6 text-gray-900"
-                    >
-                        Company
-                    </a>
+                        Contact Us
+                    </Link>
                 </Popover.Group>
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a
-                        href="#"
-                        className="text-sm font-semibold leading-6 text-gray-900"
+                <div className=" ms-8  lg:flex lg:flex-1 lg:justify-end">
+                    <Link
+                        href="/login"
+                        className="text-sm font-semibold leading-6 text-white"
                     >
-                        Log in <span aria-hidden="true">&rarr;</span>
-                    </a>
+                    <login.icon className="h-7 w-7 text-white"/>
+                    
+                    </Link>
+                </div>
                 </div>
             </nav>
             <Dialog
@@ -190,14 +280,14 @@ export default function Header() {
                 <div className="fixed inset-0 z-10" />
                 <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5">
+                        <Link href="#" className="-m-1.5 p-1.5">
                             <span className="sr-only">Your Company</span>
                             <img
                                 className="h-8 w-auto"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                                 alt=""
                             />
-                        </a>
+                        </Link>
                         <button
                             type="button"
                             className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -227,7 +317,7 @@ export default function Header() {
                                             </Disclosure.Button>
                                             <Disclosure.Panel className="mt-2 space-y-2">
                                                 {[
-                                                    ...products,
+                                                    ...ServiceIT,
                                                     ...callsToAction,
                                                 ].map((item) => (
                                                     <Disclosure.Button
@@ -243,37 +333,39 @@ export default function Header() {
                                         </>
                                     )}
                                 </Disclosure>
-                                <a
+                                <Link
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Features
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Marketplace
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Company
-                                </a>
+                                </Link>
                             </div>
                             <div className="py-6">
-                                <a
+                                <Link
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    Log in
-                                </a>
+                                    <login.icon className="h-32 w-32 text-dark-500"  />
+                                    
+                                </Link>
                             </div>
                         </div>
                     </div>
                 </Dialog.Panel>
             </Dialog>
+            
         </header>
     );
 }
