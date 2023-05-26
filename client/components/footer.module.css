@@ -7,27 +7,30 @@
 
 .footerContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
-.footerLogo img {
-    margin-right: 10px;
-}
 
-.footerNav ul {
-    list-style: none;
+.footerNav{
+    justify-content: center;
+   
 }
 
 .footerNav ul li {
     margin-right: 10px;
 }
 
-.footerNav ul li a {
+.footerNav p{
     color: #5f249f;
     text-decoration: none;
+    
 }
-
+.footerSocial{
+    margin-top: 1.19rem;
+    margin-bottom:1.19rem;
+}
 .footerSocial a {
     color: #5f249f;
     text-decoration: none;
