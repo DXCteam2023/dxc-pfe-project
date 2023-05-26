@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
 import dxc from "./dxc.jpg";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import Swal from 'sweetalert2';
 import {
     ArrowPathIcon,
     Bars3Icon,
@@ -73,6 +74,7 @@ const callsToAction = [
     { name: "Contact sales", href: "#", icon: PhoneIcon },
 ];
 
+
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
@@ -83,6 +85,40 @@ type propsType = {
 
 export default function Header(props: { styleElements: propsType }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    
+    const [token, setToken] = useState("")
+    const [username, setUsername] = useState("")
+
+    useEffect(() => {
+      let tokenUser
+      let user
+      // Get the value from local storage if it exists
+      tokenUser = localStorage.getItem("token") || ""
+      setToken(tokenUser)
+
+      user = localStorage.getItem("user") || ""
+      setUsername(user)
+    }, [])
+
+    const handleLogout = () => {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You are going to Logout!",
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#5f249f',
+          confirmButtonText: 'Logout'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.reload(); 
+          }
+        });
+  
+    
+      }
 
     return (
         <header>
@@ -278,12 +314,27 @@ export default function Header(props: { styleElements: propsType }) {
                         </Link>
                     </Popover.Group>
                     <div className=" ms-8  lg:flex lg:flex-1 lg:justify-end">
-                        <Link
-                            href="/login"
-                            className="text-sm font-semibold leading-6 text-white"
-                        >
-                            <login.icon className="h-10 w-10 text-white" />
-                        </Link>
+                                {
+                                    token && username ? 
+                                    <Link
+                                        href=""
+                                        onClick={handleLogout}
+                                        className={
+                                            "text-sm font-semibold leading-6 " +
+                                            props.styleElements.linksColor
+                                        }
+                                    >
+                                        Logout
+                                    </Link>
+                                    :
+                                
+                                    <Link
+                                    href="/login"
+                                    className="text-sm font-semibold leading-6 text-white"
+                                >
+                                    <login.icon className="h-10 w-10 text-white" />
+                                </Link>
+                                }
                     </div>
                 </div>
             </nav>
@@ -369,12 +420,28 @@ export default function Header(props: { styleElements: propsType }) {
                                 </Link>
                             </div>
                             <div className="py-6">
+                            {
+                                    token && username ? 
+                                    <Link
+                                        href=""
+                                        onClick={handleLogout}
+                                        className={
+                                            "text-sm font-semibold leading-6 " +
+                                            props.styleElements.linksColor
+                                        }
+                                    >
+                                        Logout
+                                    </Link>
+                                    :
+                                
+                                    
                                 <Link
-                                    href="login"
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base  leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    <login.icon className="h-32 w-32 " />
-                                </Link>
+                                href="login"
+                                className="-mx-3 block rounded-lg px-3 py-2.5 text-base  leading-7 text-gray-900 hover:bg-gray-50"
+                            >
+                                <login.icon className="h-32 w-32 " />
+                            </Link>
+                                }
                             </div>
                         </div>
                     </div>
