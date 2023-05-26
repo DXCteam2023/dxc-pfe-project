@@ -70,8 +70,8 @@ const IndustrieIT = [
 ];
 const login = { icon: UserCircleIcon };
 const callsToAction = [
-    { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-    { name: "Contact sales", href: "#", icon: PhoneIcon },
+    { name: "Watch Youtube Channel", href: "#", icon: PlayCircleIcon },
+    { name: "Contact ", href: "#", icon: PhoneIcon },
 ];
 
 
@@ -145,7 +145,8 @@ export default function Header(props: { styleElements: propsType }) {
                         </button>
                     </div>
 
-                    <Popover.Group className=" flex items-center hidden lg:flex lg:gap-x-12">
+                    <Popover.Group className="flex items-center hidden lg:flex lg:gap-x-12">
+
                         <Link
                             href="/"
                             className={
@@ -347,11 +348,11 @@ export default function Header(props: { styleElements: propsType }) {
                 <div className="fixed inset-0 z-10" />
                 <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <Link href="#" className="-m-1.5 p-1.5">
+                        <Link href="/" className="-m-1.5 p-1.5">
                             <span className="sr-only">Your Company</span>
-                            <img
-                                className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                            <Image
+                                className="h-14 w-auto"
+                                src={dxc}
                                 alt=""
                             />
                         </Link>
@@ -371,7 +372,7 @@ export default function Header(props: { styleElements: propsType }) {
                                     {({ open }) => (
                                         <>
                                             <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                                                Product
+                                                IT Service
                                                 <ChevronDownIcon
                                                     className={classNames(
                                                         open
@@ -397,23 +398,50 @@ export default function Header(props: { styleElements: propsType }) {
                                                     </Disclosure.Button>
                                                 ))}
                                             </Disclosure.Panel>
+                                            <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                                IT Industrie
+                                                <ChevronDownIcon
+                                                    className={classNames(
+                                                        open
+                                                            ? "rotate-180"
+                                                            : "",
+                                                        "h-5 w-5 flex-none",
+                                                    )}
+                                                    aria-hidden="true"
+                                                />
+                                            </Disclosure.Button>
+                                            <Disclosure.Panel className="mt-2 space-y-2">
+                                                {[
+                                                    ...IndustrieIT,
+                                                    ...callsToAction,
+                                                ].map((item) => (
+                                                    <Disclosure.Button
+                                                        key={item.name}
+                                                        as="a"
+                                                        href={item.href}
+                                                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                                    >
+                                                        {item.name}
+                                                    </Disclosure.Button>
+                                                ))}
+                                            </Disclosure.Panel>
                                         </>
                                     )}
                                 </Disclosure>
                                 <Link
-                                    href="#"
+                                    href="/about"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    Features
+                                    About Us
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/contact"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
-                                    Marketplace
+                                    Contact US
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/login"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Company
