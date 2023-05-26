@@ -109,7 +109,7 @@ export default function Header(props: { styleElements: propsType }) {
                         </button>
                     </div>
 
-                    <Popover.Group className=" flex items-center hidden lg:flex lg:gap-x-12">
+                    <Popover.Group className="flex items-center hidden lg:flex lg:gap-x-12">
                         <Link
                             href="/"
                             className={
