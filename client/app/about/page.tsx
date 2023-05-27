@@ -1,8 +1,14 @@
 import Footer from "@/components/footer";
 import Header from "../../components/header";
 import Image from "next/image";
+import Link from "next/link";
 import dxc from "./dxc-bn-tn.png";
 import styles from "../home.module.css";
+import SapLogo from "../../public/assets/sap.png";
+import ServiceNowLogo from "../../public/assets/ServiceNow_logo.png";
+import GoogleCloudLogo from "../../public/assets/Google_Cloud_logo.png";
+import RedHatLogo from "../../public/assets/red-hat.jpg";
+import SalesForce from "../../public/assets/Salesforce.com_logo.png";
 export default function AboutPage() {
     const links = [
         { name: "OUR STORY", href: "https://dxc.com/us/en/about-us/our-story" },
@@ -19,6 +25,7 @@ export default function AboutPage() {
             value: "5+",
         },
     ];
+   
     const posts = [
         {
             id: 1,
@@ -171,6 +178,50 @@ export default function AboutPage() {
                             </article>
                         ))}
                     </div>
+                </div>
+            </div>
+            <div className="bg-white py-24 sm:py-32">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <h2 className="text-center text-2xl font-semibold leading-8 text-gray-900 py-8">
+                        Trusted by the world’s most innovative teams
+                    </h2>
+                    <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+                        <Image
+                            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                            src={SapLogo}
+                            alt="SAP Logo"
+                        />
+                        <Image
+                            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                            src={ServiceNowLogo}
+                            alt="ServiceNow"
+                        />
+                        <Image
+                            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                            src={GoogleCloudLogo}
+                            alt="Google Cloud"
+                        />
+                        <Image
+                            className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
+                            src={RedHatLogo}
+                            alt="Red Hat"
+                        />
+                        <Image
+                            className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
+                            src={SalesForce}
+                            alt="Salesforce"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className="bg-primary-purple h-24 flex items-center">
+                <div className="container mx-auto flex justify-between">
+                    <h2 className="text-white text-3xl">Connect with DXC</h2>
+                    <Link href="/contact">
+                        <div className="border-2 border-white text-white py-2 px-5 text-1xl uppercase font-medium">
+                            Contact us
+                        </div>
+                    </Link>
                 </div>
             </div>
             <Footer />
