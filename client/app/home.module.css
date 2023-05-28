@@ -1,4 +1,5 @@
-background-image: url("../public/assets/landing-bg.png");
+.home {
+    background-image: url("../public/assets/landing-bg.png");
     height: 100vh;
     background-position: top left;
     background-repeat: no-repeat;

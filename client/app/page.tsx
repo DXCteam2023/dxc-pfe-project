@@ -1,8 +1,8 @@
-import { Poppins } from "next/font/google";
+// Importing modules
+import Image from "next/image";
+import Link from "next/link";
 
-import Header from "../components/header";
-import Footer from "../components/footer";
-
+// Importing images
 import CompanyImage from "../public/assets/low-angle-view-skyscrapers.jpg";
 import InfrastractureImage from "../public/assets/network-engineers-with-tablet-medium-shot.jpg";
 import CloudSolutions from "../public/assets/cloud-solution.jpg";
@@ -13,19 +13,21 @@ import GoogleCloudLogo from "../public/assets/Google_Cloud_logo.png";
 import RedHatLogo from "../public/assets/red-hat.jpg";
 import SalesForce from "../public/assets/Salesforce.com_logo.png";
 
+// Importing components
+import Header from "./components/header/header";
+import Footer from "./components/footer/footer";
+import HeaderSection from "./components/headerSection";
+
+// Importing fonts
+import { Poppins } from "next/font/google";
+
+// Importing styles
 import homeStyles from "./home.module.css";
-import Image from "next/image";
-import Link from "next/link";
 
 const poppins = Poppins({
     weight: "600",
     subsets: ["latin"],
 });
-
-// const roboto = Roboto({
-//     weight: "500",
-//     subsets: ["latin"],
-// });
 
 const stats = [
     { id: 1, name: "Countries", value: "70+" },

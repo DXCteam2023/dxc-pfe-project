@@ -1,4 +1,4 @@
-# Power Empire Tech
+# DXC PFE Project
 
 ## Git commands
 
@@ -9,7 +9,7 @@
 
     - git branch -m main
 
-    - git remote add origin git@github.com:DXCteam2023/PowerTechEmpire.git
+    - git remote add origin git@github.com:DXCteam2023/dxc-pfe-project.git
 
     - git pull origin main
 
