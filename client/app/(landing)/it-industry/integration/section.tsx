@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 // Importing assets
-import cloud from "@public/assets/cloud.webp";
+import cloud from "@/public/assets/cloud.webp";
 
 const features = [
     {
