@@ -52,7 +52,9 @@ export default function AboutPage() {
     return (
         <div className="about">
             <Header styleElements={{ linksColor: "purple-header-links" }} />
+  
 
+  
             <div className="relative isolate overflow-hidden bg-gray-900 py-10 sm:py-24">
                 <Image
                     src={dxc}
