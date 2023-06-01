@@ -79,7 +79,7 @@ export default function ArchivedProductOfferingsPage() {
                 </td>
                 <td className="px-6 py-4">
                     <div className="flex items-center">
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> {item.status}
+                        <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div> {item.status}
                     </div>
                 </td>
                 <td className="px-6 py-4">
