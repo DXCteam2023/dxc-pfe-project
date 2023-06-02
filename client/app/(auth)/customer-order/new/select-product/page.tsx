@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
 import InputText from "../components/InputText";
+import SubLayout from "../components/SubLayout";
 
 export default function SelectProduct() {
   const route = useRouter();
@@ -12,18 +13,18 @@ export default function SelectProduct() {
   };
 
   return (
-    <div className="create-order flex flex-col px-4 w-full">
-      <div className="create-order-first-row flex">
-        <div className="w-1/4 border-r-2 border-gray-500 p-4">
-          <div className="flex gap-4 justify-between items-center">
-            <h4 className="font-extrabold">Locations</h4>
-            <span className="flex gap-4 justify-between items-center">
-              <BsFillTrash3Fill className="cursor-pointer" />
-              <BsPlusLg className="cursor-pointer" />
-            </span>
-          </div>
+    <SubLayout
+      leftChildren={
+        <div className="flex gap-4 justify-between items-center">
+          <h4 className="font-extrabold">Locations</h4>
+          <span className="flex gap-4 justify-between items-center">
+            <BsFillTrash3Fill className="cursor-pointer" />
+            <BsPlusLg className="cursor-pointer" />
+          </span>
         </div>
-        <div className="flex flex-col p-4 gap-8 w-full">
+      }
+      rightChildren={
+        <>
           <div>
             <h4 className="font-extrabold">Select Product</h4>
             <h6>For each location, choose a contact, product, and quantity.</h6>
@@ -86,9 +87,9 @@ export default function SelectProduct() {
               Add Product Offerings
             </button>
           </div>
-        </div>
-      </div>
-      <div className="create-order-second-row flex justify-end border-t-2 border-gray-500 p-4">
+        </>
+      }
+      bottomChildren={
         <div>
           <button
             onClick={handleContinueOnClick}
@@ -97,7 +98,7 @@ export default function SelectProduct() {
             Continue
           </button>
         </div>
-      </div>
-    </div>
+      }
+    />
   );
 }
