@@ -1,3 +1,7 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import TopCards from "./components/TopCards";
@@ -7,6 +11,8 @@ import StatisticCards from "./components/StatisticCards";
 import Footer from "./components/Footer";
 
 export default function DashboardHome() {
+  const { data: session } = useSession({ required: true });
+
   return (
     <div className="bg-gray-100 flex">
       <Sidebar />
