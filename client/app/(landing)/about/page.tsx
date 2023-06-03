@@ -3,6 +3,7 @@ import Header from "@/app/components/header/header";
 import Image from "next/image";
 
 import dxc from "@/public/assets/dxc.jpg";
+import DXCImage from "@/public/assets/dxc-bn-tn.png";
 
 import styles from "@/app/home.module.css";
 
@@ -60,7 +61,7 @@ export default function AboutPage() {
       <Header styleElements={{ linksColor: "purple-header-links" }} />
       <div className="relative isolate overflow-hidden bg-gray-900 py-10 sm:py-24">
         <Image
-          src={dxc}
+          src={DXCImage}
           alt=""
           className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
         />
