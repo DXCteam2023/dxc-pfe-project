@@ -327,7 +327,8 @@ model product_specifications {
 }
 
 model users {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
   password String
+  roles    String[]
   username String
 }
