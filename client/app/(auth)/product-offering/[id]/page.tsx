@@ -29,36 +29,37 @@ export default async function SingleProductOfferingPage({
   }
 
   return (
-    <div className="product-offering container mx-auto">
-      <header className="py-5 flex items-center justify-between bg-slate-300 px-3">
-        <div className="infos flex justify-between items-center">
-          <div className="title font-medium text-lg me-3">
-            {singleProductOffering.name}
-          </div>
-          <span
-            className={
-              productOfferingStyles.tag +
-              " capitalize px-3 rounded-2xl text-white " +
-              (singleProductOffering.status === "published"
-                ? "bg-green-500"
-                : "bg-orange-400")
-            }
-          >
-            {singleProductOffering.status}
-          </span>
-        </div>
-        <div className="action-buttons">
-          {singleProductOffering.status === "published" ? (
-            <button className="bg-blue-400 py-1 px-3 rounded-md text-white font-medium hover:bg-blue-500 shadow-sm hover:shadow-md duration-300">
-              Archive
-            </button>
-          ) : (
-            <button className="bg-blue-400 py-1 px-3 rounded-md text-white font-medium hover:bg-blue-500 shadow-sm hover:shadow-md duration-300">
-              Publish
-            </button>
-          )}
-        </div>
-      </header>
-    </div>
+    <h1>Single Product Offering</h1>
+    // <div className="product-offering container mx-auto">
+    //   <header className="py-5 flex items-center justify-between bg-slate-300 px-3">
+    //     <div className="infos flex justify-between items-center">
+    //       <div className="title font-medium text-lg me-3">
+    //         {singleProductOffering.name}
+    //       </div>
+    //       <span
+    //         className={
+    //           productOfferingStyles.tag +
+    //           " capitalize px-3 rounded-2xl text-white " +
+    //           (singleProductOffering.status === "published"
+    //             ? "bg-green-500"
+    //             : "bg-orange-400")
+    //         }
+    //       >
+    //         {singleProductOffering.status}
+    //       </span>
+    //     </div>
+    //     <div className="action-buttons">
+    //       {singleProductOffering.status === "published" ? (
+    //         <button className="bg-blue-400 py-1 px-3 rounded-md text-white font-medium hover:bg-blue-500 shadow-sm hover:shadow-md duration-300">
+    //           Archive
+    //         </button>
+    //       ) : (
+    //         <button className="bg-blue-400 py-1 px-3 rounded-md text-white font-medium hover:bg-blue-500 shadow-sm hover:shadow-md duration-300">
+    //           Publish
+    //         </button>
+    //       )}
+    //     </div>
+    //   </header>
+    // </div>
   );
 }
