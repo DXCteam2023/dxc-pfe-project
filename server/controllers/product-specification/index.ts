@@ -1,3 +1,4 @@
-import { getProductSpecification } from "./getProductSpecification";
+import getProductSpecifications from "./getProductSpecifications";
+import getProductSpecificationById from "./getProductSpecificationById";
 
-export { getProductSpecification };
+export { getProductSpecifications, getProductSpecificationById };
