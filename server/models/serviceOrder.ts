@@ -95,7 +95,10 @@ export interface IServiceOrderDocument {
   requestedCompletionDate?: string;
   requestedStartDate?: string;
   serviceOrderItem?: ServiceOrderItem[];
+  completionDate?: string;
+  expectedCompletionDate?: string;
   state: string;
+  ponr: boolean;
   "@type": string;
 }
 
@@ -194,7 +197,10 @@ const serviceOrderSchema = new Schema({
   requestedCompletionDate: { type: String, required: false, default: "" },
   requestedStartDate: { type: String, required: false, default: "" },
   serviceOrderItem: { type: Array(serviceOrderItemSchema), required: true },
+  completionDate: { type: String, required: false, default: "" },
+  expectedCompletionDate: { type: String, required: false, default: "" },
   state: { type: String, required: true },
+  ponr: { type: String, required: true },
   "@type": { type: String, required: true, default: "ServiceOrder" },
 });
 

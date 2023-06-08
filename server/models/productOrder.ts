@@ -119,6 +119,9 @@ export interface IProductOrderDocument {
   orderDate?: string;
   requestedCompletionDate?: string;
   requestedStartDate?: string;
+  completionDate?: string;
+  expectedCompletionDate?: string;
+  ponr: boolean;
   state: string;
   "@type": string;
 }
@@ -248,7 +251,10 @@ const productOrderSchema = new Schema({
   orderDate: { type: String, required: false },
   requestedCompletionDate: { type: String, required: false, default: "" },
   requestedStartDate: { type: String, required: false, default: "" },
+  completionDate: { type: String, required: false, default: "" },
+  expectedCompletionDate: { type: String, required: false, default: "" },
   state: { type: String, required: true },
+  ponr: { type: Boolean, required: true },
   "@type": { type: String, required: true, default: "ProductOrder" },
 });
 
