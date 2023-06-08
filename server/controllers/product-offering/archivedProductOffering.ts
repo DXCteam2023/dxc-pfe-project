@@ -1,1 +1,3 @@
-export default function archiveProductOffering() {}
+import { Request, Response } from "express";
+
+export default function archiveProductOffering(req: Request, res: Response) {}
