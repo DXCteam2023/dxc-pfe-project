@@ -1,1 +1,3 @@
-export default async function addProductOffering() {}
+import { Request, Response } from "express";
+
+export default async function addProductOffering(req: Request, res: Response) {}
