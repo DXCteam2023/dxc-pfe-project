@@ -1,6 +1,6 @@
+import { Request, Response } from "express";
 import { User, validation } from "../../models/user";
 import bcrypt from "bcryptjs";
-
 
 export default async function updateUser(req, res) {
 
