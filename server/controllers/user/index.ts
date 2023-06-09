@@ -3,5 +3,6 @@ import addUser from "./addUser";
 import deleteUser from "./deleteUser";
 import updateUser from "./updateUser";
 import getUserById from "./getUserById";
+import authUser from "./authUser";
 
-export { getUsers, addUser, deleteUser, updateUser, getUserById };
+export { getUsers, addUser, deleteUser, updateUser, getUserById, authUser };
