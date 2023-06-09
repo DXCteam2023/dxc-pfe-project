@@ -5,9 +5,12 @@ import {
   getUserById,
   getUsers,
   updateUser,
+  authUser,
 } from "../controllers/user";
 
 const userRoute = Router();
+
+userRoute.post("/login", authUser);
 
 userRoute.get("/", getUsers);
 

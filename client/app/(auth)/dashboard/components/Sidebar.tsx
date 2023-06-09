@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import { RxSketchLogo, RxDashboard, RxPerson, RxHome } from "react-icons/rx";
@@ -15,6 +15,20 @@ interface SidebarProps {
 }
 
 const Sidebar = () => {
+    const [localToken, setLocalToken] = useState("");
+    const [localUser, setLocalUser] = useState(JSON.stringify({}));
+    useEffect(() => {
+        let token;
+        let user;
+        // Get the value from local storage if it exists
+        token = localStorage.getItem("token") || "";
+        setLocalToken(token);
+
+        user = localStorage.getItem("user") || "";
+        setLocalUser(user);
+    }, []);
+    
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const renderIcon = (id: string) => {
@@ -30,9 +44,10 @@ const Sidebar = () => {
         }
     };
 
-    const user_profile = "admin";
+    const name = JSON.parse(localUser).username ? (JSON.parse(localUser).username).toUpperCase() : "";
+    const profile = (JSON.parse(localUser).profile);
     const data = SideBarData.filter((item: any) =>
-        item.profile.includes(user_profile),
+        item.profile.includes(profile),
     );
 
     return (
@@ -45,10 +60,10 @@ const Sidebar = () => {
                         alt="Bonnie image"
                     />
                     <h5 className=" pt-2 text-lg font-semibold mb-1 font-small text-gray-900 ">
-                        Bonnie Green
+                        {name}
                     </h5>
                     <span className="text-sm text-gray-600">
-                        Product Offering Manager
+                        {profile}
                     </span>
                     
                 </div>
