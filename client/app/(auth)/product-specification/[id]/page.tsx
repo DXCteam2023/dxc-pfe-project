@@ -460,3 +460,4 @@ const Table3 = ({ product }: any) => {
 };
 
 export default Page;
+

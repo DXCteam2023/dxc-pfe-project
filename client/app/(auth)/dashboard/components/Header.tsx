@@ -95,9 +95,82 @@ const Header = () => {
     setPopupOpen(false);
   };
 
-  const handleDropdownToggle = () => {
+const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+    const handleLogout = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You are going to Logout!",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#5f249f",
+            confirmButtonText: "Logout",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/login";
+            }
+        });
+    };
+
+    return (
+        <div className="flex justify-between items-center px-4 py-4 bg-white relative">
+            {/* Champ de recherche */}
+            <div className="w-5/6">
+                <form onSubmit={handleSearchClick}>
+                    <ReactModal
+                        isOpen={isPopupOpen}
+                        onRequestClose={handlePopupClose}
+                    >
+                        {" "}
+                        <div className="results">
+                            <button
+                                className="absolute top-5 right-5 text-gray-600 hover:text-gray-800"
+                                onClick={handlePopupClose}
+                            >
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    ></path>
+                                </svg>
+                            </button>
+                            {searchResults.map((result) => (
+                                <div
+                                    key={result.number}
+                                    className=" bg-white flex items-center animation-pulse p-5 lg:p-10 overflow-hidden relative"
+                                >
+                                    <div className="w-full max-w-6xl rounded bg-white shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left">
+                                        <button
+                                            className="absolute top-5 right-5 text-gray-600 hover:text-gray-800"
+                                            onClick={handlePopupClose}
+                                        >
+                                            <svg
+                                                className="w-6 h-6"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                ></path>
+                                            </svg>
+                                        </button>
 
   const handleInputFocus = () => {
     setIsInputFocused(true);
@@ -284,7 +357,6 @@ const Header = () => {
             />
           </svg>
         </div>
-
         <span
           aria-hidden="true"
           className="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
@@ -355,6 +427,54 @@ const Header = () => {
                 ></path>
               </svg>
               View all
+                    <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-1">
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <a
+                                            href="#"
+                                            className={classNames(
+                                                active
+                                                    ? "bg-gray-100 text-gray-900"
+                                                    : "text-gray-700",
+                                                "block px-4 py-2 text-sm",
+                                            )}
+                                        >
+                                            Account settings
+                                        </a>
+                                    )}
+                                </Menu.Item>
+                                <form method="POST" action="#">
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button
+                                                type="submit"
+                                                onClick={handleLogout}
+                                                className={classNames(
+                                                    active
+                                                        ? "bg-gray-100 text-gray-900"
+                                                        : "text-gray-700",
+                                                    "block w-full px-4 py-2 text-left text-sm",
+                                                )}
+                                            >
+                                                Sign out
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                </form>
+                            </div>
+                        </Menu.Items>
+                    </Transition>
+                </Menu>
             </div>
           </a>
         </div>
