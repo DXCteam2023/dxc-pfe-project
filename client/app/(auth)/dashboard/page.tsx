@@ -5,12 +5,13 @@
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import TopCards from "./components/TopCards";
-import BarChart from "./components/BarChart";
+import BarChart from "./components/RecentCustomerOrders";
 import Card from "./components/Card";
 import StatisticCards from "./components/StatisticCards";
 import Footer from "./components/Footer";
+import TableProductOfferings from "./components/TableProductOfferings";
+import Stats from "./components/Stats";
 import React, { useEffect, useState } from "react";
-
 
 export default function DashboardHome() {
   // const { data: session } = useSession({ required: true });
@@ -32,12 +33,21 @@ export default function DashboardHome() {
     window.location.href = "/login"
     : 
     <div className="bg-gray-100 flex">
-      <Sidebar />
-      <div className="bg-white  min-h-screen-100 w-5/6">
+      
+      <Sidebar /> 
+      <div className="bg-white  min-h-screen-100 w-5/6  ">
         <Header />
+        
+        <div className="flex p-2 ">
+                        {/* <div className="flex py-3 px-2 items-center">
+                            <p className="text-2xl text-purple-500 font-semibold">DXC</p> <p className="ml-2 font-semibold italic">
+                            DASHBOARD</p>
+                        </div>*/}
+                    </div> 
         <TopCards />
+        {/* <Stats/> */}
         <StatisticCards />
-        <Card />
+        <TableProductOfferings/>
         <BarChart />
         <Footer />
       </div>

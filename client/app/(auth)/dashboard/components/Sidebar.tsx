@@ -53,9 +53,10 @@ const Sidebar = () => {
     return (
         <div className="w-1/6  shadow-lg bg-white lg:flex  tracking-tight flex-col">
             <div className="flex flex-col bg-white-100 items-center justify-center  mt-2">
+           
                 <div className="flex flex-col items-center mt-2">
                     <Image
-                        className="w-14 h-14 mb-3 rounded-full  lg:flex  tracking-tight shadow-lg"
+                        className="hidden h-24 w-24 rounded-full sm:block object-cover mr-2 border-4 border-purple-700"
                         src={photo}
                         alt="Bonnie image"
                     />
