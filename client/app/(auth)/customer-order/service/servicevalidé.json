@@ -1,0 +1,87 @@
+{
+  "externalId": "BSS748",
+  "note": [
+    {
+      "text": "This is a TMF service order illustration"
+    },
+    {
+      "text": "This is a TMF service order illustration no 2"
+    }
+  ],
+  "orderDate": "2021-06-08T09:37:40.508Z",
+  "relatedParty": [
+    {
+      "id": "eaf68911c35420105252716b7d40ddde",
+      "name": "Abel Tuter",
+      "@referredType": "CustomerContact",
+      "@type": "RelatedParty"
+    },
+    {
+      "id": "ffc68911c35420105252716b7d40dd55",
+      "name": "Example Company",
+      "@referredType": "Customer",
+      "@type": "RelatedParty"
+    }
+  ],
+  "serviceOrderItem": [
+    {
+      "action": "add",
+      "id": "100",
+      "orderRelationship": [
+        {
+          "id": "326d13f45b5620102dff5e92dc81c785",
+          "relationshipType": "Requires"
+        }
+      ],
+      "place": {
+        "id": "920cf6ac73d423002728660c4cf6a799",
+        "@type": "Place"
+      },
+      "service": {
+        "@type": "CFS",
+        "serviceCharacteristic": [
+          {
+            "name": "Firewall Security",
+            "value": "Standard"
+          },
+          {
+            "name": "Firewall coverage",
+            "value": "Premium (Up to 50 sites)"
+          },
+          {
+            "name": "Administration Support",
+            "value": "Basic (Customer Managed)"
+          }
+        ],
+        "serviceRelationship": [
+          {
+            "id": "326d13f45b5620102dff5e92dc81c785",
+            "relationshipType": "Requires"
+          }
+        ],
+        "serviceSpecification": {
+          "id": "f99546ff07266010a7955b7e0ad300a8",
+          "name": "Managed Firewall Service",
+          "@type": "Managed Firewall Service"
+        }
+      },
+      "relatedParty": {
+        "firstName": "Mike",
+        "lastName": "Hudson",
+        "email": "mike@example.com",
+        "phone": "1234567890",
+        "@type": "RelatedParty",
+        "@referredType": "OrderLineItemContact"
+      },
+      "state": "active",
+      "@type": "ServiceOrderItem"
+    }
+  ],
+  "requestedCompletionDate": "2021-06-15T09:37:40.508Z",
+  "requestedStartDate": "2021-06-15T09:37:40.508Z",
+  "completionDate": "2021-06-30T09:37:40.508Z",
+  "expectedCompletionDate": "2021-06-30T09:37:40.508Z",
+  "state": "active",
+  "ponr": true,
+  "@type": "ServiceOrder"
+}

@@ -2,10 +2,31 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
 import { dataCostumerOrders } from "../data/dataCostumerOrders";
-import { dataProductOfferings } from "../data/dataProductOfferings";
+const BarChart = () => {
+  {
+    /*const [filter, setFilter] = useState("");
 
-const TableProductOfferings = () => {
-    const [searchTerm, setSearchTerm] = useState<string>("");
+  const searchText = (filter: string) => {
+    setFilter(filter);
+  };
+  interface Item {
+    [key: string]: string;
+    item: string;
+  }
+  function getValue(item: Item, key: string): string {
+    return item[key];
+  }
+
+  let dataSearch = dataCostumerOrders.filter((item) => {
+    return Object.keys(item).some((key) =>
+      getValue
+        .toString()
+        .toLowerCase()
+        .includes(filter.toString().toLowerCase()),
+    );
+  });*/
+  }
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [statusFilter, setStatusFilter] = useState<string>("All");
 
@@ -17,14 +38,14 @@ const TableProductOfferings = () => {
     setStatusFilter(event.target.value);
   };
 
- // const filteredProducts = dataProductOfferings.filter((product) => {
-  //  const orderValues = Object.values(product).join(" ").toLowerCase();
-  //  const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
-  //  const isMatchingStatus =
-   //   statusFilter === "All" || product.state === statusFilter;
+  const filteredOrders = dataCostumerOrders.filter((order) => {
+    const orderValues = Object.values(order).join(" ").toLowerCase();
+    const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
+    const isMatchingStatus =
+      statusFilter === "All" || order.state === statusFilter;
 
-   // return isMatchingSearchTerm && isMatchingStatus;
-//});
+    return isMatchingSearchTerm && isMatchingStatus;
+  });
   {
     /*  Le code pour afficher 5 commande*/
   }
@@ -65,53 +86,44 @@ const TableProductOfferings = () => {
     switch (state) {
       case "new":
         return "bg-blue-200 shadow-blue-300";
-      case "draft":
+      case "in progress":
         return "bg-yellow-200 shadow-yellow-300";
-      case "published":
+      case "completed":
         return "bg-green-200 shadow-green-300";
-      case "archived":
+      case "canceled":
         return "bg-red-200 shadow-red-300";
       default:
         return "";
     }
   }
-
-  const recentOffers = dataProductOfferings.sort((a, b) => {
+ 
+  const recentOrders = filteredOrders.sort((a, b) => {
     const date1 = new Date(
-      parseInt(a.last_update.split("/")[2]),
-      parseInt(a.last_update.split("/")[1]) - 1,
-      parseInt(a.last_update.split("/")[0])
+      parseInt(a.orderDate.split("/")[2]),
+      parseInt(a.orderDate.split("/")[1]) - 1,
+      parseInt(a.orderDate.split("/")[0])
     );
     const date2 = new Date(
-      parseInt(b.last_update.split("/")[2]),
-      parseInt(b.last_update.split("/")[1]) - 1,
-      parseInt(b.last_update.split("/")[0])
+      parseInt(b.orderDate.split("/")[2]),
+      parseInt(b.orderDate.split("/")[1]) - 1,
+      parseInt(b.orderDate.split("/")[0])
     );
     return date2.getTime() - date1.getTime();
-    
   });
-  const filteredProducts = recentOffers.filter((product) => {
-    const orderValues = Object.values(product).join(" ").toLowerCase();
-    const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
-    const isMatchingStatus =
-      statusFilter === "All" || product.state === statusFilter;
-
-    return isMatchingSearchTerm && isMatchingStatus;
-  });
-  console.log(recentOffers);
+  
+  console.log(recentOrders);
+  
+  
   
   return (
-
-<>
-
-<div className="flex w-full">
+    <div className="flex w-full">
       <div className="w-full">
         <div className="ml-2 flex mt-2 ">
           <div className="container mx-auto px-4 sm:px-8">
             <div className="py-8">
               <div>
                 <h2 className="text-2xl font-semibold leading-tight">
-                  Last Updated Product Offerings
+                  Recents Customer Orders
                 </h2>
               </div>
               <div className="my-2 flex sm:flex-row flex-col">
@@ -120,22 +132,29 @@ const TableProductOfferings = () => {
                     <select
                       value={statusFilter}
                       onChange={handleStatusFilter}
-                      className=" ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                      className="  ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
                     >
                       <option value="All">All</option>
                       <option value="new">New</option>
-                      <option value="published">Published</option>
-                      <option value="draft">Draft</option>
-                      <option value="archived">Archived</option>
+                      <option value="in progress">In progress</option>
+                      <option value="completed">Completed</option>
+                      <option value="canceled">Canceled</option>
                     </select>
-                    
+                   
                   </div>
                 </div>
                 <div className="block relative">
-                
+                  <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4 fill-current text-gray-500"
+                    >
+                      <path d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z"></path>
+                    </svg>
+                  </span>
                   <input
-                    placeholder=" Search..."
-                    className=" mx-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                    placeholder=" Search"
+                    className="mx-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
                     value={searchTerm}
                     onChange={handleSearch}
                   />
@@ -150,49 +169,43 @@ const TableProductOfferings = () => {
                           Number
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
-                          Display name
+                          Account
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Version
+                          Created At
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          State
+                          Status
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Price
+                          Type
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                         Short  Description
+                          Contact
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Contract Terms
+                          Created By
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Start date
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          End date
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                          Last Update
+                          Total
                         </th>
                       </tr>
                     </thead>
-                    <tbody >
-                      {filteredProducts
+                    <tbody>
+                      {recentOrders
                         .slice(indexOfFirstOrder, indexOfLastOrder)
-                        .map((product: any, index: number) => {
+                        .map((order: any, index: number) => {
                           return (
-                            <tr key={index} >
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+                            <tr key={index}>
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                   <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap text-main-color">
+                                    <p className="text-gray-900 whitespace-no-wrap">
                                       <a
-                                        href={product.link}
-                                        className="text-blue-500 hover:text-blue-700"
+                                        href={order.link}
+                                        className="text-blue-500 hover:text-blue-700 text-main-color"
                                       >
-                                        {product.number}
+                                        {order.number}
                                       </a>
                                     </p>
                                   </div>
@@ -201,28 +214,28 @@ const TableProductOfferings = () => {
 
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                  {product.display_name}
+                                  {order.account}
                                 </p>
                               </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm bg-blue-100 ">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                  {product.version}
+                                  {order.orderDate}
                                 </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <span
                                   className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
-                                    product.state,
+                                    order.state,
                                   )} leading-tight`}
                                 >
                                   <span
                                     aria-hidden
                                     className={`absolute inset-0 ${getStateBgColor(
-                                        product.state,
+                                      order.state,
                                     )} opacity-50 rounded-full`}
                                   ></span>
                                   <span className="relative">
-                                    {product.state}
+                                    {order.state}
                                   </span>
                                 </span>
                               </td>
@@ -231,7 +244,7 @@ const TableProductOfferings = () => {
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {product.price} $
+                                      {order.category}
                                     </p>
                                   </div>
                                 </div>
@@ -240,7 +253,7 @@ const TableProductOfferings = () => {
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {product.short_description}
+                                      {order.contact}
                                     </p>
                                   </div>
                                 </div>
@@ -248,22 +261,12 @@ const TableProductOfferings = () => {
 
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                  {product.Contract_terms}
+                                  {order.created_by}
                                 </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                  {product.start_date}
-                                </p>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {product.end_date}
-                                </p>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm bg-blue-100">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {product.last_update}
+                                  {order.price}
                                 </p>
                               </td>
                             </tr>
@@ -287,7 +290,7 @@ const TableProductOfferings = () => {
                       <button
                         className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
                         onClick={handleNextPage}
-                        disabled={indexOfLastOrder >= recentOffers.length}
+                        disabled={indexOfLastOrder >= recentOrders.length}
                       >
                         Next
                       </button>
@@ -300,11 +303,7 @@ const TableProductOfferings = () => {
         </div>
       </div>
     </div>
+  );
+};
 
-</>
-
-  
-  )
-}
-
-export default TableProductOfferings
+export default BarChart;
