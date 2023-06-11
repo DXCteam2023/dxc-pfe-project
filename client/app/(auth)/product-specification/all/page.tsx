@@ -8,7 +8,7 @@ import Header from "../../dashboard/components/header/Header";
 import Link from "next/link";
 
 // Importing utility functions
-import { getProductSpecifications } from "./utils";
+import { getProductSpecifications } from "../utils";
 
 export default function AllProductSpecificationsPage() {
   const [productSpecification, setProductSpecfications] = useState([]);
