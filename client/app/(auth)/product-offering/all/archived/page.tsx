@@ -6,7 +6,7 @@ export default function ArchivedProductOfferingsPage() {
     <div className="archived-product-offerings">
       <Header styleElements={{ linksColor: "purple-header-links" }} />
 
-      <h1 className="text-center text-blue-700 text-4xl font-bold text-gray-900">
+      <h1 className="text-center text-blue-700 text-4xl font-bold">
         Archived Product Offerings Page
       </h1>
 

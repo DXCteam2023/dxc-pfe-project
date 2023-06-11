@@ -1,89 +1,301 @@
-import React from 'react'
+"use client";
+import React, { useState, useEffect, SyntheticEvent } from "react";
+import Image from "next/image";
+import { dataCostumerOrders } from "../data/dataCostumerOrders";
+import { dataProductOfferings } from "../data/dataProductOfferings";
 
 const TableProductOfferings = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const [statusFilter, setStatusFilter] = useState<string>("All");
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleStatusFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusFilter(event.target.value);
+  };
+
+  // const filteredProducts = dataProductOfferings.filter((product) => {
+  //  const orderValues = Object.values(product).join(" ").toLowerCase();
+  //  const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
+  //  const isMatchingStatus =
+  //   statusFilter === "All" || product.state === statusFilter;
+
+  // return isMatchingSearchTerm && isMatchingStatus;
+  //});
+  {
+    /*  Le code pour afficher 5 commande*/
+  }
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 5;
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+
+  {
+    /**switch color of state */
+  }
+  function getStateTextColor(state: string) {
+    switch (state) {
+      case "new":
+        return "text-blue-900";
+      case "in progress":
+        return "text-yellow-900";
+      case "completed":
+        return "text-green-900";
+      case "canceled":
+        return "text-red-900";
+      default:
+        return "";
+    }
+  }
+
+  function getStateBgColor(state: string) {
+    switch (state) {
+      case "new":
+        return "bg-blue-200 shadow-blue-300";
+      case "draft":
+        return "bg-yellow-200 shadow-yellow-300";
+      case "published":
+        return "bg-green-200 shadow-green-300";
+      case "archived":
+        return "bg-red-200 shadow-red-300";
+      default:
+        return "";
+    }
+  }
+
+  const recentOffers = dataProductOfferings.sort((a, b) => {
+    const date1 = new Date(
+      parseInt(a.last_update.split("/")[2]),
+      parseInt(a.last_update.split("/")[1]) - 1,
+      parseInt(a.last_update.split("/")[0]),
+    );
+    const date2 = new Date(
+      parseInt(b.last_update.split("/")[2]),
+      parseInt(b.last_update.split("/")[1]) - 1,
+      parseInt(b.last_update.split("/")[0]),
+    );
+    return date2.getTime() - date1.getTime();
+  });
+  const filteredProducts = recentOffers.filter((product) => {
+    const orderValues = Object.values(product).join(" ").toLowerCase();
+    const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
+    const isMatchingStatus =
+      statusFilter === "All" || product.state === statusFilter;
+
+    return isMatchingSearchTerm && isMatchingStatus;
+  });
+
   return (
-<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-<div className="overflow-x-auto">
-        <div className=" flex items-center justify-center font-sans overflow-hidden">
-            <div className="w-full lg:w-6/6">
-                <div className="bg-white shadow-md rounded my-6">
-                    <table className="min-w-max w-full table-auto">
-                        <thead>
-                            <tr className="bg-purple-200 text-white uppercase text-sm leading-normal">
-                                <th className="py-3 px-6 text-left">Product Offerings</th>
-                                <th className="py-3 px-6 text-left">Clients</th>
-                                <th className="py-3 px-6 text-center">MAnagers</th>
-                                <th className="py-3 px-6 text-center">Status</th>
-                                <th className="py-3 px-6 text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-gray-600 text-sm font-light">
-                            <tr className="border-b border-gray-200 hover:bg-gray-100">
-                                <td className="py-3 px-6 text-left whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <div className="mr-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                                                 width="24" height="24"
-                                                 viewBox="0 0 48 48"
-                                                 >
-                                                <path fill="#80deea" d="M24,34C11.1,34,1,29.6,1,24c0-5.6,10.1-10,23-10c12.9,0,23,4.4,23,10C47,29.6,36.9,34,24,34z M24,16	c-12.6,0-21,4.1-21,8c0,3.9,8.4,8,21,8s21-4.1,21-8C45,20.1,36.6,16,24,16z"></path><path fill="#80deea" d="M15.1,44.6c-1,0-1.8-0.2-2.6-0.7C7.6,41.1,8.9,30.2,15.3,19l0,0c3-5.2,6.7-9.6,10.3-12.4c3.9-3,7.4-3.9,9.8-2.5	c2.5,1.4,3.4,4.9,2.8,9.8c-0.6,4.6-2.6,10-5.6,15.2c-3,5.2-6.7,9.6-10.3,12.4C19.7,43.5,17.2,44.6,15.1,44.6z M32.9,5.4	c-1.6,0-3.7,0.9-6,2.7c-3.4,2.7-6.9,6.9-9.8,11.9l0,0c-6.3,10.9-6.9,20.3-3.6,22.2c1.7,1,4.5,0.1,7.6-2.3c3.4-2.7,6.9-6.9,9.8-11.9	c2.9-5,4.8-10.1,5.4-14.4c0.5-4-0.1-6.8-1.8-7.8C34,5.6,33.5,5.4,32.9,5.4z"></path><path fill="#80deea" d="M33,44.6c-5,0-12.2-6.1-17.6-15.6C8.9,17.8,7.6,6.9,12.5,4.1l0,0C17.4,1.3,26.2,7.8,32.7,19	c3,5.2,5,10.6,5.6,15.2c0.7,4.9-0.3,8.3-2.8,9.8C34.7,44.4,33.9,44.6,33,44.6z M13.5,5.8c-3.3,1.9-2.7,11.3,3.6,22.2	c6.3,10.9,14.1,16.1,17.4,14.2c1.7-1,2.3-3.8,1.8-7.8c-0.6-4.3-2.5-9.4-5.4-14.4C24.6,9.1,16.8,3.9,13.5,5.8L13.5,5.8z"></path><circle cx="24" cy="24" r="4" fill="#80deea"></circle>
-                                            </svg>
-                                        </div>
-                                        <span className="font-medium">React Project</span>
-                                    </div>
-                                </td>
-                                <td className="py-3 px-6 text-left">
-                                    <div className="flex items-center">
-                                        <div className="mr-2">
-                                            <img className="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg"/>
-                                        </div>
-                                        <span>Eshal Rosas</span>
-                                    </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                    <div className="flex items-center justify-center">
-                                        <img className="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125" src="https://randomuser.me/api/portraits/men/1.jpg"/>
-                                        <img className="w-6 h-6 rounded-full border-gray-200 border -m-1 transform hover:scale-125" src="https://randomuser.me/api/portraits/women/2.jpg"/>
-                                        <img className="w-6 h-6 rounded-full border-gray-200 border -m-1 transform hover:scale-125" src="https://randomuser.me/api/portraits/men/3.jpg"/>
-                                    </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                    <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">Active</span>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                    <div className="flex item-center justify-center">
-                                        <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                        </div>
-                                        <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                            </svg>
-                                        </div>
-                                        <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                           
-                           
-                             
-                        </tbody>
-                    </table>
+    <>
+      <div className="flex w-full">
+        <div className="w-full">
+          <div className="ml-2 flex mt-2 ">
+            <div className="container mx-auto px-4 sm:px-8">
+              <div className="py-8">
+                <div>
+                  <h2 className="text-2xl font-semibold leading-tight">
+                    Last Updated Product Offerings
+                  </h2>
                 </div>
+                <div className="my-2 flex sm:flex-row flex-col">
+                  <div className="flex flex-row mb-1 sm:mb-0">
+                    <div className="relative">
+                      <select
+                        value={statusFilter}
+                        onChange={handleStatusFilter}
+                        className=" ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                      >
+                        <option value="All">All</option>
+                        <option value="new">New</option>
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                        <option value="archived">Archived</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="block relative">
+                    <input
+                      placeholder=" Search..."
+                      className=" mx-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                      value={searchTerm}
+                      onChange={handleSearch}
+                    />
+                  </div>
+                </div>
+                <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                  <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                    <table className="min-w-full leading-normal">
+                      <thead>
+                        <tr>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Number
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
+                            Display name
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Version
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            State
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Price
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Short Description
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Contract Terms
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Start date
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            End date
+                          </th>
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            Last Update
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredProducts
+                          .slice(indexOfFirstOrder, indexOfLastOrder)
+                          .map((product: any, index: number) => {
+                            return (
+                              <tr key={index}>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap text-main-color">
+                                        <a
+                                          href={product.link}
+                                          className="text-blue-500 hover:text-blue-700"
+                                        >
+                                          {product.number}
+                                        </a>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {product.display_name}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {product.version}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <span
+                                    className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
+                                      product.state,
+                                    )} leading-tight`}
+                                  >
+                                    <span
+                                      aria-hidden
+                                      className={`absolute inset-0 ${getStateBgColor(
+                                        product.state,
+                                      )} opacity-50 rounded-full`}
+                                    ></span>
+                                    <span className="relative">
+                                      {product.state}
+                                    </span>
+                                  </span>
+                                </td>
+
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {product.price} $
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {product.short_description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {product.Contract_terms}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {product.start_date}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {product.end_date}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {product.last_update}
+                                  </p>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                      <span className="text-xs xs:text-sm text-gray-900">
+                        Showing 1 to 4 of 50 Entries
+                      </span>
+                      <div className="inline-flex mt-2 xs:mt-0">
+                        <button
+                          className="text-sm bg-wpurple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                          onClick={handlePreviousPage}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </button>
+
+                        <button
+                          className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
+                          onClick={handleNextPage}
+                          disabled={indexOfLastOrder >= recentOffers.length}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+    </>
+  );
+};
 
-  
-  )
-}
-
-export default TableProductOfferings
+export default TableProductOfferings;
