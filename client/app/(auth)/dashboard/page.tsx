@@ -1,57 +1,44 @@
 "use client";
 
-// import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
-import Header from "./components/Header";
+import Header from "./components/header/Header";
 import Sidebar from "./components/Sidebar";
 import TopCards from "./components/TopCards";
 import BarChart from "./components/RecentCustomerOrders";
-import Card from "./components/Card";
 import StatisticCards from "./components/StatisticCards";
 import Footer from "./components/Footer";
 import TableProductOfferings from "./components/TableProductOfferings";
-import Stats from "./components/Stats";
-import React, { useEffect, useState } from "react";
 
 export default function DashboardHome() {
-  // const { data: session } = useSession({ required: true });
   const [token, setToken] = useState("");
   const [username, setUsername] = useState(JSON.stringify({}));
   useEffect(() => {
-      let tokenUser;
-      let user;
-      // Get the value from local storage if it exists
-      tokenUser = localStorage.getItem("token") || "";
-      setToken(tokenUser);
+    let tokenUser;
+    let user;
+    // Get the value from local storage if it exists
+    tokenUser = localStorage.getItem("token") || "";
+    setToken(tokenUser);
 
-      user = localStorage.getItem("user") || "";
-      setUsername(user);
+    user = localStorage.getItem("user") || "";
+    setUsername(user);
   }, []);
 
-  return (
-    !token && !username ?
-    window.location.href = "/login"
-    : 
+  return !token && !username ? (
+    (window.location.href = "/login")
+  ) : (
     <div className="bg-gray-100 flex">
-      
-      <Sidebar /> 
+      <Sidebar />
       <div className="bg-white  min-h-screen-100 w-5/6  ">
         <Header />
-        
-        <div className="flex p-2 ">
-                        {/* <div className="flex py-3 px-2 items-center">
-                            <p className="text-2xl text-purple-500 font-semibold">DXC</p> <p className="ml-2 font-semibold italic">
-                            DASHBOARD</p>
-                        </div>*/}
-                    </div> 
+        <div className="flex p-2 "></div>
         <TopCards />
         {/* <Stats/> */}
         <StatisticCards />
-        <TableProductOfferings/>
+        <TableProductOfferings />
         <BarChart />
         <Footer />
       </div>
-      {/* Autres composants ou contenu de la page */}
     </div>
   );
 }
