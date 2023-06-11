@@ -4,12 +4,26 @@ import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
+import { useContext } from "react";
+import { NewCustomerOrderContext } from "../context/new-customer-order-context";
 
 export default function ConfigureProduct() {
   const route = useRouter();
 
+  const myContext = useContext(NewCustomerOrderContext);
+
   const handleContinueOnClick = () => {
     route.push("/customer-order/new/review-order");
+  };
+
+  const handleMonthlyRecurringChangesPerUnitOnChange = (value: string) => {
+    myContext.setMonthlyRecurringChangesPerUnit(parseInt(value));
+  };
+  const handleTotalPriceOnChange = (value: string) => {
+    myContext.setTotalPrice(parseInt(value));
+  };
+  const handleNoneRecuringChangesPerUnitOnChange = (value: string) => {
+    myContext.setNoneRecuringChangesPerUnit(parseInt(value));
   };
 
   return (
@@ -34,12 +48,16 @@ export default function ConfigureProduct() {
                   title="Number"
                   required={false}
                   placeholder="Number"
+                  value={myContext.number}
+                  onChange={myContext.setNumber}
                 />
                 <InputText
                   slug="Location"
                   title="Location"
                   required={false}
                   placeholder="Location"
+                  value={myContext.location}
+                  onChange={myContext.setLocation}
                 />
               </div>
               <div className="flex justify-center gap-4">
@@ -48,12 +66,16 @@ export default function ConfigureProduct() {
                   title="Product Offering"
                   required={false}
                   placeholder="Product Offering"
+                  value={myContext.productOffering}
+                  onChange={myContext.setProductOffering}
                 />
                 <InputText
                   slug="Product Specification"
                   title="Product Specification"
                   required={false}
                   placeholder="Product Specification"
+                  value={myContext.productSpecification}
+                  onChange={myContext.setProductSpecification}
                 />
               </div>
               <div className="flex justify-center gap-4 w-1/2 pr-2">
@@ -62,6 +84,8 @@ export default function ConfigureProduct() {
                   title="Ordered Quantity"
                   required={false}
                   placeholder="Ordered Quantity"
+                  value={myContext.orderedQuantity}
+                  onChange={myContext.setOrderedQuantity}
                 />
               </div>
             </div>
@@ -74,12 +98,16 @@ export default function ConfigureProduct() {
                 title="Monthly Recurring Changes Per Unit"
                 required={false}
                 placeholder="Monthly Recurring Changes Per Unit"
+                value={myContext.monthlyRecurringChangesPerUnit}
+                onChange={handleMonthlyRecurringChangesPerUnitOnChange}
               />
               <InputText
                 slug="Total Price"
                 title="Total Price"
                 required={false}
                 placeholder="Total Price"
+                value={myContext.totalPrice}
+                onChange={handleTotalPriceOnChange}
               />
             </div>
             <div className="flex justify-center gap-4 w-1/2 pr-2">
@@ -88,6 +116,8 @@ export default function ConfigureProduct() {
                 title="None Recuring Changes Per Unit"
                 required={false}
                 placeholder="None Recuring Changes Per Unit"
+                value={myContext.noneRecuringChangesPerUnit}
+                onChange={handleNoneRecuringChangesPerUnitOnChange}
               />
             </div>
           </div>

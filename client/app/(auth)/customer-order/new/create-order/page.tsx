@@ -1,9 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import InputText from "../components/InputText";
+import { NewCustomerOrderContext } from "../context/new-customer-order-context";
 
 export default function CreateOrder() {
   const route = useRouter();
+
+  const myContext = useContext(NewCustomerOrderContext);
 
   const handleContinueOnClick = () => {
     route.push("/customer-order/new/select-product");
@@ -17,12 +21,16 @@ export default function CreateOrder() {
           title="Account"
           required={true}
           placeholder="Account"
+          value={myContext.account}
+          onChange={myContext.setAccount}
         />
         <InputText
           slug="contact"
           title="Contact"
           required={true}
           placeholder="Contact"
+          value={myContext.contact}
+          onChange={myContext.setContact}
         />
       </div>
       <div className="mt-6 flex items-center justify-end gap-x-6">
