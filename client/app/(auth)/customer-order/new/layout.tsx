@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import NewCustomerOrderContextProvider from "./context/new-customer-order-context";
 
 type StepType = {
   id: number;
@@ -77,7 +78,11 @@ export default function RootLayout({
         ))}
       </div>
 
-      <div className="flex">{children}</div>
+      <div className="flex">
+        <NewCustomerOrderContextProvider>
+          {children}
+        </NewCustomerOrderContextProvider>
+      </div>
     </div>
   );
 }
