@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client"
 import React,{useState,useEffect} from 'react'
 import Sidebar from '../dashboard/components/Sidebar'
@@ -340,3 +341,10 @@ const page = () => {
 }
 
 export default page
+=======
+import { redirect } from "next/navigation";
+
+export default function ProductSpecificationsPage() {
+  return redirect("/product-specification/all");
+}
+>>>>>>> modifications-in-backend-and-frontend

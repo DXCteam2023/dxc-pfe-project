@@ -5,10 +5,12 @@ export default async function getProductSpecifications(
   res: Response
 ) {
   try {
-    const productSpecifications = await ProductSpecification.find({}, { name: 1 });
+    const productSpecifications = await ProductSpecification.find({});
 
     res.status(200).send(productSpecifications);
   } catch (error) {
-    res.status(500).send({ message: "Internal server error - productspecifications" });
+    res
+      .status(500)
+      .send({ message: "Internal server error - productspecifications" });
   }
 }

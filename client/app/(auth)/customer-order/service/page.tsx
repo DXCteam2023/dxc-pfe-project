@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/Header";
+import Header from "@/app/(auth)/dashboard/components/header/Header";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { FaEye } from "react-icons/fa";
 import axios from "axios";
 interface ServiceOrders {
   state: string;
-  orderDate:string;
-  ponr:string;
+  orderDate: string;
+  ponr: string;
 }
 export default function ServiceCustomerOrdersPage() {
   const [services, setServices] = useState<ServiceOrders[]>([]);
@@ -24,7 +24,9 @@ export default function ServiceCustomerOrdersPage() {
 
   async function getServiceOrders() {
     try {
-      const response = await axios.get("http://localhost:5000/api/customer-order/service");
+      const response = await axios.get(
+        "http://localhost:5000/api/customer-order/service",
+      );
       const servicesData = response.data;
       setServices(servicesData);
       console.log("hello", servicesData);
@@ -35,14 +37,17 @@ export default function ServiceCustomerOrdersPage() {
   useEffect(() => {
     const filteredServices = services.filter((service) => {
       const serviceValues = Object.values(service).join(" ").toLowerCase();
-      const isMatchingSearchTerm = serviceValues.includes(searchTerm.toLowerCase());
-      const isMatchingStatus = statusFilter === "All" || service.state === statusFilter;
+      const isMatchingSearchTerm = serviceValues.includes(
+        searchTerm.toLowerCase(),
+      );
+      const isMatchingStatus =
+        statusFilter === "All" || service.state === statusFilter;
 
       return isMatchingSearchTerm && isMatchingStatus;
     });
 
     setData(filteredServices);
-    console.log(filteredServices); 
+    console.log(filteredServices);
   }, [searchTerm, statusFilter, services]);
 
   useEffect(() => {
@@ -55,7 +60,6 @@ export default function ServiceCustomerOrdersPage() {
     }
     return service.state.toLowerCase() === statusFilter.toLowerCase();
   });
-
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -78,10 +82,7 @@ export default function ServiceCustomerOrdersPage() {
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
 
-
-
   const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {};
-
 
   function getPonrTextColor(ponr: string) {
     switch (ponr) {
@@ -133,35 +134,32 @@ export default function ServiceCustomerOrdersPage() {
         return "";
     }
   }
-const [orderFilter,setOrderFilter]=useState("");
-  const sortedOrders = [...filteredServices] ;
-  
+  const [orderFilter, setOrderFilter] = useState("");
+  const sortedOrders = [...filteredServices];
+
   sortedOrders.sort((a, b) => {
     const date1 = new Date(
       parseInt(a.orderDate.split("-")[0]),
       parseInt(a.orderDate.split("-")[1]) - 1,
-      parseInt(a.orderDate.split("-")[2])
+      parseInt(a.orderDate.split("-")[2]),
     );
-    
+
     const date2 = new Date(
       parseInt(b.orderDate.split("-")[0]),
       parseInt(b.orderDate.split("-")[1]) - 1,
-      parseInt(b.orderDate.split("-")[2])
+      parseInt(b.orderDate.split("-")[2]),
     );
-    
-  
+
     if (orderFilter === "new") {
       return date2.getTime() - date1.getTime();
     } else if (orderFilter === "old") {
-      return date1.getTime() - date2.getTime(); 
+      return date1.getTime() - date2.getTime();
     } else {
-      return 0; 
+      return 0;
     }
   });
-  
-  const recentOrders = sortedOrders;
-  
 
+  const recentOrders = sortedOrders;
 
   return (
     <div className="service-customer-orders">
@@ -241,9 +239,13 @@ const [orderFilter,setOrderFilter]=useState("");
                       </div>
                       <div className="flex flex-row mb-1 sm:mb-0">
                         <div className="relative ">
-                        <select value={orderFilter} onChange={(event) => setOrderFilter(event.target.value)}  className=" ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm">
-                           
-                          
+                          <select
+                            value={orderFilter}
+                            onChange={(event) =>
+                              setOrderFilter(event.target.value)
+                            }
+                            className=" ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                          >
                             <option value="All">order By</option>
                             <option value="new">A to Z</option>
                             <option value="old">Z to A</option>
@@ -251,9 +253,7 @@ const [orderFilter,setOrderFilter]=useState("");
                         </div>
                       </div>
                       <div className="block relative">
-                        <span className=" h-full absolute inset-y-0 left-0 flex items-center pl-2">
-                          
-                        </span>
+                        <span className=" h-full absolute inset-y-0 left-0 flex items-center pl-2"></span>
                         <input
                           placeholder="  Search..."
                           className="mx-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
@@ -263,16 +263,13 @@ const [orderFilter,setOrderFilter]=useState("");
                       </div>
                     </div>
                     <div className="flex justify-end">
-                      <button
-                        className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-8 rounded-r flex items-end"
-                        
-                      >
+                      <button className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-8 rounded-r flex items-end">
                         New
                       </button>
                     </div>
                     <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                        <table className="min-w-full leading-normal bg-white border border-collapse" >
+                        <table className="min-w-full leading-normal bg-white border border-collapse">
                           <thead>
                             <tr>
                               <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -315,7 +312,7 @@ const [orderFilter,setOrderFilter]=useState("");
                               .slice(indexOfFirstOrder, indexOfLastOrder)
                               .map((order: any, index: number) => {
                                 return (
-                                  <tr key={index} >
+                                  <tr key={index}>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
                                       <div className="flex items-center">
                                         <div className="ml-3">
@@ -338,7 +335,9 @@ const [orderFilter,setOrderFilter]=useState("");
                                     </td>
                                     <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                       <p className="text-indigo-700 whitespace-no-wrap font-semibold">
-                                      {new Date(order.orderDate).toDateString()}
+                                        {new Date(
+                                          order.orderDate,
+                                        ).toDateString()}
                                       </p>
                                     </td>
                                     <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
@@ -372,7 +371,7 @@ const [orderFilter,setOrderFilter]=useState("");
                                       </div>
                                     </td>
                                     <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
-                                    <span
+                                      <span
                                         className={`relative inline-block px-3 py-1 font-semibold ${getPonrTextColor(
                                           order.state,
                                         )} leading-tight`}
@@ -392,7 +391,9 @@ const [orderFilter,setOrderFilter]=useState("");
                                       <div className="flex items-center">
                                         <div className="ml-3">
                                           <p className="text-gray-900  whitespace-no-wrap">
-                                            {new Date(order.requestedStartDate).toDateString()}
+                                            {new Date(
+                                              order.requestedStartDate,
+                                            ).toDateString()}
                                           </p>
                                         </div>
                                       </div>
@@ -400,16 +401,20 @@ const [orderFilter,setOrderFilter]=useState("");
 
                                     <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                       <p className="text-gray-900 whitespace-no-wrap">
-                                        {new Date(order.requestedCompletionDate).toDateString()}
+                                        {new Date(
+                                          order.requestedCompletionDate,
+                                        ).toDateString()}
                                       </p>
                                     </td>
 
-                                    <td className="py-3 px-6 text-center px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm" >
+                                    <td className="py-3 px-6 text-center px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                       <div className="flex item-center justify-center">
-                                      <Link href={`/customer-order/all/service/${order._id}`}>
-                                  <FaEye className="text-blue-500 text-lg w-5 mr-2 transform hover:text-purple-500 hover:scale-110" />
-                                </Link>
-                                       
+                                        <Link
+                                          href={`/customer-order/all/service/${order._id}`}
+                                        >
+                                          <FaEye className="text-blue-500 text-lg w-5 mr-2 transform hover:text-purple-500 hover:scale-110" />
+                                        </Link>
+
                                         <button
                                           className="w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
                                           onClick={handleCancelClick}
@@ -450,9 +455,7 @@ const [orderFilter,setOrderFilter]=useState("");
                             <button
                               className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
                               onClick={handleNextPage}
-                              disabled={
-                                indexOfLastOrder >= services.length
-                              }
+                              disabled={indexOfLastOrder >= services.length}
                             >
                               Next
                             </button>

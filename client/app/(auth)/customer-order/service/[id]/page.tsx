@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UpdateServiceForm from "./../UpdateServiceForm";
 import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/Header";
+import Header from "@/app/(auth)/dashboard/components/header/Header";
 const page = ({ params }: { params: { id: string } }) => {
   const [service, setService] = useState<any>();
   const [activeTab, setActiveTab] = useState(0);
@@ -52,7 +52,10 @@ const page = ({ params }: { params: { id: string } }) => {
                   <div className="flex items-center mt-2">
                     <div className=" mx-2 w-full flex items-center space-x-4 mt-2">
                       {showForm ? (
-                         <UpdateServiceForm service={service} onClose={() => setShowForm(false)} />
+                        <UpdateServiceForm
+                          service={service}
+                          onClose={() => setShowForm(false)}
+                        />
                       ) : (
                         <>
                           <button
@@ -246,141 +249,153 @@ const page = ({ params }: { params: { id: string } }) => {
 const Table1 = ({ service }: any) => {
   return (
     <>
-   
-    <table className="text-left w-full border-collapse">
-      <thead>
-        <tr>
-          {/* <th className="py-4 px-6 bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+      <table className="text-left w-full border-collapse">
+        <thead>
+          <tr>
+            {/* <th className="py-4 px-6 bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
           Id
         </th> */}
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
-            Name
-          </th>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
-            Reference Type
-          </th>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-            Referred Type
-          </th>
-        </tr>
-      </thead>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+              Name
+            </th>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+              Reference Type
+            </th>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              Referred Type
+            </th>
+          </tr>
+        </thead>
 
-      <tbody>
-        {service.relatedParty.map((relation: any) => {
-          const id = relation["@id"];
-          const name = relation["name"];
-          const referredType = relation["@referredType"];
-          const type = relation["@type"];
+        <tbody>
+          {service.relatedParty.map((relation: any) => {
+            const id = relation["@id"];
+            const name = relation["name"];
+            const referredType = relation["@referredType"];
+            const type = relation["@type"];
 
-          return (
-            <tr className="hover:bg-grey-lighter "  key={id}>
-              <td className="py-4 px-6  border p-2  border-grey-light">{name}</td>
-              <td className="py-4 px-6  border p-2  border-grey-light">
-                {referredType}
-              </td>
-              <td className="py-4 px-6  border p-2 border-grey-light">{type}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table></>
+            return (
+              <tr className="hover:bg-grey-lighter " key={id}>
+                <td className="py-4 px-6  border p-2  border-grey-light">
+                  {name}
+                </td>
+                <td className="py-4 px-6  border p-2  border-grey-light">
+                  {referredType}
+                </td>
+                <td className="py-4 px-6  border p-2 border-grey-light">
+                  {type}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 };
 
 const Table2 = ({ service }: any) => {
-    const orderRelationships = service.orderRelationship;
-    const serviceOrderItems = service.serviceOrderItem;
+  const orderRelationships = service.orderRelationship;
+  const serviceOrderItems = service.serviceOrderItem;
   return (
     <>
-    <table className="text-left w-full border-collapse">
-      <thead>
-        <tr>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-            ID
-          </th>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-            Action
-          </th>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-            order Relationship
-          </th>
+      <table className="text-left w-full border-collapse">
+        <thead>
+          <tr>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              ID
+            </th>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              Action
+            </th>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              order Relationship
+            </th>
 
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-            Service
-          </th>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-            state
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {service.serviceOrderItem.map((relation: any) => {
-          const action = relation["action"];
-          const id = relation["id"];
-          const orderRelationship = relation["orderRelationship"];
-          const state = relation["state"];
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              Service
+            </th>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              state
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {service.serviceOrderItem.map((relation: any) => {
+            const action = relation["action"];
+            const id = relation["id"];
+            const orderRelationship = relation["orderRelationship"];
+            const state = relation["state"];
 
-          return (
-            <tr className="hover:bg-grey-lighter">
-              <td className="py-4 px-6  border p-2 border-grey-light">{id}</td>
-              <td className="py-4 px-6  border p-2  border-grey-light">
-                {action}
-              </td>
-              <td className="py-4 px-6 mx-auto border p-2  border-grey-light">
-              <ul>
-        {orderRelationship.map((relation:any) => (
-          <li key={relation.id}>{relation.relationshipType}</li>
-        ))}
-      </ul>
-              </td>
+            return (
+              <tr className="hover:bg-grey-lighter">
+                <td className="py-4 px-6  border p-2 border-grey-light">
+                  {id}
+                </td>
+                <td className="py-4 px-6  border p-2  border-grey-light">
+                  {action}
+                </td>
+                <td className="py-4 px-6 mx-auto border p-2  border-grey-light">
+                  <ul>
+                    {orderRelationship.map((relation: any) => (
+                      <li key={relation.id}>{relation.relationshipType}</li>
+                    ))}
+                  </ul>
+                </td>
 
-              <td className="py-4 px-6  border p-2 border-grey-light">  <ul>
-        {serviceOrderItems.map((item:any) => (
-          <li key={item.id}>{item.service["@type"]}</li>
-        ))}
-      </ul></td>
-              <td className="py-4 px-6 border p-2  border-grey-light">{state}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table></>
+                <td className="py-4 px-6  border p-2 border-grey-light">
+                  {" "}
+                  <ul>
+                    {serviceOrderItems.map((item: any) => (
+                      <li key={item.id}>{item.service["@type"]}</li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="py-4 px-6 border p-2  border-grey-light">
+                  {state}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 };
 const Table3 = ({ service }: any) => {
-    const serviceOrderItems = service.serviceOrderItem;
-  return (<>
-    
-    <table className="text-left w-full border-collapse">
-      <thead>
-        <tr>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
-           Name
-          </th>
-          <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-           Value
-          </th>
-         
-        </tr>
-      </thead>
-      <tbody>
-      {serviceOrderItems.map((item:any) => (
+  const serviceOrderItems = service.serviceOrderItem;
+  return (
+    <>
+      <table className="text-left w-full border-collapse">
+        <thead>
+          <tr>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+              Name
+            </th>
+            <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+              Value
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {serviceOrderItems.map((item: any) => (
             <>
-              <tr key={item.id}>
-                
-              </tr>
-              {item.service.serviceCharacteristic.map((characteristic:any) => (
+              <tr key={item.id}></tr>
+              {item.service.serviceCharacteristic.map((characteristic: any) => (
                 <tr key={characteristic.name}>
-                  <td className="py-4 px-6  border p-2  border-grey-light">{characteristic.name}</td>
-                  <td className="py-4 px-6 border p-2  border-grey-light mx-auto">{characteristic.value}</td>
+                  <td className="py-4 px-6  border p-2  border-grey-light">
+                    {characteristic.name}
+                  </td>
+                  <td className="py-4 px-6 border p-2  border-grey-light mx-auto">
+                    {characteristic.value}
+                  </td>
                 </tr>
               ))}
             </>
           ))}
-    
-          
-      </tbody>
-    </table></>
+        </tbody>
+      </table>
+    </>
   );
 };
 

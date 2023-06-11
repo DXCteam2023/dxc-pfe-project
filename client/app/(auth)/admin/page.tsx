@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import Form from "./form";
 import Sidebar from "../dashboard/components/Sidebar";
-import Header from "../dashboard/components/Header";
+import Header from "../dashboard/components/header/Header";
 
 import Table from "./table";
 import Cards from "./Cards";
@@ -25,17 +25,16 @@ const Page = () => {
         <Sidebar />
         <div className="bg-white  min-h-screen-100 w-5/6">
           <Header />
-
           <div className="content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
             <nav
-              className="flex px-5 py-3 text-gray-700  rounded-lg bg-gray-50 dark:bg-[#1E293B] "
+              className="flex px-5 py-3 text-gray-700  rounded-lg bg-gray-50"
               aria-label="Breadcrumb"
             >
               <ol className="inline-flex items-center space-x-1 md:space-x-3">
                 <li className="inline-flex items-center">
                   <a
                     href="#"
-                    className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                    className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900"
                   >
                     <svg
                       className="w-4 h-4 mr-2"
@@ -64,7 +63,7 @@ const Page = () => {
                     </svg>
                     <a
                       href="#"
-                      className="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                      className="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2"
                     >
                       Manage Users
                     </a>
@@ -90,10 +89,8 @@ const Page = () => {
               </span>
             </button>
           </div>
-
           {/* collapsable form*/}
           {visible ? <Form></Form> : <></>}
-
           <Table />
         </div>
       </div>

@@ -3,29 +3,6 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
 import { dataCostumerOrders } from "../data/dataCostumerOrders";
 const BarChart = () => {
-  {
-    /*const [filter, setFilter] = useState("");
-
-  const searchText = (filter: string) => {
-    setFilter(filter);
-  };
-  interface Item {
-    [key: string]: string;
-    item: string;
-  }
-  function getValue(item: Item, key: string): string {
-    return item[key];
-  }
-
-  let dataSearch = dataCostumerOrders.filter((item) => {
-    return Object.keys(item).some((key) =>
-      getValue
-        .toString()
-        .toLowerCase()
-        .includes(filter.toString().toLowerCase()),
-    );
-  });*/
-  }
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [statusFilter, setStatusFilter] = useState<string>("All");
@@ -46,8 +23,9 @@ const BarChart = () => {
 
     return isMatchingSearchTerm && isMatchingStatus;
   });
+
   {
-    /*  Le code pour afficher 5 commande*/
+    /* Le code pour afficher 5 commande*/
   }
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -96,25 +74,20 @@ const BarChart = () => {
         return "";
     }
   }
- 
   const recentOrders = filteredOrders.sort((a, b) => {
     const date1 = new Date(
       parseInt(a.orderDate.split("/")[2]),
       parseInt(a.orderDate.split("/")[1]) - 1,
-      parseInt(a.orderDate.split("/")[0])
+      parseInt(a.orderDate.split("/")[0]),
     );
     const date2 = new Date(
       parseInt(b.orderDate.split("/")[2]),
       parseInt(b.orderDate.split("/")[1]) - 1,
-      parseInt(b.orderDate.split("/")[0])
+      parseInt(b.orderDate.split("/")[0]),
     );
     return date2.getTime() - date1.getTime();
   });
-  
-  console.log(recentOrders);
-  
-  
-  
+
   return (
     <div className="flex w-full">
       <div className="w-full">
@@ -140,7 +113,6 @@ const BarChart = () => {
                       <option value="completed">Completed</option>
                       <option value="canceled">Canceled</option>
                     </select>
-                   
                   </div>
                 </div>
                 <div className="block relative">
@@ -165,28 +137,28 @@ const BarChart = () => {
                   <table className="min-w-full leading-normal">
                     <thead>
                       <tr>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Number
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
                           Account
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Created At
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Type
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Contact
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Created By
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Total
                         </th>
                       </tr>
@@ -217,7 +189,7 @@ const BarChart = () => {
                                   {order.account}
                                 </p>
                               </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm bg-blue-100 ">
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
                                   {order.orderDate}
                                 </p>

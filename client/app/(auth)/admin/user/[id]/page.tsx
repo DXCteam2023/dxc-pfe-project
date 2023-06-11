@@ -2,7 +2,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../../../dashboard/components/Sidebar";
+<<<<<<< HEAD
 import Header from "../../../dashboard/components/Header";
+=======
+import Header from "../../../dashboard/components/header/Header";
+>>>>>>> modifications-in-backend-and-frontend
 import Image from "next/image";
 import watch from "../../../../../public/assets/watch.png";
 import couver from "../../../../../public/assets/couver.jpeg";
@@ -318,7 +322,11 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                         <div className="px-6 py-6 bg-white border border-white rounded-lg shadow-xl">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-sm text-blue-600">
+<<<<<<< HEAD
                              Total Product Offerings
+=======
+                              Total Product Offerings
+>>>>>>> modifications-in-backend-and-frontend
                             </span>
                             <span className="text-xs bg-purple-500 hover:bg-purple-400 text-white hover:text-white px-2 py-1 rounded-lg transition duration-200 cursor-default">
                               7 days
@@ -378,6 +386,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                       </div>
                       <div>
                         <div>
+<<<<<<< HEAD
                          
                           <div>
   <h4 className="mt-3 text-xl text-gray-900 font-bold">
@@ -454,6 +463,83 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   ) : null}
 </div>
   {/* <div className="mt-4">
+=======
+                          <div>
+                            <h4 className="mt-3 text-xl text-gray-900 font-bold">
+                              Activities
+                            </h4>
+                            {user.profile === "Product Offering Manager" ? (
+                              <div>
+                                <div className="bg-white my-6 mx-auto">
+                                  <table className="text-left w-full border-collapse">
+                                    <thead>
+                                      <tr>
+                                        <th className="py-4 px-6 bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          ID
+                                        </th>
+                                        <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          NUMBER
+                                        </th>
+                                        <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          NAME
+                                        </th>
+                                        <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          STATE
+                                        </th>
+                                        <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          CONTRACT TERM
+                                        </th>
+                                        <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          START DATE
+                                        </th>
+                                        <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                          END DATE
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr className="hover:bg-grey-lighter">
+                                        <td className="py-4 px-6 border-b border-grey-light"></td>
+                                        <td className="py-4 px-6 text-center border-b border-grey-light"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            ) : user.profile === "Commercial Agent" ? (
+                              <div className="bg-white my-6 mx-auto">
+                                <table className="text-left w-full border-collapse">
+                                  <thead>
+                                    <tr>
+                                      <th className="py-4 px-6 bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        ID
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        NUMBER
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        STATE
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        ORDER DATE
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        PRODUCT OFFERING
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr className="hover:bg-grey-lighter">
+                                      <td className="py-4 px-6 border-b border-grey-light"></td>
+                                      <td className="py-4 px-6 text-center border-b border-grey-light"></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            ) : null}
+                          </div>
+                          {/* <div className="mt-4">
+>>>>>>> modifications-in-backend-and-frontend
     <canvas
       id="verticalBarChart"
 
