@@ -1,12 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/Header";
-import axios from "axios";
-
-const Page = ({ params }: { params: { id: string } }) => {
-=======
 
 import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
 import Header from "@/app/(auth)/dashboard/components/header/Header";
@@ -19,38 +12,15 @@ const SingleProductSpecificationPage = ({
 }: {
   params: { id: string };
 }) => {
->>>>>>> modifications-in-backend-and-frontend
   const [activeTab, setActiveTab] = useState(0);
   const [product, setProduct] = useState<any>();
   const handleTabClick = (index: any) => {
     setActiveTab(index);
   };
-<<<<<<< HEAD
-  useEffect(() => {
-    getProductSpecification();
-  }, [product]);
-  console.log(product);
-  async function getProductSpecification() {
-    try {
-      const id = params.id;
-      console.log(id);
-      const response = await axios.get(
-        `http://localhost:5000/api/product-specification/${id}`,
-      );
-
-      const productData = response.data;
-      console.log(response.data);
-      setProduct(productData);
-    } catch (error) {
-      console.error("Error while fetching product specification:", error);
-    }
-  }
-=======
 
   useEffect(() => {
     getProductSpecification(params.id, setProduct);
   }, [product]);
->>>>>>> modifications-in-backend-and-frontend
 
   //console.log(product);
 
@@ -258,10 +228,6 @@ const SingleProductSpecificationPage = ({
                                   <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
                                     start Date time
                                   </th>
-<<<<<<< HEAD
-                                  
-=======
->>>>>>> modifications-in-backend-and-frontend
                                 </tr>
                               </thead>
 
@@ -290,10 +256,6 @@ const SingleProductSpecificationPage = ({
                                               ?.validFor?.startDatetime
                                           }
                                         </td>
-<<<<<<< HEAD
-                                       
-=======
->>>>>>> modifications-in-backend-and-frontend
                                       </tr>
                                     );
                                   },
@@ -487,9 +449,4 @@ const Table3 = ({ product }: any) => {
   );
 };
 
-<<<<<<< HEAD
-export default Page;
-
-=======
 export default SingleProductSpecificationPage;
->>>>>>> modifications-in-backend-and-frontend
