@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
-import { dataCostumerOrders } from "../data/dataCostumerOrders";
+import dataCostumerOrders from "../data/dataCostumerOrders";
 const BarChart = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 

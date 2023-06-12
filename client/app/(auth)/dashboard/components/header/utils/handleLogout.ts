@@ -11,9 +11,11 @@ const handleLogout = () => {
     confirmButtonText: "Logout",
   }).then((result) => {
     if (result.isConfirmed) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      }
     }
   });
 };

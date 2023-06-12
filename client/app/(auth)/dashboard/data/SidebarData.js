@@ -1,4 +1,4 @@
-export const SideBarData = [
+const SideBarData = [
   {
     id: "0",
     name: "Dashboard",
@@ -217,3 +217,5 @@ export const SideBarData = [
     profile: ["admin", "commercial agent", "manager"],
   },
 ];
+
+export default SideBarData;
