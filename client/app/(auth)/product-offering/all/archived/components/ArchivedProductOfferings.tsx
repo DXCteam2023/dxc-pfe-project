@@ -1,4 +1,5 @@
 "use client";
+import Header from "@/app/(auth)/dashboard/components/header/Header";
 import axios from "axios";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 
@@ -57,6 +58,10 @@ const ArchivedProductOfferings = () => {
   return (
     <div className="flex w-full">
       <div className="w-full">
+        <Header />
+        <h1 className="text-center text-blue-700 text-4xl font-bold my-5">
+          Archived Product Offerings
+        </h1>
         <div className="ml-2 flex mt-2 ">
           <div className="container mx-auto px-4 sm:px-8">
             <div className="py-8">
@@ -84,28 +89,28 @@ const ArchivedProductOfferings = () => {
                   <table className="min-w-full leading-normal">
                     <thead>
                       <tr>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           name
                         </th>
                         <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
                           description
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           lastUpdate
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           version
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           productOfferingTerm
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           productSpecification
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           status
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           category
                         </th>
                       </tr>
@@ -133,7 +138,7 @@ const ArchivedProductOfferings = () => {
                                   {order.description}
                                 </p>
                               </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm bg-blue-100 ">
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
                                   {order.lastUpdate}
                                 </p>
@@ -182,7 +187,7 @@ const ArchivedProductOfferings = () => {
                         })}
                     </tbody>
                   </table>
-                  <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                  <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
                       Showing 1 to 4 of 50 Entries
                     </span>
