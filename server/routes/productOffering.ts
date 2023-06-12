@@ -17,6 +17,6 @@ productOfferingRoute.post("/", addProductOffering);
 
 productOfferingRoute.patch("/:id", archiveProductOffering);
 
-productOfferingRoute.get("/archived/all", getArchivedProductOfferings)
+productOfferingRoute.get("/archived/all", getArchivedProductOfferings);
 
 export default productOfferingRoute;

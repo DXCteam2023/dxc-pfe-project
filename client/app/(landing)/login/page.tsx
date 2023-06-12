@@ -30,8 +30,8 @@ export default function loginPage() {
     try {
       const url = "http://localhost:5000/api/user/login";
       const { data: res } = await axios.post(url, { userID, password });
-      console.log(res.data)
-      console.log(res.user)
+      console.log(res.data);
+      console.log(res.user);
       localStorage.setItem("token", res.data);
       localStorage.setItem("user", JSON.stringify(res.user));
       alert(res.message);
@@ -43,27 +43,27 @@ export default function loginPage() {
         setError(err.response.data.message);
         console.log(err.response.data.message);
       }
-        // console.log(err);
+      // console.log(err);
     }
   };
 
-//   const handleLogout = () => {
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: "You are going to Logout!",
-//       icon: "info",
-//       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#5f249f",
-//       confirmButtonText: "Logout",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("user");
-//         window.location.reload();
-//       }
-//     });
-//   };
+  //   const handleLogout = () => {
+  //     Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You are going to Logout!",
+  //       icon: "info",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#5f249f",
+  //       confirmButtonText: "Logout",
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         localStorage.removeItem("token");
+  //         localStorage.removeItem("user");
+  //         window.location.reload();
+  //       }
+  //     });
+  //   };
 
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");

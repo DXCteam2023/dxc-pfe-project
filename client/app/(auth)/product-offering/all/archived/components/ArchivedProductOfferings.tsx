@@ -187,7 +187,7 @@ const ArchivedProductOfferings = () => {
                         })}
                     </tbody>
                   </table>
-                  <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                  <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
                       Showing 1 to 4 of 50 Entries
                     </span>

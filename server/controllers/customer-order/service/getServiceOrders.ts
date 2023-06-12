@@ -11,7 +11,9 @@ export default async function getServiceOrders(req: Request, res: Response) {
 
     await res.status(200).json(serviceOrders);
   } catch (error) {
-    res.status(500).send({ message: "Internal server Error - error while getting Data" });
+    res
+      .status(500)
+      .send({ message: "Internal server Error - error while getting Data" });
     console.log("error : " + error);
   }
 }

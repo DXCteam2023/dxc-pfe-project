@@ -119,7 +119,6 @@ export default function PublishedProductOfferingsPage() {
           </table>
         </div>
       </div>
-
       <Footer />
     </div>
   );
