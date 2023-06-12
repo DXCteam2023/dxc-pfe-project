@@ -6,11 +6,11 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import { FaEye } from "react-icons/fa";
 import axios from "axios";
-interface ServiceOrders {
+type ServiceOrders = {
   state: string;
   orderDate: string;
   ponr: string;
-}
+};
 export default function ServiceCustomerOrdersPage() {
   const [services, setServices] = useState<ServiceOrders[]>([]);
   const [data, setData] = useState<ServiceOrders[]>([]);
@@ -272,16 +272,16 @@ export default function ServiceCustomerOrdersPage() {
                         <table className="min-w-full leading-normal bg-white border border-collapse">
                           <thead>
                             <tr>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 ID
                               </th>
                               <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold  uppercase tracking-wider">
                                 external Id
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Order Date
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Status
                               </th>
                               {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -290,19 +290,19 @@ export default function ServiceCustomerOrdersPage() {
                               <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                               service Specification
                               </th> */}
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Note
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 PONR
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 requested Start Date
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 requested Completion Date
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Action
                               </th>
                             </tr>
@@ -407,7 +407,7 @@ export default function ServiceCustomerOrdersPage() {
                                       </p>
                                     </td>
 
-                                    <td className="py-3 px-6 text-center px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="py-3 text-center px-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                       <div className="flex item-center justify-center">
                                         <Link
                                           href={`/customer-order/all/service/${order._id}`}

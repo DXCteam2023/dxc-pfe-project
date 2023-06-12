@@ -3,9 +3,9 @@ import axios from "axios";
 const Cards = () => {
   const [users, setUsers] = useState([]);
 
-  interface User {
+  type User = {
     profile: string;
-  }
+  };
 
   useEffect(() => {
     async function getUsers() {
@@ -26,12 +26,12 @@ const Cards = () => {
   const totalUsers = users.length;
   // console.log(totalUsers);
   const managers = users.filter(
-    (manager: any) => manager.profile === "Product Offering Manager",
+    (manager: User) => manager.profile === "Product Offering Manager",
   );
   const totalManagers = managers.length;
   // console.log(totalManagers);
   const agents = users.filter(
-    (agent: any) => agent.profile === "Commercial Agent",
+    (agent: User) => agent.profile === "Commercial Agent",
   );
   const totalAgents = agents.length;
 
