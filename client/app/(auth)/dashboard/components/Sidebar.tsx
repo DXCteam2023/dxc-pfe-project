@@ -11,9 +11,9 @@ import { SideBarData } from "../data/SidebarData";
 
 import photo from "@/public/assets/dev3.jpg";
 
-interface SidebarProps {
+type SidebarProps = {
   children: ReactNode;
-}
+};
 
 const Sidebar = () => {
   const [localToken, setLocalToken] = useState("");

@@ -12,7 +12,7 @@ import {
 import NoRecord from "@/public/assets/NoRecord.png";
 import Image from "next/image";
 
-interface ProductOrder {
+type ProductOrder = {
   id: number;
   Number: string;
   state: string;
@@ -23,7 +23,7 @@ interface ProductOrder {
   Created: Date;
   OrderLineItem: string;
   Account: string;
-}
+};
 
 const Table = () => {
   const [filter, setFilter] = useState<ProductOrder[]>(dataProductOrders);
