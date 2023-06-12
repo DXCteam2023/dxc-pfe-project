@@ -7,7 +7,7 @@ import { RxDashboard } from "react-icons/rx";
 import { FiArchive } from "react-icons/fi";
 import Image from "next/image";
 
-import { SideBarData } from "../data/SidebarData";
+import SideBarData from "../data/SidebarData";
 
 import photo from "@/public/assets/dev3.jpg";
 

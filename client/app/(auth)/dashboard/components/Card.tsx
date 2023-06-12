@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-import { dataProductSpecifications } from "../data/dataProductSpecification";
+import dataProductSpecifications from "../data/dataProductSpecification";
 
 const Card = () => {
   return (

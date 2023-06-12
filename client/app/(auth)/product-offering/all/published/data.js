@@ -1,4 +1,4 @@
-export let product = [
+const publishedProductOfferings = [
   {
     end_date: "2027-06-11",
     short_description: "",
@@ -379,3 +379,5 @@ export let product = [
     status: "published ",
   },
 ];
+
+export default publishedProductOfferings;

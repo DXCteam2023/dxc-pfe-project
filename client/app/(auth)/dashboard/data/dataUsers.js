@@ -1,4 +1,4 @@
-export const dataUsers = [
+const dataUsers = [
   {
     id: 0,
     name: "Neil Sims",
@@ -18,3 +18,5 @@ export const dataUsers = [
     profile: ["admin", "manager"],
   },
 ];
+
+export default dataUsers;

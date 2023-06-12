@@ -1,4 +1,4 @@
-export const dataCostumerOrders = [
+const dataCostumerOrders = [
   {
     number: "ORD0000001",
     state: "new",
@@ -140,3 +140,5 @@ export const dataCostumerOrders = [
     price: "256.99$",
   },
 ];
+
+export default dataCostumerOrders;

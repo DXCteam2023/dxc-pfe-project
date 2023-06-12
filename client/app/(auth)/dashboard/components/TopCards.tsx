@@ -1,8 +1,8 @@
 import React from "react";
-import { DataOrders } from "../data/dataOrders";
-import { dataCostumerOrders } from "../data/dataCostumerOrders";
-import { dataProductOfferings } from "../data/dataProductOfferings";
-import { dataCostumers } from "../data/dataCostumers";
+import DataOrders from "../data/dataOrders";
+import dataCostumerOrders from "../data/dataCostumerOrders";
+import dataProductOfferings from "../data/dataProductOfferings";
+import dataCostumers from "../data/dataCostumers";
 
 const TopCards = () => {
   /* Product Orders */
