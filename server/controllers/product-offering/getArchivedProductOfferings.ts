@@ -6,7 +6,6 @@ export default async function getArchivedProductOfferings(
 ) {
   try {
     const productOfferings = await ProductOffering.find({ status: "archived" });
-
     res.setHeader("Content-Type", "application/json");
     res.setHeader("X-Total-Count", productOfferings.length);
     res.status(200).send(productOfferings);

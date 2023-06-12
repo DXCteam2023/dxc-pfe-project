@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { ServiceOrder, IServiceOrderDocument } from "../../../models/serviceOrder";
+import {
+  ServiceOrder,
+  IServiceOrderDocument,
+} from "../../../models/serviceOrder";
 
 export default async function updateServiceOrder(req: Request, res: Response) {
   try {
@@ -7,7 +10,7 @@ export default async function updateServiceOrder(req: Request, res: Response) {
     const formData = req.body;
 
     console.log("console de serviceId", serviceId);
-   
+
     console.log("req.body:", req.body);
 
     const updatedServiceOrder = await ServiceOrder.findByIdAndUpdate(
@@ -17,7 +20,9 @@ export default async function updateServiceOrder(req: Request, res: Response) {
     );
     console.log("formData:", formData);
     if (updatedServiceOrder) {
-      return res.status(200).send({ message: "Service Order updated successfully" });
+      return res
+        .status(200)
+        .send({ message: "Service Order updated successfully" });
     } else {
       return res.status(404).send({ message: "Service Order not found" });
     }
