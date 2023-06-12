@@ -5,15 +5,15 @@ import Section from "./section";
 import HeaderSection from "@/app/components/headerSection";
 
 const description =
-    "Integration Industrie IT solution offers a comprehensive suite of features and benefits designed to streamline and synchronize industrial operations with IT infrastructure.";
+  "Integration Industrie IT solution offers a comprehensive suite of features and benefits designed to streamline and synchronize industrial operations with IT infrastructure.";
 
 export default function IntegrationPage() {
-    return (
-        <div className="integration">
-            <Header styleElements={{ linksColor: "purple-header-links" }} />
-            <HeaderSection title="Integration" description={description} />
-            <Section />
-            <Footer />
-        </div>
-    );
+  return (
+    <div className="integration">
+      <Header styleElements={{ linksColor: "purple-header-links" }} />
+      <HeaderSection title="Integration" description={description} />
+      <Section />
+      <Footer />
+    </div>
+  );
 }

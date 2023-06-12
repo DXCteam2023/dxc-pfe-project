@@ -5,22 +5,18 @@ import ArchivedProductOfferings from "./components/ArchivedProductOfferings";
 import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
 export default function ArchivedProductOfferingsPage() {
   return (
-    <div >
+    <div>
       {/* <Header styleElements={{ linksColor: "purple-header-links" }} /> */}
 
       <h1 className="text-center text-blue-700 text-4xl font-bold">
         Archived Product Offerings Page
       </h1>
-     
-     <div className="flex ">
-     <Sidebar/>
-     
-      <ArchivedProductOfferings />
+
+      <div className="flex ">
+        <Sidebar />
+
+        <ArchivedProductOfferings />
       </div>
-
-     
-     
-
 
       <Footer />
     </div>
