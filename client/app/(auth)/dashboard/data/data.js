@@ -1,4 +1,4 @@
-export const data = [
+const data = [
   {
     id: 1,
     name: {
@@ -110,3 +110,5 @@ export const data = [
     date: "1 Day ago",
   },
 ];
+
+export default data;

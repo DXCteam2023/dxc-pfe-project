@@ -1,4 +1,4 @@
-export const DataOrders = [
+const DataOrders = [
   {
     number: "ORD0000001",
     short_description: "Test1",
@@ -24,3 +24,5 @@ export const DataOrders = [
     orderDate: "22/05/2023",
   },
 ];
+
+export default DataOrders;

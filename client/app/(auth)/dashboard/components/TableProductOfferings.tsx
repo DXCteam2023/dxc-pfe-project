@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
-import { dataCostumerOrders } from "../data/dataCostumerOrders";
-import { dataProductOfferings } from "../data/dataProductOfferings";
+import dataCostumerOrders from "../data/dataCostumerOrders";
+import dataProductOfferings from "../data/dataProductOfferings";
 
 const TableProductOfferings = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");

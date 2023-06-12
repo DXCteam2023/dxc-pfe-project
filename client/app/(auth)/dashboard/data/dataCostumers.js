@@ -1,4 +1,4 @@
-export const dataCostumers = [
+const dataCostumers = [
   {
     id: 0,
     name: "neil Sims",
@@ -20,3 +20,5 @@ export const dataCostumers = [
     totalOrders: 522,
   },
 ];
+
+export default dataCostumers;

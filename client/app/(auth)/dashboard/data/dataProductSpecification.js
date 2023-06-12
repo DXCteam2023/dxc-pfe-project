@@ -1,4 +1,4 @@
-export const dataProductSpecifications = [
+const dataProductSpecifications = [
   {
     id: "0",
     name: "Home Internet",
@@ -24,3 +24,5 @@ export const dataProductSpecifications = [
     shortDescription: "SD WAN Service Package",
   },
 ];
+
+export default dataProductSpecifications;
