@@ -1,27 +1,16 @@
-import Header from "@/app/components/header/header";
-import { product_Archived } from "./data";
-import Footer from "@/app/components/footer/footer";
+// import { product_Archived } from "./data";
+
 import ArchivedProductOfferings from "./components/ArchivedProductOfferings";
 import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
+import Footer from "@/app/(auth)/dashboard/components/Footer";
+
 export default function ArchivedProductOfferingsPage() {
   return (
-    <div >
-      {/* <Header styleElements={{ linksColor: "purple-header-links" }} /> */}
-
-      <h1 className="text-center text-blue-700 text-4xl font-bold">
-        Archived Product Offerings Page
-      </h1>
-     
-     <div className="flex ">
-     <Sidebar/>
-     
-      <ArchivedProductOfferings />
+    <div>
+      <div className="flex">
+        <Sidebar />
+        <ArchivedProductOfferings />
       </div>
-
-     
-     
-
-
       <Footer />
     </div>
   );
