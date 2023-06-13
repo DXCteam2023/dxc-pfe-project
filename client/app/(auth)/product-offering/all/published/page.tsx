@@ -4,7 +4,7 @@ import {product} from "./data"
 import Footer from "@/app/components/footer/footer";
 export default function ArchivedProductOfferingsPage() {
      
-    return (
+return (
         <div className="archived-product-offerings">
          <Header styleElements={{ linksColor: "purple-header-links" }} />
         
@@ -104,7 +104,7 @@ export default function ArchivedProductOfferingsPage() {
     
 </div>
 <Footer />
-</div>
+        </div>
 
     );
 }
