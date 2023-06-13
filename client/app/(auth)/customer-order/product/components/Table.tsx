@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import NoRecord from "@/public/assets/NoRecord.png";
 import Image from "next/image";
+import NewOrderRedirectModal from "./NewOrderRedirectModal"
 
 type ProductOrder = {
   id: number;
@@ -33,6 +34,8 @@ const Table = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+
+  const [showNewOrderRedirectModal, setShowNewOrderRedirectModal] = useState(false);
 
   const filterProductOrdersByState = (state: string) => {
     if (state === "all") {
@@ -137,6 +140,14 @@ const Table = () => {
   const handleCancel = () => {
     setShowConfirmation(false);
   };
+
+  const handleShowNewOrderRedirectModalOnClick = () => {
+    setShowNewOrderRedirectModal(true);
+  }
+  const handleShowNewOrderRedirectModalOnCancel = () => {
+    setShowNewOrderRedirectModal(false);
+
+  }
   return (
     <div className="flex w-full">
       <div className="flex w-full">
@@ -163,10 +174,14 @@ const Table = () => {
                     <a onClick={() => filterProductOrdersByPriority("all")}>
                       All
                     </a>
+
                   </button>
-                  <Link href="/customer-order/all/product/Form">
-                    <button className="btn">NEW</button>
-                  </Link>
+                  {showNewOrderRedirectModal && (
+                    <NewOrderRedirectModal
+                      onCancel={handleShowNewOrderRedirectModalOnCancel}
+                    />
+                  )}
+                  <button className="btn" onClick={handleShowNewOrderRedirectModalOnClick}>NEW</button>
 
                   <div className="dropdown">
                     <button className="dropbtn">
@@ -458,18 +473,16 @@ const Table = () => {
                         </span>
                         <div className="inline-flex mt-2 xs:mt-0">
                           <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${
-                              currentPage === 1 ? "disabled" : ""
-                            }`}
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${currentPage === 1 ? "disabled" : ""
+                              }`}
                             onClick={previousPage}
                             disabled={currentPage === 1}
                           >
                             Prev
                           </button>
                           <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${
-                              currentPage === 1 ? "disabled" : ""
-                            }`}
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${currentPage === 1 ? "disabled" : ""
+                              }`}
                             onClick={nextPage}
                             disabled={currentPage === totalPages}
                           >
