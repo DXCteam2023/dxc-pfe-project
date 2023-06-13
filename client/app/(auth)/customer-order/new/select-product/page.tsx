@@ -5,30 +5,68 @@ import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
 import { NewCustomerOrderContext } from "../context/new-customer-order-context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import LocationModal from "../components/LocationModal";
 
 export default function SelectProduct() {
   const route = useRouter();
 
   const myContext = useContext(NewCustomerOrderContext);
 
+  const [showNewLocationModal, setShowNewLocationModal] = useState(false);
+
   const handleContinueOnClick = () => {
     route.push("/customer-order/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {
-    myContext.setQuantity(parseInt(value));
+    let tamp = value
+    if(value==''){
+      tamp = '1'
+    }
+    myContext.setQuantity(parseInt(tamp));
   };
 
+  const handleLocationOnAdd = (newLocation: string) => {
+    const tamp = myContext.locations.concat([newLocation]);
+    myContext.setLocations(tamp);
+    setShowNewLocationModal(false);
+  };
+
+  const handleLocationOnCancel = () => {
+    setShowNewLocationModal(false);
+  };
+
+  const handleAddLocationOnClick = () => {
+    setShowNewLocationModal(true);
+  };
   return (
     <SubLayout
       leftChildren={
-        <div className="flex gap-4 justify-between items-center">
-          <h4 className="font-extrabold">Locations</h4>
-          <span className="flex gap-4 justify-between items-center">
-            <BsFillTrash3Fill className="cursor-pointer" />
-            <BsPlusLg className="cursor-pointer" />
-          </span>
+        <div className="flex flex-col">
+          {showNewLocationModal && (
+            <LocationModal
+              onAdd={handleLocationOnAdd}
+              onCancel={handleLocationOnCancel}
+            />
+          )}
+          <div className="flex gap-4 justify-between items-center p-4">
+            <h4 className="font-extrabold">Locations</h4>
+            <span className="flex gap-4 justify-between items-center">
+              <BsFillTrash3Fill className="cursor-pointer" />
+              <BsPlusLg
+                className="cursor-pointer"
+                onClick={handleAddLocationOnClick}
+              />
+            </span>
+          </div>
+          <div className="flex flex-col gap-2">
+            {myContext.locations.map((location) => (
+              <div className="text-sm p-1 border-l-2 border-l-[#2c755e] bg-[#daeae7]">
+                {location}
+              </div>
+            ))}
+          </div>
         </div>
       }
       rightChildren={

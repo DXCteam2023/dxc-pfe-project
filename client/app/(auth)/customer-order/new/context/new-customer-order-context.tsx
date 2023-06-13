@@ -17,6 +17,8 @@ type NewCustomerOrderContextType = {
   setMobilenumber: React.Dispatch<React.SetStateAction<string>>;
   offerings: string;
   setOfferings: React.Dispatch<React.SetStateAction<string>>;
+  locations: Array<string>;
+  setLocations: React.Dispatch<React.SetStateAction<Array<string>>>;
   // STEP 3
   quantity: number;
   setQuantity: React.Dispatch<React.SetStateAction<number>>;
@@ -59,6 +61,11 @@ const NewCustomerOrderContextProvider = ({
   const [mobilenumber, setMobilenumber] = useState("mobilenumber");
   const [offerings, setOfferings] = useState("offerings");
   const [quantity, setQuantity] = useState(1);
+  const [locations, setLocations] = useState([
+    "locations001",
+    "location002",
+    "location003",
+  ]);
   // STEP 3
   const [number, setNumber] = useState("number");
   const [location, setLocation] = useState("location");
@@ -94,6 +101,8 @@ const NewCustomerOrderContextProvider = ({
         setOfferings,
         quantity,
         setQuantity,
+        locations,
+        setLocations,
         // STEP 3
         number,
         setNumber,

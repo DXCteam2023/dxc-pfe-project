@@ -17,13 +17,25 @@ export default function ConfigureProduct() {
   };
 
   const handleMonthlyRecurringChangesPerUnitOnChange = (value: string) => {
-    myContext.setMonthlyRecurringChangesPerUnit(parseInt(value));
+    let tamp = value;
+    if (value == "") {
+      tamp = "1";
+    }
+    myContext.setMonthlyRecurringChangesPerUnit(parseInt(tamp));
   };
   const handleTotalPriceOnChange = (value: string) => {
-    myContext.setTotalPrice(parseInt(value));
+    let tamp = value;
+    if (value == "") {
+      tamp = "1";
+    }
+    myContext.setTotalPrice(parseInt(tamp));
   };
   const handleNoneRecuringChangesPerUnitOnChange = (value: string) => {
-    myContext.setNoneRecuringChangesPerUnit(parseInt(value));
+    let tamp = value;
+    if (value == "") {
+      tamp = "1";
+    }
+    myContext.setNoneRecuringChangesPerUnit(parseInt(tamp));
   };
 
   return (
