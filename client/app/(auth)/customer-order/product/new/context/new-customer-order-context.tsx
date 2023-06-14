@@ -52,14 +52,14 @@ const NewCustomerOrderContextProvider = ({
   children: React.ReactNode;
 }) => {
   // STEP 1
-  const [account, setAccount] = useState("account");
-  const [contact, setContact] = useState("contact");
+  const [account, setAccount] = useState("");
+  const [contact, setContact] = useState("");
   // STEP 2
-  const [firstname, setFirstname] = useState("firstname");
-  const [lastname, setLastname] = useState("lastname");
-  const [email, setEmail] = useState("email");
-  const [mobilenumber, setMobilenumber] = useState("mobilenumber");
-  const [offerings, setOfferings] = useState("offerings");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobilenumber, setMobilenumber] = useState("");
+  const [offerings, setOfferings] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [locations, setLocations] = useState([
     "locations001",
@@ -67,13 +67,11 @@ const NewCustomerOrderContextProvider = ({
     "location003",
   ]);
   // STEP 3
-  const [number, setNumber] = useState("number");
-  const [location, setLocation] = useState("location");
-  const [productOffering, setProductOffering] = useState("productOffering");
-  const [productSpecification, setProductSpecification] = useState(
-    "productSpecification",
-  );
-  const [orderedQuantity, setOrderedQuantity] = useState("orderedQuantity");
+  const [number, setNumber] = useState("");
+  const [location, setLocation] = useState("");
+  const [productOffering, setProductOffering] = useState("");
+  const [productSpecification, setProductSpecification] = useState("");
+  const [orderedQuantity, setOrderedQuantity] = useState("");
   const [totalPrice, setTotalPrice] = useState(1);
   const [noneRecuringChangesPerUnit, setNoneRecuringChangesPerUnit] =
     useState(1);

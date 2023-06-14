@@ -13,7 +13,7 @@ export default function ConfigureProduct() {
   const myContext = useContext(NewCustomerOrderContext);
 
   const handleContinueOnClick = () => {
-    route.push("/customer-order/new/review-order");
+    route.push("/customer-order/product/new/review-order");
   };
 
   const handleMonthlyRecurringChangesPerUnitOnChange = (value: string) => {

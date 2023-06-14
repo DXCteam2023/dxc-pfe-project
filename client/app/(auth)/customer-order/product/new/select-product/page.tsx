@@ -16,7 +16,7 @@ export default function SelectProduct() {
   const [showNewLocationModal, setShowNewLocationModal] = useState(false);
 
   const handleContinueOnClick = () => {
-    route.push("/customer-order/new/configure-product");
+    route.push("/customer-order/product/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {

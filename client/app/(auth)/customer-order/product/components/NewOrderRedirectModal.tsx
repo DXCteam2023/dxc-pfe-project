@@ -26,7 +26,7 @@ const NewOrderRedirectModal = ({ onCancel }: NewOrderRedirectModaltype) => {
     }
     const handleOnCreate = () => {
         if (selected == PRODUCT_ORDER) {
-            route.push("/customer-order/new/create-order");
+            route.push("/customer-order/product/new/create-order");
         }
         if (selected == SERVICE_ORDER) {
             route.push("/customer-order/service");
