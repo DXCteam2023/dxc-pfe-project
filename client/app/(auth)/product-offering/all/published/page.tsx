@@ -4,7 +4,7 @@ import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
 import Header from "@/app/(auth)/dashboard/components/header/Header";
 import Footer from "@/app/(auth)/dashboard/components/Footer";
 
-import { product } from "./data";
+import publishedProductOfferings from "./data";
 
 export default function PublishedProductOfferingsPage() {
   return (
@@ -82,7 +82,7 @@ export default function PublishedProductOfferingsPage() {
               </tr>
             </thead>
             <tbody>
-              {product.map((item, index) => {
+              {publishedProductOfferings.map((item, index) => {
                 return (
                   <tr className="bg-white border-b hover:bg-gray-50">
                     <td className="w-4 p-4">
