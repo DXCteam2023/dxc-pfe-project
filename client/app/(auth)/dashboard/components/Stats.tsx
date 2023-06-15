@@ -1,6 +1,7 @@
 import React from "react";
 import dataCostumerOrders from "../data/dataCostumerOrders";
 import dataProductOfferings from "../data/dataProductOfferings";
+
 const Stats = () => {
   /*  Total Completed Costumer Orders */
   const CompletedOrders = dataCostumerOrders.filter(

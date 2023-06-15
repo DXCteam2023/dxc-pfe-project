@@ -1,9 +1,6 @@
 "use client";
 import Image from "next/image";
-import dxc from "../../../public/assets/dxc.jpg";
-import { Fragment, useState, useEffect, ReactComponentElement } from "react";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
-import Swal from "sweetalert2";
+import Link from "next/link";
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -19,7 +16,10 @@ import {
   PhoneIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
-import Link from "next/link";
+import { Fragment, useState, useEffect, ReactComponentElement } from "react";
+import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import Swal from "sweetalert2";
+import dxc from "../../../public/assets/dxc.jpg";
 
 const ITServiceLinks = [
   {

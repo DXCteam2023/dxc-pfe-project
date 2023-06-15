@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
+
 const page = () => {
   return (
     <div className="user">

@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
+import Sidebar from "../../dashboard/components/Sidebar";
+import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getProductSpecification } from "../utils";

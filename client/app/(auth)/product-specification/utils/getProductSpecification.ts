@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function getProductSpecification(
+export default async function getProductSpecification(
   id: string,
   setProduct: React.Dispatch<any>,
 ) {

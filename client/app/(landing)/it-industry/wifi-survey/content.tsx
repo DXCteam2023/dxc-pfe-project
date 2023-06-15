@@ -5,8 +5,8 @@ import Image from "next/image";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 
 // Importing assets
-import wifi1 from "@/public/assets/wifi-survey1.jpg";
-import wifi2 from "@/public/assets/wifi-survey2.jpg";
+import wifi1 from "../../../../public/assets/wifi-survey1.jpg";
+import wifi2 from "../../../../public/assets/wifi-survey2.jpg";
 
 const features = [
   {
