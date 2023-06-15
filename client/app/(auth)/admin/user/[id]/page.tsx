@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
-import Image from "next/image";
 import watch from "../../../../../public/assets/watch.png";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
+
 const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const [user, setUser] = useState<any>(null);
   const [similarProfiles, setSimilarProfiles] = useState([]);

@@ -2,6 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// Importing fonts
+import { Poppins } from "next/font/google";
+
 // Importing images
 import CompanyImage from "../public/assets/low-angle-view-skyscrapers.jpg";
 import InfrastractureImage from "../public/assets/network-engineers-with-tablet-medium-shot.jpg";
@@ -17,9 +20,6 @@ import SalesForce from "../public/assets/Salesforce.com_logo.png";
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
 import HeaderSection from "./components/headerSection";
-
-// Importing fonts
-import { Poppins } from "next/font/google";
 
 // Importing styles
 import homeStyles from "./home.module.css";
@@ -42,7 +42,7 @@ const links = [
   { name: "Meet our leadership", href: "#" },
 ];
 
-export default function Home({ images }: { images: string }) {
+export default function Home() {
   return (
     <main className={homeStyles.home + " " + homeStyles["poppins-font"]}>
       <Header styleElements={{ linksColor: "white-header-links" }} />
@@ -119,7 +119,7 @@ export default function Home({ images }: { images: string }) {
                 <div
                   className={
                     homeStyles.tag +
-                    " flex items-center leading-none rounded-full text-gray-50 pt-1.5 pr-3 pb-1.5 pl-2 uppercase inline-block"
+                    " flex items-center leading-none rounded-full text-gray-50 pt-1.5 pr-3 pb-1.5 pl-2 uppercase"
                   }
                 >
                   <p className="inline">
@@ -164,7 +164,7 @@ export default function Home({ images }: { images: string }) {
               <p
                 className={
                   homeStyles.tag +
-                  " flex items-center leading-none text-sm font-medium text-gray-50 pt-1.5 pr-3 pb-1.5 pl-3 rounded-full uppercase inline-block"
+                  " flex items-center leading-none text-sm font-medium text-gray-50 pt-1.5 pr-3 pb-1.5 pl-3 rounded-full uppercase"
                 }
               >
                 Infrastracture
@@ -188,7 +188,7 @@ export default function Home({ images }: { images: string }) {
               <p
                 className={
                   homeStyles.tag +
-                  " flex items-center leading-none text-sm font-medium text-gray-50 pt-1.5 pr-3 pb-1.5 pl-3 rounded-full uppercase inline-block"
+                  " flex items-center leading-none text-sm font-medium text-gray-50 pt-1.5 pr-3 pb-1.5 pl-3 rounded-full uppercase"
                 }
               >
                 Cloud
@@ -212,7 +212,7 @@ export default function Home({ images }: { images: string }) {
               <p
                 className={
                   homeStyles.tag +
-                  " flex items-center leading-none text-sm font-medium text-gray-50 pt-1.5 pr-3 pb-1.5 pl-3 rounded-full uppercase inline-block"
+                  " flex items-center leading-none text-sm font-medium text-gray-50 pt-1.5 pr-3 pb-1.5 pl-3 rounded-full uppercase"
                 }
               >
                 Security
@@ -232,7 +232,7 @@ export default function Home({ images }: { images: string }) {
         </div>
       </div>
       <div className="relative isolate overflow-hidden bg-purple-900 py-24 sm:py-32">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
           alt=""
           className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"

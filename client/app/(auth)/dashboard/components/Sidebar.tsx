@@ -1,15 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
-import React, { ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 
 import Link from "next/link";
 import { RxDashboard } from "react-icons/rx";
 import { FiArchive } from "react-icons/fi";
 import Image from "next/image";
 
-import SideBarData from "../data/SidebarData";
-
 import photo from "@/public/assets/dev3.jpg";
+import SideBarData from "../data/SidebarData";
 
 type SidebarProps = {
   children: ReactNode;

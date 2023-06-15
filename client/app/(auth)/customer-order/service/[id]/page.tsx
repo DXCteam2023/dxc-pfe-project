@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UpdateServiceForm from "./../UpdateServiceForm";
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
+import UpdateServiceForm from "../UpdateServiceForm";
+import Sidebar from "../../../dashboard/components/Sidebar";
+import Header from "../../../dashboard/components/header/Header";
+
 const page = ({ params }: { params: { id: string } }) => {
   const [service, setService] = useState<any>();
   const [activeTab, setActiveTab] = useState(0);

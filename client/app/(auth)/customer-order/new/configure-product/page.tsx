@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
+import { useContext } from "react";
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
-import { useContext } from "react";
 import { NewCustomerOrderContext } from "../context/new-customer-order-context";
 
 export default function ConfigureProduct() {
