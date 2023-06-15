@@ -10,8 +10,8 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 // Importing assets
-import dxc from "@/public/assets/dxc.jpg";
-import loginpic from "@/public/assets/loginpic.svg";
+import dxc from "../../../public/assets/dxc.jpg";
+import loginpic from "../../../public/assets/loginpic.svg";
 
 // Importing styles
 import styles from "../../home.module.css";
@@ -26,7 +26,7 @@ export default function loginPage() {
     e.preventDefault();
 
     try {
-      const url = "http://localhost:5000/api/user/login";
+      const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
       const { data: res } = await axios.post(url, { userID, password });
       console.log(res.data);
       console.log(res.user);
