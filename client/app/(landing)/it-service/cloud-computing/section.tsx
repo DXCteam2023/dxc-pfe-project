@@ -1,7 +1,7 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import cloud from "./cloud1.jpg";
-import HeaderSection from "@/app/components/headerSection";
+import HeaderSection from "../../../components/headerSection";
 
 const statistic = [
   { id: 1, name: "Countries", value: "70+" },

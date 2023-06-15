@@ -1,13 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import ReactModal from "react-modal";
-import photo from "@/public/assets/dev3.jpg";
-import Image from "next/image";
-import dataProductOfferings from "../../data/dataProductOfferings";
-import dataCostumerOrders from "../../data/dataCostumerOrders";
-import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
+import photo from "@/public/assets/dev3.jpg";
+import dataProductOfferings from "../../data/dataProductOfferings";
+import dataCostumerOrders from "../../data/dataCostumerOrders";
 
 // Importing types
 import { TDataCustomerOrder, TDataProductOffering } from "./types";
@@ -127,9 +126,10 @@ const Header = () => {
                   <div className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left">
                     <div className="sm:flex  sm:justify-between sm:space-x-5">
                       <div className="flex items-center flex-1 min-w-0">
-                        <img
+                        <Image
                           src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/SlackLogo_CompanyNews_SecondaryAubergine_Hero.jpg?d=500x500&amp;f=fill"
                           className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
+                          alt="image"
                         />
                         <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
                           <p className="text-lg font-bold text-gray-800 truncate">
@@ -175,9 +175,10 @@ const Header = () => {
                   <div className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left">
                     <div className="sm:flex sm:items-center sm:justify-between sm:space-x-5">
                       <div className="flex items-center flex-1 min-w-0">
-                        <img
+                        <Image
                           src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/SlackLogo_CompanyNews_SecondaryAubergine_Hero.jpg?d=500x500&amp;f=fill"
                           className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
+                          alt="image"
                         />
                         <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
                           <p className="text-lg font-bold text-gray-800 truncate">

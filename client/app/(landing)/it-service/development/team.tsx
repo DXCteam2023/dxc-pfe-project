@@ -1,6 +1,7 @@
 import React from "react";
-import dev2 from "./dev2.jpg";
 import Image from "next/image";
+import dev2 from "./dev2.jpg";
+
 const people = [
   {
     name: "Leslie Alexander",

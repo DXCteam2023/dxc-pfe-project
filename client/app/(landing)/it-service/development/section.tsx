@@ -1,6 +1,6 @@
 import Image from "next/image";
-import dxc from "../../../components/dxc.jpg";
-import HeaderSection from "@/app/components/headerSection";
+import dxc from "../../../../public/assets/dxc.jpg";
+import HeaderSection from "../../../components/headerSection";
 
 const description =
   "Modern Applications Development services enable enterprises to achieve the agility required to improve time to market, reduce costs, attain resiliency and enhance customer experiences";

@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
+import { useContext } from "react";
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
 import { NewCustomerOrderContext } from "../context/new-customer-order-context";
-import { useContext } from "react";
 
 export default function SelectProduct() {
   const route = useRouter();

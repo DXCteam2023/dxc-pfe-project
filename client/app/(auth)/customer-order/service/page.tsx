@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
+import axios from "axios";
+import { FaEye } from "react-icons/fa";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { FaEye } from "react-icons/fa";
-import axios from "axios";
+import Header from "../../dashboard/components/header/Header";
+import Sidebar from "../../dashboard/components/Sidebar";
+
 type ServiceOrders = {
   state: string;
   orderDate: string;

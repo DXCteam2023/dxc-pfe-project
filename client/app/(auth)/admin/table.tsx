@@ -5,9 +5,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 import Link from "next/link";
-import UpdateUserForm from "./updateUserForm";
-
 import { FaEye } from "react-icons/fa";
+import UpdateUserForm from "./updateUserForm";
 
 export type TUser = {
   _id: string;
