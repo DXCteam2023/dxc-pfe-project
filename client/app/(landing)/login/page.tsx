@@ -27,8 +27,7 @@ export default function loginPage() {
 
     try {
       // const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
-      const url =
-        "https://dxc-pfe-project-server-ov6bgr21h-dxcteam2023.vercel.app/api/user/login";
+      const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
       const { data: res } = await axios.post(url, { userID, password });
       console.log(res.data);
       console.log(res.user);
