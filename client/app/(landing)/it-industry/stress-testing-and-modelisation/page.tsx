@@ -1,9 +1,9 @@
 import Content from "../wifi-survey/content";
 
 // Importing components
-import Footer from "@/app/components/footer/footer";
-import Header from "@/app/components/header/header";
-import HeaderSection from "@/app/components/headerSection";
+import Footer from "../../../components/footer/footer";
+import Header from "../../../components/header/header";
+import HeaderSection from "../../../components/headerSection";
 
 const description =
   "comprehensive set of features and benefits designed to assess and optimize the performance, reliability, and scalability of IT systems within industrial environments.";

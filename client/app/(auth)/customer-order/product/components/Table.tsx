@@ -1,17 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import dataProductOrders from "../data/dataProductOrders";
+import Image from "next/image";
 import { FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
 import Modal from "react-modal";
-import Link from "next/link.js";
+import Link from "next/link";
 import {
   FaPencilAlt,
   FaRegWindowClose,
   FaSortAmountDownAlt,
 } from "react-icons/fa";
-import NoRecord from "@/public/assets/NoRecord.png";
-import Image from "next/image";
 import NewOrderRedirectModal from "./NewOrderRedirectModal"
+import NoRecord from "@/public/assets/NoRecord.png";
+import dataProductOrders from "../data/dataProductOrders";
 
 type ProductOrder = {
   id: number;

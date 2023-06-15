@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 
 import { FaEye } from "react-icons/fa";
 
+import Link from "next/link";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
-import Link from "next/link";
 
 // Importing utility functions
 import { getProductSpecifications } from "../utils";
@@ -44,6 +44,7 @@ export default function AllProductSpecificationsPage() {
     if (statusFilter === "All") {
       return true;
     }
+    return false;
     //return service.state.toLowerCase() === statusFilter.toLowerCase();
   });
 
