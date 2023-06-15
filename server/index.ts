@@ -37,4 +37,5 @@ app.use("/api/product-offering", productOfferingRoute);
 // Product Specification routes
 app.use("/api/product-specification", productSpecRoute);
 
-app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+// app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+export default app;
