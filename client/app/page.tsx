@@ -42,7 +42,7 @@ const links = [
   { name: "Meet our leadership", href: "#" },
 ];
 
-export default function Home({ images }: { images: string }) {
+export default function Home() {
   return (
     <main className={homeStyles.home + " " + homeStyles["poppins-font"]}>
       <Header styleElements={{ linksColor: "white-header-links" }} />
