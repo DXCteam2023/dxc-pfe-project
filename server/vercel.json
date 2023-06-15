@@ -3,13 +3,20 @@
   "builds": [
     {
       "src": "index.ts",
-      "use": "@now/node"
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/public/(.*)",
-      "dest": "index.js"
+      "src": "/(.*)",
+      "dest": "/",
+      "methods": [
+        "GET",
+        "POST",
+        "PATCH",
+        "DELETE",
+        "OPTIONS"
+      ]
     }
   ]
 }

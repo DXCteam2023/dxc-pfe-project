@@ -1,5 +1,3 @@
-"use client";
-
 import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
 import Header from "@/app/(auth)/dashboard/components/header/Header";
 import Footer from "@/app/(auth)/dashboard/components/Footer";
