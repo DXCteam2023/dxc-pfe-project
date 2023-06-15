@@ -11,5 +11,6 @@
         "endOfLine": "auto"
       }
     ]
-  }
+  },
+  "parser": "@babel/eslint-parser"
 }
