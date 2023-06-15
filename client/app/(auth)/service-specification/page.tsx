@@ -1,3 +1,3 @@
-export default function SingleServiceSpecificationPage() {
-  return <h1>Single Service Specification Page</h1>;
+export default function AllServiceSpecificationsPage() {
+  return <h1>All Service Specifications Page</h1>;
 }
