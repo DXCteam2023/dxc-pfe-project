@@ -1,11 +1,10 @@
 import { Router } from "express";
 import {
   addProductOffering,
-  archiveProductOffering,
   getArchivedProductOfferings,
   getProductOfferingById,
   getProductOfferings,
-  updateProductOffering,  
+  updateProductOffering,
 } from "../controllers/product-offering";
 
 const productOfferingRoute = Router();
@@ -16,7 +15,7 @@ productOfferingRoute.get("/:id", getProductOfferingById);
 
 productOfferingRoute.post("/", addProductOffering);
 
-productOfferingRoute.patch("/:id",updateProductOffering);
+productOfferingRoute.patch("/:id", updateProductOffering);
 
 productOfferingRoute.get("/archived/all", getArchivedProductOfferings);
 
