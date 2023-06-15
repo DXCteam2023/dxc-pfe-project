@@ -4,9 +4,7 @@ import Header from "@/app/components/header/header";
 import Product from "./test/product";
 import Footer from "@/app/components/footer/footer";
 
-
-export default  function AllProductOfferingsPage() {
-
+export default function AllProductOfferingsPage() {
   return (
     <div className="text-center my-5 flex flex-col gap-4">
       <Header styleElements={{

@@ -2,14 +2,22 @@
 
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
+import { useContext } from "react";
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
+import { NewCustomerOrderContext } from "../context/new-customer-order-context";
 
 export default function SelectProduct() {
   const route = useRouter();
 
+  const myContext = useContext(NewCustomerOrderContext);
+
   const handleContinueOnClick = () => {
     route.push("/customer-order/new/configure-product");
+  };
+
+  const handleQuantityOnChange = (value: string) => {
+    myContext.setQuantity(parseInt(value));
   };
 
   return (
@@ -38,12 +46,16 @@ export default function SelectProduct() {
                   title="Firt Name"
                   required={true}
                   placeholder="Firt Name"
+                  value={myContext.firstname}
+                  onChange={myContext.setFirstname}
                 />
                 <InputText
                   slug="last name"
                   title="Last Name"
                   required={true}
                   placeholder="Last Name"
+                  value={myContext.lastname}
+                  onChange={myContext.setLastname}
                 />
               </div>
               <div className="flex justify-center gap-4">
@@ -52,12 +64,16 @@ export default function SelectProduct() {
                   title="Email"
                   required={true}
                   placeholder="Email"
+                  value={myContext.email}
+                  onChange={myContext.setEmail}
                 />
                 <InputText
                   slug="mobile number"
                   title="Mobile Number"
                   required={true}
                   placeholder="Mobile Number"
+                  value={myContext.mobilenumber}
+                  onChange={myContext.setMobilenumber}
                 />
               </div>
             </div>
@@ -70,12 +86,16 @@ export default function SelectProduct() {
                 title="Offerings"
                 required={true}
                 placeholder="Offerings"
+                value={myContext.offerings}
+                onChange={myContext.setOfferings}
               />
               <InputText
                 slug="quantity"
                 title="Quantity"
                 required={true}
                 placeholder="Quantity"
+                value={myContext.quantity}
+                onChange={handleQuantityOnChange}
               />
             </div>
           </div>

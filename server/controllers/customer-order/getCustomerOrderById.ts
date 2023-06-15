@@ -1,1 +1,6 @@
-export default async function getCustomerOrderById(id: string) {}
+import { Request, Response } from "express";
+
+export default async function getCustomerOrderById(
+  req: Request,
+  res: Response
+) {}
