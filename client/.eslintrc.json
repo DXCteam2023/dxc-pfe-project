@@ -1,5 +1,9 @@
 {
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": [
+    "airbnb-base",
+    "plugin:prettier/recommended",
+    "next/core-web-vitals"
+  ],
   "plugins": ["prettier"],
   "parserOptions": {
     "ecmaVersion": 2023
