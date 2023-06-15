@@ -32,7 +32,7 @@ type ProductOfferingPrice = {
 
 type ProductSpecification = {
   id: string;
-  name: string;
+  name?:string;
   internalId?: string;
   internalVersion?: string;
   version?: string;
@@ -111,7 +111,7 @@ const productOfferingPriceSchema = new Schema({
 
 const productSpecificationSchema = new Schema({
   id: { type: String, required: true },
-  name: { type: String, required: true },
+  name: { type: String, required: false },
   internalId: { type: String, required: false },
   internalVersion: { type: String, required: false },
   version: { type: String, required: false },
