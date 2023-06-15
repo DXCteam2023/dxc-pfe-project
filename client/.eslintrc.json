@@ -50,6 +50,7 @@
     "no-lone-blocks": "off",
     "object-shorthand": "off",
     "no-nested-ternary": "off",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "no-alert": "off"
   }
 }
