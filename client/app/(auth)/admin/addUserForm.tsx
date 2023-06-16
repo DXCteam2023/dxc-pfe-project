@@ -55,7 +55,7 @@ export default function AddUserForm() {
       ) : (
         ""
       )}
-      <form className="grid lg:grid-cols-2 w-4/6 gap-4" onSubmit={handleSubmit}>
+      <form className=" mx-12 grid lg:grid-cols-2 w-4/6 gap-4" onSubmit={handleSubmit}>
         <div className="input-type">
           <input
             id="username"

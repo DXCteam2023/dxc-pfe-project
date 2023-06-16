@@ -31,3 +31,16 @@ h3 {
   margin-left: 40px;
   margin-right: 40px;
 }
+.buttonadd {
+  background-color: #8b2c8d;
+  padding: 10px;
+  margin-bottom: 20px;
+  color:white;
+  border-radius: 5px;
+
+}
+.buttonadd.hover {
+  background-color: #8b2c8d;
+  
+
+}

@@ -6,6 +6,7 @@ import {
   getUsers,
   updateUser,
   authUser,
+  getSimilarProfiles
 } from "../controllers/user";
 
 const userRoute = Router();
@@ -17,6 +18,7 @@ userRoute.get("/", getUsers);
 userRoute.get("/:id", getUserById);
 
 userRoute.post("/", addUser);
+userRoute.get("/similar-profile/:profile", getSimilarProfiles);
 
 userRoute.patch("/:id", updateUser);
 
