@@ -11,6 +11,7 @@ type Channel = {
   name?: string;
 };
 
+
 type ProductCharacteristic = {
   name?: string;
   value?: string;
@@ -32,7 +33,7 @@ type ProductOfferingPrice = {
 
 type ProductSpecification = {
   id: string;
-  name: string;
+  name?:string;
   internalId?: string;
   internalVersion?: string;
   version?: string;
@@ -76,20 +77,30 @@ export interface IProductOfferingDocument {
 }
 
 const categorySchema = new Schema({
-  id: { type: String, required: true },
+  id: { type: String, required: false },
   name: { type: String, required: false, default: "" },
 });
 
 const channelSchema = new Schema({
   description: { type: String, required: false, default: "" },
-  id: { type: String, required: true },
+  id: { type: String, required: false},
   name: { type: String, required: false, default: "" },
 });
 
-const productCharacteristicSchema = new Schema({
+const productSpecCharacteristicSchema = new Schema({
   name: { type: String, required: false, default: "" },
-  value: { type: String, required: false, default: "" },
+  valueType: { type: String, required: false },
+  productSpecCharacteristicValue: [{
+    value: {
+      type: String,
+      required: false
+    }
+  }],
 });
+
+
+
+
 
 const taxIncludedAmountSchema = new Schema({
   unit: { type: String, required: false },
@@ -110,15 +121,15 @@ const productOfferingPriceSchema = new Schema({
 });
 
 const productSpecificationSchema = new Schema({
-  id: { type: String, required: true },
-  name: { type: String, required: true },
+  id: { type: String, required: false },
+  name: { type: String, required: false },
   internalId: { type: String, required: false },
   internalVersion: { type: String, required: false },
   version: { type: String, required: false },
 });
 
 const productSpecCharacteristicValueSchema = new Schema({
-  value: { type: String, required: true },
+  value: { type: String, required: false}, 
 });
 
 const validForSchema = new Schema({
@@ -129,26 +140,26 @@ const validForSchema = new Schema({
 const prodSpecCharValueUseSchema = new Schema({
   productSpecCharacteristicValue: {
     type: Array(productSpecCharacteristicValueSchema),
-    required: true,
+    required: false,
   },
   description: { type: String, required: false, default: "" },
-  name: { type: String, required: true },
+  name: { type: String, required: false },
   validFor: { type: validForSchema, required: false },
   valueType: { type: String, required: false },
 });
 
 const productOfferingSchema = new Schema({
-  number: { type: String, required: true },
+  number: { type: String, required: false }, //this
   category: { type: Array(categorySchema), required: false },
-  channel: { type: Array(channelSchema), required: true },
-  description: { type: String, required: true },
+  channel: { type: Array(channelSchema), required: false },
+  description: { type: String, required: false },
   externalId: { type: String, required: false, default: "" },
-  id: { type: String, required: true },
+  id: { type: String, required: false},//this
   internalId: { type: String, required: false },
   lastUpdate: { type: String, required: false, default: "" },
-  name: { type: String, required: true },
-  productCharacteristic: {
-    type: Array(productCharacteristicSchema),
+  name: { type: String, required: false },
+  productSpecCharacteristic: {
+    type: Array(productSpecCharacteristicSchema),
     required: false,
   },
   productOfferingPrice: {
@@ -156,14 +167,14 @@ const productOfferingSchema = new Schema({
     required: false,
   },
   productOfferingTerm: { type: String, required: false, default: "" },
-  productSpecification: { type: productSpecificationSchema, required: true },
+  productSpecification: { type: productSpecificationSchema, required: false },
   prodSpecCharValueUse: {
     type: Array(prodSpecCharValueUseSchema),
     required: false,
   },
-  validFor: { type: validForSchema, required: true },
+  validFor: { type: validForSchema, required: false },
   version: { type: String, required: false },
-  state: { type: String, required: true },
+  state: { type: String, required: false }, //this
 });
 
 export const ProductOffering = model<IProductOfferingDocument>(

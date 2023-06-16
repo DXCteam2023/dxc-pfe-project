@@ -8,8 +8,9 @@ import {
 // https://tailwindcomponents.com/
 
 import Image from "next/image";
-import dxc from "../../../components/dxc.jpg";
+import dxc from "../../../../public/assets/dxc.jpg";
 import development from "./development.jpg";
+
 const stats = [
   { id: 1, name: "Countries", value: "70+" },
   { id: 2, name: "Employees", value: "130,000+" },

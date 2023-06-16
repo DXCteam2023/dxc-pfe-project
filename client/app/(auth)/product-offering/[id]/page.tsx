@@ -27,7 +27,7 @@ export default async function SingleProductOfferingPage({
         <header className="py-5 flex items-center justify-between px-3">
           <div className="infos flex justify-between items-center">
             <div className="title font-medium text-lg me-3">
-              {productOffering.name}
+              {productOffering.display_name}
             </div>
             <span
               className={

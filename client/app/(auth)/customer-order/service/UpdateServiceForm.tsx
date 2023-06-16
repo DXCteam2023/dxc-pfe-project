@@ -122,12 +122,12 @@ const UpdateServiceForm = ({
 
       <button
         type="submit"
-        className="flex justify-center text-md w-1/6 bg-yellow-300 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-green-500"
+        className="flex justify-center text-md w-1/6 bg-pink-500 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-pink-600"
       >
         Update
       </button>
       <button
-        className="flex justify-center text-md w-1/6 bg-red-300 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-green-500"
+        className="flex justify-center text-md w-1/6 bg-red-600 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-red-600"
         onClick={onClose}
       >
         Annuler

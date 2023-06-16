@@ -1,14 +1,15 @@
-const stats = [
-  { id: 1, name: "Countries", value: "70+" },
-  { id: 2, name: "Employees", value: "130,000+" },
-  { id: 3, name: "Customers in the Fortune 500", value: "240+" },
-];
 import {
   ArrowPathIcon,
   CloudArrowUpIcon,
   FingerPrintIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/outline";
+
+const stats = [
+  { id: 1, name: "Countries", value: "70+" },
+  { id: 2, name: "Employees", value: "130,000+" },
+  { id: 3, name: "Customers in the Fortune 500", value: "240+" },
+];
 
 const features = [
   {

@@ -1,9 +1,10 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import dataProductOrders from "../data/dataProductOrders";
 import { FiEye, FiFilter, FiRefreshCcw, FiSearch, FiTrash2 } from "react-icons/fi";
 import Modal from "react-modal";
-import Link from "next/link.js";
+import Link from "next/link";
 import {
  
   FaBackward,
@@ -14,6 +15,7 @@ import {
  
   FaTrashAlt,
 } from "react-icons/fa";
+import NewOrderRedirectModal from "./NewOrderRedirectModal"
 import NoRecord from "@/public/assets/NoRecord.png";
 import Image from "next/image";
 import axios from "axios";
@@ -24,6 +26,18 @@ import { ACTION_FAST_REFRESH } from "next/dist/client/components/router-reducer/
 const Table = () => {
   const [selectedState, setSelectedState] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showNewOrderRedirectModal, setShowNewOrderRedirectModal] = useState(false);
+
+  const filterProductOrdersByState = (state: string) => {
+    if (state === "all") {
+      setFilter(dataProductOrders);
+    } else {
+      const updatedList = dataProductOrders.filter(
+        (order) => order.state === state,
+      );
+      setFilter(updatedList);
+    }
+  };
 
 
   const [productOrders, setProductOrders] = React.useState<
@@ -108,7 +122,7 @@ const filteredData = FiltredData.filter((order) =>
 const handleToggleTaskType = () => {
   setShowTaskType(!showTaskType);
 };
-
+  
   return (
     <div className="flex w-full">
       <div className="flex w-full">
@@ -401,8 +415,18 @@ const handleToggleTaskType = () => {
                         <div className="inline-flex mt-2 xs:mt-0">
                           
                           <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l `}
-                           
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${currentPage === 1 ? "disabled" : ""
+                              }`}
+                            onClick={previousPage}
+                            disabled={currentPage === 1}
+                          >
+                            Prev
+                          </button>
+                          <button
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${currentPage === 1 ? "disabled" : ""
+                              }`}
+                            onClick={nextPage}
+                            disabled={currentPage === totalPages}
                           >
                             Next
                           </button>
