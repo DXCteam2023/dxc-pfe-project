@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import axios from "axios";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
@@ -7,6 +7,11 @@ import Image from "next/image";
 import watch from "../../../../../public/assets/watch.png";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
+import { Chart, initTE } from "tw-elements";
+import Chartt from "./Chart";
+
+//import Chart from 'chart.js';
+
 const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const [user, setUser] = useState<any>(null);
   const [similarProfiles, setSimilarProfiles] = useState([]);
@@ -14,6 +19,56 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   useEffect(() => {
     getUsers();
   }, []);
+
+  initTE({ Chart });
+
+  const PolarAreaChart = () => {
+    useEffect(() => {
+      const dataPolar = {
+        type: "polarArea",
+        data: {
+          labels: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          datasets: [
+            {
+              label: "Traffic",
+              data: [2112, 2343, 2545, 3423, 2365, 1985, 987],
+              backgroundColor: [
+                "rgba(63, 81, 181, 0.5)",
+                "rgba(77, 182, 172, 0.5)",
+                "rgba(66, 133, 244, 0.5)",
+                "rgba(156, 39, 176, 0.5)",
+                "rgba(233, 30, 99, 0.5)",
+                "rgba(66, 73, 244, 0.4)",
+                "rgba(66, 133, 244, 0.2)",
+              ],
+            },
+          ],
+        },
+      };
+
+      const ctx = document.getElementById("polar-area-chart");
+
+      if (ctx) {
+        new Chart(ctx, dataPolar);
+      }
+    }, []);
+
+    return (
+      <div className="mx-auto w-3/5 overflow-hidden">
+        <canvas id="polar-area-chart"></canvas>
+      </div>
+    );
+  };
+ 
+  
 
   async function getUsers() {
     try {
@@ -450,6 +505,15 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                                   </tbody>
                                 </table>
                               </div>
+                            ) : user.profile === "Administrator" ? (
+                              <div className="flex p-2">
+                              <div className="w-1/2 py-4">
+                                <PolarAreaChart />
+                              </div>
+                              <div className="w-1/2 py-12">
+                               <Chartt/>
+                              </div>
+                            </div>
                             ) : null}
                           </div>
                           {/* <div className="mt-4">
