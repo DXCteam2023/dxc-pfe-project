@@ -1,142 +1,114 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dataProductOrders from "../data/dataProductOrders";
-import { FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEye, FiFilter, FiRefreshCcw, FiSearch, FiTrash2 } from "react-icons/fi";
 import Modal from "react-modal";
 import Link from "next/link.js";
 import {
+ 
+  FaBackward,
+  FaCog,
   FaPencilAlt,
   FaRegWindowClose,
   FaSortAmountDownAlt,
+ 
+  FaTrashAlt,
 } from "react-icons/fa";
 import NoRecord from "@/public/assets/NoRecord.png";
 import Image from "next/image";
+import axios from "axios";
+import { ACTION_FAST_REFRESH } from "next/dist/client/components/router-reducer/router-reducer-types";
 
-type ProductOrder = {
-  id: number;
-  Number: string;
-  state: string;
-  TaskType: string;
-  Priority: string;
-  Shortdescription: string;
-  AssignedTo: string;
-  Created: Date;
-  OrderLineItem: string;
-  Account: string;
-};
+
 
 const Table = () => {
-  const [filter, setFilter] = useState<ProductOrder[]>(dataProductOrders);
-  const [sortOrder, setSortOrder] = useState<string>("desc");
-  const [searchText, setSearchText] = useState<string>("");
-  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [selectedState, setSelectedState] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filterProductOrdersByState = (state: string) => {
-    if (state === "all") {
-      setFilter(dataProductOrders);
-    } else {
-      const updatedList = dataProductOrders.filter(
-        (order) => order.state === state,
-      );
-      setFilter(updatedList);
-    }
-  };
 
-  const filterProductOrdersByPriority = (priority: string) => {
-    if (priority === "all") {
-      setFilter(dataProductOrders);
-    } else {
-      const updatedList = dataProductOrders.filter(
-        (order) => order.Priority === priority,
-      );
-      setFilter(updatedList);
-    }
-  };
+  const [productOrders, setProductOrders] = React.useState<
+  Array<{
+    
+    _id: number;
+    id: string;
+    externalId: string;
+    ponr: boolean;
+    href: string;
+    completionDate: string;
+    expectedCompletionDate: string;
+    orderDate: string;
+    requestedCompletionDate: string;
+    requestedStartDate: string;
+    state: string;
+    version: string;
+    "@type": string;
+  }>
+>([]);
+  // Ajouter sortOrder comme variable d'état
+  const [sortOrder, setSortOrder] = useState("newest");
+  const [selectedPONR, setSelectedPONR] = useState("");
+  const [showTaskType, setShowTaskType] = useState(false);
 
-  const sortProductOrdersByCreated = (order: string) => {
-    const sortedList = [...filter].sort((a, b) => {
-      if (order === "asc") {
-        return new Date(a.Created).getTime() - new Date(b.Created).getTime();
-      } else {
-        return new Date(b.Created).getTime() - new Date(a.Created).getTime();
-      }
-    });
-
+  // Fonction pour gérer le tri
+  const handleSort = (order: React.SetStateAction<string>) => {
     setSortOrder(order);
-    setFilter(sortedList);
   };
-
-  const searchProductOrders = (text: string) => {
-    setSearchText(text);
-    const filteredList = dataProductOrders.filter((order) => {
-      const searchFields = `${order.Number} ${order.state} ${order.TaskType} ${order.Priority} ${order.AssignedTo} ${order.Shortdescription}`;
-      return searchFields.toLowerCase().includes(text.toLowerCase());
-    });
-    setFilter(filteredList);
+  
+const FiltredData = productOrders
+.filter((order) => selectedState === "" || order.state === selectedState)
+  const handleStateFilter = (state: React.SetStateAction<string>) => {
+    
+    setSelectedState(state);
+    setSelectedPONR("");
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/customer-order/product",
+        );
+        setProductOrders(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const sortProductOrdersByPriority = () => {
-    const priorityOrder = ["Critical", "High", "Moderate", "Low", "Planning"];
+    fetchData();
+  }, []);
 
-    const sortedList = [...dataProductOrders].sort((a, b) => {
-      const priorityA = priorityOrder.indexOf(a.Priority);
-      const priorityB = priorityOrder.indexOf(b.Priority);
+  if (productOrders.length === 0) {
+    return <p>No product orders found.</p>;
+  }
+// Trier les commandes de produits en fonction de sortOrder
+const sortedProductOrders = productOrders.sort((a, b) => {
+  const dateA = new Date(a.completionDate);
+  const dateB = new Date(b.completionDate);
 
-      return priorityA - priorityB;
-    });
+  if (sortOrder === "newest") {
+    return dateB.getTime() - dateA.getTime();
+  } else if (sortOrder === "oldest") {
+    return dateA.getTime() - dateB.getTime();
+  }
 
-    setFilter(sortedList);
-  };
+  // Retourne 0 si aucun ordre de tri correspondant n'est trouvé
+  return 0;
+});
+const handlePONRFilter = (value: React.SetStateAction<string>) => {
+  setSelectedPONR(value);
+};
+const handleAllFilter = () => {
+  setSelectedState("");
+  setSelectedPONR("");
+};
+const filteredData = FiltredData.filter((order) =>
+  order.id.toLowerCase().includes(searchQuery.toLowerCase())
+  &&
+    (selectedPONR === "" || order.ponr === (selectedPONR === "true"))
+);
+const handleToggleTaskType = () => {
+  setShowTaskType(!showTaskType);
+};
 
-  const handleOrderClick = (orderId: number) => {
-    setSelectedOrderId(orderId);
-    setModalIsOpen(true);
-  };
-
-  // Le nombre total de pages
-  const totalPages = Math.ceil(filter.length / itemsPerPage);
-
-  // l'index de la première et de la dernière ligne à afficher
-  const indexOfLastRow = currentPage * itemsPerPage;
-  const indexOfFirstRow = indexOfLastRow - itemsPerPage;
-
-  // Obtenir les lignes à afficher sur la page actuelle
-  const currentRows = filter.slice(indexOfFirstRow, indexOfLastRow);
-
-  // Fonction pour passer à la page suivante
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  // Fonction pour passer à la page précédente
-  const previousPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-  const date = new Date("2023-09-30T00:00:00.000Z");
-  const formattedDate = date.toISOString().split("T")[0];
-  console.log(formattedDate);
-  // Confirm message
-
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const handleDelete = () => {
-    console.log("Suppression effectuée !");
-  };
-
-  const handleClick = () => {
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmation = () => {
-    setShowConfirmation(false);
-    handleDelete();
-  };
-
-  const handleCancel = () => {
-    setShowConfirmation(false);
-  };
   return (
     <div className="flex w-full">
       <div className="flex w-full">
@@ -153,21 +125,62 @@ const Table = () => {
                     <input
                       type="text"
                       placeholder="Search"
-                      value={searchText}
-                      onChange={(e) => searchProductOrders(e.target.value)}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       className="search-input"
                     />
-                    <FiSearch size={20} className="search-icon" />
+                    <FiSearch size={15} className="search-icon" />
                   </div>
-                  <button className="btn">
-                    <a onClick={() => filterProductOrdersByPriority("all")}>
-                      All
-                    </a>
-                  </button>
+                  <button className="btn" onClick={handleAllFilter}>
+  ALL
+</button>
                   <Link href="/customer-order/all/product/Form">
                     <button className="btn">NEW</button>
                   </Link>
-
+                  <div className="dropdown">
+                    <button className="dropbtn" onClick={handleAllFilter} title="Refresh" >
+                      <FiRefreshCcw size={20} color="white" />
+                    </button>
+                   
+                  
+                
+                    </div>
+                  <div className="dropdown">
+                    <button className="dropbtn">
+                      <FaCog size={20} color="white" />
+                    </button>
+                    <div className="dropdown-content">
+                      <div className="submenu">
+                      <a href="#">
+                        SHOW/HIDE
+     
+</a>
+                        <div className="submenu-content">
+             
+                        
+  
+  <a
+              className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
+              onClick={handleToggleTaskType}
+            >
+              {showTaskType ? (
+                
+                 
+                  <p className="text-black-500">Hide Task Type</p>
+                
+              ) : (
+               
+                  
+                  <p className="text-black-500">Show Task Type</p>
+                
+              )}
+           
+</a>
+                        </div>
+                      </div>
+                
+                    </div>
+                  </div>
                   <div className="dropdown">
                     <button className="dropbtn">
                       <FiFilter size={20} color="white" />
@@ -176,79 +189,19 @@ const Table = () => {
                       <div className="submenu">
                         <a href="#">State</a>
                         <div className="submenu-content">
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByState("closed complete")
-                            }
-                          >
-                            Closed Complete
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByState("Canceled")
-                            }
-                          >
-                            Canceled
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByState("On Hold")
-                            }
-                          >
-                            On Hold
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByState("In Progress")
-                            }
-                          >
-                            In Progress
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByState("Scheduled")
-                            }
-                          >
-                            Scheduled
-                          </a>
-                        </div>
+                        <a onClick={() => handleStateFilter("completed")}><p className="text-black-500">Completed</p></a>
+                  <a onClick={() => handleStateFilter("canceled")}><p className="text-black-500">Canceled</p></a>
+                  <a onClick={() => handleStateFilter("on hold")}><p className="text-black-500">On Hold</p></a>
+                  <a onClick={() => handleStateFilter("in progress")}><p className="text-black-500">In Progress</p></a>
+                  <a onClick={() => handleStateFilter("scheduled")}><p className="text-black-500">Scheduled</p></a>
+                </div>
                       </div>
                       <div className="submenu">
-                        <a href="#">Priority</a>
+                        <a href="#">PONR</a>
                         <div className="submenu-content">
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByPriority("Critical")
-                            }
-                          >
-                            Critical
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByPriority("High")
-                            }
-                          >
-                            High
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByPriority("Moderate")
-                            }
-                          >
-                            Moderate
-                          </a>
-                          <a
-                            onClick={() => filterProductOrdersByPriority("Low")}
-                          >
-                            Low
-                          </a>
-                          <a
-                            onClick={() =>
-                              filterProductOrdersByPriority("Planning")
-                            }
-                          >
-                            Planning
-                          </a>
+                        <a onClick={() => handlePONRFilter("true")}><p className="text-black-500">True</p></a>
+                        <a onClick={() => handlePONRFilter("false")}><p className="text-black-500">False</p></a>
+                           
                         </div>
                       </div>
                     </div>
@@ -260,20 +213,14 @@ const Table = () => {
 
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a>Sort by Created</a>
+                        <a>Sort by Order date</a>
                         <div className="submenu-content">
-                          <a onClick={() => sortProductOrdersByCreated("desc")}>
-                            (Newest First)
-                          </a>
-                          <a onClick={() => sortProductOrdersByCreated("asc")}>
-                            (Oldest First)
-                          </a>
+                        <a onClick={() => handleSort("newest")}><p className="text-black-500">Newest first</p></a>
+                        <a onClick={() => handleSort("oldest")}><p className="text-black-500">Oldest first</p></a>
+
                         </div>
                       </div>
                       <div className="submenu">
-                        <a onClick={() => sortProductOrdersByPriority()}>
-                          Sort by Priority
-                        </a>
                       </div>
                     </div>
                   </div>
@@ -282,196 +229,180 @@ const Table = () => {
                       <thead>
                         <tr>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Number
+                            ID
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            State
+                          Completion Date
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Task Type
+                          Requested start Date
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Priority
+                            state
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Assigned to
+                           ORDER DATE
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Created
+                            PONR
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Short description
-                          </th>
+  {showTaskType ? 'TASK TYPE' : ''}
+</th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
                       </thead>
+
                       <tbody>
-                        {currentRows.length > 0 ? (
-                          currentRows.map((order) => (
-                            <tr className="tabbody" id="tabbody" key={order.id}>
+  {filteredData.length === 0 ? (
+    <tr className="tabbody">
+    <td colSpan={8} className="no-results">
+      <center>
+        <Image className="image" src={NoRecord} alt="No record" />
+      </center>
+      <center>No records to display</center>
+    </td>
+  </tr>
+  ) : (
+    
+    filteredData.map((order) => (
+     <tr key={order._id}>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.Number}
-                                    </p>{" "}
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.state}
+                                      {order.id}
                                     </p>
                                   </div>
                                 </div>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.TaskType}
-                                    </p>
-                                  </div>
-                                </div>
+
+                                <p className="text-gray-900 whitespace-no-wrap">
+    {new Date(order.completionDate).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })}{" "}
+    {new Date(order.completionDate).toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })}
+  </p>
+                              </td>
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <p className="text-gray-900 whitespace-no-wrap">
+    {new Date(order.requestedStartDate).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })}{" "}
+    {new Date(order.requestedStartDate).toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })}
+  </p>
+                              </td>
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <span className="relative inline-block px-3 py-1 font-semibold leading-tight">
+  <span
+    aria-hidden
+    className={`absolute inset-0 ${
+      order.state === 'completed'
+        ? 'bg-green-200'
+        : order.state === 'on hold'
+        ? 'bg-yellow-200'
+        : order.state === 'in progress'
+        ? 'bg-blue-200'
+        : order.state === 'canceled'
+        ? 'bg-red-200'
+        : order.state === 'scheduled'
+        ? 'bg-purple-200'
+        : ''
+    } rounded-full`}
+  ></span>
+  <span className="relative">{order.state}</span>
+</span>
+
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                   <div className="ml-3">
+ 
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.Priority}
-                                    </p>
+    {new Date(order.orderDate).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })}{" "}
+    {new Date(order.orderDate).toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })}
+  </p>
                                   </div>
                                 </div>
                               </td>
+                              
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.AssignedTo}
-                                    </p>
-                                  </div>
-                                </div>
+                              <span className={`relative inline-block px-3 py-1 font-semibold rounded-full text-black-900 leading-tight ${order.ponr ? 'bg-green-200' : 'bg-red-200'}`}>
+                              
+                              <span className="relative ">{order.ponr ? 'True' : 'False'}</span>
+                              </span>
+
+                              
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {
-                                        order.Created.toISOString().split(
-                                          "T",
-                                        )[0]
-                                      }
-                                    </p>
-                                  </div>
-                                </div>
+                              <p className="text-gray-900 whitespace-no-wrap">
+                              {showTaskType ? 'Product Order' : ''}
+                                </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.Shortdescription}
-                                    </p>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      <button
-                                        onClick={() =>
-                                          handleOrderClick(order.id)
-                                        }
+                              <p className="text-gray-900 whitespace-no-wrap">
+                              <Link href={`/customer-order/product/${order._id}`}
+                                        
                                       >
-                                        <FiEye size={20} className="eye-icon" />
-                                      </button>
-                                      <button onClick={handleClick}>
+                                        <FiEye size={18} className="icon" />
+                                      </Link>
+                              <Link href={`/customer-order/product/edit?orderId=${order._id}`} >
                                         <FaPencilAlt
-                                          size={20}
-                                          className="eye-icon"
+                                          size={18}
+                                          className="icon"
                                         />
-                                      </button>
-                                      <button onClick={handleClick}>
-                                        <FiTrash2
-                                          size={20}
-                                          className="trash-icon"
+                                      </Link>
+                                      <Link href={`/customer-order/product/edit?orderId=${order.id}`} >
+                                        <FaTrashAlt
+                                          size={18}
+                                          className="icon"
                                         />
-                                      </button>
-                                      {showConfirmation && (
-                                        <div className="popup-container">
-                                          <div className="popup">
-                                            <h2 className="pop">
-                                              <center>
-                                                <b>
-                                                  Are you sure you want to
-                                                  delete this product order?
-                                                </b>
-                                              </center>
-                                            </h2>
-                                            <div className="popup-buttons">
-                                              <button
-                                                onClick={handleConfirmation}
-                                                className="confirm"
-                                              >
-                                                Confirm
-                                              </button>
-                                              <button
-                                                onClick={handleCancel}
-                                                className="cancel"
-                                              >
-                                                Cancel
-                                              </button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      )}
-                                    </p>
-                                  </div>
-                                </div>
+                                      </Link>
+                                </p>
                               </td>
                             </tr>
-                          ))
-                        ) : (
-                          <tr className="tabbody">
-                            <td colSpan={8} className="no-results">
-                              <center>
-                                <Image
-                                  className="image"
-                                  src={NoRecord}
-                                  alt="No record"
-                                />
-                              </center>
-                              <center>No records to display</center>
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
+
+      ))
+  )}
+</tbody>
+
                     </table>
                     <div className="min-w-full leading-normal">
                       <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                         <span className="text-xs xs:text-sm text-gray-900">
-                          Page {currentPage} of {totalPages}
+                         
                         </span>
                         <div className="inline-flex mt-2 xs:mt-0">
+                          
                           <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${
-                              currentPage === 1 ? "disabled" : ""
-                            }`}
-                            onClick={previousPage}
-                            disabled={currentPage === 1}
-                          >
-                            Prev
-                          </button>
-                          <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${
-                              currentPage === 1 ? "disabled" : ""
-                            }`}
-                            onClick={nextPage}
-                            disabled={currentPage === totalPages}
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l `}
+                           
                           >
                             Next
                           </button>
@@ -485,131 +416,7 @@ const Table = () => {
           </div>
         </div>
       </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        contentLabel="Order Details"
-      >
-        {dataProductOrders.map((order) => {
-          if (order.id === selectedOrderId) {
-            return (
-              <div className="ml-2 flex mt-2 shadow-lg shadow-gray-500 md:shadow-1/2xl md:shadow-gray-500">
-                <div className="Details" key={order.id}>
-                  <nav className="navbar">
-                    <button
-                      onClick={() => setModalIsOpen(false)}
-                      className="close-button"
-                    >
-                      <FaRegWindowClose size={20} />
-                    </button>
-
-                    <h3>Product Order</h3>
-                    <h3>ID:{order.id}</h3>
-                  </nav>
-                  <div className="Infos">
-                    <p></p>
-
-                    {/* Add any other properties of the order object here */}
-                    <div className="flex flex-wrap -mx-3 mb-6">
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Number:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.Number}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          State:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          value={order.state}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Account:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.Account}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Task Type:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.TaskType}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Order Line Item:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.OrderLineItem}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Priority:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.Priority}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Assigned To:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.AssignedTo}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Created:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.Created.toISOString().split("T")[0]}
-                          type="text"
-                        ></input>
-                      </div>
-                      <div className="w-full md:w-1/1 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Short description:
-                        </label>
-                        <input
-                          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                          value={order.Shortdescription}
-                          type="text"
-                        ></input>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          }
-          return null;
-        })}
-      </Modal>
+      
     </div>
   );
 };
