@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import InputText from "./InputText";
+import SelectInput from "./SelectInput";
 
-export default function LocationModal({
-  onAdd,
-  onCancel,
-}: {
-  onAdd: (newLocation: string) => void;
+type OptionType = { value: string; label: string };
+
+type PropsType = {
+  options: Array<OptionType>;
+  onAdd: (newLocations: Array<OptionType>) => void;
   onCancel: () => void;
-}) {
-  const [value, setValue] = useState("");
+};
+
+export default function LocationModal({ options, onAdd, onCancel }: PropsType) {
+  const [selectedLocations, setSelectedLocations] = useState([]);
 
   const handleOnAdd = () => {
-    onAdd(value);
+    onAdd(selectedLocations);
   };
 
   return (
@@ -25,7 +28,7 @@ export default function LocationModal({
 
       <div className="fixed inset-0 z-10 overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
@@ -36,12 +39,10 @@ export default function LocationModal({
                     Choose at least one location
                   </h3>
                   <div className="mt-2">
-                    <InputText
-                      slug="locations"
-                      title="Locations"
-                      required={true}
-                      value={value}
-                      onChange={setValue}
+                    <SelectInput
+                      options={options}
+                      selected={selectedLocations}
+                      onChange={setSelectedLocations}
                     />
                   </div>
                 </div>

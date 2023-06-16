@@ -1,12 +1,20 @@
 "use client";
-
+import React from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
+
+
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
-import { NewCustomerOrderContext } from "../context/new-customer-order-context";
-import { useContext, useState } from "react";
+import {
+  NewCustomerOrderContext,
+  ProductOrderType,
+} from "../context/new-customer-order-context";
 import LocationModal from "../components/LocationModal";
+import SelectInput from "../components/SelectInput";
+
+type OptionType = { value: string; label: string };
 
 export default function SelectProduct() {
   const route = useRouter();
@@ -15,20 +23,31 @@ export default function SelectProduct() {
 
   const [showNewLocationModal, setShowNewLocationModal] = useState(false);
 
+  const [currentProductOrder, setCurrentProductOrder] =
+    useState<ProductOrderType>();
+
+  useEffect(() => {
+    setCurrentProductOrder(myContext.getSelectedProductOrder());
+  }, [myContext.productOrders]);
+
+  useEffect(() => {
+    console.log("currentProductOrder has changed", currentProductOrder);
+  }, [currentProductOrder]);
+
   const handleContinueOnClick = () => {
     route.push("/customer-order/product/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {
-    let tamp = value
-    if(value==''){
-      tamp = '1'
+    let tamp = value;
+    if (value === "") {
+      tamp = "1";
     }
-    myContext.setQuantity(parseInt(tamp));
+    // myContext.setQuantity(parseInt(tamp));
   };
 
-  const handleLocationOnAdd = (newLocation: string) => {
-    const tamp = myContext.locations.concat([newLocation]);
+  const handleLocationOnAdd = (newLocations: Array<OptionType>) => {
+    const tamp = myContext.locations.concat(newLocations);
     myContext.setLocations(tamp);
     setShowNewLocationModal(false);
   };
@@ -40,12 +59,19 @@ export default function SelectProduct() {
   const handleAddLocationOnClick = () => {
     setShowNewLocationModal(true);
   };
+
+  // console.log("OFFERING - ", myContext.selectedOfferings);
   return (
     <SubLayout
       leftChildren={
         <div className="flex flex-col">
           {showNewLocationModal && (
             <LocationModal
+              options={[
+                { value: "chocolate", label: "Chocolate" },
+                { value: "strawberry", label: "Strawberry" },
+                { value: "vanilla", label: "Vanilla" },
+              ]}
               onAdd={handleLocationOnAdd}
               onCancel={handleLocationOnCancel}
             />
@@ -63,7 +89,7 @@ export default function SelectProduct() {
           <div className="flex flex-col gap-2">
             {myContext.locations.map((location) => (
               <div className="text-sm p-1 border-l-2 border-l-[#2c755e] bg-[#daeae7]">
-                {location}
+                {location.label}
               </div>
             ))}
           </div>
@@ -84,16 +110,20 @@ export default function SelectProduct() {
                   title="Firt Name"
                   required={true}
                   placeholder="Firt Name"
-                  value={myContext.firstname}
-                  onChange={myContext.setFirstname}
+                  value={currentProductOrder?.firstname}
+                  onChange={(value: string) => {
+                    myContext.updateSelectedProductOrder("firstname", value);
+                  }}
                 />
                 <InputText
                   slug="last name"
                   title="Last Name"
                   required={true}
                   placeholder="Last Name"
-                  value={myContext.lastname}
-                  onChange={myContext.setLastname}
+                  value={currentProductOrder?.lastname}
+                  onChange={(value: string) => {
+                    myContext.updateSelectedProductOrder("lastname", value);
+                  }}
                 />
               </div>
               <div className="flex justify-center gap-4">
@@ -102,16 +132,20 @@ export default function SelectProduct() {
                   title="Email"
                   required={true}
                   placeholder="Email"
-                  value={myContext.email}
-                  onChange={myContext.setEmail}
+                  value={currentProductOrder?.email}
+                  onChange={(value: string) => {
+                    myContext.updateSelectedProductOrder("email", value);
+                  }}
                 />
                 <InputText
                   slug="mobile number"
                   title="Mobile Number"
                   required={true}
                   placeholder="Mobile Number"
-                  value={myContext.mobilenumber}
-                  onChange={myContext.setMobilenumber}
+                  value={currentProductOrder?.mobilenumber}
+                  onChange={(value: string) => {
+                    myContext.updateSelectedProductOrder("mobilenumber", value);
+                  }}
                 />
               </div>
             </div>
@@ -119,21 +153,26 @@ export default function SelectProduct() {
           <div>
             <h4 className="font-extrabold">Product Offerings</h4>
             <div className="flex justify-center gap-4 p-4 border-2 rounded-md">
-              <InputText
-                slug="offerings"
-                title="Offerings"
-                required={true}
-                placeholder="Offerings"
-                value={myContext.offerings}
-                onChange={myContext.setOfferings}
+              <SelectInput
+                options={[
+                  { value: "2chocolate", label: "2 Chocolate" },
+                  { value: "2strawberry", label: "2 Strawberry" },
+                  { value: "2vanilla", label: "2 Vanilla" },
+                ]}
+                selected={currentProductOrder?.offerings || []}
+                onChange={(values: Array<OptionType>) => {
+                  myContext.updateSelectedProductOrder("offerings", values);
+                }}
               />
               <InputText
                 slug="quantity"
                 title="Quantity"
                 required={true}
                 placeholder="Quantity"
-                value={myContext.quantity}
-                onChange={handleQuantityOnChange}
+                value={currentProductOrder?.quantity}
+                onChange={(value: string) => {
+                  myContext.updateSelectedProductOrder("quantity", value);
+                }}
               />
             </div>
           </div>

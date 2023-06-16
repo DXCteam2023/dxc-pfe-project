@@ -51,6 +51,8 @@
     "object-shorthand": "off",
     "no-nested-ternary": "off",
     "no-return-assign": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "no-param-reassign": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }
