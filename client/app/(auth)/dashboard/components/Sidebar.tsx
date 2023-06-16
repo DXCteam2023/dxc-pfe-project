@@ -15,7 +15,7 @@ type SidebarProps = {
 
 const Sidebar = () => {
   const [localToken, setLocalToken] = useState("");
-  const [localUser, setLocalUser] = useState(JSON.stringify({}));
+  const [localUser, setLocalUser] = useState("{}");
 
   useEffect(() => {
     let token;
@@ -43,10 +43,10 @@ const Sidebar = () => {
     }
   };
 
-  const name = JSON.parse(localUser).username
+  const name = localUser ? JSON.parse(localUser).username
     ? JSON.parse(localUser).username.toUpperCase()
-    : "";
-  const profile = JSON.parse(localUser).profile;
+    : "" : "";
+  const profile = localUser ?JSON.parse(localUser).profile:"";
   const data = SideBarData.filter((item: any) =>
     item.profile.includes(profile),
   );
