@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEye } from "react-icons/fa";
+import Link from "next/link";
 import StatistiqueSpecification from "./statistiqueSpecification";
+
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
-import Link from "next/link";
 
 // Importing utility functions
 import { getProductSpecifications } from "../utils";
-import { product } from "../../product-offering/all/published/data";
 
 interface ProductOrders {
   status: string;
@@ -31,7 +31,7 @@ export default function AllProductSpecificationsPage() {
   async function getProductSpecifications() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/product-specification"
+        "http://localhost:5000/api/product-specification",
       );
       const specificationData: ProductOrders[] = response.data;
       setProductSpecifications(specificationData);
@@ -45,7 +45,7 @@ export default function AllProductSpecificationsPage() {
     const filteredProd = productSpecifications.filter((product) => {
       const productValues = Object.values(product).join(" ").toLowerCase();
       const isMatchingSearchTerm = productValues.includes(
-        searchTerm.toLowerCase()
+        searchTerm.toLowerCase(),
       );
       const isMatchingStatus =
         statusFilter === "All" || product.status === statusFilter;
@@ -120,7 +120,8 @@ export default function AllProductSpecificationsPage() {
 
   // const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {};
 
-  return (    <div className="bg-gray-100 flex">
+  return (
+    <div className="bg-gray-100 flex">
       <Sidebar />
       <div className="bg-white  min-h-screen-100 w-5/6  ">
         <Header />
@@ -183,9 +184,10 @@ export default function AllProductSpecificationsPage() {
                     <div className="flex flex-row mb-1 sm:mb-0">
                       <div className="relative ">
                         <select
-                         className=" mx-4 ml-2 px-8 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
-                         value={statusFilter}
-                         onChange={handleStatusFilter}>
+                          className=" mx-4 ml-2 px-8 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                          value={statusFilter}
+                          onChange={handleStatusFilter}
+                        >
                           <option value="All">All</option>
                           <option value="published">Published</option>
                           <option value="draft">Draft</option>
@@ -246,91 +248,92 @@ export default function AllProductSpecificationsPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredProds.slice(indexOfFirstOrder, indexOfLastOrder).
-                          map((product: any, index: number) => {
-                            return (
-                              <tr key={index}>
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <p className="text-gray-900 whitespace-no-wrap  font-lg text-semibold leading-6 ">
-                                    {product.name}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <p className="text-indigo-700 whitespace-no-wrap font-semibold">
-                                    {product.version}
-                                  </p>
-                                </td>
-                                {/* <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                          {filteredProds
+                            .slice(indexOfFirstOrder, indexOfLastOrder)
+                            .map((product: any, index: number) => {
+                              return (
+                                <tr key={index}>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <p className="text-gray-900 whitespace-no-wrap  font-lg text-semibold leading-6 ">
+                                      {product.name}
+                                    </p>
+                                  </td>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <p className="text-indigo-700 whitespace-no-wrap font-semibold">
+                                      {product.version}
+                                    </p>
+                                  </td>
+                                  {/* <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                   {product.internalVersion}
                                 </td> */}
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <div className="flex items-center ">
-                                    <div className="ml-3 ">
-                                      <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
-                                        {product.description}
-                                      </p>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <div className="flex items-center ">
+                                      <div className="ml-3 ">
+                                        <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
+                                          {product.description}
+                                        </p>
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <div className="flex items-center">
-                                    <div className="ml-3">
-                                      {/* <p className="text-gray-900  whitespace-no-wrap">
+                                  </td>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <div className="flex items-center">
+                                      <div className="ml-3">
+                                        {/* <p className="text-gray-900  whitespace-no-wrap">
                                         {new Date(
                                           product.lastUpdate,
                                         ).toDateString()}
                                       </p> */}
-                                      <span
-                                        className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
-                                          product.status,
-                                        )} leading-tight`}
-                                      >
                                         <span
-                                          aria-hidden
-                                          className={`absolute inset-0 ${getStateBgColor(
+                                          className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                             product.status,
-                                          )}  rounded-full`}
-                                        ></span>
-                                        <span
-                                          className={`relative inset-0 ${getStateTextColor(
-                                            product.status,
-                                          )}  rounded-full`}
+                                          )} leading-tight`}
                                         >
-                                          {product.status}
+                                          <span
+                                            aria-hidden
+                                            className={`absolute inset-0 ${getStateBgColor(
+                                              product.status,
+                                            )}  rounded-full`}
+                                          ></span>
+                                          <span
+                                            className={`relative inset-0 ${getStateTextColor(
+                                              product.status,
+                                            )}  rounded-full`}
+                                          >
+                                            {product.status}
+                                          </span>
                                         </span>
-                                      </span>
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <div className="flex items-center ">
-                                    <div className="ml-3 ">
-                                      <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
-                                        {product?.validFor?.startDateTime}
-                                      </p>
+                                  </td>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <div className="flex items-center ">
+                                      <div className="ml-3 ">
+                                        <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
+                                          {product?.validFor?.startDateTime}
+                                        </p>
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <div className="flex items-center ">
-                                    <div className="ml-3 ">
-                                      <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
-                                        {product?.validFor?.endDateTime}
-                                      </p>
+                                  </td>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <div className="flex items-center ">
+                                      <div className="ml-3 ">
+                                        <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
+                                          {product?.validFor?.endDateTime}
+                                        </p>
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
+                                  </td>
 
-                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                  <div className="flex item-center justify-center">
-                                    <Link
-                                      href={`/product-specification/${product._id}`}
-                                      className=" button text-sm bg-yellow-300 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
-                                    >
-                                      View
-                                    </Link>
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                                    <div className="flex item-center justify-center">
+                                      <Link
+                                        href={`/product-specification/${product._id}`}
+                                        className=" button text-sm bg-yellow-300 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
+                                      >
+                                        View
+                                      </Link>
 
-                                    {/* <button
+                                      {/* <button
                                       className="mx-2 text-sm text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-red-600 duration-300"
                                       // onClick={handleCancelClick}
                                     >
@@ -347,11 +350,11 @@ export default function AllProductSpecificationsPage() {
                                         />
                                       </svg>
                                     </button> */}
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </table>
                       <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
@@ -360,16 +363,18 @@ export default function AllProductSpecificationsPage() {
                         </span>
                         <div className="inline-flex mt-2 xs:mt-0">
                           <button
-                           className="text-sm bg-purple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
-                           onClick={handlePreviousPage}
-                           disabled={currentPage === 1}>
-                         Previous
+                            className="text-sm bg-purple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                          >
+                            Previous
                           </button>
 
-                          <button 
-                          className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
-                          onClick={handleNextPage}
-                          disabled={indexOfLastOrder >= product.length}>
+                          <button
+                            className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
+                            onClick={handleNextPage}
+                            disabled={indexOfLastOrder >= filteredProds.length}
+                          >
                             Next
                           </button>
                         </div>

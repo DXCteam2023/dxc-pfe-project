@@ -1,14 +1,13 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import ReactModal from "react-modal";
-import photo from "@/public/assets/dev3.jpg";
-import Image from "next/image";
-import { dataProductOfferings } from "../../data/dataProductOfferings";
-import { dataCostumerOrders } from "../../data/dataCostumerOrders";
-import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import avatar from "@/public/assets/avatar.png"
+import avatar from "../../../../../public/assets/avatar.png"
+import Image from "next/image";
+import dataProductOfferings from "../../data/dataProductOfferings";
+import dataCostumerOrders from "../../data/dataCostumerOrders";
+
 // Importing types
 import { TDataCustomerOrder, TDataProductOffering } from "./types";
 
@@ -119,98 +118,117 @@ const Header = () => {
               </button>
               {/*Result Product Offerings  by word  */}
 
-              {searchResults.map((result) => (
+              {searchResults.map((result) => {
+                return (
+                  <div>
+                    <div
+                      key={result.number}
+                      className=" w-full flex  bg-black bg-opacity-60 px-4 lg:p-5 overflow-hidden relative "
+                    >
+                      <div className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left">
+                        <div className="sm:flex  sm:justify-between sm:space-x-5">
+                          <div className="flex items-center flex-1 min-w-0">
+                            <Image
+                              src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/SlackLogo_CompanyNews_SecondaryAubergine_Hero.jpg?d=500x500&amp;f=fill"
+                              className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
+                              alt="image"
+                            />
+                            <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
+                              <p className="text-lg font-bold text-gray-800 truncate">
+                                <a
+
+                                  className="underline"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {result.display_name}
+                                </a>
+                              </p>
+                              <div className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left">
+                                <div className="sm:flex sm:items-center sm:justify-between sm:space-x-5">
+                                  <div className="flex items-center flex-1 min-w-0">
+                                    <Image
+                                      src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/SlackLogo_CompanyNews_SecondaryAubergine_Hero.jpg?d=500x500&amp;f=fill"
+                                      className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
+                                      alt="image"
+                                    />
+                                    <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
+                                      <p className="text-gray-600 text-md">
+                                        {result.number}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="mt-4 mr-0 mb-0 ml-0 pt-0 pr-0 pb-0 pl-14 flex items-center sm:space-x-6 sm:pl-0 sm:mt-0">
+                                    <a
+                                      href=""
+                                      className="bg-gray-800 pt-2 pr-6 pb-2 pl-6 text-lg font-medium text-gray-100 transition-all
+                                            duration-200 hover:bg-gray-700 rounded-lg"
+                                    >
+                                      View Product
+                                    </a>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
+              )}
+
+            </div>
+            {/*Result costumer orders by word*/}
+
+            <div className="bg-black bg-opacity-60 flex items-center p-5 lg:p-2 overflow-hidden relative">
+              {customerResults.map((result) => (
                 <div
                   key={result.number}
-                  className=" w-full flex  bg-black bg-opacity-60 px-4 lg:p-5 overflow-hidden relative "
+                  className="bg-white flex items-center p-5 lg:p-2 overflow-hidden relative"
                 >
                   <div className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left">
-                    <div className="sm:flex  sm:justify-between sm:space-x-5">
+                    <div className="sm:flex sm:items-center sm:justify-between sm:space-x-5">
                       <div className="flex items-center flex-1 min-w-0">
                         <img
                           src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/SlackLogo_CompanyNews_SecondaryAubergine_Hero.jpg?d=500x500&amp;f=fill"
                           className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
+                          alt="Profile"
                         />
                         <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
-                        <p className="text-lg font-bold text-gray-800 truncate">
-                <a
-                  
-                  className="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {result.display_name}
-                </a>
-              </p>
-                          <p className="text-gray-600 text-md">
-                            {result.number}
+                          <p className="text-lg font-bold text-gray-800 truncate">
+                            {result.category}
                           </p>
+                          <p className="text-gray-600 text-md">{result.number}</p>
                         </div>
                       </div>
                       <div className="mt-4 mr-0 mb-0 ml-0 pt-0 pr-0 pb-0 pl-14 flex items-center sm:space-x-6 sm:pl-0 sm:mt-0">
                         <a
                           href=""
-                          className="bg-gray-800 pt-2 pr-6 pb-2 pl-6 text-lg font-medium text-gray-100 transition-all
-                    duration-200 hover:bg-gray-700 rounded-lg"
+                          className="bg-gray-800 pt-2 pr-6 pb-2 pl-6 text-lg font-medium text-gray-100 transition-all duration-200 hover:bg-gray-700 rounded-lg"
                         >
-                          View Product
+                          View Order
                         </a>
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
-              </div>
-              {/*Result costumer orders by word*/}
-
-              <div className="bg-black bg-opacity-60 flex items-center p-5 lg:p-2 overflow-hidden relative">
-  {customerResults.map((result) => (
-    <div
-      key={result.number}
-      className="bg-white flex items-center p-5 lg:p-2 overflow-hidden relative"
-    >
-      <div className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left">
-        <div className="sm:flex sm:items-center sm:justify-between sm:space-x-5">
-          <div className="flex items-center flex-1 min-w-0">
-            <img
-              src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/SlackLogo_CompanyNews_SecondaryAubergine_Hero.jpg?d=500x500&amp;f=fill"
-              className="flex-shrink-0 object-cover rounded-full btn- w-10 h-10"
-              alt="Profile"
-            />
-            <div className="mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
-              <p className="text-lg font-bold text-gray-800 truncate">
-                {result.category}
-              </p>
-              <p className="text-gray-600 text-md">{result.number}</p>
             </div>
-          </div>
-          <div className="mt-4 mr-0 mb-0 ml-0 pt-0 pr-0 pb-0 pl-14 flex items-center sm:space-x-6 sm:pl-0 sm:mt-0">
-            <a
-              href=""
-              className="bg-gray-800 pt-2 pr-6 pb-2 pl-6 text-lg font-medium text-gray-100 transition-all duration-200 hover:bg-gray-700 rounded-lg"
-            >
-              View Order
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
 
           </ReactModal>
           <div
-            className={`relative overflow-hidden border ${
-              isInputFocused ? "border-purple-500" : "border-purple-300"
-            }`}
+            className={`relative overflow-hidden border ${isInputFocused ? "border-purple-500" : "border-purple-300"
+              }`}
           >
             <div className="inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
             <input
               type="search"
               id="search"
-              className={`shadow-md block w-full p-3 pl-10 text-sm text-gray-900 bg-white-50 focus:outline-none focus:ring-2 focus:ring-purple-500 ${
-                isInputFocused ? "border-none" : "border"
-              }`}
+              className={`shadow-md block w-full p-3 pl-10 text-sm text-gray-900 bg-white-50 focus:outline-none focus:ring-2 focus:ring-purple-500 ${isInputFocused ? "border-none" : "border"
+                }`}
               placeholder=" Quick Search"
               required
               onFocus={handleInputFocus}

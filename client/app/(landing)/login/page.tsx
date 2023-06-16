@@ -1,19 +1,17 @@
 "use client";
 
 // Importing modules
-import { SyntheticEvent } from "react";
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { useEffect } from "react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-
-// Importing assets
-import dxc from "@/public/assets/dxc.jpg";
-import loginpic from "@/public/assets/loginpic.svg";
 
 // Importing components
 import Image from "next/image";
+
+// Importing assets
+import dxc from "../../../public/assets/dxc.jpg";
+import loginpic from "../../../public/assets/loginpic.svg";
 
 // Importing styles
 import styles from "../../home.module.css";
@@ -28,10 +26,19 @@ export default function loginPage() {
     e.preventDefault();
 
     try {
-      const url = "http://localhost:5000/api/user/login";
-      const { data: res } = await axios.post(url, { userID, password });
-      console.log(res.data)
-      console.log(res.user)
+      // const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
+      const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
+      const { data: res } = await axios.post(
+        url,
+        { userID, password },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        },
+      );
+      console.log(res.data);
+      console.log(res.user);
       localStorage.setItem("token", res.data);
       localStorage.setItem("user", JSON.stringify(res.user));
       alert(res.message);
@@ -43,27 +50,27 @@ export default function loginPage() {
         setError(err.response.data.message);
         console.log(err.response.data.message);
       }
-        // console.log(err);
+      // console.log(err);
     }
   };
 
-//   const handleLogout = () => {
-//     Swal.fire({
-//       title: "Are you sure?",
-//       text: "You are going to Logout!",
-//       icon: "info",
-//       showCancelButton: true,
-//       confirmButtonColor: "#3085d6",
-//       cancelButtonColor: "#5f249f",
-//       confirmButtonText: "Logout",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("user");
-//         window.location.reload();
-//       }
-//     });
-//   };
+  //   const handleLogout = () => {
+  //     Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You are going to Logout!",
+  //       icon: "info",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#5f249f",
+  //       confirmButtonText: "Logout",
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         localStorage.removeItem("token");
+  //         localStorage.removeItem("user");
+  //         window.location.reload();
+  //       }
+  //     });
+  //   };
 
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
@@ -105,7 +112,7 @@ export default function loginPage() {
                     src={dxc}
                     alt="logo"
                   />
-                  <span className="border-b-[1px] border-purple-200 w-2/3 p-3 w-16 md:w-32 lg:w-48"></span>
+                  <span className="border-b-[1px] border-purple-200 w-2/3 p-3 md:w-32 lg:w-48"></span>
                   <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight purple-header-links">
                     Sign in to your account
                   </h2>

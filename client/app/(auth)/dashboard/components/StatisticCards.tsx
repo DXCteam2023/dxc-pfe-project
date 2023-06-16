@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect} from "react";
-import { dataCostumerOrders } from "../data/dataCostumerOrders";
+import dataCostumerOrders  from "../data/dataCostumerOrders";
 import axios from "axios";
 interface ProductOfferings {
   state: string;
@@ -87,7 +87,7 @@ const StatisticCards = () => {
     /*  Statistics %  Canceled Costumer Orders */
   }
   const percenInprogressOrders = Math.floor(
-    (totalInProgressOrders / dataCostumerOrders.length) * 100,
+    (totalInProgressOrders / products.length) * 100,
   );
   {
     /*  Total Archived Product Offering  */

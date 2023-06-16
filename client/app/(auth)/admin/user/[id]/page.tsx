@@ -1,13 +1,13 @@
 "use client";
-import React, { useEffect, useState ,useRef} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
+import { Chart, initTE } from "tw-elements";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
-import Image from "next/image";
 import watch from "../../../../../public/assets/watch.png";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
-import { Chart, initTE } from "tw-elements";
 import Chartt from "./Chart";
 
 //import Chart from 'chart.js';
@@ -57,7 +57,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
       const ctx = document.getElementById("polar-area-chart");
 
       if (ctx) {
-        new Chart(ctx, dataPolar);
+        Chart(ctx, dataPolar);
       }
     }, []);
 
@@ -67,8 +67,6 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
       </div>
     );
   };
- 
-  
 
   async function getUsers() {
     try {
@@ -507,13 +505,13 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                               </div>
                             ) : user.profile === "Administrator" ? (
                               <div className="flex p-2">
-                              <div className="w-1/2 py-4">
-                                <PolarAreaChart />
+                                <div className="w-1/2 py-4">
+                                  <PolarAreaChart />
+                                </div>
+                                <div className="w-1/2 py-12">
+                                  <Chartt />
+                                </div>
                               </div>
-                              <div className="w-1/2 py-12">
-                               <Chartt/>
-                              </div>
-                            </div>
                             ) : null}
                           </div>
                           {/* <div className="mt-4">

@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
-import { dataCostumerOrders } from "../data/dataCostumerOrders";
 import axios from "axios";
-import { dataProductOfferings } from "../data/dataProductOfferings";
+import  dataCostumerOrders  from "../data/dataCostumerOrders";
+
+import  dataProductOfferings  from "../data/dataProductOfferings";
 interface ProductOfferings {
   state: string;
   orderDate: string;

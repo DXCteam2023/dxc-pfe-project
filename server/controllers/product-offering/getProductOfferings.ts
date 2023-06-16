@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { ProductOffering } from "./../../models/productOffering";
 
-export default async function getProductOfferings(req, res) {
+export default async function getProductOfferings(req:Request, res:Response) {
     try {
         const po = await ProductOffering.find();
         res.setHeader("Content-Type", "application/json");

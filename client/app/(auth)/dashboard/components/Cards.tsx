@@ -43,8 +43,8 @@ const Cards = () => {
     }
   }
 
-  const orders = products.filter((order: any) => order.state === "new");
-  const newOffering = productOfferings.filter((productOffering: any) => productOffering.status === "new");
+  const orders = products.filter((order: any) => order.state === "new").length;
+  const newOffering = productOfferings.filter((productOffering: any) => productOffering.status === "new").length;
   return (
     <div>
       <div className="mx-5 flex flex-wrap my-5 -mx-2">

@@ -33,7 +33,7 @@ type ProductOfferingPrice = {
 
 type ProductSpecification = {
   id: string;
-  name: string;
+  name?:string;
   internalId?: string;
   internalVersion?: string;
   version?: string;

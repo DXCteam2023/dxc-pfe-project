@@ -1,4 +1,4 @@
-export const dataProductOfferings = [
+const dataProductOfferings = [
   {
     number: "PRODOF0001",
     display_name: "Premium Unlimited mobile plan",
@@ -37,7 +37,6 @@ export const dataProductOfferings = [
     state: "draft",
     short_description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    state: "new",
     description: "Test",
     Contract_terms: "12 month",
     start_date: "12/05/2023",
@@ -90,3 +89,5 @@ export const dataProductOfferings = [
     last_update: "31/01/2023",
   },
 ];
+
+export default dataProductOfferings;

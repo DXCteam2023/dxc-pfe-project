@@ -1,22 +1,20 @@
 "use client";
-import { useState, useEffect } from "react";
-import React, { ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 
 import Link from "next/link";
 import { RxDashboard } from "react-icons/rx";
 import { FiArchive } from "react-icons/fi";
 import Image from "next/image";
+import avatar from "../../../../public/assets/avatar.png";
+import SideBarData from "../data/SidebarData";
 
-import { SideBarData } from "../data/SidebarData";
-
-import avatar from "@/public/assets/avatar.png";
-interface SidebarProps {
+type SidebarProps = {
   children: ReactNode;
-}
+};
 
 const Sidebar = () => {
   const [localToken, setLocalToken] = useState("");
-  const [localUser, setLocalUser] = useState(JSON.stringify({}));
+  const [localUser, setLocalUser] = useState("{}");
 
   useEffect(() => {
     let token;
@@ -44,10 +42,10 @@ const Sidebar = () => {
     }
   };
 
-  const name = JSON.parse(localUser).username
+  const name = localUser ? JSON.parse(localUser).username
     ? JSON.parse(localUser).username.toUpperCase()
-    : "";
-  const profile = JSON.parse(localUser).profile;
+    : "" : "";
+  const profile = localUser ?JSON.parse(localUser).profile:"";
   const data = SideBarData.filter((item: any) =>
     item.profile.includes(profile),
   );
