@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UpdateProductForm from "./../UpdateProductForm";
-import "../styles.css"
+import "../styles.css";
 
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
+import UpdateProductForm from "../UpdateProductForm";
+import Sidebar from "../../../dashboard/components/Sidebar";
+import Header from "../../../dashboard/components/header/Header";
+
 const page = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<any>();
   const [activeTab, setActiveTab] = useState(0);
@@ -19,11 +20,11 @@ const page = ({ params }: { params: { id: string } }) => {
   async function getProductOrderById() {
     try {
       const id = params.id;
-      console.log("params id",params.id)
+      console.log("params id", params.id);
       const response = await axios.get(
-        `http://localhost:5000/api/customer-order/product/${id}`,
+        `https://dxc-pfe-project-server.vercel.app/api/customer-order/product/${id}`,
       );
-      console.log(response)
+      console.log(response);
       const ProductOrderData = response.data;
       setProduct(ProductOrderData);
       console.log("Product Data:", ProductOrderData);
@@ -60,7 +61,6 @@ const page = ({ params }: { params: { id: string } }) => {
                           product={product}
                           onClose={() => setShowForm(false)}
                         />
-                        
                       ) : (
                         <>
                           <button
@@ -408,4 +408,3 @@ export default page;
 function getProductOrders() {
   throw new Error("Function not implemented.");
 }
-

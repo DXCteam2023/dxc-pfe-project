@@ -23,7 +23,7 @@ export default function UpdateUserForm({
     setIsVisible(false);
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/user/${user?._id}`,
+        `https://dxc-pfe-project-server.vercel.app/api/user/${user?._id}`,
         {
           username,
           profile,

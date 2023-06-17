@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// import { off } from "process";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getProductSpecification } from "../utils";
 import ChartSpecification from "./ChartSpecification";
-import { off } from "process";
+
 const SingleProductSpecificationPage = ({
   params,
 }: {
@@ -45,7 +46,7 @@ const SingleProductSpecificationPage = ({
   async function getProductOfferingsBySpecification() {
     try {
       const allProductOfferings = await axios
-        .get(`http://localhost:5000/api/product-offering`)
+        .get(`https://dxc-pfe-project-server.vercel.app/api/product-offering`)
         .then((response) => response.data)
         .catch((e) => {
           console.log("Axios Error");
@@ -56,48 +57,48 @@ const SingleProductSpecificationPage = ({
 
       const filteredOfferings = allProductOfferings.filter((offering: any) => {
         const { productSpecification } = offering;
-        return productSpecification && productSpecification.name === product.name;
+        return (
+          productSpecification && productSpecification.name === product.name
+        );
       });
       console.log("filteredOfferings", filteredOfferings);
       SetFiltredOffering(filteredOfferings);
       return filteredOfferings;
     } catch (error) {
       console.error("Catch Test error:", error);
-      
-    }return [];
+    }
+    return [];
   }
-console.log(filteredOffering)
-function getStateTextColor(status: string) {
-  switch (status) {
-    case "retired":
-      return " text-yellow-900";
-    case "in progress":
-      return "text-blue-900";
-    case "completed":
-      return "text-green-900";
-    case "canceled":
-      return "text-red-900";
-    default:
-      return "";
+  console.log(filteredOffering);
+  function getStateTextColor(status: string) {
+    switch (status) {
+      case "retired":
+        return " text-yellow-900";
+      case "in progress":
+        return "text-blue-900";
+      case "completed":
+        return "text-green-900";
+      case "canceled":
+        return "text-red-900";
+      default:
+        return "";
+    }
   }
-}
 
-function getStateBgColor(
-  status: string) {
-  switch (
-    status) {
-    case "retired":
-      return "bg-yellow-200 shadow-blue-300";
-    case "draft":
-      return "bg-blue-200  shadow-yellow-300";
-    case "published":
-      return "bg-green-200 shadow-green-300";
-    case "archived":
-      return "bg-red-200 shadow-red-300";
-    default:
-      return "";
+  function getStateBgColor(status: string) {
+    switch (status) {
+      case "retired":
+        return "bg-yellow-200 shadow-blue-300";
+      case "draft":
+        return "bg-blue-200  shadow-yellow-300";
+      case "published":
+        return "bg-green-200 shadow-green-300";
+      case "archived":
+        return "bg-red-200 shadow-red-300";
+      default:
+        return "";
+    }
   }
-}
 
   return (
     <div className="Product spec">
@@ -126,7 +127,7 @@ function getStateBgColor(
                             </th>
 
                             <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
-                             Description
+                              Description
                             </th>
                             <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
                               Version
@@ -135,7 +136,7 @@ function getStateBgColor(
                               Last Update
                             </th>
                             <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
-                             Product Specification
+                              Product Specification
                             </th>
                             <th className="py-4 px-6 text-center bg-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
                               Status
@@ -158,34 +159,34 @@ function getStateBgColor(
                                 {productOffering.internalVersion}
                               </td>
                               <td className="py-4 px-6  border p-2  border-grey-light">
-                              {new Date(
-                                          productOffering.lastUpdate,
-                                        ).toDateString()}
+                                {new Date(
+                                  productOffering.lastUpdate,
+                                ).toDateString()}
                               </td>
                               <td className="py-4 px-6 text-blue-700 border p-2 font-semibold border-grey-light">
                                 {productOffering.productSpecification.name}
                               </td>
                               <td className="py-4 px-6  border p-2  border-grey-light">
-                              <span
-                                    className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
+                                <span
+                                  className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
+                                    productOffering.status,
+                                  )} leading-tight`}
+                                >
+                                  <span
+                                    aria-hidden
+                                    className={`absolute inset-0 ${getStateBgColor(
                                       productOffering.status,
-                                    )} leading-tight`}
+                                    )} rounded-full`}
+                                  ></span>
+                                  <span
+                                    className={`relative inset-0 ${getStateTextColor(
+                                      productOffering.status,
+                                    )} rounded-full`}
                                   >
-                                    <span
-                                      aria-hidden
-                                      className={`absolute inset-0 ${getStateBgColor(
-                                        productOffering.status,
-                                      )} rounded-full`}
-                                    ></span>
-                                    <span
-                                      className={`relative inset-0 ${getStateTextColor(
-                                        productOffering.status,
-                                      )} rounded-full`}
-                                    >
-                                      {productOffering.status}
-                                    </span>
+                                    {productOffering.status}
                                   </span>
-                              {/* <button
+                                </span>
+                                {/* <button
                           
                           className="flex items-center bg-red-600 hover:bg-purple-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100 text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-8 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300"
                         >
@@ -198,7 +199,6 @@ function getStateBgColor(
                       </table>
                     </div>
                   </div>
-                  
                 </div>
 
                 <div className="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">

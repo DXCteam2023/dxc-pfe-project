@@ -15,7 +15,7 @@ export default async function SingleProductOfferingPage({
   const id = params.id;
 
   const productOffering = await axios(
-    `http://localhost:5000/api/product-offering/${id}`,
+    `https://dxc-pfe-project-server.vercel.app/api/product-offering/${id}`,
   )
     .then((response) => response.data)
     .catch((e) => console.log(e));

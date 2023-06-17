@@ -27,7 +27,7 @@ export default function ServiceCustomerOrdersPage() {
   async function getServiceOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/service",
+        "https://dxc-pfe-project-server.vercel.app/api/customer-order/service",
       );
       const servicesData = response.data;
       setServices(servicesData);
@@ -285,7 +285,7 @@ export default function ServiceCustomerOrdersPage() {
                             <tr>
                               <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 ID
-                              </th> 
+                              </th>
                               <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border p-2 border-grey-light">
                                 external Id
                               </th>

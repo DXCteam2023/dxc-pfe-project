@@ -2,14 +2,14 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
 import axios from "axios";
-import  dataCostumerOrders  from "../data/dataCostumerOrders";
+// import dataCostumerOrders from "../data/dataCostumerOrders";
+// import dataProductOfferings from "../data/dataProductOfferings";
 
-import  dataProductOfferings  from "../data/dataProductOfferings";
 interface ProductOfferings {
   state: string;
   orderDate: string;
   lastUpdate: string;
-  status:string
+  status: string;
 }
 const TableProductOfferings = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -23,20 +23,18 @@ const TableProductOfferings = () => {
   async function getProductOfferings() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
+        `https://dxc-pfe-project-server.vercel.app/api/product-offering`,
       );
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
-     
     } catch (error) {
       console.error("Erreur lors de la récupération des utilisateurs:", error);
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getProductOfferings();
-  },[])
-  
-  
+  }, []);
+
   const recentOffers = productOfferings.sort((a, b) => {
     const date1 = new Date(
       parseInt(a.lastUpdate.split("/")[2]),
@@ -122,10 +120,8 @@ const TableProductOfferings = () => {
     }
   }
 
-  function getStateBgColor(
-    status: string) {
-    switch (
-      status) {
+  function getStateBgColor(status: string) {
+    switch (status) {
       case "retired":
         return "bg-yellow-200 shadow-blue-300";
       case "draft":
@@ -193,7 +189,7 @@ const TableProductOfferings = () => {
                           <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
                             State
                           </th>
-                         
+
                           <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Last Update
                           </th>
@@ -251,12 +247,12 @@ const TableProductOfferings = () => {
                                     </span>
                                   </span>
                                 </td>
-                             
+
                                 <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                   <p className="text-gray-900 whitespace-no-wrap">
-                                  {new Date(
-                                          product.lastUpdate,
-                                        ).toDateString()}
+                                    {new Date(
+                                      product.lastUpdate,
+                                    ).toDateString()}
                                   </p>
                                 </td>
                               </tr>

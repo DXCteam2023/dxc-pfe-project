@@ -75,10 +75,11 @@ const createProductOffering = async (
     console.log("category:", category);
     console.log("channel:", channel);
 
-    const url = "http://localhost:5000/api/product-offering";
+    const url =
+      "https://dxc-pfe-project-server.vercel.app/api/product-offering";
 
     // Fetch the selected product specification details
-    const specificationUrl = `http://localhost:5000/api/product-offering/${chosenProductSpecification}`;
+    const specificationUrl = `https://dxc-pfe-project-server.vercel.app/api/product-offering/${chosenProductSpecification}`;
     const specificationResponse = await axios.get(specificationUrl);
     const specificationData = await specificationResponse.data;
 

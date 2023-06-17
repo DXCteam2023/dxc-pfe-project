@@ -12,37 +12,52 @@ const CercleChart = () => {
   const barChartRef = useRef<HTMLCanvasElement>(null);
   const [productOfferings, setProductOfferings] = useState<number[]>([]);
 
-
   useEffect(() => {
     initTE({ Chart });
 
     async function getProductOfferings() {
       try {
-        const response = await axios.get("http://localhost:5000/api/product-offering");
+        const response = await axios.get(
+          "https://dxc-pfe-project-server.vercel.app/api/product-offering",
+        );
         const allProductOfferings: ProductOffering[] = response.data;
-       console.log("chart",allProductOfferings)
+        console.log("chart", allProductOfferings);
         // Calculer le nombre d'offres par mois
         const offersByMonth = Array(12).fill(0);
         allProductOfferings.forEach((offering) => {
           const month = new Date(offering.lastUpdate).getMonth();
           offersByMonth[month]++;
         });
-    
+
         setProductOfferings(offersByMonth);
         console.log("Offers by month:", offersByMonth);
-      
       } catch (error) {
-        console.error("Erreur lors de la récupération des offres de produits :", error);
+        console.error(
+          "Erreur lors de la récupération des offres de produits :",
+          error,
+        );
       }
     }
 
-    
     getProductOfferings();
-  console.log(productOfferings)
+    console.log(productOfferings);
     const dataBarCustomOptions = {
       type: "bar",
       data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        labels: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ],
         datasets: [
           {
             label: "Number of Offers",
@@ -105,7 +120,11 @@ const CercleChart = () => {
     };
 
     if (barChartRef.current) {
-      new Chart(barChartRef.current, dataBarCustomOptions, optionsBarCustomOptions);
+      new Chart(
+        barChartRef.current,
+        dataBarCustomOptions,
+        optionsBarCustomOptions,
+      );
     }
   }, []);
 

@@ -71,14 +71,16 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   async function getUsers() {
     try {
       const id = params.id;
-      const response = await axios.get(`http://localhost:5000/api/user/${id}`);
+      const response = await axios.get(
+        `https://dxc-pfe-project-server.vercel.app/api/user/${id}`,
+      );
       const userData = response.data;
       setUser(userData);
       console.log(userData);
 
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
-        `http://localhost:5000/api/user/similar-profile/${profile}`,
+        `https://dxc-pfe-project-server.vercel.app/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
       setSimilarProfiles(similarProfilesData);

@@ -1,6 +1,6 @@
-import React from "react";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Chart, initTE } from "tw-elements";
+
 const Chartt = () => {
   const barChartRef = useRef<HTMLCanvasElement>(null);
 

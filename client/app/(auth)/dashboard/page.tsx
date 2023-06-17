@@ -35,22 +35,23 @@ export default function DashboardHome() {
       <div className="bg-white  min-h-screen-100 w-5/6  ">
         <Header />
         <div className=" mx-4 py-5 bg-gradient-to-r from-white via-purple-200 to-white  rounded-l-lg ">
-        {/* <TopCards /> */}
-        <Cards/>
-        {/* <Stats/> */}
-        <StatisticCards /></div>
-        
+          {/* <TopCards /> */}
+          <Cards />
+          {/* <Stats/> */}
+          <StatisticCards />
+        </div>
+
         <div className="mt-4 flex p-2 ">
           <div className="w-1/2 ">
             <TableProductOfferings />
           </div>
           <div className="w-1/2 py-12 mt-8">
-           <CercleChart/>
+            <CercleChart />
           </div>
         </div>
         <div className="mt-4 flex p-2 ">
           <div className="w-1/2 ">
-          <Chartt />
+            <Chartt />
           </div>
           <div className="w-1/2 ">
             <BarChart />

@@ -20,7 +20,7 @@ const Chartt = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product"
+        "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
       );
       const productsData = response.data;
       setChartData(productsData);
@@ -48,7 +48,7 @@ const Chartt = () => {
 
   const getWeekNumber = (date: Date) => {
     const d = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
     );
     const dayNum = d.getUTCDay() || 7;
     d.setUTCDate(d.getUTCDate() + 4 - dayNum);
@@ -91,7 +91,6 @@ const Chartt = () => {
 
     return (
       <div className="mx-auto w-3/5 overflow-hidden">
-        
         <canvas id="polar-area-chart"></canvas>
       </div>
     );
@@ -99,7 +98,6 @@ const Chartt = () => {
 
   return (
     <div className="mt-4 flex p-2">
-      
       <PolarAreaChart />
     </div>
   );

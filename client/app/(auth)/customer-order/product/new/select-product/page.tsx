@@ -1,9 +1,7 @@
 "use client";
-import React from "react";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
-
 
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
