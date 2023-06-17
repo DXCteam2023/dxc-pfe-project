@@ -18,21 +18,21 @@ export default function ConfigureProduct() {
 
   const handleMonthlyRecurringChangesPerUnitOnChange = (value: string) => {
     let tamp = value;
-    if (value == "") {
+    if (value === "") {
       tamp = "1";
     }
     myContext.setMonthlyRecurringChangesPerUnit(parseInt(tamp));
   };
   const handleTotalPriceOnChange = (value: string) => {
     let tamp = value;
-    if (value == "") {
+    if (value === "") {
       tamp = "1";
     }
     myContext.setTotalPrice(parseInt(tamp));
   };
   const handleNoneRecuringChangesPerUnitOnChange = (value: string) => {
     let tamp = value;
-    if (value == "") {
+    if (value === "") {
       tamp = "1";
     }
     myContext.setNoneRecuringChangesPerUnit(parseInt(tamp));

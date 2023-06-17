@@ -53,6 +53,8 @@
     "no-return-assign": "off",
     "no-alert": "off",
     "no-param-reassign": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "no-plusplus": "off",
+    "no-new": "off"
   }
 }

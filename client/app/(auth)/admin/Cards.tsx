@@ -11,7 +11,9 @@ const Cards = () => {
   useEffect(() => {
     async function getUsers() {
       try {
-        const response = await axios.get("http://localhost:5000/api/user");
+        const response = await axios.get(
+          "https://dxc-pfe-project-server.vercel.app/api/user",
+        );
         const usersData = response.data;
         setUsers(usersData);
       } catch (error) {
@@ -62,7 +64,7 @@ const Cards = () => {
               <div className="">{totalUsers}</div>
             </div>
             <div className=" flex items-center flex-none text-white">
-            <svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -82,7 +84,7 @@ const Cards = () => {
         <div className="w-full md:w-1/2 lg:w-1/3 p-2 ">
           <div className="flex items-center flex-row w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md p-3">
             <div className="flex text-indigo-500 items-center bg-white p-2 rounded-md flex-none w-8 h-8 md:w-12 md:h-12 ">
-            <svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -104,7 +106,7 @@ const Cards = () => {
               <div className="">{totalManagers}</div>
             </div>
             <div className=" flex items-center flex-none text-white">
-            <svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -146,7 +148,7 @@ const Cards = () => {
               <div className="">{totalAgents}</div>
             </div>
             <div className=" flex items-center flex-none text-white">
-            <svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

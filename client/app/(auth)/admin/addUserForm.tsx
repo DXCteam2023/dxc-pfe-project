@@ -15,7 +15,7 @@ export default function AddUserForm() {
   const addUser = async () => {
     try {
       const { data: res } = await axios.post(
-        "http://localhost:5000/api/user",
+        "https://dxc-pfe-project-server.vercel.app/api/user",
         user,
       );
       setSuccess(res.message);
@@ -55,7 +55,10 @@ export default function AddUserForm() {
       ) : (
         ""
       )}
-      <form className=" mx-12 grid lg:grid-cols-2 w-4/6 gap-4" onSubmit={handleSubmit}>
+      <form
+        className=" mx-12 grid lg:grid-cols-2 w-4/6 gap-4"
+        onSubmit={handleSubmit}
+      >
         <div className="input-type">
           <input
             id="username"

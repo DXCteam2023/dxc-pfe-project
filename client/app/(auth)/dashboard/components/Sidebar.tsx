@@ -42,10 +42,12 @@ const Sidebar = () => {
     }
   };
 
-  const name = localUser ? JSON.parse(localUser).username
-    ? JSON.parse(localUser).username.toUpperCase()
-    : "" : "";
-  const profile = localUser ?JSON.parse(localUser).profile:"";
+  const name = localUser
+    ? JSON.parse(localUser).username
+      ? JSON.parse(localUser).username.toUpperCase()
+      : ""
+    : "";
+  const profile = localUser ? JSON.parse(localUser).profile : "";
   const data = SideBarData.filter((item: any) =>
     item.profile.includes(profile),
   );

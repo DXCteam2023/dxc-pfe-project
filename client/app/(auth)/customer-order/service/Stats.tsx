@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 const Stats = () => {
   interface ServiceOrders {
     state: string;
@@ -16,7 +17,7 @@ const Stats = () => {
   async function getServiceOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/service",
+        "https://dxc-pfe-project-server.vercel.app/api/customer-order/service",
       );
       const servicesData = response.data;
       setServices(servicesData);

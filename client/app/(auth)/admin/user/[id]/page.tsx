@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Chart, initTE } from "tw-elements";
+// import { Chart, initTE } from "tw-elements";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 import watch from "../../../../../public/assets/watch.png";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
-import Chartt from "./Chart";
+// import Chartt from "./Chart";
+
+// Chart.register(initTE);
 
 //import Chart from 'chart.js';
 
@@ -20,7 +22,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
     getUsers();
   }, []);
 
-  initTE({ Chart });
+  // initTE({ Chart });
 
   const PolarAreaChart = () => {
     useEffect(() => {
@@ -56,9 +58,9 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
 
       const ctx = document.getElementById("polar-area-chart");
 
-      if (ctx) {
-        Chart(ctx, dataPolar);
-      }
+      // if (ctx) {
+      //   Chart(ctx, dataPolar);
+      // }
     }, []);
 
     return (
@@ -71,14 +73,16 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   async function getUsers() {
     try {
       const id = params.id;
-      const response = await axios.get(`http://localhost:5000/api/user/${id}`);
+      const response = await axios.get(
+        `https://dxc-pfe-project-server.vercel.app/api/user/${id}`,
+      );
       const userData = response.data;
       setUser(userData);
       console.log(userData);
 
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
-        `http://localhost:5000/api/user/similar-profile/${profile}`,
+        `https://dxc-pfe-project-server.vercel.app/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
       setSimilarProfiles(similarProfilesData);
@@ -508,9 +512,9 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                                 <div className="w-1/2 py-4">
                                   <PolarAreaChart />
                                 </div>
-                                <div className="w-1/2 py-12">
+                                {/* <div className="w-1/2 py-12">
                                   <Chartt />
-                                </div>
+                                </div> */}
                               </div>
                             ) : null}
                           </div>

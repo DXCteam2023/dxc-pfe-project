@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
+
 interface ProductOrders {
   state: string;
   orderDate: string;
@@ -17,11 +18,10 @@ const BarChart = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
       );
       const productsData = response.data;
       setProducts(productsData);
-
     } catch (error) {
       console.error("Erreur lors de la récupération des products:", error);
     }

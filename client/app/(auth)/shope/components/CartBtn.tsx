@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  ShoppingBagIcon,
-  ShoppingCartIcon,
-} from "@heroicons/react/24/solid";
+import { ShoppingBagIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import {
   totalCartItemsSelector,
