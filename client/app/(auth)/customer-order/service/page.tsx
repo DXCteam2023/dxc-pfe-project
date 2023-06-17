@@ -274,7 +274,7 @@ export default function ServiceCustomerOrdersPage() {
                       </div>
                     </div>
                     <div className="flex justify-end">
-                      <button className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-4 px-8 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300">
+                      <button className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-4 px-8 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300">
                         New
                       </button>
                     </div>
@@ -283,37 +283,37 @@ export default function ServiceCustomerOrdersPage() {
                         <table className=" w-full border-collapse">
                           <thead>
                             <tr>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 ID
                               </th>
                               <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border p-2 border-grey-light">
                                 external Id
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Order Date
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Status
                               </th>
-                              {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                                Service Characteristic
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               service Specification
                               </th> */}
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Note
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 PONR
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 requested Start Date
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 requested Completion Date
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Action
                               </th>
                             </tr>
@@ -427,7 +427,7 @@ export default function ServiceCustomerOrdersPage() {
                                       </p>
                                     </td>
 
-                                    <td className="py-3 px-6 text-center px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="py-3 px-6 text-center border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                       <div className="flex item-center justify-center">
                                         <Link
                                           href={`/customer-order/service/${order._id}`}

@@ -7,7 +7,7 @@ import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getProductSpecification } from "../utils";
-import ChartSpecification from "./ChartSpecification";
+// import ChartSpecification from "./ChartSpecification";
 
 const SingleProductSpecificationPage = ({
   params,
@@ -266,9 +266,9 @@ const SingleProductSpecificationPage = ({
                         </li>
                       </ul>
                     </div>
-                    <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                    {/* <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                       <ChartSpecification />
-                    </div>
+                    </div> */}
                   </div>
                   <div className="flex  flex-col w-full 2xl:w-2/3">
                     <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">

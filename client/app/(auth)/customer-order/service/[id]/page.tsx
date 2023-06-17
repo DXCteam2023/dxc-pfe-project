@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UpdateServiceForm from "../UpdateServiceForm";
-import Chartt from "./Chartt";
-import CercleChart from "./CercleChart";
+// import Chartt from "./Chartt";
+// import CercleChart from "./CercleChart";
 
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
@@ -202,7 +202,7 @@ const page = ({ params }: { params: { id: string } }) => {
                             <span>Sales Statistics</span>
                           </div>
 
-                          <CercleChart />
+                          {/* <CercleChart /> */}
                         </div>
                       </div>
                     </div>
@@ -216,7 +216,7 @@ const page = ({ params }: { params: { id: string } }) => {
                           <span className="flex items-center font-semibold text-gray-900 text-xl leading-8">
                             Orders Per Week
                           </span>
-                          <Chartt />
+                          {/* <Chartt /> */}
                           <div className="flex items-center font-semibold text-gray-900 text-xl leading-8">
                             <span className="text-purple-500"></span>
                             <span>Related List</span>
