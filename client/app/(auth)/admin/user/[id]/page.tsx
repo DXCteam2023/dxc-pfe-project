@@ -10,6 +10,8 @@ import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
 import Chartt from "./Chart";
 
+Chart.register(initTE);
+
 //import Chart from 'chart.js';
 
 const Page = ({ params }: { params: { id: string; profile: string } }) => {

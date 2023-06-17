@@ -2,6 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import { Chart, initTE } from "tw-elements";
 
+Chart.register(initTE);
+
 const Chartt = () => {
   const darkModeChartRef = useRef(null);
 

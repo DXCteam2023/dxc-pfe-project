@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Chart, initTE } from "tw-elements";
 import axios from "axios";
 
+Chart.register(initTE);
 interface ProductOrders {
   state: string;
   orderDate: string;
