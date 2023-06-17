@@ -11,7 +11,7 @@ const fetchProductSpecificationDetails = async (
   chosenProductSpecification: string,
 ) => {
   try {
-    const specificationUrl = `http://localhost:5000/api/product-specification/${chosenProductSpecification}`;
+    const specificationUrl = `https://dxc-pfe-project-server.vercel.app/api/product-specification/${chosenProductSpecification}`;
     const specificationResponse = await axios.get(specificationUrl);
     const specificationData = await specificationResponse.data;
     setSelectedProductSpec(specificationData);

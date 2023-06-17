@@ -6,7 +6,7 @@ export default async function getProductSpecification(
 ) {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/product-specification/${id}`,
+      `https://dxc-pfe-project-server.vercel.app/api/product-specification/${id}`,
     );
 
     const productData = response.data;

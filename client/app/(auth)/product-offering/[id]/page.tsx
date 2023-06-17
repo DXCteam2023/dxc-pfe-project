@@ -15,7 +15,7 @@ export default async function SingleProductOfferingPage({
   const id = params.id;
 
   const productOffering = await axios(
-    `http://localhost:5000/api/product-offering/${id}`,
+    `https://dxc-pfe-project-server.vercel.app/api/product-offering/${id}`,
   )
     .then((response) => response.data)
     .catch((e) => console.log(e));
@@ -27,7 +27,7 @@ export default async function SingleProductOfferingPage({
         <header className="py-5 flex items-center justify-between px-3">
           <div className="infos flex justify-between items-center">
             <div className="title font-medium text-lg me-3">
-              {productOffering.name}
+              {productOffering.display_name}
             </div>
             <span
               className={

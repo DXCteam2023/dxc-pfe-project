@@ -10,7 +10,7 @@ export default function CreateOrder() {
   const myContext = useContext(NewCustomerOrderContext);
 
   const handleContinueOnClick = () => {
-    route.push("/customer-order/new/select-product");
+    route.push("/customer-order/product/new/select-product");
   };
 
   return (

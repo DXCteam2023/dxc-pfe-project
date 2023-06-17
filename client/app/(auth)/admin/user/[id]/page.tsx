@@ -2,11 +2,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+// import { Chart, initTE } from "tw-elements";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 import watch from "../../../../../public/assets/watch.png";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
+// import Chartt from "./Chart";
+
+// Chart.register(initTE);
+
+//import Chart from 'chart.js';
 
 const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const [user, setUser] = useState<any>(null);
@@ -16,17 +22,67 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
     getUsers();
   }, []);
 
+  // initTE({ Chart });
+
+  const PolarAreaChart = () => {
+    useEffect(() => {
+      const dataPolar = {
+        type: "polarArea",
+        data: {
+          labels: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          datasets: [
+            {
+              label: "Traffic",
+              data: [2112, 2343, 2545, 3423, 2365, 1985, 987],
+              backgroundColor: [
+                "rgba(63, 81, 181, 0.5)",
+                "rgba(77, 182, 172, 0.5)",
+                "rgba(66, 133, 244, 0.5)",
+                "rgba(156, 39, 176, 0.5)",
+                "rgba(233, 30, 99, 0.5)",
+                "rgba(66, 73, 244, 0.4)",
+                "rgba(66, 133, 244, 0.2)",
+              ],
+            },
+          ],
+        },
+      };
+
+      const ctx = document.getElementById("polar-area-chart");
+
+      // if (ctx) {
+      //   Chart(ctx, dataPolar);
+      // }
+    }, []);
+
+    return (
+      <div className="mx-auto w-3/5 overflow-hidden">
+        <canvas id="polar-area-chart"></canvas>
+      </div>
+    );
+  };
+
   async function getUsers() {
     try {
       const id = params.id;
-      const response = await axios.get(`http://localhost:5000/api/user/${id}`);
+      const response = await axios.get(
+        `https://dxc-pfe-project-server.vercel.app/api/user/${id}`,
+      );
       const userData = response.data;
       setUser(userData);
       console.log(userData);
 
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
-        `http://localhost:5000/api/user/similar-profile/${profile}`,
+        `https://dxc-pfe-project-server.vercel.app/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
       setSimilarProfiles(similarProfilesData);
@@ -450,6 +506,15 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                                     </tr>
                                   </tbody>
                                 </table>
+                              </div>
+                            ) : user.profile === "Administrator" ? (
+                              <div className="flex p-2">
+                                <div className="w-1/2 py-4">
+                                  <PolarAreaChart />
+                                </div>
+                                {/* <div className="w-1/2 py-12">
+                                  <Chartt />
+                                </div> */}
                               </div>
                             ) : null}
                           </div>

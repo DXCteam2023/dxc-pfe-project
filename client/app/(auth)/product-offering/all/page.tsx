@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrView } from "react-icons/gr";
@@ -26,7 +25,9 @@ export default function AllProductOfferingsPage() {
   }, []);
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/product-offering/")
+      const res = await fetch(
+        "https://dxc-pfe-project-server.vercel.app/api/product-offering/",
+      )
         .then((data) => data.json())
         .catch((e) => console.log(e));
       console.log(res);

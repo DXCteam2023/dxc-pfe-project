@@ -6,6 +6,7 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import Header from "../../dashboard/components/header/Header";
 import Sidebar from "../../dashboard/components/Sidebar";
+import Stats from "./Stats";
 
 type ServiceOrders = {
   state: string;
@@ -26,7 +27,7 @@ export default function ServiceCustomerOrdersPage() {
   async function getServiceOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/service",
+        "https://dxc-pfe-project-server.vercel.app/api/customer-order/service",
       );
       const servicesData = response.data;
       setServices(servicesData);
@@ -83,12 +84,14 @@ export default function ServiceCustomerOrdersPage() {
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
 
-  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {};
+  const handleCancelClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("click");
+  };
 
   function getPonrTextColor(ponr: string) {
     switch (ponr) {
       case "true":
-        return "text-blue-900";
+        return "text-white";
       case "false":
         return "text-white";
       default:
@@ -98,10 +101,10 @@ export default function ServiceCustomerOrdersPage() {
 
   function getPonrBgColor(ponr: string) {
     switch (ponr) {
-      case "active":
-        return "bg-blue-200 shadow-blue-300";
-      case "new":
-        return "bg-red-700 shadow-yellow-300";
+      case "true":
+        return "bg-green-700 shadow-green-300";
+      case "false":
+        return "bg-red-500 shadow-red-300";
       default:
         return "";
     }
@@ -129,6 +132,8 @@ export default function ServiceCustomerOrdersPage() {
         return "bg-yellow-200 shadow-yellow-300";
       case "completed":
         return "bg-green-200 shadow-green-300";
+      case "on hold":
+        return "bg-orange-200 shadow-red-300";
       case "canceled":
         return "bg-red-200 shadow-red-300";
       default:
@@ -212,6 +217,7 @@ export default function ServiceCustomerOrdersPage() {
               </ol>
             </nav>
           </div>
+          <Stats />
           <div className="flex w-full">
             <div className="w-full">
               <div className="ml-2 flex mt-2 ">
@@ -233,6 +239,10 @@ export default function ServiceCustomerOrdersPage() {
                             <option value="All">All</option>
                             <option value="new">New</option>
                             <option value="active">Active</option>
+                            <option value="in progress">In progress</option>
+                            <option value="on hold">On hold</option>
+                            <option value="qualified">Qualified</option>
+                            <option value="scheduled">Scheduled</option>
                             <option value="completed">Completed</option>
                             <option value="canceled">Canceled</option>
                           </select>
@@ -245,7 +255,7 @@ export default function ServiceCustomerOrdersPage() {
                             onChange={(event) =>
                               setOrderFilter(event.target.value)
                             }
-                            className=" ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                            className=" ml-2 px-7 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
                           >
                             <option value="All">order By</option>
                             <option value="new">A to Z</option>
@@ -264,19 +274,19 @@ export default function ServiceCustomerOrdersPage() {
                       </div>
                     </div>
                     <div className="flex justify-end">
-                      <button className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-8 rounded-r flex items-end">
+                      <button className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-4 px-8 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300">
                         New
                       </button>
                     </div>
                     <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                        <table className="min-w-full leading-normal bg-white border border-collapse">
+                        <table className=" w-full border-collapse">
                           <thead>
                             <tr>
                               <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 ID
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold  uppercase tracking-wider">
+                              <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border p-2 border-grey-light">
                                 external Id
                               </th>
                               <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
@@ -285,10 +295,10 @@ export default function ServiceCustomerOrdersPage() {
                               <th className="px-5 py-3 border-b-2 border-gray-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
                                 Status
                               </th>
-                              {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                                Service Characteristic
                               </th>
-                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               service Specification
                               </th> */}
                               <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white mx-auto text-xs font-semibold uppercase tracking-wider">
@@ -312,9 +322,10 @@ export default function ServiceCustomerOrdersPage() {
                             {filteredServices
                               .slice(indexOfFirstOrder, indexOfLastOrder)
                               .map((order: any, index: number) => {
+                                const isPonrTrue = order.ponr === true;
                                 return (
                                   <tr key={index}>
-                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+                                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
                                       <div className="flex items-center">
                                         <div className="ml-3">
                                           <p className="text-gray-900 whitespace-no-wrap">
@@ -327,21 +338,21 @@ export default function ServiceCustomerOrdersPage() {
                                           </p>
                                         </div>
                                       </div>
-                                    </td>
+                                    </td> */}
 
-                                    <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <p className="text-gray-900 whitespace-no-wrap  font-lg text-semibold leading-6 ">
                                         {order.externalId}
                                       </p>
                                     </td>
-                                    <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <p className="text-indigo-700 whitespace-no-wrap font-semibold">
                                         {new Date(
                                           order.orderDate,
                                         ).toDateString()}
                                       </p>
                                     </td>
-                                    <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <span
                                         className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                           order.state,
@@ -351,17 +362,21 @@ export default function ServiceCustomerOrdersPage() {
                                           aria-hidden
                                           className={`absolute inset-0 ${getStateBgColor(
                                             order.state,
-                                          )} opacity-50 rounded-full`}
+                                          )}  rounded-full`}
                                         ></span>
-                                        <span className="relative">
+                                        <span
+                                          className={`relative inset-0 ${getStateTextColor(
+                                            order.state,
+                                          )}  rounded-full`}
+                                        >
                                           {order.state}
                                         </span>
                                       </span>
                                     </td>
-                                    <td className="px-5 py-5 border p-2  border-grey-light  border-gray-200 bg-white text-sm ">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <div className="flex items-center ">
                                         <div className="ml-3 ">
-                                          <p className="text-sm text-gray-700 hover:text-gray-600 leading-6">
+                                          <p className=" text-gray-700 hover:text-gray-600 leading-6">
                                             {order.note.map(
                                               (n: { text: string }) => {
                                                 return n.text;
@@ -371,7 +386,7 @@ export default function ServiceCustomerOrdersPage() {
                                         </div>
                                       </div>
                                     </td>
-                                    <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <span
                                         className={`relative inline-block px-3 py-1 font-semibold ${getPonrTextColor(
                                           order.state,
@@ -380,15 +395,19 @@ export default function ServiceCustomerOrdersPage() {
                                         <span
                                           aria-hidden
                                           className={`absolute inset-0 ${getPonrBgColor(
-                                            order.state,
-                                          )} opacity-50 rounded-full`}
+                                            order.ponr,
+                                          )}  rounded-full`}
                                         ></span>
-                                        <span className="relative">
+                                        <span
+                                          className={`relative inset-0 ${getPonrTextColor(
+                                            order.ponr,
+                                          )}  rounded-full`}
+                                        >
                                           {order.ponr}
                                         </span>
                                       </span>
                                     </td>
-                                    <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <div className="flex items-center">
                                         <div className="ml-3">
                                           <p className="text-gray-900  whitespace-no-wrap">
@@ -400,7 +419,7 @@ export default function ServiceCustomerOrdersPage() {
                                       </div>
                                     </td>
 
-                                    <td className="px-5 py-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                       <p className="text-gray-900 whitespace-no-wrap">
                                         {new Date(
                                           order.requestedCompletionDate,
@@ -408,31 +427,53 @@ export default function ServiceCustomerOrdersPage() {
                                       </p>
                                     </td>
 
-                                    <td className="py-3 text-center px-5 border p-2  border-grey-light border-gray-200 bg-white text-sm">
+                                    <td className="py-3 px-6 text-center border p-2  border-grey-light border-gray-200 bg-white text-sm">
                                       <div className="flex item-center justify-center">
                                         <Link
-                                          href={`/customer-order/all/service/${order._id}`}
+                                          href={`/customer-order/service/${order._id}`}
+                                          className="button text-sm bg-yellow-300 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
                                         >
-                                          <FaEye className="text-blue-500 text-lg w-5 mr-2 transform hover:text-purple-500 hover:scale-110" />
+                                          View
                                         </Link>
-
-                                        <button
-                                          className="w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
-                                          onClick={handleCancelClick}
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            fill="red"
-                                            className="w-6 h-6"
+                                        {order.ponr === "true" ? (
+                                          <button
+                                            className="mx-2 button text-sm bg-white text-gray-600   border border:bg-gray-900 font-semibold py-2 px-2 rounded-r flex items-end "
+                                            disabled
                                           >
-                                            <path
-                                              fillRule="evenodd"
-                                              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
-                                              clipRule="evenodd"
-                                            />
-                                          </svg>
-                                        </button>
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              viewBox="0 0 24 24"
+                                              fill="gray"
+                                              className="w-6 h-6"
+                                            >
+                                              <path
+                                                fillRule="evenodd"
+                                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+                                                clipRule="evenodd"
+                                              />
+                                            </svg>
+                                            Cancel
+                                          </button>
+                                        ) : (
+                                          <button
+                                            className="mx-2 button text-sm bg-red-600 text-white  border border:bg-gray-900 font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
+                                            onClick={handleCancelClick}
+                                          >
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              viewBox="0 0 24 24"
+                                              fill="white"
+                                              className="w-6 h-6"
+                                            >
+                                              <path
+                                                fillRule="evenodd"
+                                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+                                                clipRule="evenodd"
+                                              />
+                                            </svg>
+                                            Cancel
+                                          </button>
+                                        )}
                                       </div>
                                     </td>
                                   </tr>
@@ -446,7 +487,7 @@ export default function ServiceCustomerOrdersPage() {
                           </span>
                           <div className="inline-flex mt-2 xs:mt-0">
                             <button
-                              className="text-sm bg-wpurple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                              className="text-sm bg-purple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
                               onClick={handlePreviousPage}
                               disabled={currentPage === 1}
                             >

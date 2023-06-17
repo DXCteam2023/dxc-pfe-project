@@ -23,7 +23,7 @@ export default function UpdateUserForm({
     setIsVisible(false);
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/user/${user?._id}`,
+        `https://dxc-pfe-project-server.vercel.app/api/user/${user?._id}`,
         {
           username,
           profile,
@@ -49,7 +49,7 @@ export default function UpdateUserForm({
   console.log(user?._id);
   return (
     <form
-      className="grid lg:grid-cols-2 w-4/6 gap-4"
+      className=" mx-12  grid lg:grid-cols-2 w-4/6 gap-4"
       onSubmit={(e) => updateUser(e)}
     >
       <div className="input-type">
@@ -112,12 +112,12 @@ export default function UpdateUserForm({
 
       <button
         type="submit"
-        className="flex justify-center text-md w-1/6 bg-yellow-500 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-green-500"
+        className="flex justify-center text-md w-1/6 bg-pink-500 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-pink-500"
       >
         Update
       </button>
       <button
-        className="flex justify-center text-md w-1/6 bg-red-300 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-green-500"
+        className="flex justify-center text-md w-1/6 bg-red-600 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-red-600"
         onClick={onClose}
       >
         Annuler

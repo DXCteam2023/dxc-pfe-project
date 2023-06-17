@@ -39,7 +39,9 @@ const Table = () => {
 
   async function getUsers() {
     try {
-      const response = await axios.get("http://localhost:5000/api/user");
+      const response = await axios.get(
+        "https://dxc-pfe-project-server.vercel.app/api/user",
+      );
       const usersData = await response.data;
 
       setUsers(usersData);
@@ -119,7 +121,7 @@ const Table = () => {
   const handleConfirmDelete = async (userId: string) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/user/${userId}`,
+        `https://dxc-pfe-project-server.vercel.app/api/user/${userId}`,
       );
       console.log(response.data);
       // setShowAlert(false);

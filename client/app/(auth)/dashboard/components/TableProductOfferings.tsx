@@ -1,14 +1,81 @@
 "use client";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import Image from "next/image";
-import dataCostumerOrders from "../data/dataCostumerOrders";
-import dataProductOfferings from "../data/dataProductOfferings";
+import axios from "axios";
+// import dataCostumerOrders from "../data/dataCostumerOrders";
+// import dataProductOfferings from "../data/dataProductOfferings";
 
+interface ProductOfferings {
+  state: string;
+  orderDate: string;
+  lastUpdate: string;
+  status: string;
+}
 const TableProductOfferings = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [statusFilter, setStatusFilter] = useState<string>("All");
 
+  const [productOfferings, setProductOfferings] = useState<ProductOfferings[]>(
+    [],
+  );
+  const [data, setData] = useState<ProductOfferings[]>([]);
+  async function getProductOfferings() {
+    try {
+      const response = await axios.get(
+        `https://dxc-pfe-project-server.vercel.app/api/product-offering`,
+      );
+      const allProductOfferings = response.data;
+      setProductOfferings(allProductOfferings);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des utilisateurs:", error);
+    }
+  }
+  useEffect(() => {
+    getProductOfferings();
+  }, []);
+
+  const recentOffers = productOfferings.sort((a, b) => {
+    const date1 = new Date(
+      parseInt(a.lastUpdate.split("/")[2]),
+      parseInt(a.lastUpdate.split("/")[1]) - 1,
+      parseInt(a.lastUpdate.split("/")[0]),
+    );
+    const date2 = new Date(
+      parseInt(b.lastUpdate.split("/")[2]),
+      parseInt(b.lastUpdate.split("/")[1]) - 1,
+      parseInt(b.lastUpdate.split("/")[0]),
+    );
+    return date2.getTime() - date1.getTime();
+  });
+  // useEffect(() => {
+  //   const filteredProduct = recentOffers.filter((product) => {
+  //     const productValues = Object.values(product).join(" ").toLowerCase();
+  //     const isMatchingSearchTerm = productValues.includes(
+  //       searchTerm.toLowerCase(),
+  //     );
+  //     const isMatchingStatus =
+  //       statusFilter === "All" || product.status === statusFilter;
+
+  //     return isMatchingSearchTerm && isMatchingStatus;
+  //   });
+
+  //   setData(filteredProduct);
+  //   console.log(filteredProduct);
+  // }, [searchTerm, statusFilter, productOfferings]);
+
+  const filteredProducts = recentOffers.filter((product) => {
+    const orderValues = Object.values(product).join(" ").toLowerCase();
+    const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
+    const isMatchingStatus =
+      statusFilter === "All" || product.status === statusFilter;
+
+    return isMatchingSearchTerm && isMatchingStatus;
+  });
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [data]);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -17,20 +84,12 @@ const TableProductOfferings = () => {
     setStatusFilter(event.target.value);
   };
 
-  // const filteredProducts = dataProductOfferings.filter((product) => {
-  //  const orderValues = Object.values(product).join(" ").toLowerCase();
-  //  const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
-  //  const isMatchingStatus =
-  //   statusFilter === "All" || product.state === statusFilter;
-
-  // return isMatchingSearchTerm && isMatchingStatus;
-  //});
   {
     /*  Le code pour afficher 5 commande*/
   }
 
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 5;
+  const ordersPerPage = 3;
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -46,12 +105,12 @@ const TableProductOfferings = () => {
   {
     /**switch color of state */
   }
-  function getStateTextColor(state: string) {
-    switch (state) {
-      case "new":
-        return "text-blue-900";
+  function getStateTextColor(status: string) {
+    switch (status) {
+      case "retired":
+        return " text-yellow-900";
       case "in progress":
-        return "text-yellow-900";
+        return "text-blue-900";
       case "completed":
         return "text-green-900";
       case "canceled":
@@ -61,12 +120,12 @@ const TableProductOfferings = () => {
     }
   }
 
-  function getStateBgColor(state: string) {
-    switch (state) {
-      case "new":
-        return "bg-blue-200 shadow-blue-300";
+  function getStateBgColor(status: string) {
+    switch (status) {
+      case "retired":
+        return "bg-yellow-200 shadow-blue-300";
       case "draft":
-        return "bg-yellow-200 shadow-yellow-300";
+        return "bg-blue-200  shadow-yellow-300";
       case "published":
         return "bg-green-200 shadow-green-300";
       case "archived":
@@ -76,31 +135,9 @@ const TableProductOfferings = () => {
     }
   }
 
-  const recentOffers = dataProductOfferings.sort((a, b) => {
-    const date1 = new Date(
-      parseInt(a.last_update.split("/")[2]),
-      parseInt(a.last_update.split("/")[1]) - 1,
-      parseInt(a.last_update.split("/")[0]),
-    );
-    const date2 = new Date(
-      parseInt(b.last_update.split("/")[2]),
-      parseInt(b.last_update.split("/")[1]) - 1,
-      parseInt(b.last_update.split("/")[0]),
-    );
-    return date2.getTime() - date1.getTime();
-  });
-  const filteredProducts = recentOffers.filter((product) => {
-    const orderValues = Object.values(product).join(" ").toLowerCase();
-    const isMatchingSearchTerm = orderValues.includes(searchTerm.toLowerCase());
-    const isMatchingStatus =
-      statusFilter === "All" || product.state === statusFilter;
-
-    return isMatchingSearchTerm && isMatchingStatus;
-  });
-
   return (
     <>
-      <div className="flex w-full">
+      <div className="flex w-full rounded-lg bg-white  ">
         <div className="w-full">
           <div className="ml-2 flex mt-2 ">
             <div className="container mx-auto px-4 sm:px-8">
@@ -116,10 +153,10 @@ const TableProductOfferings = () => {
                       <select
                         value={statusFilter}
                         onChange={handleStatusFilter}
-                        className=" ml-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                        className=" ml-2 px-8 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
                       >
                         <option value="All">All</option>
-                        <option value="new">New</option>
+                        <option value="retired">Retired</option>
                         <option value="published">Published</option>
                         <option value="draft">Draft</option>
                         <option value="archived">Archived</option>
@@ -129,7 +166,7 @@ const TableProductOfferings = () => {
                   <div className="block relative">
                     <input
                       placeholder=" Search..."
-                      className=" mx-2 px-3 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                      className=" mx-2 px-7 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
                       value={searchTerm}
                       onChange={handleSearch}
                     />
@@ -137,36 +174,22 @@ const TableProductOfferings = () => {
                 </div>
                 <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                   <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                    <table className="min-w-full leading-normal">
+                    <table className="text-left w-full border-collapse">
                       <thead>
                         <tr>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Number
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
+                          <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
                             Display name
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                            Description
+                          </th>
+                          <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
                             Version
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
                             State
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Price
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Short Description
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Contract Terms
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Start date
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            End date
-                          </th>
+
                           <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Last Update
                           </th>
@@ -178,7 +201,7 @@ const TableProductOfferings = () => {
                           .map((product: any, index: number) => {
                             return (
                               <tr key={index}>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                   <div className="flex items-center">
                                     <div className="ml-3">
                                       <p className="text-gray-900 whitespace-no-wrap text-main-color">
@@ -186,78 +209,50 @@ const TableProductOfferings = () => {
                                           href={product.link}
                                           className="text-blue-500 hover:text-blue-700"
                                         >
-                                          {product.number}
+                                          {product.name}
                                         </a>
                                       </p>
                                     </div>
                                   </div>
                                 </td>
 
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <td className=" px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                   <p className="text-gray-900 whitespace-no-wrap">
-                                    {product.display_name}
+                                    {product.description}
                                   </p>
                                 </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                   <p className="text-gray-900 whitespace-no-wrap">
-                                    {product.version}
+                                    {product.internalVersion}
                                   </p>
                                 </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                   <span
                                     className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
-                                      product.state,
+                                      product.status,
                                     )} leading-tight`}
                                   >
                                     <span
                                       aria-hidden
                                       className={`absolute inset-0 ${getStateBgColor(
-                                        product.state,
-                                      )} opacity-50 rounded-full`}
+                                        product.status,
+                                      )} rounded-full`}
                                     ></span>
-                                    <span className="relative">
-                                      {product.state}
+                                    <span
+                                      className={`relative inset-0 ${getStateTextColor(
+                                        product.status,
+                                      )} rounded-full`}
+                                    >
+                                      {product.status}
                                     </span>
                                   </span>
                                 </td>
 
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <div className="flex items-center">
-                                    <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
-                                        {product.price} $
-                                      </p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <div className="flex items-center">
-                                    <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
-                                        {product.short_description}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </td>
-
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
                                   <p className="text-gray-900 whitespace-no-wrap">
-                                    {product.Contract_terms}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {product.start_date}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {product.end_date}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {product.last_update}
+                                    {new Date(
+                                      product.lastUpdate,
+                                    ).toDateString()}
                                   </p>
                                 </td>
                               </tr>
@@ -265,13 +260,13 @@ const TableProductOfferings = () => {
                           })}
                       </tbody>
                     </table>
-                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                    <div className=" bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                       <span className="text-xs xs:text-sm text-gray-900">
                         Showing 1 to 4 of 50 Entries
                       </span>
                       <div className="inline-flex mt-2 xs:mt-0">
                         <button
-                          className="text-sm bg-wpurple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                          className="text-sm bg-purple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
                           onClick={handlePreviousPage}
                           disabled={currentPage === 1}
                         >
