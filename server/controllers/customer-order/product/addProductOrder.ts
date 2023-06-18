@@ -97,18 +97,20 @@ export default async function addProductOrder(req: Request, res: Response) {
           { new: true }
         );
 
-        let config = {
-          method: "post",
-          maxBodyLength: Infinity,
-          url: "https://dev106794.service-now.com/api/sn_ind_tmt_orm/order/productOrder",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${newToken.access_token}`,
-            Cookie:
-              "BIGipServerpool_dev106794=479287306.39742.0000; JSESSIONID=FFF7FFA9F19993F03C1B52F1A127A2AC; glide_user_activity=U0N2M18xOkg5b3NtbkxhSHEvaGU1ZmthdlB3QXd0MFo2TFNuSk1hekIyblRmTVFTSXc9OmVES2dEUi9aUUtPb095R2tuN2M3WXlsYkJDRDJhaXdNaUplOVg3dk54RTg9; glide_user_route=glide.0e34b6baadf33e7786d672daf58784f2",
-          },
-          data: payload,
-        };
+        config.headers.Authorization = `Bearer ${newToken.access_token}`;
+
+        // let config = {
+        //   method: "post",
+        //   maxBodyLength: Infinity,
+        //   url: "https://dev106794.service-now.com/api/sn_ind_tmt_orm/order/productOrder",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: `Bearer ${newToken.access_token}`,
+        //     Cookie:
+        //       "BIGipServerpool_dev106794=479287306.39742.0000; JSESSIONID=FFF7FFA9F19993F03C1B52F1A127A2AC; glide_user_activity=U0N2M18xOkg5b3NtbkxhSHEvaGU1ZmthdlB3QXd0MFo2TFNuSk1hekIyblRmTVFTSXc9OmVES2dEUi9aUUtPb095R2tuN2M3WXlsYkJDRDJhaXdNaUplOVg3dk54RTg9; glide_user_route=glide.0e34b6baadf33e7786d672daf58784f2",
+        //   },
+        //   data: payload,
+        // };
 
         newProductOrder = await axios
           .request(config)
@@ -135,8 +137,6 @@ export default async function addProductOrder(req: Request, res: Response) {
       { order_number: order_number },
       { new: true }
     );
-
-    console.log("Order number is:", newData.order_number);
 
     res.setHeader("Content-Type", "application/json");
     res.status(201).send(
