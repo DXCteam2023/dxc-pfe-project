@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import axios from "axios";
 import Header from "../../dashboard/components/header/Header";
@@ -321,13 +321,22 @@ const productOrderPayload = {
   "@type": "ProductOrder",
 };
 
-const handleProductOrderCreation = async () => {
-  const newProductOrder = await axios.post(
-    "https://dxc-pfe-project-server/api/customer-order/product",
-    productOrderPayload,
-  );
-  console.log(newProductOrder);
+const [newProduct, setNewProduct] = useState(0);
+
+const handleProductOrderCreation = () => {
+  setNewProduct(newProduct + 1);
 };
+
+useEffect(() => {
+  const createProductOrder = async () => {
+    const newProductOrder = await axios.post(
+      "https://dxc-pfe-project-server/api/customer-order/product",
+      productOrderPayload,
+    );
+    console.log(newProductOrder);
+  };
+  createProductOrder();
+}, [newProduct]);
 
 export default function ProductCustomerOrdersPage() {
   return (
