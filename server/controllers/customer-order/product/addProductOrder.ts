@@ -97,7 +97,7 @@ export default async function addProductOrder(req: Request, res: Response) {
           { new: true }
         );
 
-        config.headers.Authorization = `Bearer ${newToken.access_token}`;
+        // config.headers.Authorization = `Bearer ${newToken.access_token}`;
 
         // let config = {
         //   method: "post",
@@ -112,16 +112,16 @@ export default async function addProductOrder(req: Request, res: Response) {
         //   data: payload,
         // };
 
-        newProductOrder = await axios
-          .request(config)
-          .then((response) => {
-            console.log("Created in second try");
-            return response.data;
-          })
-          .catch((error) => {
-            console.log("Product not created in second try");
-            return { error };
-          });
+        // newProductOrder = await axios
+        //   .request(config)
+        //   .then((response) => {
+        //     console.log("Created in second try");
+        //     return response.data;
+        //   })
+        //   .catch((error) => {
+        //     console.log("Product not created in second try");
+        //     return { error };
+        //   });
       }
     } catch (error) {
       return { error };
