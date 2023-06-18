@@ -110,6 +110,7 @@ type RelatedParty = {
 };
 
 export interface IProductOrderDocument {
+  orderNumber: string;
   channel: Channel[];
   externalId?: string;
   note?: Note[];
@@ -242,6 +243,7 @@ const relatedPartySchema = new Schema({
 });
 
 const productOrderSchema = new Schema({
+  orderNumber: { type: String, required: true },
   channel: { type: Array(channelSchema), required: false },
   externalId: { type: String, required: true, default: "" },
   note: { type: Array(noteSchema), required: false },

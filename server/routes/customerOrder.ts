@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addProductOrder,
+  addProductOrderToServiceNow,
   addServiceOrder,
   getCustomerOrderById,
   getCustomerOrders,
@@ -29,6 +30,8 @@ customerOrderRoute.get("/service/:id", getServiceOrderById);
 customerOrderRoute.post("/product", addProductOrder);
 
 customerOrderRoute.post("/service", addServiceOrder);
+
+customerOrderRoute.post("/product/servicenow", addProductOrderToServiceNow);
 
 customerOrderRoute.patch("/product/:id", updateProductOrder);
 
