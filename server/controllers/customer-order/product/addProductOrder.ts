@@ -53,9 +53,9 @@ export default async function addProductOrder(req: Request, res: Response) {
         })
         .catch((error) => {
           console.log({ error, message: "Product not created in first try" });
-          return null;
+          return { error };
         });
-      if (newProductOrder === null) {
+      if (newProductOrder.error) {
         let oAuthData = qs.stringify({
           grant_type: "password",
           client_id: "165d875796032110d82e2905e02762ac",
@@ -82,8 +82,18 @@ export default async function addProductOrder(req: Request, res: Response) {
             return response.data;
           })
           .catch((error) => {
-            console.log(error);
+            return { error };
           });
+
+        if (tokens.error) {
+          res
+            .status(500)
+            .send(
+              JSON.stringify({
+                message: "Error while trying to generate a new token",
+              })
+            );
+        }
 
         // const oldToken = await Data.findOne({ access_token: access_token });
 
@@ -122,6 +132,14 @@ export default async function addProductOrder(req: Request, res: Response) {
             console.log("Product not created in second try");
             return { error };
           });
+        if (newProductOrder.error) {
+          res.status(500).send(
+            JSON.stringify({
+              message:
+                "Error occured while creating a new product order in the servicenow instance",
+            })
+          );
+        }
       }
     } catch (error) {
       return { error };
