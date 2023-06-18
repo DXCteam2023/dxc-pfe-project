@@ -354,7 +354,7 @@ export default function AddNewProductOrderPage() {
         return { error: error.response.data };
       }
     };
-    if (isMount) {
+    if (!isMount) {
       handleProductOrderCreation();
     }
   }, [newOrder]);
