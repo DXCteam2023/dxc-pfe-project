@@ -10,4 +10,4 @@ const dataSchema = new Schema({
   order_number: { type: String, required: true },
 });
 
-export const Data = model<IDataDocument>("Token", dataSchema);
+export const Data = model<IDataDocument>("Data", dataSchema);
