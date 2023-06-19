@@ -10,7 +10,7 @@ import Footer from "../../../dashboard/components/Footer";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const ProductCustomerOrdersPage = () => {
   const [productOrders, setProductOrders] = React.useState<
