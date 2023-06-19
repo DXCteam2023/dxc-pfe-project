@@ -7,7 +7,7 @@ import useIsMount from "../../../../hooks/useIsMount";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const payload = {
   requestedCompletionDate: "2021-05-02T08:13:59.506Z",
