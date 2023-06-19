@@ -59,24 +59,6 @@ export default function loginPage() {
     }
   };
 
-  //   const handleLogout = () => {
-  //     Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "You are going to Logout!",
-  //       icon: "info",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#3085d6",
-  //       cancelButtonColor: "#5f249f",
-  //       confirmButtonText: "Logout",
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         localStorage.removeItem("token");
-  //         localStorage.removeItem("user");
-  //         window.location.reload();
-  //       }
-  //     });
-  //   };
-
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
 
@@ -174,7 +156,7 @@ export default function loginPage() {
                     <div className="relative">
                       <button
                         type="submit"
-                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-purple-800
                       rounded-lg transition duration-200 hover:bg-indigo-600 ease "
                       >
                         Log In
