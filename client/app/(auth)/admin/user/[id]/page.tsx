@@ -17,7 +17,7 @@ import avatar from "../../../../../public/assets/avatar.png";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const [user, setUser] = useState<any>(null);

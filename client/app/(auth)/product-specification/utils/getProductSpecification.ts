@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 export default async function getProductSpecification(
   id: string,

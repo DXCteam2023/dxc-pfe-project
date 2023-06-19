@@ -12,7 +12,7 @@ import Header from "../../../dashboard/components/header/Header";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const page = ({ params }: { params: { id: string } }) => {
   const [service, setService] = useState<any>();

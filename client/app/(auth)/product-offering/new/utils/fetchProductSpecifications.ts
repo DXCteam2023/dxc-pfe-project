@@ -5,7 +5,7 @@ import { TProductSpecification } from "../types";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const fetchProductSpecifications = async (
   setProductSpecifications: (
