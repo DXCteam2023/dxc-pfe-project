@@ -1,6 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const Stats = () => {
   interface ServiceOrders {
@@ -17,7 +22,7 @@ const Stats = () => {
   async function getServiceOrders() {
     try {
       const response = await axios.get(
-        "https://dxc-pfe-project-server.vercel.app/api/customer-order/service",
+        `${AXIOS_URL}/api/customer-order/service`,
       );
       const servicesData = response.data;
       setServices(servicesData);

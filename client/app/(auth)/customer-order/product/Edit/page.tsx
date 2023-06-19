@@ -1,10 +1,16 @@
 "use client";
 import React from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
 import Link from "next/link";
 import Header from "../../../dashboard/components/header/Header";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Footer from "../../../dashboard/components/Footer";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const ProductCustomerOrdersPage = () => {
   const [productOrders, setProductOrders] = React.useState<
@@ -29,7 +35,7 @@ const ProductCustomerOrdersPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
+          `${AXIOS_URL}/api/customer-order/product`,
         );
         setProductOrders(response.data);
       } catch (error) {

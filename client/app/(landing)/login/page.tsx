@@ -2,7 +2,8 @@
 
 // Importing modules
 import React, { SyntheticEvent, useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import * as dotenv from "dotenv";
 import Swal from "sweetalert2";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
@@ -16,6 +17,10 @@ import loginpic from "../../../public/assets/loginpic.svg";
 // Importing styles
 import styles from "../../home.module.css";
 
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
+
 export default function loginPage() {
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +31,7 @@ export default function loginPage() {
     e.preventDefault();
 
     try {
-      const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
+      const url = `${AXIOS_URL}/api/user/login`;
       // const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";:
       const { data: res } = await axios.post(
         url,
