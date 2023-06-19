@@ -1,8 +1,13 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import * as dotenv from "dotenv";
+import { useEffect, useState } from "react";
 import useIsMount from "../../../../hooks/useIsMount";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const payload = {
   requestedCompletionDate: "2021-05-02T08:13:59.506Z",
@@ -333,7 +338,7 @@ export default function AddNewProductOrderPage() {
       let newServiceNowOrder;
       try {
         newServiceNowOrder = await axios.post(
-          "https://dxc-pfe-project-server.vercel.app/api/customer-order/product/servicenow",
+          `${AXIOS_URL}/api/customer-order/product/servicenow`,
           payload,
         );
       } catch (error: any) {
@@ -346,10 +351,7 @@ export default function AddNewProductOrderPage() {
       dbPayload.state = newServiceNowOrder.data.productOrder.state;
 
       try {
-        await axios.post(
-          "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
-          dbPayload,
-        );
+        await axios.post(`${AXIOS_URL}/api/customer-order/product`, dbPayload);
       } catch (error: any) {
         return { error: error.response.data };
       }

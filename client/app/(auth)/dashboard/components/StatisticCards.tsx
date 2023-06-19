@@ -1,7 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
 import dataCostumerOrders from "../data/dataCostumerOrders";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 interface ProductOfferings {
   state: string;
@@ -22,9 +27,7 @@ const StatisticCards = () => {
   const [data, setData] = useState<ProductOfferings[]>([]);
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `https://dxc-pfe-project-server.vercel.app/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -40,7 +43,7 @@ const StatisticCards = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
       setProducts(productsData);

@@ -1,12 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
 import UpdateServiceForm from "../UpdateServiceForm";
 // import Chartt from "./Chartt";
 // import CercleChart from "./CercleChart";
 
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const page = ({ params }: { params: { id: string } }) => {
   const [service, setService] = useState<any>();
@@ -22,7 +28,7 @@ const page = ({ params }: { params: { id: string } }) => {
     try {
       const id = params.id;
       const response = await axios.get(
-        `https://dxc-pfe-project-server.vercel.app/api/customer-order/service/${id}`,
+        `${AXIOS_URL}/api/customer-order/service/${id}`,
       );
       const serviceOrderData = response.data;
       setService(serviceOrderData);

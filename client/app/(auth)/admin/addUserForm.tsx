@@ -1,5 +1,10 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 export default function AddUserForm() {
   const [user, setUser] = useState({
@@ -14,10 +19,7 @@ export default function AddUserForm() {
   const [success, setSuccess] = useState("");
   const addUser = async () => {
     try {
-      const { data: res } = await axios.post(
-        "https://dxc-pfe-project-server.vercel.app/api/user",
-        user,
-      );
+      const { data: res } = await axios.post(`${AXIOS_URL}/api/user`, user);
       setSuccess(res.message);
     } catch (error: any) {
       if (

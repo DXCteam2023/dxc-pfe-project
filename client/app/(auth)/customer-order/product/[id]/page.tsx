@@ -1,11 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
 import "../styles.css";
 
 import UpdateProductForm from "../UpdateProductForm";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const page = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<any>();
@@ -22,7 +28,7 @@ const page = ({ params }: { params: { id: string } }) => {
       const id = params.id;
       console.log("params id", params.id);
       const response = await axios.get(
-        `https://dxc-pfe-project-server.vercel.app/api/customer-order/product/${id}`,
+        `${AXIOS_URL}/api/customer-order/product/${id}`,
       );
       console.log(response);
       const ProductOrderData = response.data;
