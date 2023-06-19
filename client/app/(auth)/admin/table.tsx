@@ -6,7 +6,12 @@ import Swal from "sweetalert2";
 
 import Link from "next/link";
 import { FaEye } from "react-icons/fa";
+import * as dotenv from "dotenv";
 import UpdateUserForm from "./updateUserForm";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 export type TUser = {
   _id: string;
@@ -39,9 +44,7 @@ const Table = () => {
 
   async function getUsers() {
     try {
-      const response = await axios.get(
-        "https://dxc-pfe-project-server.vercel.app/api/user",
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/user`);
       const usersData = await response.data;
 
       setUsers(usersData);
@@ -120,9 +123,7 @@ const Table = () => {
 
   const handleConfirmDelete = async (userId: string) => {
     try {
-      const response = await axios.delete(
-        `https://dxc-pfe-project-server.vercel.app/api/user/${userId}`,
-      );
+      const response = await axios.delete(`${AXIOS_URL}/api/user/${userId}`);
       console.log(response.data);
       // setShowAlert(false);
     } catch (error) {

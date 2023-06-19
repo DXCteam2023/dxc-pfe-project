@@ -1,12 +1,15 @@
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 export default async function getProductSpecifications(
   setProductSpecfications: React.Dispatch<React.SetStateAction<never[]>>,
 ) {
   try {
-    const response = await axios.get(
-      "https://dxc-pfe-project-server.vercel.app/api/product-specification",
-    );
+    const response = await axios.get(`${AXIOS_URL}/api/product-specification`);
     const specificationData = response.data;
     setProductSpecfications(specificationData);
     console.log("hello", specificationData);

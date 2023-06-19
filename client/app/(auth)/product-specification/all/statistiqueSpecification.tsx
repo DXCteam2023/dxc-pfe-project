@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const StatistiqueSpecification = () => {
   interface ProductSpecifications {
@@ -14,7 +19,7 @@ const StatistiqueSpecification = () => {
   async function getProductSpecifications() {
     try {
       const response = await axios.get(
-        "https://dxc-pfe-project-server.vercel.app/api/product-specification",
+        `${AXIOS_URL}/api/product-specification`,
       );
       const productSpecification = response.data;
       setProducts(productSpecification);

@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const Cards = () => {
   const [users, setUsers] = useState([]);
@@ -11,9 +16,7 @@ const Cards = () => {
   useEffect(() => {
     async function getUsers() {
       try {
-        const response = await axios.get(
-          "https://dxc-pfe-project-server.vercel.app/api/user",
-        );
+        const response = await axios.get(`${AXIOS_URL}/api/user`);
         const usersData = response.data;
         setUsers(usersData);
       } catch (error) {
