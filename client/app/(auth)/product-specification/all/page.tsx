@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
 import { FaEye } from "react-icons/fa";
 import Link from "next/link";
 import StatistiqueSpecification from "./statistiqueSpecification";
@@ -10,6 +11,10 @@ import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getProductSpecifications } from "../utils";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOrders {
   status: string;
@@ -31,7 +36,7 @@ export default function AllProductSpecificationsPage() {
   async function getProductSpecifications() {
     try {
       const response = await axios.get(
-        "https://dxc-pfe-project-server.vercel.app/api/product-specification",
+        `${AXIOS_URL}/api/product-specification`,
       );
       const specificationData: ProductOrders[] = response.data;
       setProductSpecifications(specificationData);

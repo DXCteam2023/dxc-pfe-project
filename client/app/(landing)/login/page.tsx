@@ -2,7 +2,8 @@
 
 // Importing modules
 import React, { SyntheticEvent, useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import * as dotenv from "dotenv";
 import Swal from "sweetalert2";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
@@ -16,6 +17,10 @@ import loginpic from "../../../public/assets/loginpic.svg";
 // Importing styles
 import styles from "../../home.module.css";
 
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
+
 export default function loginPage() {
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +31,7 @@ export default function loginPage() {
     e.preventDefault();
 
     try {
-      const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";
+      const url = `${AXIOS_URL}/api/user/login`;
       // const url = "https://dxc-pfe-project-server.vercel.app/api/user/login";:
       const { data: res } = await axios.post(
         url,
@@ -53,24 +58,6 @@ export default function loginPage() {
       // console.log(err);
     }
   };
-
-  //   const handleLogout = () => {
-  //     Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "You are going to Logout!",
-  //       icon: "info",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#3085d6",
-  //       cancelButtonColor: "#5f249f",
-  //       confirmButtonText: "Logout",
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         localStorage.removeItem("token");
-  //         localStorage.removeItem("user");
-  //         window.location.reload();
-  //       }
-  //     });
-  //   };
 
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
@@ -169,7 +156,7 @@ export default function loginPage() {
                     <div className="relative">
                       <button
                         type="submit"
-                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500
+                        className="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-purple-800
                       rounded-lg transition duration-200 hover:bg-indigo-600 ease "
                       >
                         Log In

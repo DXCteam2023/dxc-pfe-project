@@ -4,9 +4,14 @@ import axios from "axios";
 import { FaEye } from "react-icons/fa";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import * as dotenv from "dotenv";
 import Header from "../../dashboard/components/header/Header";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Stats from "./Stats";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 type ServiceOrders = {
   state: string;
@@ -27,7 +32,7 @@ export default function ServiceCustomerOrdersPage() {
   async function getServiceOrders() {
     try {
       const response = await axios.get(
-        "https://dxc-pfe-project-server.vercel.app/api/customer-order/service",
+        `${AXIOS_URL}/api/customer-order/service`,
       );
       const servicesData = response.data;
       setServices(servicesData);

@@ -26,6 +26,7 @@
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
     "emailjs-com": "^3.2.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
@@ -46,7 +47,6 @@
     "tailwindcss": "3.3.2",
     "tw-elements": "^1.0.0-beta2",
     "typescript": "5.0.4",
-
     "zod": "^3.21.4"
   },
   "devDependencies": {

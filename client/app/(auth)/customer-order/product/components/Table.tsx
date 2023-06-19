@@ -10,6 +10,7 @@ import {
 } from "react-icons/fi";
 import Modal from "react-modal";
 import Link from "next/link";
+import * as dotenv from "dotenv";
 import {
   FaBackward,
   FaCog,
@@ -24,6 +25,10 @@ import { ACTION_FAST_REFRESH } from "next/dist/client/components/router-reducer/
 import NewOrderRedirectModal from "./NewOrderRedirectModal";
 import NoRecord from "../../../../../public/assets/NoRecord.png";
 import dataProductOrders from "../data/dataProductOrders";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const Table = () => {
   const [selectedState, setSelectedState] = useState("");
@@ -80,7 +85,7 @@ const Table = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
+          `${AXIOS_URL}/api/customer-order/product`,
         );
         setProductOrders(response.data);
       } catch (error) {

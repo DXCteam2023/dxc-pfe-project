@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import * as dotenv from "dotenv";
 // import { Chart, initTE } from "tw-elements";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
@@ -13,6 +14,10 @@ import avatar from "../../../../../public/assets/avatar.png";
 // Chart.register(initTE);
 
 //import Chart from 'chart.js';
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const [user, setUser] = useState<any>(null);
@@ -73,16 +78,14 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   async function getUsers() {
     try {
       const id = params.id;
-      const response = await axios.get(
-        `https://dxc-pfe-project-server.vercel.app/api/user/${id}`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/user/${id}`);
       const userData = response.data;
       setUser(userData);
       console.log(userData);
 
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
-        `https://dxc-pfe-project-server.vercel.app/api/user/similar-profile/${profile}`,
+        `${AXIOS_URL}/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
       setSimilarProfiles(similarProfilesData);

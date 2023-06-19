@@ -1,6 +1,11 @@
 import axios from "axios";
+import * as dotenv from "dotenv";
 
 import { TProductSpecification } from "../types";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const fetchProductSpecifications = async (
   setProductSpecifications: (
@@ -8,8 +13,7 @@ const fetchProductSpecifications = async (
   ) => void,
 ) => {
   try {
-    const url =
-      "https://dxc-pfe-project-server.vercel.app/api/product-specification";
+    const url = `${AXIOS_URL}/api/product-specification`;
     const response = await axios.get(url);
     const data = await response.data;
     setProductSpecifications(data);

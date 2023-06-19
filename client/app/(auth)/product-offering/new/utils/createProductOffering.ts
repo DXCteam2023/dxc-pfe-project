@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as dotenv from "dotenv";
 
 import {
   TCategory,
@@ -6,6 +7,10 @@ import {
   TProductOfferingPrice,
   TSelectedProductSpec,
 } from "../types";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const createProductOffering = async (
   e: any,
@@ -75,11 +80,10 @@ const createProductOffering = async (
     console.log("category:", category);
     console.log("channel:", channel);
 
-    const url =
-      "https://dxc-pfe-project-server.vercel.app/api/product-offering";
+    const url = `${AXIOS_URL}/api/product-offering`;
 
     // Fetch the selected product specification details
-    const specificationUrl = `https://dxc-pfe-project-server.vercel.app/api/product-offering/${chosenProductSpecification}`;
+    const specificationUrl = `${AXIOS_URL}/api/product-offering/${chosenProductSpecification}`;
     const specificationResponse = await axios.get(specificationUrl);
     const specificationData = await specificationResponse.data;
 
