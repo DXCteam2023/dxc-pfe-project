@@ -56,7 +56,7 @@ type ProdSpecCharValueUse = {
   valueType?: string;
 };
 export interface IProductOfferingDocument {
-  _id: string;
+  _id: number;
   number: string;
   category: Category[];
   channel: Channel[];
@@ -148,7 +148,7 @@ const prodSpecCharValueUseSchema = new Schema({
 });
 
 const productOfferingSchema = new Schema({
-  _id: { type: String, required: false },
+  _id: { type: Number, required: false },
   number: { type: String, required: false }, //this
   category: { type: Array(categorySchema), required: false },
   channel: { type: Array(channelSchema), required: false },
