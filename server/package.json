@@ -33,7 +33,7 @@
     "joi-password-complexity": "^5.1.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.5.0",
-    "mongoose": "^7.2.1",
+    "mongoose": "^7.3.0",
     "node-fetch": "^3.3.1"
   }
 }
