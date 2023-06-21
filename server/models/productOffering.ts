@@ -1,5 +1,5 @@
 // imports from mongoose
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
 type Category = {
   id: string;
@@ -77,18 +77,18 @@ export interface IProductOfferingDocument {
   state: string;
 }
 
-const categorySchema = new mongoose.Schema({
+const categorySchema = new Schema({
   id: { type: String, required: false },
   name: { type: String, required: false, default: "" },
 });
 
-const channelSchema = new mongoose.Schema({
+const channelSchema = new Schema({
   description: { type: String, required: false, default: "" },
   id: { type: String, required: false },
   name: { type: String, required: false, default: "" },
 });
 
-const productSpecCharacteristicSchema = new mongoose.Schema({
+const productSpecCharacteristicSchema = new Schema({
   name: { type: String, required: false, default: "" },
   valueType: { type: String, required: false },
   productSpecCharacteristicValue: [
@@ -101,16 +101,16 @@ const productSpecCharacteristicSchema = new mongoose.Schema({
   ],
 });
 
-const taxIncludedAmountSchema = new mongoose.Schema({
+const taxIncludedAmountSchema = new Schema({
   unit: { type: String, required: false },
   value: { type: String, required: false },
 });
 
-const priceSchema = new mongoose.Schema({
+const priceSchema = new Schema({
   taxIncludedAmount: { type: taxIncludedAmountSchema, required: false },
 });
 
-const productOfferingPriceSchema = new mongoose.Schema({
+const productOfferingPriceSchema = new Schema({
   price: {
     type: priceSchema,
     enum: ["nonRecurring", "recurring"],
@@ -119,7 +119,7 @@ const productOfferingPriceSchema = new mongoose.Schema({
   priceType: { type: String, required: false },
 });
 
-const productSpecificationSchema = new mongoose.Schema({
+const productSpecificationSchema = new Schema({
   id: { type: String, required: false },
   name: { type: String, required: false },
   internalId: { type: String, required: false },
@@ -127,16 +127,16 @@ const productSpecificationSchema = new mongoose.Schema({
   version: { type: String, required: false },
 });
 
-const productSpecCharacteristicValueSchema = new mongoose.Schema({
+const productSpecCharacteristicValueSchema = new Schema({
   value: { type: String, required: false },
 });
 
-const validForSchema = new mongoose.Schema({
+const validForSchema = new Schema({
   endDateTime: { type: String, required: false, default: "" },
   startDateTime: { type: String, required: false, default: "" },
 });
 
-const prodSpecCharValueUseSchema = new mongoose.Schema({
+const prodSpecCharValueUseSchema = new Schema({
   productSpecCharacteristicValue: {
     type: Array(productSpecCharacteristicValueSchema),
     required: false,
@@ -147,7 +147,7 @@ const prodSpecCharValueUseSchema = new mongoose.Schema({
   valueType: { type: String, required: false },
 });
 
-const productOfferingSchema = new mongoose.Schema({
+const productOfferingSchema = new Schema({
   _id: { type: String, required: false },
   number: { type: String, required: false }, //this
   category: { type: Array(categorySchema), required: false },
@@ -177,7 +177,7 @@ const productOfferingSchema = new mongoose.Schema({
   state: { type: String, required: false }, //this
 });
 
-export const ProductOffering = mongoose.model<IProductOfferingDocument>(
+export const ProductOffering = model<IProductOfferingDocument>(
   "ProductOffering",
   productOfferingSchema
 );
