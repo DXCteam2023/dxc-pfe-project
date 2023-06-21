@@ -2,8 +2,13 @@
 import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrView } from "react-icons/gr";
+import * as dotenv from "dotenv";
 
 import ListProductOffering from "./listProductOffering";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 type ProductOffering = {
   id: string;
@@ -25,9 +30,7 @@ export default function AllProductOfferingsPage() {
   }, []);
   const fetchProducts = async () => {
     try {
-      const res = await fetch(
-        "https://dxc-pfe-project-server.vercel.app/api/product-offering/",
-      )
+      const res = await fetch(`${AXIOS_URL}/api/product-offering/`)
         .then((data) => data.json())
         .catch((e) => console.log(e));
       console.log(res);
