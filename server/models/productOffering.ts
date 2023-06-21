@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 
+// Mongoose is here
+
 type Category = {
   id: string;
   name?: string;
