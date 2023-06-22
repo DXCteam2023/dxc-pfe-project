@@ -1,6 +1,11 @@
 import axios from "axios";
+import * as dotenv from "dotenv";
 
 import { TCategory, TChannel, TSelectedProductSpec } from "../types";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const fetchProductSpecificationDetails = async (
   setSelectedProductSpec: (
@@ -11,7 +16,7 @@ const fetchProductSpecificationDetails = async (
   chosenProductSpecification: string,
 ) => {
   try {
-    const specificationUrl = `http://localhost:5000/api/product-specification/${chosenProductSpecification}`;
+    const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
     const specificationResponse = await axios.get(specificationUrl);
     const specificationData = await specificationResponse.data;
     setSelectedProductSpec(specificationData);

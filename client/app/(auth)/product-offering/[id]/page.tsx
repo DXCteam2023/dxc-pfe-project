@@ -1,9 +1,14 @@
 import axios from "axios";
+import * as dotenv from "dotenv";
 
 import { BsFillPatchCheckFill } from "react-icons/bs";
 import { IoMdRemoveCircle } from "react-icons/io";
 
 import Sidebar from "../../dashboard/components/Sidebar";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 export default async function SingleProductOfferingPage({
   params,
@@ -14,9 +19,7 @@ export default async function SingleProductOfferingPage({
 }) {
   const id = params.id;
 
-  const productOffering = await axios(
-    `http://localhost:5000/api/product-offering/${id}`,
-  )
+  const productOffering = await axios(`${AXIOS_URL}/api/product-offering/${id}`)
     .then((response) => response.data)
     .catch((e) => console.log(e));
 
@@ -27,7 +30,7 @@ export default async function SingleProductOfferingPage({
         <header className="py-5 flex items-center justify-between px-3">
           <div className="infos flex justify-between items-center">
             <div className="title font-medium text-lg me-3">
-              {productOffering.name}
+              {productOffering.display_name}
             </div>
             <span
               className={

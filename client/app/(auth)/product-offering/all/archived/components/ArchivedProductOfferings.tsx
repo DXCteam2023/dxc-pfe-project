@@ -12,7 +12,9 @@ const ArchivedProductOfferings = () => {
   }, []);
   async function getData() {
     await axios
-      .get("http://localhost:5000/api/product-offering/archived/all")
+      .get(
+        "https://dxc-pfe-project-server.vercel.app/api/product-offering/archived/all",
+      )
       .then((response) => {
         setData(response.data);
         setDataOriginal(response.data);
