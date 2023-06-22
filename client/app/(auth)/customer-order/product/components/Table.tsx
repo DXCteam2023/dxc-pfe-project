@@ -2,13 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { FiEye, FiFilter, FiRefreshCcw, FiSearch, FiTrash2 } from "react-icons/fi";
 import Link from "next/link";
-import {FaBan, FaPencilAlt,FaSortAmountDownAlt,FaTrashAlt,} from "react-icons/fa";
-import NoRecord from "@/public/assets/NoRecord.png";
+import {FaBan, FaPencilAlt,FaSortAmountDownAlt,FaTrashAlt } from "react-icons/fa";
+import NoRecord from "../../../../../public/assets/NoRecord.png";
 import Image from "next/image";
 import axios from "axios";
 import { IoMdOptions } from "react-icons/io";
+import * as dotenv from "dotenv";
 
+dotenv.config();
 
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const Table = () => {
   const [selectedState, setSelectedState] = useState("");
@@ -173,53 +176,40 @@ const previousPage = () => {
                     <FiSearch size={15} className="search-icon" />
                   </div>
                   <button className="btn" onClick={handleAllFilter}>
-  ALL
-</button>
+                    ALL
+                  </button>
                   <Link href="/customer-order/all/product/Form">
                     <button className="btn">NEW</button>
                   </Link>
                   <div className="dropdown">
-                    <button className="dropbtn" onClick={handleAllFilter} title="Refresh" >
+                    <button
+                      className="dropbtn"
+                      onClick={handleAllFilter}
+                      title="Refresh"
+                    >
                       <FiRefreshCcw size={20} color="white" />
                     </button>
-                   
-                  
-                
-                    </div>
+                  </div>
                   <div className="dropdown">
                     <button className="dropbtn">
                     <IoMdOptions size={20} color="white" />
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                      <a href="#">
-                        SHOW/HIDE
-     
-</a>
+                        <a href="#">SHOW/HIDE</a>
                         <div className="submenu-content">
-             
-                        
-  
-  <a
-              className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-              onClick={handleToggleTaskType}
-            >
-              {showTaskType ? (
-                
-                 
-                  <p className="text-black-500">Hide Task Type</p>
-                
-              ) : (
-               
-                  
-                  <p className="text-black-500">Show Task Type</p>
-                
-              )}
-           
-</a>
+                          <a
+                            className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
+                            onClick={handleToggleTaskType}
+                          >
+                            {showTaskType ? (
+                              <p className="text-black-500">Hide Task Type</p>
+                            ) : (
+                              <p className="text-black-500">Show Task Type</p>
+                            )}
+                          </a>
                         </div>
                       </div>
-                
                     </div>
                   </div>
                   <div className="dropdown">
@@ -242,9 +232,12 @@ const previousPage = () => {
                       <div className="submenu">
                         <a href="#">PONR</a>
                         <div className="submenu-content">
-                        <a onClick={() => handlePONRFilter("true")}><p className="text-black-500">True</p></a>
-                        <a onClick={() => handlePONRFilter("false")}><p className="text-black-500">False</p></a>
-                           
+                          <a onClick={() => handlePONRFilter("true")}>
+                            <p className="text-black-500">True</p>
+                          </a>
+                          <a onClick={() => handlePONRFilter("false")}>
+                            <p className="text-black-500">False</p>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -258,14 +251,16 @@ const previousPage = () => {
                       <div className="submenu">
                         <a>Sort by Order date</a>
                         <div className="submenu-content">
-                        <a onClick={() => handleSort("newest")}><p className="text-black-500">Newest first</p></a>
-                        <a onClick={() => handleSort("oldest")}><p className="text-black-500">Oldest first</p></a>
-
+                          <a onClick={() => handleSort("newest")}>
+                            <p className="text-black-500">Newest first</p>
+                          </a>
+                          <a onClick={() => handleSort("oldest")}>
+                            <p className="text-black-500">Oldest first</p>
+                          </a>
                         </div>
                         
                       </div>
-                      <div className="submenu">
-                      </div>
+                      <div className="submenu"></div>
                     </div>
                   </div>
                   <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -277,23 +272,23 @@ const previousPage = () => {
                             NUMBER
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                          Completion Date
+                            Completion Date
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                          Requested start Date
+                            Requested start Date
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
                             state
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                           ORDER DATE
+                            ORDER DATE
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
                             PONR
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-  {showTaskType ? 'TASK TYPE' : ''}
-</th>
+                            {showTaskType ? "TASK TYPE" : ""}
+                          </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Actions
                           </th>
@@ -326,7 +321,6 @@ const previousPage = () => {
                     <a className="text-gray-900 whitespace-no-wrap">{`PO${(index + 1).toString().padStart(7, '0')}`}</a>            </div>
                   </div>
                 </td>
-                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
@@ -336,25 +330,28 @@ const previousPage = () => {
                                 </div>
                               </td> */}
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-
                                 <p className="text-gray-900 whitespace-no-wrap">
                                 {JSON.stringify(new Date(order.completionDate))}
   </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                              <p className="text-gray-900 whitespace-no-wrap">
-    {new Date(order.requestedStartDate).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })}{" "}
-    {new Date(order.requestedStartDate).toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })}
-  </p>
+                                <p className="text-gray-900 whitespace-no-wrap">
+                                  {new Date(
+                                    order.requestedStartDate,
+                                  ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                  })}{" "}
+                                  {new Date(
+                                    order.requestedStartDate,
+                                  ).toLocaleTimeString("en-US", {
+                                    hour12: false,
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    second: "2-digit",
+                                  })}
+                                </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                               <span className="relative inline-block px-3 py-1 font-semibold leading-tight">
@@ -380,40 +377,45 @@ const previousPage = () => {
   ></span>
   <span className="relative">{order.state}</span>
 </span>
-
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                   <div className="ml-3">
- 
                                     <p className="text-gray-900 whitespace-no-wrap">
-    {new Date(order.orderDate).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })}{" "}
-    {new Date(order.orderDate).toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })}
-  </p>
+                                      {new Date(
+                                        order.orderDate,
+                                      ).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                      })}{" "}
+                                      {new Date(
+                                        order.orderDate,
+                                      ).toLocaleTimeString("en-US", {
+                                        hour12: false,
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        second: "2-digit",
+                                      })}
+                                    </p>
                                   </div>
                                 </div>
                               </td>
-                              
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                              <span className={`relative inline-block px-3 py-1 font-semibold rounded-full text-black-900 leading-tight ${order.ponr ? 'bg-green-200' : 'bg-red-200'}`}>
-                              
-                              <span className="relative ">{order.ponr ? 'True' : 'False'}</span>
-                              </span>
 
-                              
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <span
+                                  className={`relative inline-block px-3 py-1 font-semibold rounded-full text-black-900 leading-tight ${
+                                    order.ponr ? "bg-green-200" : "bg-red-200"
+                                  }`}
+                                >
+                                  <span className="relative ">
+                                    {order.ponr ? "True" : "False"}
+                                  </span>
+                                </span>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                              <p className="text-gray-900 whitespace-no-wrap">
-                              {showTaskType ? 'Product Order' : ''}
+                                <p className="text-gray-900 whitespace-no-wrap">
+                                  {showTaskType ? "Product Order" : ""}
                                 </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -442,11 +444,9 @@ const previousPage = () => {
                                 </p>
                               </td>
                             </tr>
-
-      ))
-  )}
-</tbody>
-
+                          ))
+                        )}
+                      </tbody>
                     </table>
                     <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                         <span className="text-xs xs:text-sm text-gray-900">
@@ -471,7 +471,7 @@ const previousPage = () => {
                           >
                             Next
                           </button>
-                        </div>
+                        </div> */}
                       </div>
                 </div>
                     <div className="min-w-full leading-normal">
@@ -498,7 +498,6 @@ const previousPage = () => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

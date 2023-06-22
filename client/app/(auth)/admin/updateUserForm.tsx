@@ -1,7 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
 
 import type { TUser } from "./table";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 export default function UpdateUserForm({
   user,
@@ -22,16 +27,13 @@ export default function UpdateUserForm({
     event.preventDefault();
     setIsVisible(false);
     try {
-      const response = await axios.patch(
-        `http://localhost:5000/api/user/${user?._id}`,
-        {
-          username,
-          profile,
-          role,
-          password,
-          userID,
-        },
-      );
+      const response = await axios.patch(`${AXIOS_URL}/api/user/${user?._id}`, {
+        username,
+        profile,
+        role,
+        password,
+        userID,
+      });
       if (response.status === 200) {
         console.log(response.data);
       } else {

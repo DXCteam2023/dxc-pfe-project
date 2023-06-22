@@ -7,10 +7,10 @@ import Sidebar from "./components/Sidebar";
 import TopCards from "./components/TopCards";
 import BarChart from "./components/RecentCustomerOrders";
 import StatisticCards from "./components/StatisticCards";
-import Chartt from "./components/chart";
+// import Chartt from "./components/chart";
 import Footer from "./components/Footer";
 import TableProductOfferings from "./components/TableProductOfferings";
-import CercleChart from "./components/ChartCercle";
+// import CercleChart from "./components/ChartCercle";
 import Cards from "./components/Cards";
 
 export default function DashboardHome() {
@@ -35,23 +35,22 @@ export default function DashboardHome() {
       <div className="bg-white  min-h-screen-100 w-5/6  ">
         <Header />
         <div className=" mx-4 py-5 bg-gradient-to-r from-white via-purple-200 to-white  rounded-l-lg ">
-        {/* <TopCards /> */}
-        <Cards/>
-        {/* <Stats/> */}
-        <StatisticCards /></div>
-        
+          {/* <TopCards /> */}
+          <Cards />
+          {/* <Stats/> */}
+          <StatisticCards />
+        </div>
+
         <div className="mt-4 flex p-2 ">
           <div className="w-1/2 ">
             <TableProductOfferings />
           </div>
-          <div className="w-1/2 py-12 mt-8">
-           <CercleChart/>
-          </div>
+          {/* <div className="w-1/2 py-12 mt-8">
+            <CercleChart />
+          </div> */}
         </div>
         <div className="mt-4 flex p-2 ">
-          <div className="w-1/2 ">
-          <Chartt />
-          </div>
+          <div className="w-1/2 ">{/* <Chartt /> */}</div>
           <div className="w-1/2 ">
             <BarChart />
           </div>

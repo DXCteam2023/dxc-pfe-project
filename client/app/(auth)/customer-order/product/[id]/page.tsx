@@ -8,6 +8,13 @@ import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
 import Header from "@/app/(auth)/dashboard/components/header/Header";
 import { IoMdOptions } from "react-icons/io";
 import { FiFilter, FiRefreshCcw } from "react-icons/fi";
+import * as dotenv from "dotenv";
+
+import "../styles.css";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const page = ({ params }: { params: { id: string } }) => {
   
@@ -38,11 +45,11 @@ const handlePONRFilter = (value: string) => {
   async function getProductOrderById() {
     try {
       const id = params.id;
-      console.log("params id",params.id)
+      console.log("params id", params.id);
       const response = await axios.get(
-        `http://localhost:5000/api/customer-order/product/${id}`,
+        `${AXIOS_URL}/api/customer-order/product/${id}`,
       );
-      console.log(response)
+      console.log(response);
       const ProductOrderData = response.data;
       
      
@@ -83,13 +90,7 @@ const handlePONRFilter = (value: string) => {
           <Header />
           {product && (
             <div>
-              <div className="h-full bg-white p-8">
-
-                
-
-                
-                 
-                  
+              <div className="h-full bg-white p-8">  
                   <div className="content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
             <nav className="flex px-5 py-3 text-gray-700  rounded-lg bg-purple-100">
          
@@ -563,5 +564,3 @@ const handlePONRFilter = (value: string) => {
 };
 
 export default page;
-
-

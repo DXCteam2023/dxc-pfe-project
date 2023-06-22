@@ -2,11 +2,16 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 // import axios, { AxiosResponse } from "axios";
 import axios from "axios";
+import * as dotenv from "dotenv";
+import Link from "next/link";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 
-import Link from "next/link";
 import "./Form.css";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 export default function NewProductOfferingPage() {
   const [productName, setProductName] = useState("");
@@ -65,7 +70,7 @@ export default function NewProductOfferingPage() {
 
   const fetchProductSpecifications = async () => {
     try {
-      const url = "http://localhost:5000/api/product-specification";
+      const url = `${AXIOS_URL}/api/product-specification`;
       const response = await axios.get(url);
       const data = response.data;
       setProductSpecifications(data);
@@ -76,7 +81,7 @@ export default function NewProductOfferingPage() {
 
   const fetchSpecificationDetails = async () => {
     try {
-      const specificationUrl = `http://localhost:5000/api/product-specification/${chosenProductSpecification}`;
+      const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
       const specificationResponse = await axios.get(specificationUrl);
       const specificationData = specificationResponse.data;
       setSelectedProductSpec(specificationData);
@@ -129,9 +134,9 @@ export default function NewProductOfferingPage() {
       console.log("category:", category);
       console.log("channel:", channel);
 
-      const url = "http://localhost:5000/api/product-offering";
+      const url = `${AXIOS_URL}/api/product-offering`;
 
-      const specificationUrl = `http://localhost:5000/api/product-specification/${chosenProductSpecification}`;
+      const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
       const specificationResponse = await axios.get(specificationUrl);
       const specificationData = specificationResponse.data;
 
@@ -354,7 +359,6 @@ export default function NewProductOfferingPage() {
                                 )
                               }
                             >
-                              
                               {selectedCharacteristics.length > 0 &&
                                 selectedProductSpec?.productSpecCharacteristic &&
                                 selectedProductSpec.productSpecCharacteristic

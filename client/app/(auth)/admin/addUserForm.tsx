@@ -1,5 +1,10 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 export default function AddUserForm() {
   const [user, setUser] = useState({
@@ -14,10 +19,7 @@ export default function AddUserForm() {
   const [success, setSuccess] = useState("");
   const addUser = async () => {
     try {
-      const { data: res } = await axios.post(
-        "http://localhost:5000/api/user",
-        user,
-      );
+      const { data: res } = await axios.post(`${AXIOS_URL}/api/user`, user);
       setSuccess(res.message);
     } catch (error: any) {
       if (
@@ -55,7 +57,10 @@ export default function AddUserForm() {
       ) : (
         ""
       )}
-      <form className=" mx-12 grid lg:grid-cols-2 w-4/6 gap-4" onSubmit={handleSubmit}>
+      <form
+        className=" mx-12 grid lg:grid-cols-2 w-4/6 gap-4"
+        onSubmit={handleSubmit}
+      >
         <div className="input-type">
           <input
             id="username"

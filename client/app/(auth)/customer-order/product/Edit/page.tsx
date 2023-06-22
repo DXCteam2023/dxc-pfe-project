@@ -1,15 +1,20 @@
 "use client";
+import React from "react";
+import axios from "axios";
+import * as dotenv from "dotenv";
+
+import Link from "next/link";
 import Header from "../../../dashboard/components/header/Header";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Footer from "../../../dashboard/components/Footer";
-import React from "react";
-import axios from "axios";
-import Link from "next/link";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const ProductCustomerOrdersPage = () => {
   const [productOrders, setProductOrders] = React.useState<
     Array<{
-      
       _id: string;
       id: string;
       externalId: string;
@@ -30,7 +35,7 @@ const ProductCustomerOrdersPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/customer-order/product",
+          `${AXIOS_URL}/api/customer-order/product`,
         );
         setProductOrders(response.data);
       } catch (error) {
@@ -64,7 +69,7 @@ const ProductCustomerOrdersPage = () => {
                     <div className="my-2 flex sm:flex-row ">
                       <div className="flex flex-row mb-1 sm:mb-0">
                         <div className="relative">
-                          <select className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                          <select className="appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option value={5}>5</option>
                             <option value={10}>10</option>
                             <option value={20}>20</option>
@@ -80,7 +85,7 @@ const ProductCustomerOrdersPage = () => {
                           </div>
                         </div>
                         <div className="relative">
-                          <select className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
+                          <select className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                             <option>All</option>
                             <option>Active</option>
                             <option>Inactive</option>
@@ -125,27 +130,27 @@ const ProductCustomerOrdersPage = () => {
                       <table className="min-w-full leading-normal">
                         <thead>
                           <tr>
-                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Number
+                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Number
                             </th>
                             <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Order Date
+                              Order Date
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            requested Start Date
+                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              requested Start Date
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            State
+                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              State
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            completion Date 
+                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              completion Date
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            ponr
+                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              ponr
                             </th>
-                            
-                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Action
+
+                            <th className="px-5 py-3 border-b-2 border-pink-200 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Action
                             </th>
                           </tr>
                         </thead>
@@ -168,7 +173,7 @@ const ProductCustomerOrdersPage = () => {
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                {order.requestedStartDate} 
+                                  {order.requestedStartDate}
                                 </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -186,15 +191,15 @@ const ProductCustomerOrdersPage = () => {
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                    {order.orderDate}
+                                      {order.orderDate}
                                     </p>
                                   </div>
                                 </div>
                               </td>
-                              
+
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
-                                {order.ponr ? 'True' : 'False'}
+                                  {order.ponr ? "True" : "False"}
                                 </p>
                               </td>
                               <td className="py-3 px-6 text-center">
@@ -266,7 +271,7 @@ const ProductCustomerOrdersPage = () => {
                           ))}
                         </tbody>
                       </table>
-                    
+
                       <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                         <span className="text-xs xs:text-sm text-gray-900"></span>
                         <div className="inline-flex mt-2 xs:mt-0">
