@@ -40,7 +40,7 @@ const Table = () => {
   useEffect(() => {
     // Récupérer les utilisateurs depuis le backend
     getUsers();
-  }, []);
+  }, [users]);
 
   async function getUsers() {
     try {
@@ -198,18 +198,17 @@ const Table = () => {
 
   //console.log("click");
   //};
+
   return (
     <div>
-      <div className="ml-2 container mx-auto px-4 sm:px-8 flex mt-2">
-        {editingUserId !== null && +editingUserId !== 0 && (
-          <UpdateUserForm
-            user={users.find((user: TUser) => user._id === editingUserId)}
-            onCancel={() => setEditingUserId(null)}
-            onClose={() => setShowForm(false)}
-            // userToEdit={userToEdit}
-          />
-        )}
-      </div>
+      {editingUserId !== null && +editingUserId !== 0 && (
+        <UpdateUserForm
+          user={users.find((user: TUser) => user._id === editingUserId)}
+          onCancel={() => setEditingUserId(null)}
+          onClose={() => setShowForm(false)}
+          // userToEdit={userToEdit}
+        />
+      )}
 
       <div className="flex w-full">
         <div className="w-full">
@@ -267,20 +266,20 @@ const Table = () => {
                               />
                             </label>
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Username
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Profile
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Role
                           </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
                             UserID
                           </th>
 
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
@@ -426,14 +425,14 @@ const Table = () => {
                     <button
                       onClick={handlePreviousPage}
                       disabled={currentPage === 1}
-                      className="bg-purple-300 hover:bg-purple-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
+                      className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-l"
                     >
                       Previous Page
                     </button>
                     <button
                       onClick={handleNextPage}
                       disabled={currentUsers.length < usersPerPage}
-                      className="bg-purple-300 hover:bg-purple-400  text-gray-800 font-semibold py-2 px-4 rounded-r"
+                      className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  hover:bg-purple-400  text-white font-semibold py-2 px-4 rounded-r"
                     >
                       Next Page
                     </button>

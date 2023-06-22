@@ -4,11 +4,6 @@ import bcrypt from "bcryptjs";
 
 export default async function updateUser(req: Request, res: Response) {
   try {
-    // const { error } = validation(req.body);
-
-    // if (error) {
-    //     return res.status(400).send({ message: error.message });
-    // }
 
     const userId = req.params.id;
     const formData = req.body;

@@ -4,24 +4,25 @@ import axios from "axios";
 
 Chart.register(...registerables);
 
-const BarChart = () => {
+const ChartProduct = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<Chart<"bar", number[], string> | null>(null);
-  const [products, setProducts] = useState<{
+  const [products, setProductOfferings] = useState<{
     labels: string[];
     data: number[];
   }>({ labels: [], data: [] });
+  useEffect(() => {
+    getProductOfferings();
+  }, []);
 
-  // useEffect(() => {
-  //   getProductOrders();
-  // }, []);
-
-  async function getProductOrders() {
+  async function getProductOfferings() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        "http://localhost:5000/api/product-offering",
       );
-      const productsData = response.data;
+      const allProductOfferings = response.data;
+      //setProductOfferings(allProductOfferings);
+
       // Obtenez les mois de la date actuelle à la date actuelle moins 6 mois
       const months = [];
       const currentDate = new Date();
@@ -37,21 +38,24 @@ const BarChart = () => {
       });
 
       // Parcourez les données des produits et incrémentez le décompte des commandes pour chaque mois correspondant
-      productsData.forEach((product: { orderDate: string }) => {
-        const orderDate = new Date(product.orderDate);
-        const orderMonth = orderDate.toLocaleString("default", {
-          month: "long",
-        });
-        if (Object.prototype.hasOwnProperty.call(ordersByMonth, orderMonth)) {
-          ordersByMonth[orderMonth] += 1;
-        }
-      });
+      allProductOfferings.forEach(
+        (product: { validFor: { startDateTime: string } }) => {
+          const orderDate = new Date(product.validFor.startDateTime);
+          console.log("startdate time", product.validFor.startDateTime);
+          const orderMonth = orderDate.toLocaleString("default", {
+            month: "long",
+          });
+          if (Object.prototype.hasOwnProperty.call(ordersByMonth, orderMonth)) {
+            ordersByMonth[orderMonth] += 1;
+          }
+        },
+      );
 
       // Convertissez le décompte des commandes par mois en un tableau pour les étiquettes et les données du graphique
       const labels = Object.keys(ordersByMonth);
       const data = Object.values(ordersByMonth);
 
-      setProducts({ labels, data });
+      setProductOfferings({ labels, data });
     } catch (error) {
       console.error("Erreur lors de la récupération des produits :", error);
     }
@@ -117,18 +121,13 @@ const BarChart = () => {
   }, [products]);
 
   return (
-    <div>
-      <div className="mx-auto py-4 text-center">
-        <canvas ref={chartRef} />
-        <p className="mt-2 text-gray-600 font-semibold">
-          Product Orders By Month
-        </p>
-      </div>
-      <div className="item-end">
-        <p className="mt-2 text-gray-600 font-semibold">Total Revenue : </p>
-      </div>
+    <div className="mx-auto py-4 text-center ">
+      <canvas ref={chartRef} />
+      <p className="mt-2 p-9 text-gray-600 font-semibold">
+        Product Offerings by Month
+      </p>
     </div>
   );
 };
 
-export default BarChart;
+export default ChartProduct;
