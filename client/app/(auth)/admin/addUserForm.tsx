@@ -1,7 +1,8 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
+import Swal from "sweetalert2";
 
-export default function AddUserForm() {
+export default function AddUserForm({ onCancel }: { onCancel?: any }) {
   const [user, setUser] = useState({
     username: "",
     role: "",
@@ -9,23 +10,29 @@ export default function AddUserForm() {
     password: "",
     userID: "",
   });
+  // const [showForm, setShowForm] = useState(false);
 
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
+  // const handleClose = () => {
+  //   setShowForm(false);
+  // };
+
   const addUser = async () => {
     try {
       const { data: res } = await axios.post(
         "http://localhost:5000/api/user",
         user,
       );
-      setSuccess(res.message);
+      Swal.fire("Done", res.message);
     } catch (error: any) {
       if (
         error.response ||
-        error.response.status >= 400 ||
-        error.response.status <= 500
+        (error.response.status >= 400 && error.response.status <= 500)
       ) {
-        setErr(error.response.data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Wili wili...",
+          text: error.response.data.message,
+        });
       }
     }
   };
@@ -39,23 +46,16 @@ export default function AddUserForm() {
     addUser();
   };
 
+  // const handleCancel = () => {
+  //   handleClose();
+  // };
+
   return (
     <div>
-      {err ? (
-        <div className="border-red-200 bg-red-400 text-red-500 text-md my-4 py-2 text-center bg-opacity-5">
-          {err}
-        </div>
-      ) : (
-        ""
-      )}
-      {success ? (
-        <div className="border-green-200 bg-green-400 text-green-500 text-md my-4 py-2 text-center bg-opacity-5">
-          {success}
-        </div>
-      ) : (
-        ""
-      )}
-      <form className=" mx-12 grid lg:grid-cols-2 w-4/6 gap-4" onSubmit={handleSubmit}>
+      <form
+        className="mx-12 grid lg:grid-cols-2 w-4/6 gap-4"
+        onSubmit={handleSubmit}
+      >
         <div className="input-type">
           <input
             id="username"
@@ -108,27 +108,34 @@ export default function AddUserForm() {
             placeholder="UserID"
           />
         </div>
-
-        <button
-          type="submit"
-          className="flex justify-center text-md w-1/6 bg-green-800 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-green-500 hover:text-green-500"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+        <div className="input-type">
+          <button
+            type="submit"
+            className="flex justify-center text-md w-1/6 bg-green-800 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-green-500 hover:text-green-500"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-          Add
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+            Add
+          </button>
+        </div>
+        {/* <button
+          className="flex justify-center text-md w-1/6 bg-red-600 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-orange-500 hover:text-red-600"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button> */}
       </form>
     </div>
   );

@@ -22,6 +22,7 @@ const BarChart = () => {
         "http://localhost:5000/api/customer-order/product",
       );
       const productsData = response.data;
+
       // Obtenez les mois de la date actuelle à la date actuelle moins 6 mois
       const months = [];
       const currentDate = new Date();
@@ -117,16 +118,9 @@ const BarChart = () => {
   }, [products]);
 
   return (
-    <div>
-      <div className="mx-auto py-4 text-center">
-        <canvas ref={chartRef} />
-        <p className="mt-2 text-gray-600 font-semibold">
-          Product Orders By Month
-        </p>
-      </div>
-      <div className="item-end">
-        <p className="mt-2 text-gray-600 font-semibold">Total Revenue : </p>
-      </div>
+    <div className="mx-auto py-4 text-center">
+      <canvas ref={chartRef} />
+      <p className="mt-2 text-gray-600 font-semibold">Product Orders Month</p>
     </div>
   );
 };

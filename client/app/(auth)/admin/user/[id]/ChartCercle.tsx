@@ -73,12 +73,10 @@ const DoughnutChart = () => {
             label: "Nombre de product offerings par état",
             data: data,
             backgroundColor: [
-              "rgba(95, 39, 205, 0.2)",
-              "rgba(255, 70, 70, 0.2)",
-              "rgba(50, 168, 82, 0.2)",
-              "rgba(255, 120, 0, 0.2)",
-              "rgba(201, 203, 207, 0.2)",
-              "rgba(153, 39, 39, 0.2)",
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 255, 140, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
               "rgba(201, 203, 207, 0.2)",
             ],
             hoverOffset: 4,
@@ -104,9 +102,9 @@ const DoughnutChart = () => {
   }, [productOfferings]);
 
   return (
-    <div className="mx-auto w-2/3 text-center">
+    <div className="mx-auto  text-center">
       <canvas ref={chartRef} />
-      <p className="mt-2 p-3 text-gray-600 font-semibold">
+      <p className="mt-2 text-gray-600 font-semibold">
         Product Offering By State
       </p>
     </div>

@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useEffect} from "react";
-import dataCostumerOrders  from "../data/dataCostumerOrders";
+import React, { useState, useEffect } from "react";
+
 import axios from "axios";
+
 interface ProductOfferings {
   state: string;
   orderDate: string;
@@ -26,7 +27,6 @@ const StatisticCards = () => {
       );
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
-     
     } catch (error) {
       console.error("Erreur lors de la récupération des utilisateurs:", error);
     }
@@ -43,8 +43,7 @@ const StatisticCards = () => {
         "http://localhost:5000/api/customer-order/product",
       );
       const productsData = response.data;
-      setProducts(productsData );
-      console.log("hello", productsData );
+      setProducts(productsData);
     } catch (error) {
       console.error("Erreur lors de la récupération des products:", error);
     }
@@ -108,7 +107,6 @@ const StatisticCards = () => {
   const PublichedProductOfferings = productOfferings.filter(
     (product) => product.status === "published",
   );
-  console.log(PublichedProductOfferings);
   const totalPublichedProductOfferings = PublichedProductOfferings.length;
   {
     /*  Statistics %  Published Product Offering  */
@@ -120,9 +118,7 @@ const StatisticCards = () => {
   {
     /*  Total In progress Costumer Orders */
   }
-  const CanceledOrders = products.filter(
-    (order) => order.state === "canceled",
-  );
+  const CanceledOrders = products.filter((order) => order.state === "canceled");
   const totalInCanceledOrders = CanceledOrders.length;
   {
     /*  Statistics %  in Progress Costumer Orders */
@@ -149,16 +145,15 @@ const StatisticCards = () => {
                     {" "}
                     Total: {totalCompletedOrders}{" "}
                   </h3>
-                 
+
                   <button
-                     onClick={() =>
-                       (window.location.href = "/customer-order/product/")
-                     }
-                     className="text-sm mt-6 px-4 py-2 bg-green-400  text-white rounded-lg  tracking-wider hover:bg-green-500 outline-none"
-                   >
-                     View in Table
-                   </button>
-                  
+                    onClick={() =>
+                      (window.location.href = "/customer-order/product/")
+                    }
+                    className="text-sm mt-6 px-4 py-2 bg-green-400  text-white rounded-lg  tracking-wider hover:bg-green-500 outline-none"
+                  >
+                    View in Table
+                  </button>
                 </div>
                 <div className="bg-gradient-to-tr from-green-500 to-green-500 w-24 h-24  rounded-full shadow-xl shadow-green-300 border-white   border-2  flex justify-center items-center ">
                   <div>
@@ -181,15 +176,15 @@ const StatisticCards = () => {
                     {" "}
                     Total :{totalInProgressOrders}
                   </h3>
-                  
+
                   <button
-                     onClick={() =>
-                       (window.location.href = "/customer-order/product/")
-                     }
-                     className="text-sm mt-6 px-4 py-2 bg-yellow-500 text-white rounded-lg  tracking-wider hover:bg-yellow-300 outline-none"
-                   >
-                     View in Table
-                   </button>
+                    onClick={() =>
+                      (window.location.href = "/customer-order/product/")
+                    }
+                    className="text-sm mt-6 px-4 py-2 bg-yellow-500 text-white rounded-lg  tracking-wider hover:bg-yellow-300 outline-none"
+                  >
+                    View in Table
+                  </button>
                 </div>
                 <div className="bg-gradient-to-tr from-yellow-600 to-yellow-300 w-24 h-24 rounded-full shadow-xl shadow-yellow-200  border-white   border-2  flex justify-center items-center ">
                   <div>
@@ -212,17 +207,15 @@ const StatisticCards = () => {
                   <h3 className="mt-2 mt-3 text-3xl font-bold leading-8">
                     Total: {totalInCanceledOrders}{" "}
                   </h3>
-                  
-                    
-                     <button
-                     onClick={() =>
-                       (window.location.href = "/customer-order/product/")
-                     }
-                     className="text-sm mt-6 px-4 py-2 bg-orange-400  text-white rounded-lg  tracking-wider hover:bg-orange-500 outline-none"
-                   >
-                     View in Table
-                   </button>
-                  
+
+                  <button
+                    onClick={() =>
+                      (window.location.href = "/customer-order/product/")
+                    }
+                    className="text-sm mt-6 px-4 py-2 bg-orange-400  text-white rounded-lg  tracking-wider hover:bg-orange-500 outline-none"
+                  >
+                    View in Table
+                  </button>
                 </div>
                 <div className="bg-gradient-to-tr from-orange-500 to-orange-400 w-24 h-24  rounded-full shadow-xl shadow-orange-200  border-white  border-2  flex justify-center items-center ">
                   <div>
@@ -246,7 +239,8 @@ const StatisticCards = () => {
                   </h3>
                   <button
                     onClick={() =>
-                      (window.location.href = "/product-offering/all/published/")
+                      (window.location.href =
+                        "/product-offering/all/published/")
                     }
                     className="text-sm mt-6 px-4 py-2 bg-cyan-400  text-white rounded-lg  tracking-wider hover:bg-cyan-500 outline-none"
                   >
@@ -311,13 +305,12 @@ const StatisticCards = () => {
                   </h3>
                   <button
                     onClick={() =>
-                      (window.location.href = "/product-offering/all/archived/")
+                      (window.location.href = "/product-offering/all/")
                     }
                     className="text-sm mt-6 px-4 py-2 bg-indigo-400 text-white rounded-lg  tracking-wider hover:bg-indigo-500 outline-none"
                   >
                     View in Table
                   </button>
-                
                 </div>
                 <div className="bg-gradient-to-tr from-indigo-500 to-indigo-400 w-24 h-24  rounded-full shadow-xl shadow-[#304FFE] border-white  border-2  flex justify-center items-center ">
                   <div>

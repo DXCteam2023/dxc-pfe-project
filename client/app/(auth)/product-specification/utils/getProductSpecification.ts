@@ -10,7 +10,7 @@ export default async function getProductSpecification(
     );
 
     const productData = response.data;
-    console.log(response.data);
+    console.log("Prod Spec from GET:", productData);
     setProduct(productData);
   } catch (error) {
     console.error("Error while fetching product specification:", error);
