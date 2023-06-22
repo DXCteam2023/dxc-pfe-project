@@ -1,44 +1,34 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import dataProductOrders from "../data/dataProductOrders";
 import { FiEye, FiFilter, FiRefreshCcw, FiSearch, FiTrash2 } from "react-icons/fi";
-import Modal from "react-modal";
 import Link from "next/link";
-import {
- 
-  FaBackward,
-  FaCog,
-  FaPencilAlt,
-  FaRegWindowClose,
-  FaSortAmountDownAlt,
- 
-  FaTrashAlt,
-} from "react-icons/fa";
-import NewOrderRedirectModal from "./NewOrderRedirectModal"
+import {FaBan, FaPencilAlt,FaSortAmountDownAlt,FaTrashAlt,} from "react-icons/fa";
 import NoRecord from "@/public/assets/NoRecord.png";
 import Image from "next/image";
 import axios from "axios";
-import { ACTION_FAST_REFRESH } from "next/dist/client/components/router-reducer/router-reducer-types";
+import { IoMdOptions } from "react-icons/io";
 
 
 
 const Table = () => {
   const [selectedState, setSelectedState] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [showNewOrderRedirectModal, setShowNewOrderRedirectModal] = useState(false);
+  const [filterState, setFilterState] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 4;
 
-  const filterProductOrdersByState = (state: string) => {
-    if (state === "all") {
-      setFilter(dataProductOrders);
-    } else {
-      const updatedList = dataProductOrders.filter(
-        (order) => order.state === state,
-      );
-      setFilter(updatedList);
-    }
-  };
+  // const handleNextPage = () => {
+  //   setCurrentPage(currentPage + 1);
+  // };
 
+  // const handlePreviousPage = () => {
+  //   setCurrentPage(currentPage - 1);
+  // };
+
+  // const indexOfLastOrder = currentPage * ordersPerPage;
+  // const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+
+ 
 
   const [productOrders, setProductOrders] = React.useState<
   Array<{
@@ -56,50 +46,53 @@ const Table = () => {
     state: string;
     version: string;
     "@type": string;
+  
+    channel:{
+      id: string;
+      name?: string;
+    };
+    
   }>
 >([]);
   // Ajouter sortOrder comme variable d'état
   const [sortOrder, setSortOrder] = useState("newest");
   const [selectedPONR, setSelectedPONR] = useState("");
   const [showTaskType, setShowTaskType] = useState(false);
-
+  const [itemsPerPage] = useState(5);
+  
   // Fonction pour gérer le tri
   const handleSort = (order: React.SetStateAction<string>) => {
-    setSortOrder(order);
-  };
-  
-const FiltredData = productOrders
-.filter((order) => selectedState === "" || order.state === selectedState)
-  const handleStateFilter = (state: React.SetStateAction<string>) => {
-    
-    setSelectedState(state);
-    setSelectedPONR("");
+    setSortOrder(order); 
   };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/customer-order/product",
-        );
-        setProductOrders(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
+    getProductOrders();
   }, []);
 
+ 
+
+  async function getProductOrders() {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/customer-order/product",
+      );
+      const productsData = response.data;
+      console.log(productsData)
+      setProductOrders(productsData);
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération des products:", error);
+    }
+  }
   if (productOrders.length === 0) {
-    return <p>No product orders found.</p>;
+    return <center><div className="loader"></div></center>;
   }
 // Trier les commandes de produits en fonction de sortOrder
 const sortedProductOrders = productOrders.sort((a, b) => {
-  const dateA = new Date(a.completionDate);
-  const dateB = new Date(b.completionDate);
+  const dateA = new Date(a.orderDate);
+  const dateB = new Date(b.orderDate);
 
   if (sortOrder === "newest") {
-    return dateB.getTime() - dateA.getTime();
+    return dateB.getTime() - dateA.getTime(); 
   } else if (sortOrder === "oldest") {
     return dateA.getTime() - dateB.getTime();
   }
@@ -107,22 +100,56 @@ const sortedProductOrders = productOrders.sort((a, b) => {
   // Retourne 0 si aucun ordre de tri correspondant n'est trouvé
   return 0;
 });
-const handlePONRFilter = (value: React.SetStateAction<string>) => {
-  setSelectedPONR(value);
+
+const handlePONRFilter = (value: string) => {
+  setSelectedPONR(value.toString());
 };
 const handleAllFilter = () => {
-  setSelectedState("");
-  setSelectedPONR("");
+  setFilterState('all');
+  setSelectedPONR('');
+
 };
-const filteredData = FiltredData.filter((order) =>
-  order.id.toLowerCase().includes(searchQuery.toLowerCase())
-  &&
-    (selectedPONR === "" || order.ponr === (selectedPONR === "true"))
-);
+const handleStateFilter = (state: React.SetStateAction<string>) => {
+  setFilterState(state);
+}; 
+const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setSearchQuery(event.target.value);
+};
+const filteredData = productOrders.filter((order) => {
+  const orderValues = Object.values(order).join(" ").toLowerCase();
+  const isMatchingSearchTerm = orderValues.includes(searchQuery.toLowerCase());
+  const isPonrMatch = selectedPONR === "" || order.ponr === (selectedPONR === "true");
+  const isStateMatch = selectedState === "" || order.state === selectedState;
+
+
+  return isMatchingSearchTerm  && isPonrMatch && isStateMatch;;
+});
+//show/hide
 const handleToggleTaskType = () => {
   setShowTaskType(!showTaskType);
 };
-  
+//pagination
+
+// Le nombre total de pages
+const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+// l'index de la première et de la dernière ligne à afficher
+const indexOfLastRow = currentPage * itemsPerPage;
+const indexOfFirstRow = indexOfLastRow - itemsPerPage;
+
+// Obtenir les lignes à afficher sur la page actuelle
+const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
+
+// Fonction pour passer à la page suivante
+const nextPage = () => {
+  setCurrentPage((prevPage) => prevPage + 1);
+};
+
+// Fonction pour passer à la page précédente
+const previousPage = () => {
+  setCurrentPage((prevPage) => prevPage - 1);
+};
+
   return (
     <div className="flex w-full">
       <div className="flex w-full">
@@ -140,7 +167,7 @@ const handleToggleTaskType = () => {
                       type="text"
                       placeholder="Search"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={handleSearch}
                       className="search-input"
                     />
                     <FiSearch size={15} className="search-icon" />
@@ -161,7 +188,7 @@ const handleToggleTaskType = () => {
                     </div>
                   <div className="dropdown">
                     <button className="dropbtn">
-                      <FaCog size={20} color="white" />
+                    <IoMdOptions size={20} color="white" />
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
@@ -201,13 +228,15 @@ const handleToggleTaskType = () => {
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a href="#">State</a>
+                        <a href="#" >State</a>
                         <div className="submenu-content">
-                        <a onClick={() => handleStateFilter("completed")}><p className="text-black-500">Completed</p></a>
+                  <a onClick={() => handleStateFilter("completed")}><p className="text-black-500">Completed</p></a>
                   <a onClick={() => handleStateFilter("canceled")}><p className="text-black-500">Canceled</p></a>
                   <a onClick={() => handleStateFilter("on hold")}><p className="text-black-500">On Hold</p></a>
-                  <a onClick={() => handleStateFilter("in progress")}><p className="text-black-500">In Progress</p></a>
+                  <a onClick={() => handleStateFilter("In progress")}><p className="text-black-500">In Progress</p></a>
                   <a onClick={() => handleStateFilter("scheduled")}><p className="text-black-500">Scheduled</p></a>
+                  <a onClick={() => handleStateFilter("new")}><p className="text-black-500">New</p></a>
+                  <a onClick={() => handleStateFilter("in draft")}><p className="text-black-500">in draft</p></a>
                 </div>
                       </div>
                       <div className="submenu">
@@ -233,17 +262,19 @@ const handleToggleTaskType = () => {
                         <a onClick={() => handleSort("oldest")}><p className="text-black-500">Oldest first</p></a>
 
                         </div>
+                        
                       </div>
                       <div className="submenu">
                       </div>
                     </div>
                   </div>
                   <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                  <div className="table-responsive">    
                     <table className="min-w-full leading-normal">
                       <thead>
                         <tr>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            ID
+                            NUMBER
                           </th>
                           <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-left text-xs font-semibold uppercase tracking-wider">
                           Completion Date
@@ -270,7 +301,7 @@ const handleToggleTaskType = () => {
                       </thead>
 
                       <tbody>
-  {filteredData.length === 0 ? (
+  {currentRows.length === 0 ? (
     <tr className="tabbody">
     <td colSpan={8} className="no-results">
       <center>
@@ -280,10 +311,22 @@ const handleToggleTaskType = () => {
     </td>
   </tr>
   ) : (
-    
-    filteredData.map((order) => (
+  
+    currentRows.filter((order) => {
+      if (filterState === 'all') {
+        return true;
+      } else {
+        return order.state === filterState;
+      }
+    }).map((order,index: number) => (
      <tr key={order._id}>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                  <div className="flex items-center">
+                    <div className="ml-3">
+                    <a className="text-gray-900 whitespace-no-wrap">{`PO${(index + 1).toString().padStart(7, '0')}`}</a>            </div>
+                  </div>
+                </td>
+                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
@@ -291,21 +334,11 @@ const handleToggleTaskType = () => {
                                     </p>
                                   </div>
                                 </div>
-                              </td>
+                              </td> */}
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
 
                                 <p className="text-gray-900 whitespace-no-wrap">
-    {new Date(order.completionDate).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })}{" "}
-    {new Date(order.completionDate).toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })}
+                                {JSON.stringify(new Date(order.completionDate))}
   </p>
                               </td>
                               <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -329,13 +362,17 @@ const handleToggleTaskType = () => {
     aria-hidden
     className={`absolute inset-0 ${
       order.state === 'completed'
-        ? 'bg-green-200'
-        : order.state === 'on hold'
-        ? 'bg-yellow-200'
-        : order.state === 'in progress'
         ? 'bg-blue-200'
+        : order.state === 'on hold'
+        ? 'bg-gray-200'
+        : order.state === 'in draft'
+        ? 'bg-yellow-200'
+        : order.state === 'In progress'
+        ? 'bg-orange-200'
         : order.state === 'canceled'
         ? 'bg-red-200'
+        : order.state === 'new'
+        ? 'bg-green-200'
         : order.state === 'scheduled'
         ? 'bg-purple-200'
         : ''
@@ -384,18 +421,22 @@ const handleToggleTaskType = () => {
                               <Link href={`/customer-order/product/${order._id}`}
                                         
                                       >
-                                        <FiEye size={18} className="icon" />
+                                        <FiEye size={18} className="icon" title="View" style={{ color: 'blue' }}/>
                                       </Link>
-                              <Link href={`/customer-order/product/edit?orderId=${order._id}`} >
+                              <Link href={`/customer-order/product/edit/${order._id}`} >
                                         <FaPencilAlt
                                           size={18}
                                           className="icon"
+                                          title="UpDate"
+                                          style={{ color: 'green' }}
                                         />
                                       </Link>
-                                      <Link href={`/customer-order/product/edit?orderId=${order.id}`} >
-                                        <FaTrashAlt
+                                      <Link href={`/customer-order/product/${order._id}`} >
+                                        <FaBan
                                           size={18}
                                           className="icon"
+                                          title="Disconnect"
+                                          style={{ color: 'red' }}
                                         />
                                       </Link>
                                 </p>
@@ -407,29 +448,46 @@ const handleToggleTaskType = () => {
 </tbody>
 
                     </table>
-                    <div className="min-w-full leading-normal">
-                      <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                         <span className="text-xs xs:text-sm text-gray-900">
-                         
+                          Page {currentPage} of {totalPages}
                         </span>
                         <div className="inline-flex mt-2 xs:mt-0">
-                          
                           <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${currentPage === 1 ? "disabled" : ""
-                              }`}
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${
+                              currentPage === 1 ? "disabled" : ""
+                            }`}
                             onClick={previousPage}
                             disabled={currentPage === 1}
                           >
                             Prev
                           </button>
                           <button
-                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${currentPage === 1 ? "disabled" : ""
-                              }`}
+                            className={`text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l ${
+                              currentPage === 1 ? "disabled" : ""
+                            }`}
                             onClick={nextPage}
                             disabled={currentPage === totalPages}
                           >
                             Next
                           </button>
+                        </div>
+                      </div>
+                </div>
+                    <div className="min-w-full leading-normal">
+                      <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                        <span className="text-xs xs:text-sm text-gray-900">
+                        <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center">
+              
+            </div>
+          </div>
+       
+                        </span>
+                        <div className="inline-flex mt-2 xs:mt-0">
+                          
+                          
+                          
                         </div>
                       </div>
                     </div>
