@@ -6,6 +6,7 @@ import userRoute from "./routes/user";
 import customerOrderRoute from "./routes/customerOrder";
 import productSpecRoute from "./routes/productSpecification";
 import productOfferingRoute from "./routes/productOffering";
+import incidentRouter from "./routes/incident";
 
 Connection();
 
@@ -37,6 +38,9 @@ app.use("/api/product-offering", productOfferingRoute);
 
 // Product Specification routes
 app.use("/api/product-specification", productSpecRoute);
+
+//Incident router
+app.use("/api/incidents", incidentRouter);
 
 // app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
 export default app;
