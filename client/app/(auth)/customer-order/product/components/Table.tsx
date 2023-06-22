@@ -80,9 +80,7 @@ const Table = () => {
 
   async function getProductOrders() {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
-      );
+      const response = await axios.get(`${AXIOS_URL}/customer-order/product`);
       const productsData = response.data;
       console.log(productsData);
       setProductOrders(productsData);
