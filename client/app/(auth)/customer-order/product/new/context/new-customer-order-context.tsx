@@ -1,8 +1,16 @@
 import { createContext, useState } from "react";
+import generateDateBasedId from "../utils/generateDateBasedId";
 
-type OptionType = {
+export type OptionType = {
   value: string;
   label: string;
+};
+
+export type ProductOfferingType = {
+  value: string;
+  label: string;
+  productOfferingObject: any;
+  quantity: number;
 };
 
 export type ProductOrderType = {
@@ -12,16 +20,15 @@ export type ProductOrderType = {
   lastname: string;
   email: string;
   mobilenumber: string;
-  offerings: Array<OptionType>;
-  quantity: number;
+  offerings: Array<ProductOfferingType>;
 };
 
-type NewCustomerOrderContextType = {
+export type NewCustomerOrderContextType = {
   // STEP 1
-  account: string;
-  setAccount: React.Dispatch<React.SetStateAction<string>>;
-  contact: string;
-  setContact: React.Dispatch<React.SetStateAction<string>>;
+  account: OptionType;
+  setAccount: React.Dispatch<React.SetStateAction<OptionType>>;
+  contact: OptionType;
+  setContact: React.Dispatch<React.SetStateAction<OptionType>>;
   // STEP 2
   locations: Array<OptionType>;
   setLocations: React.Dispatch<React.SetStateAction<Array<OptionType>>>;
@@ -29,8 +36,8 @@ type NewCustomerOrderContextType = {
   setProductOrders: React.Dispatch<
     React.SetStateAction<Array<ProductOrderType>>
   >;
-  selectedProductOrderId: string;
-  setSelectedProductOrderId: React.Dispatch<React.SetStateAction<string>>;
+  selectedLocationId: string;
+  setSelectedLocationId: React.Dispatch<React.SetStateAction<string>>;
   getSelectedProductOrder: () => ProductOrderType | undefined;
   updateSelectedProductOrder: (
     propertyName: keyof ProductOrderType,
@@ -73,53 +80,21 @@ export const NewCustomerOrderContext = createContext(
   {} as NewCustomerOrderContextType,
 );
 
-const EXAMPLE_LOCATIONS = [
-  { value: "001", label: "LOCATION 001" },
-  { value: "002", label: "LOCATION 002" },
-  { value: "003", label: "LOCATION 003" },
-];
-const EXAMPLE_OFFERING = [
-  { value: "001", label: "OFFERING 001" },
-  { value: "002", label: "OFFERING 002" },
-  { value: "003", label: "OFFERING 003" },
-];
-const EXAMPLE_PRODUCT_ORDER = [
-  {
-    id: "0001",
-    locationId: "001",
-    firstname: "firstname",
-    lastname: "lastname",
-    email: "email",
-    mobilenumber: "mobilenumber",
-    offerings: EXAMPLE_OFFERING,
-    quantity: 1,
-  },
-];
 const NewCustomerOrderContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
   // STEP 1
-  const [account, setAccount] = useState("");
-  const [contact, setContact] = useState("");
+  const [account, setAccount] = useState({} as OptionType);
+  const [contact, setContact] = useState({} as OptionType);
   // STEP 2
-  const [locations, setLocations] = useState(EXAMPLE_LOCATIONS as OptionType[]);
+  const [locations, setLocations] = useState([] as OptionType[]);
 
-  const [productOrders, setProductOrders] = useState(
-    EXAMPLE_PRODUCT_ORDER as ProductOrderType[],
-  );
-  const [selectedProductOrderId, setSelectedProductOrderId] = useState("0001");
+  const [productOrders, setProductOrders] = useState([] as ProductOrderType[]);
 
-  // const [firstname, setFirstname] = useState("");
-  // const [lastname, setLastname] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [mobilenumber, setMobilenumber] = useState("");
+  const [selectedLocationId, setSelectedLocationId] = useState("");
 
-  // const [selectedOfferings, setSelectedOfferings] = useState(
-  //   EXAMPLE_OFFERING as OptionType[],
-  // );
-  // const [quantity, setQuantity] = useState(1);
   // STEP 3
   const [number, setNumber] = useState("");
   const [location, setLocation] = useState("");
@@ -133,9 +108,25 @@ const NewCustomerOrderContextProvider = ({
     useState(1);
 
   const getSelectedProductOrder = () => {
-    const productOrderFound = productOrders.find(
-      (productOrdersItem) => productOrdersItem.id === selectedProductOrderId,
+    let productOrderFound = productOrders.find(
+      (productOrdersItem) =>
+        productOrdersItem.locationId === selectedLocationId,
     );
+
+    if (!productOrderFound) {
+      // add a new product order with selected location to productOrders
+      productOrderFound = {
+        id: generateDateBasedId(),
+        locationId: selectedLocationId,
+        firstname: "",
+        lastname: "",
+        email: "",
+        mobilenumber: "",
+        offerings: [],
+      };
+      productOrders.push(productOrderFound);
+    }
+
     return productOrderFound;
   };
 
@@ -146,7 +137,7 @@ const NewCustomerOrderContextProvider = ({
     setProductOrders((previousProductOrders: Array<ProductOrderType>) => {
       return previousProductOrders.map(
         (previousProductOrdersItem: ProductOrderType) => {
-          if (previousProductOrdersItem.id === selectedProductOrderId) {
+          if (previousProductOrdersItem.locationId === selectedLocationId) {
             return {
               ...previousProductOrdersItem,
               [propertyName]: propertyValue,
@@ -172,8 +163,8 @@ const NewCustomerOrderContextProvider = ({
         setLocations,
         productOrders,
         setProductOrders,
-        selectedProductOrderId,
-        setSelectedProductOrderId,
+        selectedLocationId,
+        setSelectedLocationId,
         getSelectedProductOrder,
         updateSelectedProductOrder,
         // firstname,
