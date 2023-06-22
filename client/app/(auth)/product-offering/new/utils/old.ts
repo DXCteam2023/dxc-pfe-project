@@ -8,53 +8,10 @@ import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 
 import "./Form.css";
-// eslint-disable-next-line import/order
-import Swal from "sweetalert2";
 
 dotenv.config();
 
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
-
-interface ProductSpecification {
-  _id: string;
-  name: string;
-  id: string;
-  version: string;
-  internalVersion: string;
-  internalId: string;
-}
-
-interface ProductCharacteristic {
-  name: string;
-  valueType: string;
-  productSpecCharacteristicValue: Array<{ value: string }>;
-}
-
-interface ProductSpecificationRelationship {
-  id: string;
-  name: string;
-}
-
-interface SelectedProductSpec {
-  id: string;
-  name: string;
-  productSpecCharacteristic: ProductCharacteristic[];
-  productSpecificationRelationship: ProductSpecificationRelationship[];
-  version: string;
-  internalId: string;
-  internalVersion: string;
-  category: {
-    id: string;
-    name: string;
-  };
-  channel: Array<{ id: string; name: string }>;
-}
-
-interface RelatedProductSpec {
-  id: string;
-  name: string;
-  productSpecCharacteristic: ProductCharacteristic[];
-}
 
 export default function NewProductOfferingPage() {
   const [productName, setProductName] = useState("");
@@ -69,22 +26,27 @@ export default function NewProductOfferingPage() {
   const [endDate, setEndDate] = useState("");
 
   const [productSpecifications, setProductSpecifications] = useState<
-    ProductSpecification[]
+    {
+      _id: string;
+      name: string;
+      id: string;
+      version: string;
+      internalVersion: string;
+      internalId: string;
+    }[]
   >([]);
   const [chosenProductSpecification, setChosenProductSpecification] =
-    useState<string>("");
-  const [selectedProductSpec, setSelectedProductSpec] =
-    useState<SelectedProductSpec | null>(null);
-  const [selectedCharacteristic, setSelectedCharacteristic] = useState<
-    string[]
-  >([]);
-  const [selectedCharacteristicValues, setSelectedCharacteristicValues] =
-    useState<Array<Array<string>>>([]);
-  const [
-    relatedProductSpecCharacteristics,
-    setRelatedProductSpecCharacteristics,
-  ] = useState<RelatedProductSpec[] | null>(null);
-  const [characteristics, setCharacteristics] = useState<string[]>([]);
+    useState("");
+  const [selectedProductSpec, setSelectedProductSpec] = useState<{
+    id: string;
+    name: string;
+    productSpecCharacteristic: Array<{
+      name: string;
+      valueType: string;
+      productSpecCharacteristicValue: Array<{ value: string }>;
+    }>;
+  } | null>(null);
+
   const [productOfferingPrice, setProductOfferingPrice] = useState<{
     price: {
       taxIncludedAmount: {
@@ -95,14 +57,21 @@ export default function NewProductOfferingPage() {
     priceType: string;
   }>({ price: { taxIncludedAmount: { unit: "", value: "" } }, priceType: "" });
 
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState<
+    string[]
+  >([]);
+  const [selectedCharacteristicValues, setSelectedCharacteristicValues] =
+    useState<Array<Array<string>>>([]);
+  const [characteristics, setCharacteristics] = useState<string[]>([]);
+
   useEffect(() => {
     fetchProductSpecifications();
   }, []);
+
   const fetchProductSpecifications = async () => {
     try {
-      const response = await axios.get<ProductSpecification[]>(
-        `${AXIOS_URL}/api/product-specification`,
-      );
+      const url = `${AXIOS_URL}/api/product-specification`;
+      const response = await axios.get(url);
       const data = response.data;
       setProductSpecifications(data);
     } catch (error) {
@@ -112,70 +81,28 @@ export default function NewProductOfferingPage() {
 
   const fetchSpecificationDetails = async () => {
     try {
-      const response = await axios.get<SelectedProductSpec>(
-        `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`,
-      );
-      const data = response.data;
-      console.log("Fetched specification details:", data);
-      setSelectedProductSpec(data);
+      const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
+      const specificationResponse = await axios.get(specificationUrl);
+      const specificationData = specificationResponse.data;
+      setSelectedProductSpec(specificationData);
       setCategory({
-        id: data.category?.id,
-        name: data.category?.name,
+        id: specificationData.category.id,
+        name: specificationData.category.name,
       });
-      setChannel(data.channel || []);
-
-      // Fetch related product specification characteristics and values
-      if (
-        data.productSpecificationRelationship &&
-        data.productSpecificationRelationship.length > 0
-      ) {
-        const relatedProductSpecIds = data.productSpecificationRelationship.map(
-          (relatedSpec: ProductSpecificationRelationship) => relatedSpec.id,
-        );
-
-        const relatedProductSpecPromises = relatedProductSpecIds.map(
-          async (relatedProductId: string) => {
-            try {
-              const response = await axios.get<RelatedProductSpec>(
-                `${AXIOS_URL}/api/product-specification/byid/${relatedProductId}`,
-              );
-              return response.data;
-            } catch (error) {
-              console.error(
-                `Error fetching related product specification with ID ${relatedProductId}:`,
-                error,
-              );
-              return null;
-            }
-          },
-        );
-
-        const relatedProductSpecData = await Promise.all(
-          relatedProductSpecPromises,
-        );
-        setRelatedProductSpecCharacteristics(
-          relatedProductSpecData.filter(
-            (spec): spec is RelatedProductSpec => spec !== null,
-          ),
-        );
-      } else {
-        setRelatedProductSpecCharacteristics([]);
-      }
-    } catch (error) {
-      console.error(
-        `Error fetching product specification details for ID ${chosenProductSpecification}:`,
-        error,
-      );
+      setChannel(specificationData.channel || []);
+    } catch (err) {
+      console.error(err);
     }
   };
+
   const handleCharacteristicChange = (
     event: ChangeEvent<HTMLSelectElement>,
     index: number,
   ) => {
     const value = event.target.value;
-    const updatedCharacteristics = [...selectedCharacteristic];
+    const updatedCharacteristics = [...selectedCharacteristics];
     updatedCharacteristics[index] = value;
-    setSelectedCharacteristic(updatedCharacteristics);
+    setSelectedCharacteristics(updatedCharacteristics);
   };
 
   const handleCharacteristicValueChange = (
@@ -193,63 +120,39 @@ export default function NewProductOfferingPage() {
 
   const addCharacteristic = () => {
     setCharacteristics([...characteristics, ""]);
-    setSelectedCharacteristic([...selectedCharacteristic, ""]);
+    setSelectedCharacteristics([...selectedCharacteristics, ""]);
     setSelectedCharacteristicValues([...selectedCharacteristicValues, []]);
   };
 
-  const createProduct = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const createProduct = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     try {
+      console.log("productName:", productName);
+      console.log("productDescription:", productDescription);
+      console.log("chosenProductSpecification:", chosenProductSpecification);
+      console.log("category:", category);
+      console.log("channel:", channel);
+
       const url = `${AXIOS_URL}/api/product-offering`;
 
       const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
-      const specificationResponse = await axios.get<SelectedProductSpec>(
-        specificationUrl,
-      );
+      const specificationResponse = await axios.get(specificationUrl);
       const specificationData = specificationResponse.data;
-
-      const productSpecCharacteristics = selectedCharacteristic.map(
-        (characteristic, index) => {
-          const selectedCharacteristicData =
-            selectedProductSpec?.productSpecCharacteristic.find(
-              (char) => char.name === characteristic,
-            );
-
-          const selectedValues = selectedCharacteristicValues[index].map(
-            (value) => ({
-              value: value,
-            }),
-          );
-
-          return {
-            name: characteristic,
-            valueType: selectedCharacteristicData?.valueType,
-            productSpecCharacteristicValue: selectedValues,
-            /*productSpecification: {
-            id: specificationData.id,
-            name: specificationData.name,
-            version: specificationData.version,
-          },*/
-          };
-        },
-      );
 
       const productData = {
         name: productName,
         description: productDescription,
-        id: "",
         productSpecification: {
           id: specificationData.id,
           name: specificationData.name,
-          version: "",
-          internalVersion: specificationData.version,
-          internalId: specificationData.id,
+          version: specificationData.version,
+          internalVersion: specificationData.internalVersion,
+          internalId: specificationData.internalId,
         },
-        // Assigning _id to externalId
         category: {
-          id: specificationData.category?.id,
-          name: specificationData.category?.name,
+          id: specificationData.category.id,
+          name: specificationData.category.name,
         },
         channel: channel
           ? channel.map((ch) => ({ id: ch.id, name: ch.name }))
@@ -259,7 +162,25 @@ export default function NewProductOfferingPage() {
           startDateTime: startDate,
           endDateTime: endDate,
         },
-        productSpecCharacteristic: productSpecCharacteristics,
+
+        productSpecCharacteristic: selectedCharacteristics.map(
+          (characteristic, index) => {
+            const selectedCharacteristicData =
+              selectedProductSpec?.productSpecCharacteristic.find(
+                (char) => char.name === characteristic,
+              );
+            const selectedValues = selectedCharacteristicValues[index].map(
+              (value) => ({
+                value: value,
+              }),
+            );
+            return {
+              name: selectedCharacteristicData?.name || "",
+              valueType: selectedCharacteristicData?.valueType || "",
+              productSpecCharacteristicValue: selectedValues,
+            };
+          },
+        ),
         productOfferingPrice: [
           {
             price: {
@@ -273,30 +194,27 @@ export default function NewProductOfferingPage() {
         ],
       };
 
-      console.log("Product Data:", productData);
+      console.log(productData);
 
       await axios.post(url, productData);
-      // alert("Product created successfully");
-
-      Swal.fire("Done", "Product created successfully", "success");
-
+      alert("Product created successfully");
       setProductName("");
       setProductDescription("");
-
       setChosenProductSpecification("");
       setCategory(null);
       setChannel(null);
       setStartDate("");
       setEndDate("");
       setSelectedProductSpec(null);
-      setSelectedCharacteristic([]);
+      setSelectedCharacteristics([]);
       setSelectedCharacteristicValues([]);
+      setCharacteristics([]);
       setProductOfferingPrice({
         price: { taxIncludedAmount: { unit: "", value: "" } },
         priceType: "",
       });
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
   return (
@@ -351,7 +269,7 @@ export default function NewProductOfferingPage() {
                         ))}
                       </select>
                     </div>
-                    <div className="w-full md:w-1/2 px-3">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                         Channel:
                       </label>
@@ -379,7 +297,7 @@ export default function NewProductOfferingPage() {
                       />
                     </div>
 
-                    {characteristics.map((characteristic, index) => (
+                    {selectedCharacteristics.map((characteristic, index) => (
                       <div
                         key={index}
                         className="w-full md:w-1/2 px-3 mb-6 md:mb-0"
@@ -397,8 +315,7 @@ export default function NewProductOfferingPage() {
                           onChange={(e) => handleCharacteristicChange(e, index)}
                         >
                           <option value="">Select Characteristic</option>
-                          {selectedProductSpec &&
-                            selectedProductSpec.productSpecCharacteristic &&
+                          {selectedProductSpec?.productSpecCharacteristic &&
                             selectedProductSpec.productSpecCharacteristic.map(
                               (char) => (
                                 <option key={char.name} value={char.name}>
@@ -406,43 +323,33 @@ export default function NewProductOfferingPage() {
                                 </option>
                               ),
                             )}
-                          {relatedProductSpecCharacteristics &&
-                            relatedProductSpecCharacteristics.flatMap(
-                              (relatedSpec) =>
-                                relatedSpec.productSpecCharacteristic.map(
-                                  (char) => (
-                                    <option key={char.name} value={char.name}>
-                                      {char.name}
-                                    </option>
-                                  ),
-                                ),
-                            )}
                         </select>
 
-                        {index === selectedCharacteristic.length - 1 && (
+                        {index === selectedCharacteristics.length - 1 && (
                           <div>
-                            <label
-                              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                              htmlFor={`values-${index}`}
-                            >
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                               Characteristic Value:
                             </label>
                             <select
                               className="block w-full bg-gray-200 text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
-                              id={`values-${index}`}
                               multiple
-                              value={selectedCharacteristicValues[index]}
-                              onChange={(event) =>
-                                handleCharacteristicValueChange(event, index)
+                              value={selectedCharacteristicValues.flat()}
+                              onChange={(e) =>
+                                handleCharacteristicValueChange(
+                                  e,
+                                  selectedCharacteristics.length - 1,
+                                )
                               }
                             >
-                              {(selectedProductSpec &&
-                                selectedCharacteristic[index] &&
+                              {selectedCharacteristics.length > 0 &&
+                                selectedProductSpec?.productSpecCharacteristic &&
                                 selectedProductSpec.productSpecCharacteristic
                                   .find(
                                     (char) =>
                                       char.name ===
-                                      selectedCharacteristic[index],
+                                      selectedCharacteristics[
+                                        selectedCharacteristics.length - 1
+                                      ],
                                   )
                                   ?.productSpecCharacteristicValue.map(
                                     (value) => (
@@ -453,35 +360,13 @@ export default function NewProductOfferingPage() {
                                         {value.value}
                                       </option>
                                     ),
-                                  )) ||
-                                (relatedProductSpecCharacteristics &&
-                                  selectedCharacteristic[index] &&
-                                  relatedProductSpecCharacteristics.flatMap(
-                                    (relatedSpec) =>
-                                      relatedSpec.productSpecCharacteristic
-                                        .filter(
-                                          (char) =>
-                                            char.name ===
-                                            selectedCharacteristic[index],
-                                        )
-                                        .flatMap((char) =>
-                                          char.productSpecCharacteristicValue.map(
-                                            (value) => (
-                                              <option
-                                                key={value.value}
-                                                value={value.value}
-                                              >
-                                                {value.value}
-                                              </option>
-                                            ),
-                                          ),
-                                        ),
-                                  ))}
+                                  )}
                             </select>
                           </div>
                         )}
                       </div>
                     ))}
+
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <button
                         className="buttonadd"
@@ -525,7 +410,7 @@ export default function NewProductOfferingPage() {
                       </label>
 
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className=" block w-full  bg-gray-200 text-gray-700 border border-Gray-500  py-3 px-4 mb-3 leading-tight focus:outline-none  rounded-md  "
                         id="unit"
                         type="text"
                         value={
@@ -588,7 +473,6 @@ export default function NewProductOfferingPage() {
                           }))
                         }
                       >
-                        <option value="">Choose price type</option>
                         <option value="nonRecurring">Non-Recurring</option>
                         <option value="recurring">Recurring</option>
                       </select>
