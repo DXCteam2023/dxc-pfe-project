@@ -2,6 +2,7 @@
 import { off } from "process";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// import { off } from "process";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 
@@ -67,7 +68,6 @@ const SingleProductSpecificationPage = ({
       fetchData();
     }, 1000);
   }, [productSpec]);
-
   function getStateTextColor(status: string) {
     switch (status) {
       case "retired":

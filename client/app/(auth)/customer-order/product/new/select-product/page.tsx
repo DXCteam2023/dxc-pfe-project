@@ -1,20 +1,26 @@
 "use client";
-import React from "react";
-import { useContext, useEffect, useState } from "react";
+
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
-
 
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
 import {
   NewCustomerOrderContext,
+  ProductOfferingType,
   ProductOrderType,
+  OptionType,
 } from "../context/new-customer-order-context";
 import LocationModal from "../components/LocationModal";
 import SelectInput from "../components/SelectInput";
-
-type OptionType = { value: string; label: string };
+import {
+  ProductOfferingServices,
+  LocationServices,
+  ProductOrderServices,
+} from "../services";
+import ProductOfferingItem from "./ProductOfferingItem";
+import generateCreateOrderRequestBody from "../utils/generateCreateOrderRequestBody";
 
 export default function SelectProduct() {
   const route = useRouter();
@@ -26,16 +32,81 @@ export default function SelectProduct() {
   const [currentProductOrder, setCurrentProductOrder] =
     useState<ProductOrderType>();
 
+  const [productOfferings, setProductOfferings] = useState(
+    [] as Array<ProductOfferingType>,
+  );
+
+  const [accountLocations, setAccountLocations] = useState(
+    [] as Array<OptionType>,
+  );
+
+  useEffect(() => {
+    const getLocationsByAccountId = async () => {
+      const response = await LocationServices.getLocationsByAccountId(
+        myContext.account.value,
+      );
+      console.log("getLocationsByAccountId response", response);
+
+      const locationsIds = response.data.result.map(
+        (accountAddressRelationship: any) =>
+          accountAddressRelationship.location.value,
+      );
+      console.log("getLocationsByAccountId locationsIds", locationsIds);
+
+      const response2 = await LocationServices.getLocationsWidthIds(
+        locationsIds,
+      );
+
+      console.log("getLocationsByAccountId response2", response2);
+
+      const requiredData = response2.data.result.map((location: any) => {
+        return {
+          value: location.sys_id,
+          label: location.name,
+        };
+      });
+
+      console.log("requiredData", requiredData);
+
+      setAccountLocations(requiredData);
+    };
+    const getAllProductOfferings = async () => {
+      const response = await ProductOfferingServices.getAllProductOfferings();
+
+      console.log("getAllProductOfferings response", response);
+
+      const requiredData = response.data.map((productOffering: any) => {
+        return {
+          value: productOffering.id,
+          label: productOffering.name,
+          productOfferingObject: productOffering,
+        };
+      });
+      console.log("requiredData", requiredData);
+      setProductOfferings(requiredData);
+    };
+    getLocationsByAccountId();
+    getAllProductOfferings();
+  }, []);
+
   useEffect(() => {
     setCurrentProductOrder(myContext.getSelectedProductOrder());
-  }, [myContext.productOrders]);
+  }, [myContext.productOrders, myContext.selectedLocationId]);
 
   useEffect(() => {
     console.log("currentProductOrder has changed", currentProductOrder);
   }, [currentProductOrder]);
 
-  const handleContinueOnClick = () => {
-    route.push("/customer-order/product/new/configure-product");
+  const handleConfigureOnClick = async () => {
+    // prepare all data (request body)
+    const requestBody = generateCreateOrderRequestBody(myContext);
+    console.log("handleConfigureOnClick requestBody", requestBody);
+
+    // call instance to create order
+    await ProductOrderServices.createOrder(requestBody);
+
+    // redirect to step 3
+    // route.push("/customer-order/product/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {
@@ -60,6 +131,28 @@ export default function SelectProduct() {
     setShowNewLocationModal(true);
   };
 
+  const handleProductOfferingOnChange = (option: OptionType, index: number) => {
+    console.log("handleProductOfferingOnChange onChange", option);
+    const currentOfferings = currentProductOrder?.offerings || [];
+    myContext.updateSelectedProductOrder(
+      "offerings",
+      currentOfferings.map((offering, i) => (i === index ? option : offering)),
+    );
+  };
+
+  const handleAddProductOfferingOnClick = () => {
+    const currentOfferings = currentProductOrder?.offerings || [];
+    myContext.updateSelectedProductOrder("offerings", [
+      ...currentOfferings,
+      { quantity: 1 },
+    ]);
+  };
+
+  const handleLocationLabelOnClick = (locationId: string) => {
+    console.log("handleLocationLabelOnClick", locationId);
+    myContext.setSelectedLocationId(locationId);
+  };
+
   // console.log("OFFERING - ", myContext.selectedOfferings);
   return (
     <SubLayout
@@ -67,11 +160,7 @@ export default function SelectProduct() {
         <div className="flex flex-col">
           {showNewLocationModal && (
             <LocationModal
-              options={[
-                { value: "chocolate", label: "Chocolate" },
-                { value: "strawberry", label: "Strawberry" },
-                { value: "vanilla", label: "Vanilla" },
-              ]}
+              options={accountLocations}
               onAdd={handleLocationOnAdd}
               onCancel={handleLocationOnCancel}
             />
@@ -88,7 +177,14 @@ export default function SelectProduct() {
           </div>
           <div className="flex flex-col gap-2">
             {myContext.locations.map((location) => (
-              <div className="text-sm p-1 border-l-2 border-l-[#2c755e] bg-[#daeae7]">
+              <div
+                className={`text-sm p-1 ${
+                  myContext.selectedLocationId === location.value
+                    ? "border-l-2 border-l-[#2c755e] bg-[#daeae7]"
+                    : ""
+                }`}
+                onClick={() => handleLocationLabelOnClick(location.value)}
+              >
                 {location.label}
               </div>
             ))}
@@ -150,36 +246,23 @@ export default function SelectProduct() {
               </div>
             </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <h4 className="font-extrabold">Product Offerings</h4>
-            <div className="flex justify-center gap-4 p-4 border-2 rounded-md">
-              <SelectInput
-                options={[
-                  { value: "2chocolate", label: "2 Chocolate" },
-                  { value: "2strawberry", label: "2 Strawberry" },
-                  { value: "2vanilla", label: "2 Vanilla" },
-                ]}
-                selected={currentProductOrder?.offerings || []}
-                onChange={(values: Array<OptionType>) => {
-                  myContext.updateSelectedProductOrder("offerings", values);
-                }}
+            {currentProductOrder?.offerings.map((productOffering, index) => (
+              <ProductOfferingItem
+                options={productOfferings}
+                selected={productOffering}
+                onChange={(option) =>
+                  handleProductOfferingOnChange(option, index)
+                }
               />
-              <InputText
-                slug="quantity"
-                title="Quantity"
-                required={true}
-                placeholder="Quantity"
-                value={currentProductOrder?.quantity}
-                onChange={(value: string) => {
-                  myContext.updateSelectedProductOrder("quantity", value);
-                }}
-              />
-            </div>
+            ))}
           </div>
           <div>
             <button
               type="button"
               className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              onClick={handleAddProductOfferingOnClick}
             >
               Add Product Offerings
             </button>
@@ -189,10 +272,10 @@ export default function SelectProduct() {
       bottomChildren={
         <div>
           <button
-            onClick={handleContinueOnClick}
+            onClick={handleConfigureOnClick}
             className="rounded-md bg-[#5f249f] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#5f249f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5f249f]"
           >
-            Continue
+            Configure
           </button>
         </div>
       }

@@ -1,6 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
+
 const Stats = () => {
   interface ServiceOrders {
     state: string;
@@ -16,7 +22,7 @@ const Stats = () => {
   async function getServiceOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/service",
+        `${AXIOS_URL}/api/customer-order/service`,
       );
       const servicesData = response.data;
       setServices(servicesData);

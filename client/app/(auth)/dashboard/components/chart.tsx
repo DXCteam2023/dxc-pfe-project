@@ -12,9 +12,9 @@ const BarChart = () => {
     data: number[];
   }>({ labels: [], data: [] });
 
-  useEffect(() => {
-    getProductOrders();
-  }, []);
+  // useEffect(() => {
+  //   getProductOrders();
+  // }, []);
 
   async function getProductOrders() {
     try {

@@ -110,6 +110,7 @@ type RelatedParty = {
 };
 
 export interface IProductOrderDocument {
+  orderNumber: string;
   channel: Channel[];
   externalId?: string;
   note?: Note[];
@@ -183,7 +184,7 @@ const productRelatedPartySchema = new Schema({
 });
 
 const productSchema = new Schema({
-  id: { type: String, required: true, default: "" },
+  id: { type: String, required: false, default: "" },
   place: { type: placeSchema, required: false },
   productCharacteristic: {
     type: Array(productCharacteristicSchema),
@@ -226,7 +227,7 @@ const productOrderItemSchema = new Schema({
     required: true,
   },
   quantity: { type: Number, required: false, default: null },
-  state: { type: String, required: true },
+  state: { type: String, required: false },
   "@type": { type: String, required: true, default: "ProductOrderItem" },
 });
 
@@ -242,6 +243,7 @@ const relatedPartySchema = new Schema({
 });
 
 const productOrderSchema = new Schema({
+  orderNumber: { type: String, required: true },
   channel: { type: Array(channelSchema), required: false },
   externalId: { type: String, required: true, default: "" },
   note: { type: Array(noteSchema), required: false },
@@ -253,8 +255,8 @@ const productOrderSchema = new Schema({
   requestedStartDate: { type: String, required: false, default: "" },
   completionDate: { type: String, required: false, default: "" },
   expectedCompletionDate: { type: String, required: false, default: "" },
-  state: { type: String, required: true },
-  ponr: { type: Boolean, required: true },
+  state: { type: String, required: false, default: "in draft" },
+  ponr: { type: Boolean, required: false, default: false },
   "@type": { type: String, required: true, default: "ProductOrder" },
 });
 

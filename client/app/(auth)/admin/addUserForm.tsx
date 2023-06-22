@@ -1,6 +1,11 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import Swal from "sweetalert2";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 export default function AddUserForm({ onCancel }: { onCancel?: any }) {
   const [user, setUser] = useState({
@@ -18,11 +23,9 @@ export default function AddUserForm({ onCancel }: { onCancel?: any }) {
 
   const addUser = async () => {
     try {
-      const { data: res } = await axios.post(
-        "http://localhost:5000/api/user",
-        user,
-      );
+      const { data: res } = await axios.post(`${AXIOS_URL}/api/user`, user);
       Swal.fire("Done", res.message);
+      setSuccess(res.message);
     } catch (error: any) {
       if (
         error.response ||

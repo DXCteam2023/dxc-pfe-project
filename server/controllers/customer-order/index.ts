@@ -8,6 +8,7 @@ import getServiceOrders from "./service/getServiceOrders";
 import getServiceOrderById from "./service/getServiceOrderById";
 import addServiceOrder from "./service/addServiceOrder";
 import updateServiceOrder from "./service/updateServiceOrder";
+import addProductOrderToServiceNow from "./product/addProductOrderToServiceNow";
 
 export {
   getCustomerOrderById,
@@ -20,4 +21,5 @@ export {
   getServiceOrderById,
   addServiceOrder,
   updateServiceOrder,
+  addProductOrderToServiceNow,
 };

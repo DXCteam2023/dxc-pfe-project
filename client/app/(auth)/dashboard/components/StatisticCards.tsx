@@ -1,7 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
+import * as dotenv from "dotenv";
+import dataCostumerOrders from "../data/dataCostumerOrders";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOfferings {
   state: string;
@@ -22,9 +27,7 @@ const StatisticCards = () => {
   const [data, setData] = useState<ProductOfferings[]>([]);
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -40,7 +43,7 @@ const StatisticCards = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
       setProducts(productsData);
@@ -141,7 +144,7 @@ const StatisticCards = () => {
                   <h2 className="text-gray-900 text-lg font-bold">
                     Total Completed Orders
                   </h2>
-                  <h3 className="mt-2 mt-3 text-3xl font-bold leading-8">
+                  <h3 className="mt-2 text-3xl font-bold leading-8">
                     {" "}
                     Total: {totalCompletedOrders}{" "}
                   </h3>
@@ -172,7 +175,7 @@ const StatisticCards = () => {
                   <h2 className="text-gray-900 text-lg font-bold">
                     Total In Progress Orders
                   </h2>
-                  <h3 className="mt-2 mt-3 text-3xl font-bold leading-8">
+                  <h3 className="mt-2 text-3xl font-bold leading-8">
                     {" "}
                     Total :{totalInProgressOrders}
                   </h3>
@@ -204,7 +207,7 @@ const StatisticCards = () => {
                   <h2 className="text-gray-900 text-lg font-bold">
                     Total Canceled Orders
                   </h2>
-                  <h3 className="mt-2 mt-3 text-3xl font-bold leading-8">
+                  <h3 className="mt-2 text-3xl font-bold leading-8">
                     Total: {totalInCanceledOrders}{" "}
                   </h3>
 
@@ -234,7 +237,7 @@ const StatisticCards = () => {
                   <h2 className="text-gray-900 text-lg font-bold">
                     Total Published Product Offerings
                   </h2>
-                  <h3 className="mt-2 mt-3 text-3xl font-bold leading-8t">
+                  <h3 className="mt-2 text-3xl font-bold leading-8t">
                     Total:{totalPublichedProductOfferings}
                   </h3>
                   <button
@@ -265,7 +268,7 @@ const StatisticCards = () => {
                   <h2 className="text-gray-900 text-lg font-bold">
                     Total Archived Product Offerings
                   </h2>
-                  <h3 className="mt-2 mt-3 text-3xl font-bold leading-8">
+                  <h3 className="mt-2 text-3xl font-bold leading-8">
                     Total:{totalArchivedProductOfferings}
                   </h3>
                   <button
@@ -300,7 +303,7 @@ const StatisticCards = () => {
                   <h2 className="text-gray-900 text-lg font-bold">
                     Total In Draft Product Offerings
                   </h2>
-                  <h3 className="mt-2 mt-3 text-3xl font-bold leading-8">
+                  <h3 className="mt-2 text-3xl font-bold leading-8">
                     Total:{totalDraftProductOfferings}
                   </h3>
                   <button

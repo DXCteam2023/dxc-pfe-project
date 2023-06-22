@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addProductOrder,
+  addProductOrderToServiceNow,
   addServiceOrder,
   getCustomerOrderById,
   getCustomerOrders,
@@ -11,7 +12,7 @@ import {
   updateProductOrder,
   updateServiceOrder,
 } from "../controllers/customer-order";
- 
+
 const customerOrderRoute = Router();
 
 customerOrderRoute.get("/", getCustomerOrders);
@@ -24,14 +25,16 @@ customerOrderRoute.get("/product/:id", getProductOrderById);
 
 customerOrderRoute.get("/service", getServiceOrders);
 
-customerOrderRoute.get("/service/:id", getServiceOrderById); 
+customerOrderRoute.get("/service/:id", getServiceOrderById);
 
 customerOrderRoute.post("/product", addProductOrder);
 
 customerOrderRoute.post("/service", addServiceOrder);
 
-customerOrderRoute.patch("/product", updateProductOrder);
+customerOrderRoute.post("/product/servicenow", addProductOrderToServiceNow);
 
-customerOrderRoute.patch("/service", updateServiceOrder);
+customerOrderRoute.patch("/product/:id", updateProductOrder);
+
+customerOrderRoute.patch("/service/:id", updateServiceOrder);
 
 export default customerOrderRoute;

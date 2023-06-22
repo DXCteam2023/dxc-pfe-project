@@ -7,10 +7,10 @@ import Sidebar from "./components/Sidebar";
 import TopCards from "./components/TopCards";
 import BarChart from "./components/RecentCustomerOrders";
 import StatisticCards from "./components/StatisticCards";
-import Chartt from "./components/chart";
+// import Chartt from "./components/chart";
 import Footer from "./components/Footer";
 import TableProductOfferings from "./components/TableProductOfferings";
-import CercleChart from "./components/ChartCercle";
+// import CercleChart from "./components/ChartCercle";
 import Cards from "./components/Cards";
 import ChartProduct from "./components/ProductChart";
 

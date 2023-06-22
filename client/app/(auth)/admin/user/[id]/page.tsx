@@ -5,6 +5,8 @@ import Image from "next/image";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import * as dotenv from "dotenv";
+// import { Chart, initTE } from "tw-elements";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 import couver from "../../../../../public/assets/couver.jpeg";
@@ -14,6 +16,10 @@ import LineChart from "./LineChart";
 import PieChart from "./PiChart";
 import BarChart from "./BarChar";
 import AdminStatistique from "./AdminStats";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const [user, setUser] = useState<any>(null);
@@ -31,14 +37,14 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const getUserData = async () => {
     try {
       const id = params.id;
-      const response = await axios.get(`http://localhost:5000/api/user/${id}`);
+      const response = await axios.get(`${AXIOS_URL}/api/user/${id}`);
       const userData = response.data;
       setUser(userData);
       console.log(userData);
 
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
-        `http://localhost:5000/api/user/similar-profile/${profile}`,
+        `${AXIOS_URL}/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
       setSimilarProfiles(similarProfilesData);

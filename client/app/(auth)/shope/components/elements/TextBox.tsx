@@ -1,4 +1,5 @@
 import React from "react";
+
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText?: string;
   error?: string;
@@ -6,7 +7,7 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   number?: boolean;
 }
 
-export const TextBox = React.forwardRef<HTMLInputElement, IProps>(
+const TextBox = React.forwardRef<HTMLInputElement, IProps>(
   (
     {
       className,
@@ -56,3 +57,5 @@ export const TextBox = React.forwardRef<HTMLInputElement, IProps>(
 );
 
 TextBox.displayName = "TextBox";
+
+export default TextBox;

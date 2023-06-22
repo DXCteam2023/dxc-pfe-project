@@ -1,27 +1,28 @@
 // import Header from "../components/Header";
 import Providers from "../components/Providers";
-import '../styles/globals.css';
-import Sidebar from "../../../../app/(auth)/dashboard/components/Sidebar";
-import Footer from "../../../../app/(auth)/dashboard/components/Footer";
-import Header from "../../../../app/(auth)/dashboard/components/header/Header";
+import "../styles/globals.css";
+import Sidebar from "../../dashboard/components/Sidebar";
+import Footer from "../../dashboard/components/Footer";
+import Header from "../../dashboard/components/header/Header";
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-   <div>
+    <div>
       <div className="flex">
-      <Sidebar />
-      
-      <div >
-        <Providers>
-        <Header />
-          {children}
-        </Providers>
+        <Sidebar />
+
+        <div>
+          <Providers>
+            <Header />
+            {children}
+          </Providers>
         </div>
-        </div>
-        <Footer />
-        </div>
+      </div>
+      <Footer />
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
 import { FaEye } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,6 +12,10 @@ import image from "../../../../public/assets/wifi-survey2.jpg";
 import SavedProductSpecifications from "./SavedProducts";
 import { getProductSpecifications } from "../utils";
 import Banner from "../../dashboard/components/banner";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOrders {
   _id: any;
@@ -68,7 +73,7 @@ export default function AllProductSpecificationsPage({
   async function getProductSpecifications() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/product-specification",
+        `${AXIOS_URL}/api/product-specification`,
       );
       const specificationData: ProductOrders[] = response.data;
       setProductSpecifications(specificationData);

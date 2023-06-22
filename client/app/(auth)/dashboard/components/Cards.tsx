@@ -1,6 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOfferings {
   orderDate: string;
@@ -27,9 +32,7 @@ const Cards = () => {
 
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -40,7 +43,7 @@ const Cards = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
       setProducts(productsData);
@@ -55,7 +58,7 @@ const Cards = () => {
   ).length;
   return (
     <div>
-      <div className="mx-5 flex flex-wrap my-5 -mx-2">
+      <div className="mx-5 flex flex-wrap my-5">
         <div className="w-full lg:w-1/3 p-2">
           <div className="flex items-center flex-row w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md p-3">
             <div className="flex text-indigo-500 items-center bg-white p-2 rounded-md flex-none w-8 h-8 md:w-12 md:h-12 ">
