@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Sidebar from "../../dashboard/components/Sidebar";
+import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getAccount } from "../utils/getAccount";
