@@ -304,8 +304,8 @@ export default function NewProductOfferingPage() {
       <Sidebar />
       <div className="bg-white min-h-screen-100 w-5/6">
         <Header />
-        <div className="flex w-full">
-          <div className="ml-2 flex mt-2 shadow-lg shadow-gray-500 md:shadow-1/2xl md:shadow-gray-500">
+        <div className="flex w-full py-12">
+          <div className="ml-4 flex mt-2 shadow-lg shadow-gray-200 mr-6">
             <div className="Details">
               <nav className="navbar">
                 <h3>ProductOffering</h3>
@@ -319,7 +319,7 @@ export default function NewProductOfferingPage() {
                         Name:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="name"
                         type="text"
                         value={productName}
@@ -333,7 +333,7 @@ export default function NewProductOfferingPage() {
                       </label>
 
                       <select
-                        className=" block w-full  bg-gray-200 text-gray-700 border border-Gray-500  py-3 px-4 mb-3 leading-tight focus:outline-none  rounded-md  "
+                        className=" block w-full  bg-white text-gray-700 border border-Gray-500  py-3 px-4 mb-3 leading-tight focus:outline-none  rounded-md  "
                         id="productSpecification"
                         value={chosenProductSpecification}
                         onChange={(e) => {
@@ -356,7 +356,7 @@ export default function NewProductOfferingPage() {
                         Channel:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="channel"
                         type="text"
                         value={
@@ -372,7 +372,7 @@ export default function NewProductOfferingPage() {
                         Category:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={category?.name || ""}
                         readOnly
@@ -391,7 +391,7 @@ export default function NewProductOfferingPage() {
                           Product Spec Characteristic {index + 1}:
                         </label>
                         <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
+                          className="block w-full bg-white text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
                           id={`characteristic-${index}`}
                           value={characteristic}
                           onChange={(e) => handleCharacteristicChange(e, index)}
@@ -428,7 +428,7 @@ export default function NewProductOfferingPage() {
                               Characteristic Value:
                             </label>
                             <select
-                              className="block w-full bg-gray-200 text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
+                              className="block w-full bg-white text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
                               id={`values-${index}`}
                               multiple
                               value={selectedCharacteristicValues[index]}
@@ -497,7 +497,7 @@ export default function NewProductOfferingPage() {
                         Start Date:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
@@ -510,7 +510,7 @@ export default function NewProductOfferingPage() {
                       </label>
 
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="endDate"
                         type="date"
                         value={endDate}
@@ -525,7 +525,7 @@ export default function NewProductOfferingPage() {
                       </label>
 
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="unit"
                         type="text"
                         value={
@@ -551,7 +551,7 @@ export default function NewProductOfferingPage() {
                         Price Value:
                       </label>
                       <input
-                        className=" block w-full  bg-gray-200 text-gray-700 border border-Gray-500  py-3 px-4 mb-3 leading-tight focus:outline-none  rounded-md  "
+                        className=" block w-full  bg-white text-gray-700 border border-Gray-500  py-3 px-4 mb-3 leading-tight focus:outline-none  rounded-md  "
                         id="value"
                         type="text"
                         value={
@@ -578,7 +578,7 @@ export default function NewProductOfferingPage() {
                       </label>
 
                       <select
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="priceType"
                         value={productOfferingPrice.priceType}
                         onChange={(e) =>
@@ -598,7 +598,7 @@ export default function NewProductOfferingPage() {
                         Short description:
                       </label>
                       <textarea
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="description"
                         value={productDescription}
                         onChange={(e) => setProductDescription(e.target.value)}
@@ -607,13 +607,13 @@ export default function NewProductOfferingPage() {
                     </div>
                     <div className="mt-6 flex items-center justify-end gap-x-6">
                       <Link href="#">
-                        <button className="text-sm font-semibold leading-6 text-gray-900">
+                        <button className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
                           Cancel
                         </button>
                       </Link>
                       <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-md bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Save
                       </button>

@@ -42,7 +42,6 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                 </Link>
               </div>
             </div>
-
             <form>
               <div
                 className="space-y-5 w-full"

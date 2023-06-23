@@ -4,7 +4,7 @@ import  Account  from "../../models/account";
 export default async function getAccount(req: Request, res: Response) {
 
     try {
-        const accounts = await Account.find();
+        const accounts = await Account.find({});
       
         res.setHeader("Content-Type", "application/json");
         res.setHeader("x-Total-Count", accounts.length);
