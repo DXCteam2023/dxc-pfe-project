@@ -1,6 +1,5 @@
 "use client";
 
-import { IProductOfferingDocument } from "@/../server/models/productOffering";
 import {
   MdOutlinePublishedWithChanges,
   MdPublishedWithChanges,
@@ -8,10 +7,11 @@ import {
 import { FormEventHandler, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrStatusDisabled, GrView } from "react-icons/gr";
-import Modal from "./Modal";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ObjectId } from "mongodb";
+import { IProductOfferingDocument } from "../../../../../server/models/productOffering";
+import Modal from "./Modal";
 
 interface ProductProps {
   product: IProductOfferingDocument;
@@ -106,7 +106,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     }
   };
 
-
   const handleSubmitEditProOf: FormEventHandler<HTMLFormElement> = async (
     e,
   ) => {
@@ -120,7 +119,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         productSpecification: productSpecifications,
       };
       try {
-        console.log("this id", id)
+        console.log("this id", id);
         const productOffering = await axios
           .get(`http://localhost:5000/api/product-offering/${id}`)
           .then((res) => res.data)
@@ -216,10 +215,19 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <tr key={product.id}>
-      <td className="px-6 py-4 cursor-pointer" onClick={() => setModalOpenView(true)} >{product.number}</td>
+      <td
+        className="px-6 py-4 cursor-pointer"
+        onClick={() => setModalOpenView(true)}
+      >
+        {product.number}
+      </td>
       <td className="px-6 py-4">{product.name}</td>
       <td className="px-6 py-4">{product.description}</td>
-      <td className="px-6 py-4">{product.productSpecification ? product.productSpecification.name : "Product Specification Name"}</td>
+      <td className="px-6 py-4">
+        {product.productSpecification
+          ? product.productSpecification.name
+          : "Product Specification Name"}
+      </td>
       <td className="px-6 py-4">{product.version}</td>
       <td className="px-6 py-4">{product.status}</td>
       <td className="px-6 py-4">{product.validFor.startDateTime}</td>
@@ -249,7 +257,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   name="product-offering-name"
                   type="text"
                   placeholder="Type here"
-                  className="input input-bordered w-full w-full"
+                  className="input input-bordered w-full"
                 />
               </div>
               <div className="input-group grid my-3">
@@ -279,7 +287,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     name="product-offering-des"
                     type="text"
                     placeholder="Type here"
-                    className="input input-bordered w-full w-full"
+                    className="input input-bordered w-full"
                   />
                 </div>
               </div>
@@ -375,8 +383,8 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   name="product-offering-name"
                   type="text"
                   placeholder="Type here"
-                  className="input input-bordered w-full w-full"
-                  readOnly 
+                  className="input input-bordered w-full"
+                  readOnly
                 />
               </div>
               <div className="input-group grid my-3">
@@ -387,7 +395,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   name="product-specification"
                   id="prod-spec"
                   className="py-3 px-2 bg-white rounded flex items-center"
-                  
                 >
                   {productSpecifications.map((prodSpec) => {
                     return (
@@ -407,17 +414,15 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     name="product-offering-des"
                     type="text"
                     placeholder="Type here"
-                    className="input input-bordered w-full w-full"
+                    className="input input-bordered w-full"
                     readOnly
                   />
                 </div>
               </div>
             </div>
-            <div>
-            </div>
+            <div></div>
           </form>
         </Modal>
-
       </td>
     </tr>
   );
