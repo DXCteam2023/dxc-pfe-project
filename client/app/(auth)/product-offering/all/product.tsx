@@ -10,7 +10,7 @@ import { GrStatusDisabled, GrView } from "react-icons/gr";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ObjectId } from "mongodb";
-import { IProductOfferingDocument } from "../../../../../server/models/product-offering/productOffering";
+import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
 import Modal from "./Modal";
 
 interface ProductProps {
