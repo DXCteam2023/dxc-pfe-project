@@ -11,7 +11,6 @@ type Channel = {
   name?: string;
 };
 
-
 type ProductCharacteristic = {
   name?: string;
   value?: string;
@@ -33,7 +32,7 @@ type ProductOfferingPrice = {
 
 type ProductSpecification = {
   id: string;
-  name?:string;
+  name?: string;
   internalId?: string;
   internalVersion?: string;
   version?: string;
@@ -84,24 +83,22 @@ const categorySchema = new Schema({
 
 const channelSchema = new Schema({
   description: { type: String, required: false, default: "" },
-  id: { type: String, required: false},
+  id: { type: String, required: false },
   name: { type: String, required: false, default: "" },
 });
 
 const productSpecCharacteristicSchema = new Schema({
   name: { type: String, required: false, default: "" },
   valueType: { type: String, required: false },
-  productSpecCharacteristicValue: [{
-    value: {
-      type: String,
-      required: false
-    }
-  }],
+  productSpecCharacteristicValue: [
+    {
+      value: {
+        type: String,
+        required: false,
+      },
+    },
+  ],
 });
-
-
-
-
 
 const taxIncludedAmountSchema = new Schema({
   unit: { type: String, required: false },
@@ -130,7 +127,7 @@ const productSpecificationSchema = new Schema({
 });
 
 const productSpecCharacteristicValueSchema = new Schema({
-  value: { type: String, required: false}, 
+  value: { type: String, required: false },
 });
 
 const validForSchema = new Schema({
@@ -156,7 +153,7 @@ const productOfferingSchema = new Schema({
   channel: { type: Array(channelSchema), required: false },
   description: { type: String, required: false },
   externalId: { type: String, required: false, default: "" },
-  id: { type: String, required: false},//this
+  id: { type: String, required: false }, //this
   internalId: { type: String, required: false },
   lastUpdate: { type: String, required: false, default: "" },
   name: { type: String, required: false },
@@ -179,7 +176,7 @@ const productOfferingSchema = new Schema({
   status: { type: String, required: false }, //this
 });
 
-export const ProductOffering = model<IProductOfferingDocument>(
+export const ProductOfferingModel = model<IProductOfferingDocument>(
   "ProductOffering",
   productOfferingSchema
 );
