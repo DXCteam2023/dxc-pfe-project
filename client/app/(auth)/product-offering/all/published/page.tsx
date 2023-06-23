@@ -1,6 +1,6 @@
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
-import Footer from "@/app/(auth)/dashboard/components/Footer";
+import Sidebar from "../../../dashboard/components/Sidebar";
+import Header from "../../../dashboard/components/header/Header";
+import Footer from "../../../dashboard/components/Footer";
 
 import publishedProductOfferings from "./data";
 

@@ -76,6 +76,7 @@ export default function AllAccountage() {
       try {
         const response = await axios.get(`${AXIOS_URL}/api/account`);
         setAccounts(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }

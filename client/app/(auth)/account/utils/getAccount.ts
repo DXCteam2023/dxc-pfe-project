@@ -1,10 +1,12 @@
 import * as dotenv from "dotenv";
 import axios from "axios";
 
-export async function getAccount(id: string, setAccount: React.Dispatch<any>) {
-  dotenv.config();
-  const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
-
+dotenv.config();
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
+export default async function getAccount(
+  id: string,
+  setAccount: React.Dispatch<any>,
+) {
   try {
     const response = await axios.get(`${AXIOS_URL}/api/account/${id}`);
     const AccountData = response.data;

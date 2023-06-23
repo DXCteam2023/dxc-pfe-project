@@ -106,9 +106,7 @@ const Header = () => {
   }
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `${AXIOS_URL}/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings: TDataProductOffering[] = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -448,61 +446,77 @@ const Header = () => {
         <div
           id="dropdownNotification"
           // className="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700 transition ease-out duration-100"
-          className="fixed right-20 top-20 z-20 "
+          className="fixed right-20 top-20 z-20 border border-gray-300 rounded-lg"
           aria-labelledby="dropdownNotificationButton"
         >
           <div className="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 ">
             Notifications
           </div>
 
-          <>
+          <div className="bg-white">
             {/* Display the incidents */}
             {localUser && JSON.parse(localUser).profile === "Administrator" ? (
               notifIncident.map((incident, index) => {
                 return (
-                  <div className="flex justify-between py-6 px-10 bg-white/90 rounded-lg">
-                    <div key={index} className="flex items-center space-x-4">
-                      <div className="flex flex-col space-y-1">
-                        <span className="font-bold">caller</span>
-                        <span className="text-sm">
-                          <p onClick={() => handleIncidentClick(incident._id)}>
-                            A new incident &nbsp;
-                            <a
-                              href={`http://localhost:3000/notification/${incident._id}`}
-                            ></a>
-                            {incident.incidentNumber}
-                            was created
-                          </p>
-                        </span>
+                  <>
+                    <div className="flex justify-between py-4 px-6 rounded-lg">
+                      <div key={index} className="flex items-center space-x-4">
+                        <div className="flex flex-col space-y-1">
+                          <span className="font-bold">caller</span>
+                          <span className="text-sm">
+                            <p
+                              onClick={() => handleIncidentClick(incident._id)}
+                            >
+                              A new incident &nbsp;
+                              <a
+                                className="text-blue-600"
+                                href={`http://localhost:3000/notification/${incident._id}`}
+                              >
+                                {incident.incidentNumber}
+                              </a>
+                              &nbsp; was created
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                        40m ago
                       </div>
                     </div>
-                    <div className="flex-none px-4 py-2 text-stone-600 text-xs md:text-sm">
-                      40m ago
-                    </div>
-                  </div>
+                    {index !== notifIncident.length - 1 && (
+                      <hr className="border-b-[1px] my-4 border-gray" />
+                    )}
+                  </>
                 );
               })
             ) : localUser &&
               JSON.parse(localUser).profile === "Commercial Agent" ? (
               notifProductOrder.map((productOrder, index) => {
                 return (
-                  <div className="flex justify-between py-6 px-10 bg-white/90 rounded-lg">
-                    <div key={index} className="flex items-center space-x-4">
-                      <div className="flex flex-col space-y-1">
-                        <span className="font-bold">caller</span>
-                        <span className="text-sm">
-                          <p>
-                            the productOrder &nbsp;
-                            <a href="#">{productOrder.externalId}</a>
-                            &nbsp; state : {productOrder.state}
-                          </p>
-                        </span>
+                  <>
+                    <div className="flex justify-between py-4 px-6 rounded-lg">
+                      <div key={index} className="flex items-center space-x-4">
+                        <div className="flex flex-col space-y-1">
+                          <span className="font-bold">caller</span>
+                          <span className="text-sm">
+                            <p>
+                              the productOrder &nbsp;
+                              <a href="#" className="text-blue-600">
+                                {productOrder.externalId}
+                              </a>
+                              &nbsp; state : {productOrder.state}
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                        40m ago
                       </div>
                     </div>
-                    <div className="flex-none px-4 py-2 text-stone-600 text-xs md:text-sm">
-                      40m ago
-                    </div>
-                  </div>
+                    {index !== notifIncident.length - 1 && (
+                      <hr className="border-b-[1px] my-4 border-gray" />
+                    )}
+                  </>
                 );
               })
             ) : (
@@ -512,7 +526,7 @@ const Header = () => {
             )}
             {/* Display the productorders */}
             {/* Plus d'éléments de notification... */}
-          </>
+          </div>
 
           <a
             href="http://localhost:3000/notification"
