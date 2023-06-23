@@ -22,9 +22,9 @@ const corsConfig = {
 };
 
 app.use(express.json());
-app.use(cors(corsConfig));
-app.options("", cors(corsConfig));
-// app.use(cors());
+// app.use(cors(corsConfig));
+// app.options("", cors(corsConfig));
+app.use(cors());
 
 // User routes
 app.use("/api/user", userRoute);
@@ -38,5 +38,5 @@ app.use("/api/product-offering", productOfferingRoute);
 // Product Specification routes
 app.use("/api/product-specification", productSpecRoute);
 
-// app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
-export default app;
+app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+// export default app;
