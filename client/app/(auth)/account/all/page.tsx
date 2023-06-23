@@ -8,8 +8,6 @@ import { FaSortAmountDownAlt } from "react-icons/fa";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 import Footer from "../../dashboard/components/Footer";
-import Sidebar from "../../dashboard/components/Sidebar";
-import Header from "../../dashboard/components/header/Header";
 
 export default function AllAccountage() {
   dotenv.config();
@@ -122,7 +120,7 @@ export default function AllAccountage() {
                       <div className="flex flex-row mb-1 sm:mb-0">
                         <div className="relative">
                           <select
-                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            className="appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             value={numLines}
                             onChange={handleFilterChange}
                           >

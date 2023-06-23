@@ -453,7 +453,6 @@ const Header = () => {
             Notifications
           </div>
           <div className="bg-white">
-
             {/* Display the incidents */}
             {localUser && JSON.parse(localUser).profile === "Administrator" ? (
               notifIncident.map((incident, index) => {
@@ -526,7 +525,7 @@ const Header = () => {
             )}
             {/* Display the productorders */}
             {/* Plus d'éléments de notification... */}
-          </>
+          </div>
 
           <a
             href="http://localhost:3000/notification"

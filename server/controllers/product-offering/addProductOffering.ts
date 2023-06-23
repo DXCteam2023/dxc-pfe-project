@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProductOffering } from "../../models/productOffering";
+import { ProductOfferingModel } from "../../models/product-offering/productOffering";
 import axios from "axios";
 
 export default async function addProductOffering(req: Request, res: Response) {
@@ -10,7 +10,7 @@ export default async function addProductOffering(req: Request, res: Response) {
     lastNumber = (lastNumber + 1) % 10001;
 
     // Create a new product using the request body data
-    const product = new ProductOffering({
+    const product = new ProductOfferingModel({
       name: req.body.name,
       state: "In Draft",
       description: req.body.description,
@@ -45,7 +45,7 @@ export default async function addProductOffering(req: Request, res: Response) {
     savedProduct.id = savedProduct._id;
 
     // Find the last inserted document with the "number" field
-    const lastInsertedProduct = await ProductOffering.findOne(
+    const lastInsertedProduct = await ProductOfferingModel.findOne(
       { number: { $exists: true } },
       {},
       { sort: { _id: -1 } }
@@ -88,7 +88,7 @@ export default async function addProductOffering(req: Request, res: Response) {
       category: req.body.category,
     };
 
-    console.log("testeeee"+req.body.productOfferingPrice);
+    console.log("testeeee" + req.body.productOfferingPrice);
     const response = await axios.post(url, payload, { auth });
 
     if (response.status === 200) {
