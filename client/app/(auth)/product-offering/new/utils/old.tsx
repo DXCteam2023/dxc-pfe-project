@@ -4,10 +4,10 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import * as dotenv from "dotenv";
 import Link from "next/link";
-import Sidebar from "../../dashboard/components/Sidebar";
-import Header from "../../dashboard/components/header/Header";
+import Sidebar from "../../../dashboard/components/Sidebar";
+import Header from "../../../dashboard/components/header/Header";
 
-import "./Form.css";
+import "../Form.css";
 
 dotenv.config();
 

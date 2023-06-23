@@ -4,8 +4,8 @@ import { FiEdit } from "react-icons/fi";
 import { GrView } from "react-icons/gr";
 
 import ListProductOffering from "./listProductOffering";
-import Header from "@/app/components/header/header";
-import Footer from "@/app/components/footer/footer";
+import Header from "../../../components/header/header";
+import Footer from "../../../components/footer/footer";
 
 type ProductOffering = {
   id: string;
@@ -40,11 +40,13 @@ export default function AllProductOfferingsPage() {
   };
   return (
     <div>
-      <Header styleElements={{
-        linksColor: undefined
-      }}/>
+      <Header
+        styleElements={{
+          linksColor: undefined,
+        }}
+      />
       <ListProductOffering />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
