@@ -1,13 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getAccount } from "../utils/getAccount";
 import Footer from "../../dashboard/components/Footer";
+
+import Sidebar from "../../dashboard/components/Sidebar";
+import Header from "../../dashboard/components/header/Header";
 
 const SingleAcountPage = ({ params }: { params: { id: string } }) => {
   const [account, setAccount] = useState<any>();
@@ -347,7 +349,6 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
               </div>
             </form>
           </div>
-
           <Footer />
         </div>
         {/* Autres composants ou contenu de la page */}
