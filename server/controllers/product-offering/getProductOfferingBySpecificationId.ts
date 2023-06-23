@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProductOfferingModel } from "../../models/productOffering";
+import { ProductOfferingModel } from "../../models/product-offering/productOffering";
 
 export default async function getProductOfferingBySpecificationId(
   req: Request,

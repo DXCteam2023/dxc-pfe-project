@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Product from "./product";
-import { IProductOfferingDocument } from "../../../../../server/models/productOffering";
+import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
 
 interface ProductProps {
   product: IProductOfferingDocument;

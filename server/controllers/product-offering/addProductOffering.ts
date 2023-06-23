@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProductOfferingModel } from "../../models/productOffering";
+import { ProductOfferingModel } from "../../models/product-offering/productOffering";
 import axios from "axios";
 
 export default async function addProductOffering(req: Request, res: Response) {
