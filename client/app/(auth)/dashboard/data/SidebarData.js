@@ -1,4 +1,4 @@
-const SideBarData = [
+export const SideBarData = [
   {
     id: "0",
     name: "Dashboard",
@@ -120,7 +120,7 @@ const SideBarData = [
     path: "/product-specification",
     icon: (
       <svg
-        className="w-6 h-6 mb-2 text-gray-500 dark:text-gray-400"
+        className="w-6 h-6 mb-2 text-gray-500"
         aria-hidden="true"
         fill="white"
         viewBox="0 0 20 20"

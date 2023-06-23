@@ -101,7 +101,9 @@ const productOfferingSchema = new Schema({
   status: { type: String, required: false }, //this
 });
 
-export const ProductOfferingModel = model<IProductOfferingDocument>(
+const ProductOfferingModel = model<IProductOfferingDocument>(
   "ProductOffering",
   productOfferingSchema
 );
+
+export default ProductOfferingModel;

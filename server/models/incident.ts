@@ -13,6 +13,6 @@ const incidentSchema = new mongoose.Schema({
   read: { type: Boolean, defeault: false },
 });
 
-const Incident = mongoose.model("Incidents", incidentSchema);
+const IncidentModel = mongoose.model("Incidents", incidentSchema);
 
-export default Incident;
+export default IncidentModel;

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { ServiceOrder } from "../../../models/serviceOrder";
+import ServiceOrderModel from "../../../models/service-order/serviceOrder";
 
 export default async function getServiceOrderById(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const serviceOrder = await ServiceOrder.findById(id);
+    const serviceOrder = await ServiceOrderModel.findById(id);
 
     if (serviceOrder) {
       return res.status(200).send(serviceOrder);

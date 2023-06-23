@@ -32,6 +32,6 @@ const AccountSchema = new Schema<IAccountDocument>({
   customer: { type: Boolean, required: true },
 });
 
-const Account = mongoose.model<IAccountDocument>("Account", AccountSchema);
+const AccountModel = mongoose.model<IAccountDocument>("Account", AccountSchema);
 
-export default Account;
+export default AccountModel;

@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { ServiceOrder } from "../../../models/serviceOrder";
+import ServiceOrderModel from "../../../models/service-order/serviceOrder";
 
 export default async function addServiceOrder(req: Request, res: Response) {
   try {
     const serviceOrderData = req.body;
 
-    const serviceOrder = new ServiceOrder(serviceOrderData);
+    const serviceOrder = new ServiceOrderModel(serviceOrderData);
 
     const savedServiceOrder = await serviceOrder.save();
 

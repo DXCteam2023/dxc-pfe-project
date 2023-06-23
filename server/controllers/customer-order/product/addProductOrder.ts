@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ProductOrder } from "../../../models/productOrder";
-import { Data } from "../../../models/data";
+import ProductOrderModel from "../../../models/product-order/productOrder";
+import DataModel from "../../../models/data";
 import { ObjectId } from "mongodb";
 
 export default async function addProductOrder(req: Request, res: Response) {
@@ -9,17 +9,17 @@ export default async function addProductOrder(req: Request, res: Response) {
   try {
     const payload = req.body;
 
-    const data = await Data.findOne({});
+    const data = await DataModel.findOne({});
 
     const mongodbId: ObjectId = new ObjectId(data._id);
 
     // payload.externalId = newProductOrder.id;
     // payload.state = newProductOrder.state;
 
-    const productOrder = await ProductOrder.create(payload);
+    const productOrder = await ProductOrderModel.create(payload);
     const order_number = +data.order_number + 1;
 
-    await Data.findByIdAndUpdate(
+    await DataModel.findByIdAndUpdate(
       mongodbId,
       { order_number: order_number },
       { new: true }

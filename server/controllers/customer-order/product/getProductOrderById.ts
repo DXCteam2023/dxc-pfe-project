@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { ProductOrder } from "../../../models/productOrder";
+import ProductOrderModel from "../../../models/product-order/productOrder";
 
 export default async function getProductOrderById(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const productOrder = await ProductOrder.findById(id);
+    const productOrder = await ProductOrderModel.findById(id);
 
     if (productOrder) {
       return res.status(200).send(productOrder);
@@ -16,5 +16,3 @@ export default async function getProductOrderById(req: Request, res: Response) {
     console.log("error: " + error);
   }
 }
-
-

@@ -134,7 +134,9 @@ const productOrderSchema = new Schema({
   "@type": { type: String, required: true, default: "ProductOrder" },
 });
 
-export const ProductOrder = model<IProductOrderDocument>(
+const ProductOrderModel = model<IProductOrderDocument>(
   "ProductOrder",
   productOrderSchema
 );
+
+export default ProductOrderModel;
