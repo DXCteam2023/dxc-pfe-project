@@ -25,7 +25,7 @@ export default function AddUserForm({ onCancel }: { onCancel?: any }) {
     try {
       const { data: res } = await axios.post(`${AXIOS_URL}/api/user`, user);
       Swal.fire("Done", res.message);
-      setSuccess(res.message);
+      // setSuccess(res.message);
     } catch (error: any) {
       if (
         error.response ||
