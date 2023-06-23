@@ -56,6 +56,7 @@ type ProdSpecCharValueUse = {
   valueType?: string;
 };
 export interface IProductOfferingDocument {
+  // _id: string;
   number: string;
   category: Category[];
   channel: Channel[];
@@ -73,7 +74,7 @@ export interface IProductOfferingDocument {
   prodSpecCharValueUse?: ProdSpecCharValueUse[];
   validFor: ValidFor;
   version?: string;
-  state: string;
+  status: string;
 }
 
 const categorySchema = new Schema({
@@ -149,6 +150,7 @@ const prodSpecCharValueUseSchema = new Schema({
 });
 
 const productOfferingSchema = new Schema({
+  // _id: { type: String, required: false},
   number: { type: String, required: false }, //this
   category: { type: Array(categorySchema), required: false },
   channel: { type: Array(channelSchema), required: false },
@@ -174,7 +176,7 @@ const productOfferingSchema = new Schema({
   },
   validFor: { type: validForSchema, required: false },
   version: { type: String, required: false },
-  state: { type: String, required: false }, //this
+  status: { type: String, required: false }, //this
 });
 
 export const ProductOffering = model<IProductOfferingDocument>(

@@ -29,16 +29,13 @@ export default function UpdateUserForm({
     event.preventDefault();
     setIsVisible(false);
     try {
-      const response = await axios.patch(
-        `${AXIOS_URL}/api/user/${user?._id}`,
-        {
-          username,
-          profile,
-          role,
-          password,
-          userID,
-        },
-      );
+      const response = await axios.patch(`${AXIOS_URL}/api/user/${user?._id}`, {
+        username,
+        profile,
+        role,
+        password,
+        userID,
+      });
       if (response) {
         Swal.fire("Done", response.data.message);
       }

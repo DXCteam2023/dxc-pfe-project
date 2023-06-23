@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
+
 // Importing utility functions
 import getAccount from "../utils/getAccount";
 import Footer from "../../dashboard/components/Footer";
@@ -85,7 +86,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             id="last-name"
                             autoComplete="family-name"
                             value={account.name}
-                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 pl-2 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
                             disabled
                           />
                         )}
@@ -219,7 +220,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             id="last-name"
                             autoComplete="family-name"
                             value={account.state}
-                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 pl-2 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
                             disabled
                           />
                         )}
@@ -265,7 +266,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             id="last-name"
                             autoComplete="family-name"
                             value={account.zip}
-                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 pl-2 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
                             disabled
                           />
                         )}
@@ -344,7 +345,6 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
               </div>
             </form>
           </div>
-
           <Footer />
         </div>
         {/* Autres composants ou contenu de la page */}

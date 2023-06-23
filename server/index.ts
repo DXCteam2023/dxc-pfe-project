@@ -46,5 +46,6 @@ app.use("/api/incidents", incidentRouter);
 // Account router
 app.use("/api/account",accountRoute);
 
+
 // app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
 export default app;

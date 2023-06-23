@@ -5,6 +5,8 @@ import Link from "next/link";
 import axios from "axios";
 import { FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaSortAmountDownAlt } from "react-icons/fa";
+import Sidebar from "../../dashboard/components/Sidebar";
+import Header from "../../dashboard/components/header/Header";
 import Footer from "../../dashboard/components/Footer";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
@@ -154,29 +156,29 @@ export default function AllAccountage() {
                       <table className="min-w-full leading-normal">
                         <thead>
                           <tr>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Number
                             </th>
                             <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Name
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Phone Number
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Customer
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Zip
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               City
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Account
                             </th>
 
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Action
                             </th>
                           </tr>

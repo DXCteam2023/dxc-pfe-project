@@ -3,6 +3,7 @@ import axios from "axios";
 
 dotenv.config();
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
+
 export default async function getAccount(
   id: string,
   setAccount: React.Dispatch<any>,
