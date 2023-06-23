@@ -7,10 +7,10 @@ import Sidebar from "./components/Sidebar";
 import TopCards from "./components/TopCards";
 import BarChart from "./components/RecentCustomerOrders";
 import StatisticCards from "./components/StatisticCards";
-// import Chartt from "./components/chart";
+import Chartt from "./components/chart";
 import Footer from "./components/Footer";
 import TableProductOfferings from "./components/TableProductOfferings";
-// import CercleChart from "./components/ChartCercle";
+import CercleChart from "./components/ChartCercle";
 import Cards from "./components/Cards";
 import ChartProduct from "./components/ProductChart";
 
@@ -42,9 +42,9 @@ export default function DashboardHome() {
 
         <div className=" flex justify-center p-2 ">
           <div className="mx-3 w-1/2  mt-1 item-end  p-8">
-            <div className=" item-end  bg-white rounded-lg shadow-xl ">
+            {/* <div className=" item-end  bg-white rounded-lg shadow-xl ">
               <CercleChart />
-            </div>
+            </div> */}
           </div>
           <div className="mx-3 w-1/2  mt-1 item-end  py-8">
             <div className=" item-end  bg-white rounded-lg shadow-xl ">
@@ -56,9 +56,9 @@ export default function DashboardHome() {
           <TableProductOfferings />
         </div>
         <div className=" mx-9 mt-4 flex p-2 ">
-          <div className="py-16 w-1/2 rounded-lg shadow-xl p-8">
+          {/* <div className="py-16 w-1/2 rounded-lg shadow-xl p-8">
             <Chartt />
-          </div>
+          </div> */}
           <div className="mx-3 w-1/2 rounded-lg shadow-xl p-8">
             <BarChart />
           </div>

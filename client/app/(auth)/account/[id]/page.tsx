@@ -1,12 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
+import Footer from "../../dashboard/components/Footer";
 
 // Importing utility functions
 import getAccount from "../utils/getAccount";
-import Footer from "../../dashboard/components/Footer";
 
 const SingleAcountPage = ({ params }: { params: { id: string } }) => {
   const [account, setAccount] = useState<any>();
@@ -42,7 +43,6 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                 </Link>
               </div>
             </div>
-
             <form>
               <div
                 className="space-y-5 w-full"

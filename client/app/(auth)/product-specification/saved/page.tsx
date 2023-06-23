@@ -7,6 +7,7 @@ import Sidebar from "../../dashboard/components/Sidebar";
 import cover from "../../../../public/assets/product_cover.png";
 
 interface SavedProduct {
+  _id: string;
   id: string;
   productId: string;
   status: string;

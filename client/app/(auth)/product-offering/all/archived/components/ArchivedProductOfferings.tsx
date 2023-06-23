@@ -1,9 +1,12 @@
 "use client";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
+// import Header from "@/app/(auth)/dashboard/components/header/Header";
 import axios from "axios";
 import React, { useState, useEffect, SyntheticEvent } from "react";
+import * as dotenv from "dotenv";
 
 const ArchivedProductOfferings = () => {
+  dotenv.config();
+  const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [dataoriginal, setDataOriginal] = useState([]);
   const [data, setData] = useState([]);
@@ -12,9 +15,7 @@ const ArchivedProductOfferings = () => {
   }, []);
   async function getData() {
     await axios
-      .get(
-        "https://dxc-pfe-project-server.vercel.app/api/product-offering/archived/all",
-      )
+      .get(`${AXIOS_URL}/api/product-offering/archived/all`)
       .then((response) => {
         setData(response.data);
         setDataOriginal(response.data);
@@ -60,7 +61,6 @@ const ArchivedProductOfferings = () => {
   return (
     <div className="flex w-full">
       <div className="w-full">
-        <Header />
         <h1 className="text-center text-blue-700 text-4xl font-bold my-5">
           Archived Product Offerings
         </h1>

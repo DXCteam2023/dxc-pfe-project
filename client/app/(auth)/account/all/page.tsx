@@ -1,4 +1,5 @@
 "use client";
+import * as dotenv from "dotenv";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
@@ -9,6 +10,8 @@ import Header from "../../dashboard/components/header/Header";
 import Footer from "../../dashboard/components/Footer";
 
 export default function AllAccountage() {
+  dotenv.config();
+  const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
   const [accounts, setAccounts] = useState<
     Array<{
       _id: string;
@@ -71,8 +74,9 @@ export default function AllAccountage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/account");
+        const response = await axios.get(`${AXIOS_URL}/api/account`);
         setAccounts(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }

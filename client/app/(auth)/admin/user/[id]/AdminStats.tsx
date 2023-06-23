@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const AdminStatistique = () => {
   interface ProductSpecifications {
@@ -16,7 +21,7 @@ const AdminStatistique = () => {
   async function getProductSpecifications() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/product-specification",
+        `${AXIOS_URL}/api/product-specification`,
       );
       const productSpecification = response.data;
       setProducts(productSpecification);
@@ -27,9 +32,7 @@ const AdminStatistique = () => {
   }
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -46,7 +49,7 @@ const AdminStatistique = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
       setProductOreder(productsData);

@@ -1,8 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import * as dotenv from "dotenv";
 import Product from "./product";
-import { IProductOfferingDocument } from "../../../../../server/models/productOffering";
+import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 interface ProductProps {
   product: IProductOfferingDocument;
@@ -20,9 +25,11 @@ const listProductOffering: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/product-offering/");
+      const res = await fetch(`${AXIOS_URL}/api/product-offering/`);
       if (!res.ok) {
-        throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+        throw new Error(
+          `Failed to fetch products: ${res.status} ${res.statusText}`,
+        );
       }
       const data = await res.json();
       console.log(data); // Log the parsed data
@@ -36,8 +43,6 @@ const listProductOffering: React.FC = () => {
   const handlePageChange = (pageNumber: any) => {
     setCurrentPage(pageNumber);
   };
-
-
 
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;

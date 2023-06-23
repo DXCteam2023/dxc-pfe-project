@@ -1,6 +1,5 @@
 "use client";
 
-import { IProductOfferingDocument } from "@/../server/models/productOffering";
 import {
   MdOutlinePublishedWithChanges,
   MdPublishedWithChanges,
@@ -8,10 +7,14 @@ import {
 import { FormEventHandler, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrStatusDisabled, GrView } from "react-icons/gr";
-import Modal from "./Modal";
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { ObjectId } from "mongodb";
+import * as dotenv from "dotenv";
+import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
+import Modal from "./Modal";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 interface ProductProps {
   product: IProductOfferingDocument;
@@ -81,7 +84,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/product-offering/")
+      const res = await fetch(`${AXIOS_URL}/api/product-offering/`)
         .then((data) => data.json())
         .catch((e) => console.log(e));
       console.log(res);
@@ -97,7 +100,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const fetchProductSpecifications = async () => {
     try {
-      const url = "http://localhost:5000/api/product-specification";
+      const url = `${AXIOS_URL}/api/product-specification`;
       const response = await axios.get(url);
       const data = response.data;
       setProductSpecifications(data);
@@ -105,7 +108,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       console.error(error);
     }
   };
-
 
   const handleSubmitEditProOf: FormEventHandler<HTMLFormElement> = async (
     e,
@@ -120,9 +122,9 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         productSpecification: productSpecifications,
       };
       try {
-        console.log("this id", id)
+        console.log("this id", id);
         const productOffering = await axios
-          .get(`http://localhost:5000/api/product-offering/${id}`)
+          .get(`${AXIOS_URL}/api/product-offering/${id}`)
           .then((res) => res.data)
           .catch((e) => console.log(e));
 
@@ -130,7 +132,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         console.log("PO ID:", poId);
 
         const updatePo = await axios
-          .patch(`http://localhost:5000/api/product-offering/${poId}`, po)
+          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
           .then((res) => res.data)
           .catch((error) => console.log({ error }));
 
@@ -158,14 +160,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       };
       try {
         const productOffering = await axios
-          .get(`http://localhost:5000/api/product-offering/${id}`)
+          .get(`${AXIOS_URL}/api/product-offering/${id}`)
           .then((res) => res.data)
           .catch((e) => console.log(e));
 
         const poId = productOffering._id;
 
         const updatePo = await axios
-          .patch(`http://localhost:5000/api/product-offering/${poId}`, po)
+          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
           .then((res) => res.data)
           .catch((error) => console.log({ error }));
 
@@ -191,14 +193,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       };
       try {
         const productOffering = await axios
-          .get(`http://localhost:5000/api/product-offering/${id}`)
+          .get(`${AXIOS_URL}/api/product-offering/${id}`)
           .then((res) => res.data)
           .catch((e) => console.log(e));
 
         const poId = productOffering._id;
 
         const updatePo = await axios
-          .patch(`http://localhost:5000/api/product-offering/${poId}`, po)
+          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
           .then((res) => res.data)
           .catch((error) => console.log({ error }));
 
@@ -216,10 +218,19 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <tr key={product.id}>
-      <td className="px-6 py-4 cursor-pointer" onClick={() => setModalOpenView(true)} >{product.number}</td>
+      <td
+        className="px-6 py-4 cursor-pointer"
+        onClick={() => setModalOpenView(true)}
+      >
+        {product.number}
+      </td>
       <td className="px-6 py-4">{product.name}</td>
       <td className="px-6 py-4">{product.description}</td>
-      <td className="px-6 py-4">{product.productSpecification ? product.productSpecification.name : "Product Specification Name"}</td>
+      <td className="px-6 py-4">
+        {product.productSpecification
+          ? product.productSpecification.name
+          : "Product Specification Name"}
+      </td>
       <td className="px-6 py-4">{product.version}</td>
       <td className="px-6 py-4">{product.status}</td>
       <td className="px-6 py-4">{product.validFor.startDateTime}</td>
@@ -249,7 +260,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   name="product-offering-name"
                   type="text"
                   placeholder="Type here"
-                  className="input input-bordered w-full w-full"
+                  className="input input-bordered w-full"
                 />
               </div>
               <div className="input-group grid my-3">
@@ -279,7 +290,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     name="product-offering-des"
                     type="text"
                     placeholder="Type here"
-                    className="input input-bordered w-full w-full"
+                    className="input input-bordered w-full"
                   />
                 </div>
               </div>
@@ -375,8 +386,8 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   name="product-offering-name"
                   type="text"
                   placeholder="Type here"
-                  className="input input-bordered w-full w-full"
-                  readOnly 
+                  className="input input-bordered w-full"
+                  readOnly
                 />
               </div>
               <div className="input-group grid my-3">
@@ -387,7 +398,6 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   name="product-specification"
                   id="prod-spec"
                   className="py-3 px-2 bg-white rounded flex items-center"
-                  
                 >
                   {productSpecifications.map((prodSpec) => {
                     return (
@@ -407,17 +417,15 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     name="product-offering-des"
                     type="text"
                     placeholder="Type here"
-                    className="input input-bordered w-full w-full"
+                    className="input input-bordered w-full"
                     readOnly
                   />
                 </div>
               </div>
             </div>
-            <div>
-            </div>
+            <div></div>
           </form>
         </Modal>
-
       </td>
     </tr>
   );
