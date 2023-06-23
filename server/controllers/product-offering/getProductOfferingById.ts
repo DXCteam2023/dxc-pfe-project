@@ -7,7 +7,7 @@ export default async function getProductOfferingById(
 ) {
   const { id } = req.params;
   try {
-    const productOffering = await ProductOffering.findById(id);
+    const productOffering = await ProductOffering.findOne({ id: id });
     res.setHeader("Content-Type", "application/json");
     if (productOffering) {
       res.status(200).send(JSON.stringify(productOffering));

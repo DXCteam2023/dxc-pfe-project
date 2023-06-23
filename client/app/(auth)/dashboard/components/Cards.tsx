@@ -47,7 +47,6 @@ const Cards = () => {
       );
       const productsData = response.data;
       setProducts(productsData);
-      console.log("hello", productsData);
     } catch (error) {
       console.error("Erreur lors de la récupération des products:", error);
     }
@@ -73,7 +72,7 @@ const Cards = () => {
               </svg>
             </div>
             <div className="flex flex-col justify-around flex-grow ml-5 text-white">
-              <div className="text-xs whitespace-nowrap">New Product Oders</div>
+              <div className="text-md whitespace-nowrap">New Product Oders</div>
               <div className=""> {orders}</div>
             </div>
             <div className=" flex items-center flex-none text-white">
@@ -108,7 +107,7 @@ const Cards = () => {
               </svg>
             </div>
             <div className="flex flex-col justify-around flex-grow ml-5 text-white">
-              <div className="text-xs whitespace-nowrap">
+              <div className="text-md whitespace-nowrap">
                 New Product Offerings
               </div>
               <div className="">{newOffering}</div>
@@ -144,7 +143,7 @@ const Cards = () => {
               </svg>
             </div>
             <div className="flex flex-col justify-around flex-grow ml-5 text-white">
-              <div className="text-xs whitespace-nowrap">New Customers</div>
+              <div className="text-md whitespace-nowrap">New Customers</div>
               <div className=""></div>
             </div>
             <div className=" flex items-center flex-none text-white">
