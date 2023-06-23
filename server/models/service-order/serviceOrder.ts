@@ -103,7 +103,9 @@ const serviceOrderSchema = new Schema({
   "@type": { type: String, required: true, default: "ServiceOrder" },
 });
 
-export const ServiceOrder = model<IServiceOrderDocument>(
+const ServiceOrderModel = model<IServiceOrderDocument>(
   "ServiceOrder",
   serviceOrderSchema
 );
+
+export default ServiceOrderModel;

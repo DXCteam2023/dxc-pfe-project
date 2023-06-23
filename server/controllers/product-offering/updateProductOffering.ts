@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { ProductOfferingModel } from "../../models/product-offering/productOffering";
+import ProductOfferingModel from "../../models/product-offering/productOffering";
 
 export default async function updateProductOffering(req, res) {
   try {

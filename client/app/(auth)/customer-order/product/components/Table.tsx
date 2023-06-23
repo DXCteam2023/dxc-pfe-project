@@ -170,7 +170,7 @@ const Table = () => {
             <div className="container mx-auto px-4 sm:px-8">
               <div className="py-8">
                 <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                  <h1 className=" mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  <h1 className=" mb-2 text-xl font-semibold tracking-tight text-gray-900">
                     Product customer orders
                   </h1>
 

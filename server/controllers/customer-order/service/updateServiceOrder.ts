@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import {
-  ServiceOrder,
-  IServiceOrderDocument,
-} from "../../../models/serviceOrder";
+import ServiceOrderModel from "../../../models/service-order/serviceOrder";
 
 export default async function updateServiceOrder(req: Request, res: Response) {
   try {
@@ -13,7 +10,7 @@ export default async function updateServiceOrder(req: Request, res: Response) {
 
     console.log("req.body:", req.body);
 
-    const updatedServiceOrder = await ServiceOrder.findByIdAndUpdate(
+    const updatedServiceOrder = await ServiceOrderModel.findByIdAndUpdate(
       serviceId,
       formData,
       { new: true }

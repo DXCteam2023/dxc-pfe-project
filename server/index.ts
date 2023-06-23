@@ -20,7 +20,7 @@ const app = express();
 const corsConfig = {
   origin: "https://dxc-pfe-project.vercel.app",
   credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
 app.use(express.json());

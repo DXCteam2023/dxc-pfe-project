@@ -1,11 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FiEdit } from "react-icons/fi";
-import { GrView } from "react-icons/gr";
+import * as dotenv from "dotenv";
 
 import ListProductOffering from "./listProductOffering";
-import Header from "../../../components/header/header";
-import Footer from "../../../components/footer/footer";
+import Header from "../../dashboard/components/header/Header";
+import Footer from "../../dashboard/components/Footer";
+import Sidebar from "../../dashboard/components/Sidebar";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 type ProductOffering = {
   id: string;
@@ -27,9 +31,7 @@ export default function AllProductOfferingsPage() {
   }, []);
   const fetchProducts = async () => {
     try {
-      const res = await fetch(
-        "https://dxc-pfe-project-server.vercel.app/api/product-offering/",
-      )
+      const res = await fetch(`${AXIOS_URL}/api/product-offering/`)
         .then((data) => data.json())
         .catch((e) => console.log(e));
       console.log(res);
@@ -40,12 +42,16 @@ export default function AllProductOfferingsPage() {
   };
   return (
     <div>
-      <Header
-        styleElements={{
-          linksColor: undefined,
-        }}
-      />
-      <ListProductOffering />
+      <div className="bg-gray-100 flex">
+        <Sidebar />
+        <div className="bg-white  min-h-screen-100 w-5/6">
+          <Header />
+          <h1 className="text-center mt-8 font-medium">
+            All Product Offerings
+          </h1>
+          <ListProductOffering />
+        </div>
+      </div>
       <Footer />
     </div>
   );

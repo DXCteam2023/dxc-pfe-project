@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
-import { ProductOrder } from "../../../models/productOrder";
+import ProductOrderModel from "../../../models/product-order/productOrder";
 
 export default async function updateProductOrder(req: Request, res: Response) {
   const { id } = req.params;
@@ -8,7 +8,7 @@ export default async function updateProductOrder(req: Request, res: Response) {
   const updates = req.body;
   res.setHeader("Content-Type", "application/json");
   try {
-    const productOrder = await ProductOrder.findByIdAndUpdate(
+    const productOrder = await ProductOrderModel.findByIdAndUpdate(
       mongodbId,
       updates,
       { new: true }

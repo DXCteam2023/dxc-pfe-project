@@ -25,7 +25,10 @@ const listProductOffering: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${AXIOS_URL}/api/product-offering/`);
+      // const res = await fetch(`http://localhost:5000/api/product-offering/`);
+      const res = await fetch(
+        `https://dxc-pfe-prject-server.vercel.app/api/product-offering/`,
+      );
       if (!res.ok) {
         throw new Error(
           `Failed to fetch products: ${res.status} ${res.statusText}`,
@@ -51,11 +54,11 @@ const listProductOffering: React.FC = () => {
 
   return (
     <div
-      className="relative overflow-x-auto shadow-md sm:rounded-lg"
+      className="relative overflow-x-auto shadow-md sm:rounded-lg mt-8"
       style={{ padding: 60 }}
     >
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <table className="w-full text-sm text-left text-gray-500">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
             <th scope="col" className="px-6 py-3">
               Number
