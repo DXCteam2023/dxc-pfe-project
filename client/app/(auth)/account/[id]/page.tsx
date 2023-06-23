@@ -4,7 +4,7 @@ import Link from "next/link";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 // Importing utility functions
-import { getAccount } from "../utils/GetAccount";
+import { getAccount } from "../utils/getAccount";
 import Footer from "../../dashboard/components/Footer";
 
 const SingleAcountPage = ({ params }: { params: { id: string } }) => {
