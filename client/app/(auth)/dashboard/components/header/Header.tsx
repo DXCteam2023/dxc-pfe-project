@@ -445,7 +445,7 @@ const Header = () => {
       {isDropdownOpen && (
         <div
           id="dropdownNotification"
-          // className="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700 transition ease-out duration-100"
+          // className="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow transition ease-out duration-100"
           className="fixed right-20 top-20 z-20 border border-gray-300 rounded-lg"
           aria-labelledby="dropdownNotificationButton"
         >

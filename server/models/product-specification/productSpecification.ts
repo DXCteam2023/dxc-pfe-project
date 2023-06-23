@@ -72,7 +72,9 @@ const productSpecificationSchema = new Schema({
   state: { type: String, required: false },
 });
 
-export const ProductSpecification = model<IProductSpecificationDocument>(
+const ProductSpecificationModel = model<IProductSpecificationDocument>(
   "ProductSpecification",
   productSpecificationSchema
 );
+
+export default ProductSpecificationModel;

@@ -34,7 +34,7 @@ const Card = () => {
                 {product.name}
               </h5>
             </a>
-            <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
+            <p className="mb-3 font-normal text-gray-500">
               {product.shortDescription}
             </p>
             <a

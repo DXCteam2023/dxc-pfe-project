@@ -22,7 +22,12 @@ const ChartProduct = () => {
 
   async function getProductOfferings() {
     try {
-      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
+      // const response = await axios.get(
+      //   `http://localhost:5000/api/product-offering`,
+      // );
+      const response = await axios.get(
+        `https://dxc-pfe-prject-server.vercel.app/api/product-offering`,
+      );
       const allProductOfferings = response.data;
       //setProductOfferings(allProductOfferings);
 
@@ -44,7 +49,7 @@ const ChartProduct = () => {
       allProductOfferings.forEach(
         (product: { validFor: { startDateTime: string } }) => {
           const orderDate = new Date(product.validFor.startDateTime);
-          console.log("startdate time", product.validFor.startDateTime);
+          // console.log("startdate time", product.validFor.startDateTime);
           const orderMonth = orderDate.toLocaleString("default", {
             month: "long",
           });

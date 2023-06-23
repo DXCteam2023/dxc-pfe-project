@@ -17,14 +17,17 @@ const BarChart = () => {
     data: number[];
   }>({ labels: [], data: [] });
 
-  // useEffect(() => {
-  //   getProductOrders();
-  // }, []);
+  useEffect(() => {
+    getProductOrders();
+  }, []);
 
   async function getProductOrders() {
     try {
+      // const response = await axios.get(
+      //   `http://localhost:5000/api/customer-order/product`,
+      // );
       const response = await axios.get(
-        `${AXIOS_URL}/api/customer-order/product`,
+        `https://dxc-pfe-prject-server.vercel.app/api/customer-order/product`,
       );
       const productsData = response.data;
       // Obtenez les mois de la date actuelle à la date actuelle moins 6 mois

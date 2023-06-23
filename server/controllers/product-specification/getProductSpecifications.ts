@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { ProductSpecification } from "../../models/productSpecification";
+import ProductSpecificationModel from "../../models/product-specification/productSpecification";
 export default async function getProductSpecifications(
   req: Request,
   res: Response
 ) {
   try {
-    const productSpecifications = await ProductSpecification.find({});
+    const productSpecifications = await ProductSpecificationModel.find({});
 
     res.status(200).send(productSpecifications);
   } catch (error) {

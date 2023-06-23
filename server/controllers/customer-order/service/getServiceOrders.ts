@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { ServiceOrder } from "../../../models/serviceOrder";
+import ServiceOrderModel from "../../../models/service-order/serviceOrder";
 
 export default async function getServiceOrders(req: Request, res: Response) {
   try {
-    const serviceOrders = await ServiceOrder.find({});
+    const serviceOrders = await ServiceOrderModel.find({});
 
     if (!serviceOrders) {
       return res.status(401).send({ message: "Data not Found" });

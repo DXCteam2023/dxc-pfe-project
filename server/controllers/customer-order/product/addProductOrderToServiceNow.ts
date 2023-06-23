@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import axios from "axios";
 import { ObjectId } from "mongodb";
-import { Data } from "../../../models/data";
+import DataModel from "../../../models/data";
 import qs from "qs";
 
 export default async function addProductOrderToServiceNow(
@@ -10,7 +10,7 @@ export default async function addProductOrderToServiceNow(
 ) {
   const payload = req.body;
 
-  const data = await Data.findOne({});
+  const data = await DataModel.findOne({});
 
   const access_token = data.access_token;
   const order_number = +data.order_number + 1;
@@ -105,7 +105,7 @@ export default async function addProductOrderToServiceNow(
 
       // mongodbId = new ObjectId(oldToken._id);
 
-      const newToken = await Data.findByIdAndUpdate(
+      const newToken = await DataModel.findByIdAndUpdate(
         mongodbId,
         {
           access_token: tokens.access_token,
