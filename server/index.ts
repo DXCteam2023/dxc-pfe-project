@@ -24,9 +24,9 @@ const corsConfig = {
 };
 
 app.use(express.json());
-// app.use(cors(corsConfig));
-// app.options("", cors(corsConfig));
-app.use(cors());
+app.use(cors(corsConfig));
+app.options("", cors(corsConfig));
+// app.use(cors());
 
 // User routes
 app.use("/api/user", userRoute);
