@@ -1,14 +1,17 @@
 "use client";
+import * as dotenv from "dotenv";
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../dashboard/components/Sidebar";
-import Header from "../../dashboard/components/header/Header";
 import Link from "next/link";
 import axios from "axios";
 import { FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaSortAmountDownAlt } from "react-icons/fa";
 import Footer from "../../dashboard/components/Footer";
+import Sidebar from "../../dashboard/components/Sidebar";
+import Header from "../../dashboard/components/header/Header";
 
 export default function AllAccountage() {
+  dotenv.config();
+  const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
   const [accounts, setAccounts] = useState<
     Array<{
       _id: string;
@@ -71,7 +74,7 @@ export default function AllAccountage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/account");
+        const response = await axios.get(`${AXIOS_URL}/api/account`);
         setAccounts(response.data);
       } catch (error) {
         console.error(error);
@@ -91,7 +94,8 @@ export default function AllAccountage() {
   });
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  };const handleFilterChange = (event: { target: { value: string; }; }) => {
+  };
+  const handleFilterChange = (event: { target: { value: string } }) => {
     const selectedNumLines = parseInt(event.target.value);
     setNumLines(selectedNumLines);
   };
@@ -114,15 +118,16 @@ export default function AllAccountage() {
                     <div className="my-2 flex sm:flex-row ">
                       <div className="flex flex-row mb-1 sm:mb-0">
                         <div className="relative">
-                          <select className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          value={numLines}
-                          onChange={handleFilterChange}>
+                          <select
+                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            value={numLines}
+                            onChange={handleFilterChange}
+                          >
                             <option value={5}>5</option>
                             <option value={10}>10</option>
                             <option value={20}>20</option>
                           </select>
                         </div>
-                        
                       </div>
                       <div className="block relative">
                         <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">

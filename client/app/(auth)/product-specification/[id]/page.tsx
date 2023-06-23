@@ -1,4 +1,5 @@
 "use client";
+import * as dotenv from "dotenv";
 import { off } from "process";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -22,10 +23,16 @@ const SingleProductSpecificationPage = ({
     internalId: string;
   };
 }) => {
+  dotenv.config();
+  const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
   const [activeTab, setActiveTab] = useState(0);
   const [productSpec, setProductSpec] = useState<any>();
   const [productOfferings, setProductOfferings] = useState<any[]>([]);
   const [filteredOffering, SetFiltredOffering] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 4;
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
 
   const handleTabClick = (index: any) => {
     setActiveTab(index);
@@ -36,9 +43,7 @@ const SingleProductSpecificationPage = ({
 
   async function getProductOfferingsBySpecification() {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/product-offering",
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       console.log(allProductOfferings);
 
@@ -97,7 +102,13 @@ const SingleProductSpecificationPage = ({
         return "";
     }
   }
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
 
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
   return (
     <div className="Product spec">
       <div className="bg-gray-100 flex">
@@ -173,10 +184,10 @@ const SingleProductSpecificationPage = ({
                                       Version
                                     </th>
                                     <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
-                                      Last Update
+                                      Product Specification
                                     </th>
                                     <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
-                                      Product Specification
+                                      Last Update
                                     </th>
                                     <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
                                       Status
@@ -184,44 +195,80 @@ const SingleProductSpecificationPage = ({
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {productOfferings.map((offering: any) => (
-                                    <tr key={offering.id} className="border-b">
-                                      <td className="py-4 px-6 text-indigo-00 border p-2  border-grey-light">
-                                        {offering.name}
-                                      </td>
-                                      <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
-                                        {offering.description}
-                                      </td>
-                                      <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
-                                        {offering.internalVersion}
-                                      </td>
-                                      <td className="py-4 px-6 text-blue-700 border p-2 font-semibold border-grey-light">
-                                        {offering.productSpecification.name}
-                                      </td>
-                                      <td className="py-4 px-6 text-gray-900 border p-2 border-grey-light">
-                                        {new Date(
-                                          offering.lastUpdate,
-                                        ).toDateString()}
-                                      </td>
-                                      <td className="py-2 px-4">
-                                        <div
-                                          className={`rounded-full py-1 px-4 ${getStateBgColor(
-                                            offering.status,
-                                          )}`}
-                                        >
-                                          <span
-                                            className={`text-sm font-semibold ${getStateTextColor(
+                                  {productOfferings
+                                    .slice(indexOfFirstOrder, indexOfLastOrder)
+                                    .map((offering: any) => (
+                                      <tr
+                                        key={offering.id}
+                                        className="border-b"
+                                      >
+                                        <td className="py-4 px-6 text-indigo-00 border p-2  border-grey-light">
+                                          {offering.name}
+                                        </td>
+                                        <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
+                                          {offering.description}
+                                        </td>
+                                        <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
+                                          {offering.internalVersion}
+                                        </td>
+                                        <td className="py-4 px-6 text-blue-700 border p-2 font-semibold border-grey-light">
+                                          {offering.productSpecification.name}
+                                        </td>
+                                        <td className="py-4 px-6 text-gray-900 border p-2 border-grey-light">
+                                          {new Date(
+                                            offering.lastUpdate,
+                                          ).toDateString()}
+                                        </td>
+                                        <td className="py-2 px-4">
+                                          <div
+                                            className={`rounded-full py-1 px-4 ${getStateBgColor(
                                               offering.status,
                                             )}`}
                                           >
-                                            {offering.status}
-                                          </span>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ))}
+                                            <span
+                                              className={`text-sm font-semibold ${getStateTextColor(
+                                                offering.status,
+                                              )}`}
+                                            >
+                                              {offering.status}
+                                            </span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    ))}
                                 </tbody>
                               </table>
+                              <div className="text-center bg-white border-t">
+                                <div>
+                                  <span className="text-xs xs:text-sm text-gray-900">
+                                    Showing {indexOfFirstOrder + 1} to{" "}
+                                    {Math.min(
+                                      indexOfLastOrder,
+                                      productOfferings.length,
+                                    )}{" "}
+                                    of {productOfferings.length} Entries
+                                  </span>
+                                </div>
+                                <div className="flex justify-center mt-2 xs:mt-0">
+                                  <button
+                                    className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-l"
+                                    onClick={handlePreviousPage}
+                                    disabled={currentPage === 1}
+                                  >
+                                    Previous
+                                  </button>
+                                  <button
+                                    className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
+                                    onClick={handleNextPage}
+                                    disabled={
+                                      indexOfLastOrder >=
+                                      productOfferings.length
+                                    }
+                                  >
+                                    Next
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         )}

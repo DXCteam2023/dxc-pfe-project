@@ -11,18 +11,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <div className="flex">
-        <Sidebar />
-
-        <div>
-          <Providers>
-            <Header />
-            {children}
-          </Providers>
-        </div>
+    <div className="bg-gray-100 flex">
+      <Sidebar />
+      <div className="bg-white min-h-screen-100 w-5/6 ">
+        <Header />
+        <Providers>{children}</Providers>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }
