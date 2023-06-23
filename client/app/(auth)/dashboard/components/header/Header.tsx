@@ -455,12 +455,12 @@ const Header = () => {
             Notifications
           </div>
 
-          <div className="flex justify-between py-6 px-10 bg-white/90 rounded-lg">
+          <>
             {/* Display the incidents */}
             {localUser && JSON.parse(localUser).profile === "Administrator" ? (
               notifIncident.map((incident, index) => {
                 return (
-                  <>
+                  <div className="flex justify-between py-6 px-10 bg-white/90 rounded-lg">
                     <div key={index} className="flex items-center space-x-4">
                       <div className="flex flex-col space-y-1">
                         <span className="font-bold">caller</span>
@@ -479,14 +479,14 @@ const Header = () => {
                     <div className="flex-none px-4 py-2 text-stone-600 text-xs md:text-sm">
                       40m ago
                     </div>
-                  </>
+                  </div>
                 );
               })
             ) : localUser &&
               JSON.parse(localUser).profile === "Commercial Agent" ? (
               notifProductOrder.map((productOrder, index) => {
                 return (
-                  <>
+                  <div className="flex justify-between py-6 px-10 bg-white/90 rounded-lg">
                     <div key={index} className="flex items-center space-x-4">
                       <div className="flex flex-col space-y-1">
                         <span className="font-bold">caller</span>
@@ -502,7 +502,7 @@ const Header = () => {
                     <div className="flex-none px-4 py-2 text-stone-600 text-xs md:text-sm">
                       40m ago
                     </div>
-                  </>
+                  </div>
                 );
               })
             ) : (
@@ -512,7 +512,7 @@ const Header = () => {
             )}
             {/* Display the productorders */}
             {/* Plus d'éléments de notification... */}
-          </div>
+          </>
 
           <a
             href="http://localhost:3000/notification"
