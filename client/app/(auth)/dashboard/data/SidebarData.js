@@ -7,7 +7,7 @@ const SideBarData = [
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
@@ -18,13 +18,33 @@ const SideBarData = [
   },
   {
     id: "1",
+    name: "Saved Items",
+    path: "/product-specification/saved",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="white"
+        className="w-5 h-6"
+      >
+        <path
+          fillRule="evenodd"
+          d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
+    profile: ["Administrator", "Commercial Agent", "Product Offering Manager"],
+  },
+  {
+    id: "2",
     name: "Product Offerings",
     path: "/product-offering/all",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path d="M11.25 3v4.046a3 3 0 00-4.277 4.204H1.5v-6A2.25 2.25 0 013.75 3h7.5zM12.75 3v4.011a3 3 0 014.239 4.239H22.5v-6A2.25 2.25 0 0020.25 3h-7.5zM22.5 12.75h-8.983a4.125 4.125 0 004.108 3.75.75.75 0 010 1.5 5.623 5.623 0 01-4.875-2.817V21h7.5a2.25 2.25 0 002.25-2.25v-6zM11.25 21v-5.817A5.623 5.623 0 016.375 18a.75.75 0 010-1.5 4.126 4.126 0 004.108-3.75H1.5v6A2.25 2.25 0 003.75 21h7.5z" />
@@ -34,14 +54,14 @@ const SideBarData = [
     profile: ["Administrator", "Product Offering Manager"],
   },
   {
-    id: "2",
+    id: "3",
     name: " Create Product Offering",
     path: "product-offering/new",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path
@@ -54,14 +74,14 @@ const SideBarData = [
     profile: ["Administrator", "Product Offering Manager"],
   },
   {
-    id: "3",
+    id: "4",
     name: "Archived Offerings",
     path: "product-offering/all/archived",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z" />
@@ -75,14 +95,14 @@ const SideBarData = [
     profile: ["Administrator", "Product Offering Manager"],
   },
   {
-    id: "4",
-    name: "Store ",
-    path: "/product-offering/store",
+    id: "5",
+    name: "Products Store ",
+    path: "/shope/all",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path
@@ -95,14 +115,14 @@ const SideBarData = [
     profile: ["Administrator", "Product Offering Manager"],
   },
   {
-    id: "5",
+    id: "6",
     name: "Product Specifications",
     path: "/product-specification",
     icon: (
       <svg
         className="w-6 h-6 mb-2 text-gray-500 dark:text-gray-400"
         aria-hidden="true"
-        fill="black"
+        fill="white"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -117,14 +137,14 @@ const SideBarData = [
     profile: ["Administrator", "Product Offering Manager"],
   },
   {
-    id: "6",
+    id: "7",
     name: "List Customers ",
     path: "/dashboard",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
@@ -133,14 +153,14 @@ const SideBarData = [
     profile: ["Administrator", "Commercial Agent"],
   },
   {
-    id: "7",
+    id: "8",
     name: " All Customer Orders",
     path: "/customer-order/all",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
@@ -149,14 +169,14 @@ const SideBarData = [
     profile: ["Commercial Agent", "Administrator"],
   },
   {
-    id: "8",
+    id: "9",
     name: " New customer Order",
     path: "customer-order/new/create-order",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path
@@ -169,14 +189,14 @@ const SideBarData = [
     profile: ["Administrator", "commercial agent", "manager"],
   },
   {
-    id: "9",
+    id: "10",
     name: "Product Orders",
     path: "/customer-order/product",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path
@@ -191,14 +211,14 @@ const SideBarData = [
     profile: ["Administrator", "Commercial Agent", "Product Offering Manager"],
   },
   {
-    id: "10",
+    id: "11",
     name: " Service  Orders",
     path: "/customer-order/service",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path
@@ -216,14 +236,14 @@ const SideBarData = [
     profile: ["Administrator", "Commercial Agent", "Product Offering Manager"],
   },
   {
-    id: "11",
+    id: "12",
     name: " Manage Users",
     path: "/admin",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        fill="black"
+        fill="white"
         className="w-6 h-6"
       >
         <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 01-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 016.126 3.537zM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 010 .75l-1.732 3.001c-.229.396-.76.498-1.067.16A5.231 5.231 0 016.75 12c0-1.362.519-2.603 1.37-3.536zM10.878 17.13c-.447-.097-.623-.608-.394-1.003l1.733-3.003a.75.75 0 01.65-.375h3.465c.457 0 .81.408.672.843a5.252 5.252 0 01-6.126 3.538z" />
