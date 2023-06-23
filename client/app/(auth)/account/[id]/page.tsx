@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
-import Sidebar from "@/app/(auth)/dashboard/components/Sidebar";
-import Header from "@/app/(auth)/dashboard/components/header/Header";
+import Sidebar from "../../dashboard/components/Sidebar";
+import Header from "../../dashboard/components/header/Header";
 
 // Importing utility functions
 import { getAccount } from "../utils/getAccount";
-import Link from "next/link";
 import Footer from "../../dashboard/components/Footer";
 
 const SingleAcountPage = ({ params }: { params: { id: string } }) => {
@@ -88,7 +88,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             id="last-name"
                             autoComplete="family-name"
                             value={account.name}
-                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 pl-2 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
                             disabled
                           />
                         )}
@@ -133,7 +133,8 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             name="about"
                             rows={1}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
-                            defaultValue={account.street} disabled
+                            defaultValue={account.street}
+                            disabled
                           />
                         )}
                       </div>
@@ -221,7 +222,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             id="last-name"
                             autoComplete="family-name"
                             value={account.state}
-                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 pl-2 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
                             disabled
                           />
                         )}
@@ -267,7 +268,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                             id="last-name"
                             autoComplete="family-name"
                             value={account.zip}
-                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 pl-2 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            className="block w-80 pl-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
                             disabled
                           />
                         )}
@@ -331,20 +332,19 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                       <div className="mt-2 ">
                         {account && (
                           <textarea
-                          id="about"
-                          name="about"
-                          rows={3}
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
-                          defaultValue={account.street} disabled
-                        />
+                            id="about"
+                            name="about"
+                            rows={3}
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            defaultValue={account.street}
+                            disabled
+                          />
                         )}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              
             </form>
           </div>
 
