@@ -1,41 +1,49 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
-import { Chart } from "chart.js/auto";
+import Chart from "chart.js/auto";
 
 const LineChart = () => {
-  const chartRef = useRef(null);
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  let chart: Chart<"line"> | null = null;
 
-  // useEffect(() => {
-  //   const chart = new Chart(chartRef.current, {
-  //     type: "line",
-  //     data: {
-  //       labels: [
-  //         "Sunday",
-  //         "Monday",
-  //         "Tuesday",
-  //         "Wednesday",
-  //         "Thursday",
-  //         "Friday",
-  //         "Saturday",
-  //       ],
-  //       datasets: [
-  //         {
-  //           label: "Completed Orders By Days",
-  //           data: [0, 0, 0, 0, 0, 0, 0],
-  //           fill: false,
-  //           borderColor: "rgb(75, 192, 192)",
-  //           tension: 0.1,
-  //         },
-  //       ],
-  //     },
-  //     options: {},
-  //   });
+  useEffect(() => {
+    if (chartRef.current) {
+      const ctx = chartRef.current.getContext("2d");
+      if (ctx) {
+        chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            datasets: [
+              {
+                label: "Completed Orders By Days",
+                data: [0, 0, 0, 0, 0, 0, 0],
+                fill: false,
+                borderColor: "rgb(75, 192, 192)",
+                tension: 0.1,
+              },
+            ],
+          },
+          options: {},
+        });
+      }
+    }
 
-  //   return () => {
-  //     // Clean up the chart when the component is unmounted
-  //     chart.destroy();
-  //   };
-  // }, []);
+    return () => {
+      // Clean up the chart when the component is unmounted
+      if (chart) {
+        chart.destroy();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     getProductOrders();
@@ -65,9 +73,10 @@ const LineChart = () => {
         }
       });
 
-      // const chart = chartRef.current.chart;
-      // chart.data.datasets[0].data = completedOrders;
-      // chart.update();
+      if (chartRef.current && chart) {
+        chart.data.datasets[0].data = completedOrders;
+        chart.update();
+      }
     } catch (error) {
       console.error("Error retrieving product orders:", error);
     }
