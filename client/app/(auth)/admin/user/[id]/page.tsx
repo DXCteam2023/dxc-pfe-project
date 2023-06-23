@@ -61,7 +61,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   //   try {
   //     const userId = params.id;
   //     const response = await axios.get(
-  //       `http://localhost:5000/api/user/${userId}`,
+  //       `${AXIOS_URL}/api/user/${userId}`,
   //     );
   //     const userData = response.data;
   //     setUser(userData);
@@ -73,7 +73,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const updateUserPassword = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/user/update-password`,
+        `${AXIOS_URL}/api/user/update-password`,
         {
           userId: user._id,
           oldPassword,

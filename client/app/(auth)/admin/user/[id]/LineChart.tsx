@@ -1,6 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import Chart from "chart.js/auto";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 const LineChart = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
@@ -52,7 +57,7 @@ const LineChart = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
 

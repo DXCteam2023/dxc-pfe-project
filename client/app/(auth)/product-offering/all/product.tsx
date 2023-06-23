@@ -8,10 +8,13 @@ import { FormEventHandler, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrStatusDisabled, GrView } from "react-icons/gr";
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { ObjectId } from "mongodb";
+import * as dotenv from "dotenv";
 import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
 import Modal from "./Modal";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 interface ProductProps {
   product: IProductOfferingDocument;
@@ -81,7 +84,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/product-offering/")
+      const res = await fetch(`${AXIOS_URL}/api/product-offering/`)
         .then((data) => data.json())
         .catch((e) => console.log(e));
       console.log(res);
@@ -97,7 +100,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const fetchProductSpecifications = async () => {
     try {
-      const url = "http://localhost:5000/api/product-specification";
+      const url = `${AXIOS_URL}/api/product-specification`;
       const response = await axios.get(url);
       const data = response.data;
       setProductSpecifications(data);
@@ -121,7 +124,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       try {
         console.log("this id", id);
         const productOffering = await axios
-          .get(`http://localhost:5000/api/product-offering/${id}`)
+          .get(`${AXIOS_URL}/api/product-offering/${id}`)
           .then((res) => res.data)
           .catch((e) => console.log(e));
 
@@ -129,7 +132,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         console.log("PO ID:", poId);
 
         const updatePo = await axios
-          .patch(`http://localhost:5000/api/product-offering/${poId}`, po)
+          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
           .then((res) => res.data)
           .catch((error) => console.log({ error }));
 
@@ -157,14 +160,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       };
       try {
         const productOffering = await axios
-          .get(`http://localhost:5000/api/product-offering/${id}`)
+          .get(`${AXIOS_URL}/api/product-offering/${id}`)
           .then((res) => res.data)
           .catch((e) => console.log(e));
 
         const poId = productOffering._id;
 
         const updatePo = await axios
-          .patch(`http://localhost:5000/api/product-offering/${poId}`, po)
+          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
           .then((res) => res.data)
           .catch((error) => console.log({ error }));
 
@@ -190,14 +193,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       };
       try {
         const productOffering = await axios
-          .get(`http://localhost:5000/api/product-offering/${id}`)
+          .get(`${AXIOS_URL}/api/product-offering/${id}`)
           .then((res) => res.data)
           .catch((e) => console.log(e));
 
         const poId = productOffering._id;
 
         const updatePo = await axios
-          .patch(`http://localhost:5000/api/product-offering/${poId}`, po)
+          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
           .then((res) => res.data)
           .catch((error) => console.log({ error }));
 
