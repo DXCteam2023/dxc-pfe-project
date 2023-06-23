@@ -12,7 +12,7 @@ import Header from "../../../dashboard/components/header/Header";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
 import DoughnutChart from "./ChartCercle";
-// import LineChart from "./LineChart";
+import LineChart from "./LineChart";
 import PieChart from "./PiChart";
 import BarChart from "./BarChar";
 import AdminStatistique from "./AdminStats";
@@ -61,7 +61,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   //   try {
   //     const userId = params.id;
   //     const response = await axios.get(
-  //       `http://localhost:5000/api/user/${userId}`,
+  //       `${AXIOS_URL}/api/user/${userId}`,
   //     );
   //     const userData = response.data;
   //     setUser(userData);
@@ -73,7 +73,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
   const updateUserPassword = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/user/update-password`,
+        `${AXIOS_URL}/api/user/update-password`,
         {
           userId: user._id,
           oldPassword,
@@ -594,7 +594,7 @@ const Page = ({ params }: { params: { id: string; profile: string } }) => {
                                 <div className="py-12 chart-container bg-white">
                                   <div className=" flex w-full">
                                     <div className="w-1/2  rounded-lg shadow-xl p-8">
-                                      {/* <LineChart /> */}
+                                      <LineChart />
                                       <p className="mt-2 text-gray-600 font-semibold text-center">
                                         Completed Orders by Day
                                       </p>

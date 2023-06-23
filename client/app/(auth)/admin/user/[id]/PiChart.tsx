@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import axios from "axios";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 export type TUser = {
   _id: string;
@@ -65,9 +70,7 @@ const PieChart = () => {
 
   async function getUsers() {
     try {
-      const response = await axios.get<TUser[]>(
-        "http://localhost:5000/api/user",
-      );
+      const response = await axios.get<TUser[]>(`${AXIOS_URL}/api/user`);
       const usersData = response.data;
       setUsers(usersData);
     } catch (error) {
