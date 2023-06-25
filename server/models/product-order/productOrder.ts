@@ -130,6 +130,8 @@ const productOrderSchema = new Schema({
   completionDate: { type: String, required: false, default: "" },
   expectedCompletionDate: { type: String, required: false, default: "" },
   state: { type: String, required: false, default: "in draft" },
+  createdBy: { type: String, required: true },
+  created: { type: Date, required: true, default: Date.now() },
   ponr: { type: Boolean, required: false, default: false },
   "@type": { type: String, required: true, default: "ProductOrder" },
 });
