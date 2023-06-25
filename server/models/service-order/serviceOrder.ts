@@ -98,7 +98,7 @@ const serviceOrderSchema = new Schema({
   serviceOrderItem: { type: Array(serviceOrderItemSchema), required: true },
   completionDate: { type: String, required: false, default: "" },
   expectedCompletionDate: { type: String, required: false, default: "" },
-  state: { type: String, required: true },
+  status: { type: String, required: true },
   ponr: { type: String, required: true },
   "@type": { type: String, required: true, default: "ServiceOrder" },
 });

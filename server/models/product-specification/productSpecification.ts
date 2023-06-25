@@ -69,7 +69,7 @@ const productSpecificationSchema = new Schema({
   },
   validFor: { type: validForSchema, required: true },
   version: { type: String, required: false },
-  state: { type: String, required: false },
+  status: { type: String, required: true },
 });
 
 const ProductSpecificationModel = model<IProductSpecificationDocument>(

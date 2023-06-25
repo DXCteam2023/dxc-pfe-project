@@ -2,7 +2,7 @@ type Order = {
   orderNumber: string;
   id: string;
   productOfferings: string[];
-  state: string;
+  status: string;
   orderDate: string;
   type: string;
 };
@@ -14,7 +14,7 @@ type ProductOffering = {
   startDate: string;
   endDate: string;
   contractTerm: string;
-  state: string;
+  status: string;
 };
 export default interface IUserDocument {
   userID: string;
