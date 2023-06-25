@@ -23,12 +23,12 @@ const BarChart = () => {
 
   async function getProductOrders() {
     try {
-      // const response = await axios.get(
-      //   `http://localhost:5000/api/customer-order/product`,
-      // );
       const response = await axios.get(
-        `https://dxc-pfe-prject-server.vercel.app/api/customer-order/product`,
+        `http://localhost:5000/api/customer-order/product`,
       );
+      // const response = await axios.get(
+      //   `https://dxc-pfe-prject-server.vercel.app/api/customer-order/product`,
+      // );
       const productsData = response.data;
       // Obtenez les mois de la date actuelle à la date actuelle moins 6 mois
       const months = [];
@@ -70,13 +70,18 @@ const BarChart = () => {
       const ctx = chartRef.current.getContext("2d");
       if (ctx) {
         const backgroundColors = [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)",
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(255, 159, 64, 0.7)",
+          "rgba(255, 205, 86, 0.7)",
+          "rgba(75, 192, 192, 0.7)",
+          "rgba(54, 162, 235, 0.7)",
+          "rgba(153, 102, 255, 0.7)",
+          "rgba(201, 203, 207, 0.7)",
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(255, 159, 64, 0.7)",
+          "rgba(255, 255, 140, 0.7)",
+          "rgba(153, 102, 255, 0.7)",
+          "rgba(201, 203, 207, 0.7)",
         ];
 
         const config: any = {
@@ -92,13 +97,13 @@ const BarChart = () => {
                   products.labels.length,
                 ),
                 borderColor: [
-                  "rgb(255, 99, 132)",
-                  "rgb(255, 159, 64)",
-                  "rgb(255, 205, 86)",
-                  "rgb(75, 192, 192)",
-                  "rgb(54, 162, 235)",
-                  "rgb(153, 102, 255)",
-                  "rgb(201, 203, 207)",
+                  "rgb(255, 99, 132,0.9)",
+                  "rgb(255, 159, 64,0.9)",
+                  "rgb(255, 205, 86,0.9)",
+                  "rgb(75, 192, 192,0.9)",
+                  "rgb(54, 162, 235,0.9)",
+                  "rgb(153, 102, 255,0.9)",
+                  "rgb(201, 203, 207,0.9)",
                 ],
                 borderWidth: 1,
               },
@@ -128,13 +133,13 @@ const BarChart = () => {
     <div>
       <div className="mx-auto py-4 text-center">
         <canvas ref={chartRef} />
-        <p className="mt-2 text-gray-600 font-semibold">
+        <p className="mt-2 text-purple-600 font-semibold">
           Product Orders By Month
         </p>
       </div>
-      <div className="item-end">
+      {/* <div className="item-end">
         <p className="mt-2 text-gray-600 font-semibold">Total Revenue : </p>
-      </div>
+      </div> */}
     </div>
   );
 };

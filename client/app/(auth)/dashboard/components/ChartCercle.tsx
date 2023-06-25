@@ -11,7 +11,7 @@ interface ProductOfferings {
   link: string;
   name: string;
   description: string;
-  status: string;
+  state: string;
   internalVersion: string;
   orderDate: string;
   lastUpdate: string;
@@ -36,12 +36,12 @@ const DoughnutChart = () => {
 
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `https://dxc-pfe-prject-server.vercel.app/api/product-offering`,
-      );
       // const response = await axios.get(
-      //   `http://localhost:5000/api/product-offering`,
+      //   `https://dxc-pfe-prject-server.vercel.app/api/product-offering`,
       // );
+      const response = await axios.get(
+        `http://localhost:5000/api/product-offering`,
+      );
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -59,17 +59,13 @@ const DoughnutChart = () => {
       // Comptez le nombre de product offerings par état
       const stateCounts: { [key: string]: number } = {};
       productOfferings.forEach((productOffering) => {
-        const { status } = productOffering;
-        if (
-          status &&
-          Object.prototype.hasOwnProperty.call(stateCounts, status)
-        ) {
-          stateCounts[status] += 1;
+        const { state } = productOffering;
+        if (state && Object.prototype.hasOwnProperty.call(stateCounts, state)) {
+          stateCounts[state] += 1;
         } else {
-          stateCounts[status] = 1;
+          stateCounts[state] = 1;
         }
       });
-
       // Construisez les données du graphique
       const labels = Object.keys(stateCounts);
       const data = Object.values(stateCounts);
@@ -81,13 +77,11 @@ const DoughnutChart = () => {
             label: "Nombre de product offerings par état",
             data: data,
             backgroundColor: [
-              "rgba(95, 39, 205, 0.2)",
-              "rgba(255, 70, 70, 0.2)",
-              "rgba(50, 168, 82, 0.2)",
-              "rgba(255, 120, 0, 0.2)",
-              "rgba(201, 203, 207, 0.2)",
-              "rgba(153, 39, 39, 0.2)",
-              "rgba(201, 203, 207, 0.2)",
+              "rgba(255, 99, 132, 0.9)",
+              "rgba(255, 159, 64, 0.9)",
+              "rgba(255, 255, 140, 0.9)",
+              "rgba(153, 102, 255, 0.9)",
+              "rgba(201, 203, 207, 0.9)",
             ],
             hoverOffset: 4,
           },
@@ -114,7 +108,7 @@ const DoughnutChart = () => {
   return (
     <div className="mx-auto w-2/3 text-center">
       <canvas ref={chartRef} />
-      <p className="mt-2 p-3 text-gray-600 font-semibold">
+      <p className="mt-2 p-3 text-indigo-800 font-semibold">
         Product Offering By State
       </p>
     </div>

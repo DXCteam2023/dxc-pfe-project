@@ -12,6 +12,7 @@ import TableProductOfferings from "./components/TableProductOfferings";
 import CercleChart from "./components/ChartCercle";
 import Cards from "./components/Cards";
 import ChartProduct from "./components/ProductChart";
+import AllCharts from "./components/AllCharts";
 
 export default function DashboardHome() {
   const [token, setToken] = useState("");
@@ -36,10 +37,11 @@ export default function DashboardHome() {
         <Header />
         <div className=" mx-4 py-5 bg-gradient-to-r from-white via-purple-200 to-white  rounded-l-lg ">
           <Cards />
-          <StatisticCards />
+          <AllCharts />
+          {/* <StatisticCards /> */}
         </div>
 
-        <div className=" flex justify-center p-2 ">
+        {/* <div className=" flex justify-center p-2 ">
           <div className="mx-3 w-1/2  mt-1 item-end  p-8">
             <div className=" item-end  bg-white rounded-lg shadow-xl ">
               <CercleChart />
@@ -50,15 +52,15 @@ export default function DashboardHome() {
               <ChartProduct />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="mx-3 mt-1 item-end   rounded-lg  p-8">
           <TableProductOfferings />
         </div>
         <div className=" mx-9 mt-4 flex p-2 ">
-          <div className="py-16 w-1/2 rounded-lg shadow-xl p-8">
+          {/* <div className="py-16 w-1/2 rounded-lg shadow-xl p-8">
             <Chartt />
-          </div>
-          <div className="mx-3 w-1/2 rounded-lg shadow-xl p-8">
+          </div> */}
+          <div className="mx-3 w-full rounded-lg shadow-xl p-8">
             <BarChart />
           </div>
         </div>
