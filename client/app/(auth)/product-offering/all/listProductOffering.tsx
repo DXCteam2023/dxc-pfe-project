@@ -26,9 +26,7 @@ const listProductOffering: React.FC = () => {
   const fetchProducts = async () => {
     try {
       // const res = await fetch(`http://localhost:5000/api/product-offering/`);
-      const res = await fetch(
-        `https://dxc-pfe-project-server.vercel.app/api/product-offering/`,
-      );
+      const res = await fetch(`${AXIOS_URL}/api/product-offering/`);
       if (!res.ok) {
         throw new Error(
           `Failed to fetch products: ${res.status} ${res.statusText}`,
