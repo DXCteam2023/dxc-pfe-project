@@ -2,9 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import Footer from "./Footer";
-import Sidebar from "./Sidebar";
-import Header from "./header/Header";
+import * as dotenv from "dotenv";
+// import Footer from "./Footer";
+// import Sidebar from "./Sidebar";
+// import Header from "./header/Header";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface User {
   totalOrders: string;
@@ -25,9 +30,7 @@ export default function ShowUsers() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://dxc-pfe-project-server.vercel.app/api/user",
-        );
+        const response = await axios.get(`${AXIOS_URL}/api/user`);
         setUsers(response.data);
       } catch (error) {
         console.error(error);
