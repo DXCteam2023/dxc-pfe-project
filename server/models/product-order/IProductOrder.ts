@@ -121,6 +121,8 @@ export default interface IProductOrderDocument {
   completionDate?: string;
   expectedCompletionDate?: string;
   ponr: boolean;
-  state: string;
+  status: string;
+  createdBy: string;
+  created: Date;
   "@type": string;
 }

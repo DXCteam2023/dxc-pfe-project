@@ -23,29 +23,20 @@ const ChartProduct = () => {
   async function getProductOfferings() {
     try {
       // const response = await axios.get(
-      //   `http://localhost:5000/api/product-offering`,
+      //  `http://localhost:5000/api/product-offering`,
       // );
-      const response = await axios.get(
-        `https://dxc-pfe-project-server.vercel.app/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
-      //setProductOfferings(allProductOfferings);
-
-      // Obtenez les mois de la date actuelle à la date actuelle moins 6 mois
       const months = [];
       const currentDate = new Date();
       for (let i = 0; i < 12; i += 1) {
         const date = new Date(currentDate.getFullYear(), i, 1);
         months.push(date.toLocaleString("default", { month: "long" }));
       }
-
-      // Initialisez un objet pour stocker le décompte des commandes par mois
       const ordersByMonth: { [key: string]: number } = {};
       months.forEach((month) => {
         ordersByMonth[month] = 0;
       });
-
-      // Parcourez les données des produits et incrémentez le décompte des commandes pour chaque mois correspondant
       allProductOfferings.forEach(
         (product: { validFor: { startDateTime: string } }) => {
           const orderDate = new Date(product.validFor.startDateTime);
@@ -58,8 +49,6 @@ const ChartProduct = () => {
           }
         },
       );
-
-      // Convertissez le décompte des commandes par mois en un tableau pour les étiquettes et les données du graphique
       const labels = Object.keys(ordersByMonth);
       const data = Object.values(ordersByMonth);
 
@@ -74,13 +63,13 @@ const ChartProduct = () => {
       const ctx = chartRef.current.getContext("2d");
       if (ctx) {
         const backgroundColors = [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 205, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(201, 203, 207, 0.2)",
+          "rgba(255, 99, 132, 0.5)",
+          "rgba(255, 159, 64, 0.5)",
+          "rgba(255, 205, 86, 0.5)",
+          "rgba(75, 192, 192, 0.5)",
+          "rgba(54, 162, 235, 0.5)",
+          "rgba(153, 102, 255, 0.5)",
+          "rgba(201, 203, 207, 0.5)",
         ];
 
         const config: any = {
@@ -89,7 +78,7 @@ const ChartProduct = () => {
             labels: products.labels,
             datasets: [
               {
-                label: "Nombre de commandes",
+                label: "Nombrer of Product Offerings",
                 data: products.data,
                 backgroundColor: backgroundColors.slice(
                   0,
@@ -131,7 +120,7 @@ const ChartProduct = () => {
   return (
     <div className="mx-auto py-4 text-center ">
       <canvas ref={chartRef} />
-      <p className="mt-2 p-9 text-gray-600 font-semibold">
+      <p className="mt-2 p-9 text-indigo-800 font-semibold">
         Product Offerings by Month
       </p>
     </div>

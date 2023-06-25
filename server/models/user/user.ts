@@ -8,7 +8,7 @@ const orderSchema = new Schema({
   orderNumber: { type: String, required: true },
   id: { type: String, required: true },
   productOfferings: { type: Array(String), required: true },
-  state: { type: String, required: true },
+  status: { type: String, required: true },
   orderDate: { type: String, required: true },
   type: { type: String, required: true },
 });
@@ -20,7 +20,7 @@ const productOfferingSchema = new Schema({
   startDate: { type: String, required: true },
   endDate: { type: String, required: true },
   contractTerm: { type: String, required: true },
-  state: { type: String, required: true },
+  status: { type: String, required: true },
 });
 
 const userSchema = new mongoose.Schema({

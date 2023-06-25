@@ -3,11 +3,15 @@ import React, { useState, useEffect, Fragment } from "react";
 import ReactModal from "react-modal";
 import axios from "axios";
 import * as dotenv from "dotenv";
+import Link from "next/link";
+import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
 import avatar from "../../../../../public/assets/avatar.png";
-
+import image from "../../../../../public/assets/wifi-survey2.jpg";
+import product from "../../../../../public/assets/home_internet.png";
+import result from "../../../../../public/assets/search.png";
+import result2 from "../../../../../public/assets/search2.png";
 // Importing types
 import {
   TDataCustomerOrder,
@@ -155,7 +159,35 @@ const Header = () => {
   const handleInputBlur = () => {
     setIsInputFocused(false);
   };
+  function getStateTextColor(status: string) {
+    switch (status) {
+      case "retired":
+        return " text-white";
+      case "published":
+        return "text-blue-900";
+      case "draft":
+        return "text-white";
+      case "archived":
+        return "text-red-900";
+      default:
+        return "";
+    }
+  }
 
+  function getStateBgColor(status: string) {
+    switch (status) {
+      case "retired":
+        return "bg-red-600 shadow-red-300";
+      case "draft":
+        return "bg-purple-600  shadow-yellow-300";
+      case "published":
+        return "bg-green-200 shadow-green-300";
+      case "archived":
+        return "bg-yellow-200 shadow-yellow-300";
+      default:
+        return "";
+    }
+  }
   useEffect(() => {
     let token;
     let user;
@@ -289,11 +321,11 @@ const Header = () => {
           <ReactModal
             isOpen={isPopupOpen}
             onRequestClose={handlePopupClose}
-            className="bg-white bg-opacity-60 h-full     justify-center  border-0"
+            className="bg-white h-full justify-center  border-0"
           >
-            <div className="results">
+            <div className="max-h-full overflow-y-auto">
               {/* Result Product Offerings by word */}
-              <div className="w-full px-4 lg:p-5  absolute ">
+              <div className="w-full px-4 lg:p-5   ">
                 <button
                   className="absolute top-5 right-5 text-gray-600 hover:text-gray-800"
                   onClick={handlePopupClose}
@@ -313,68 +345,271 @@ const Header = () => {
                     ></path>
                   </svg>
                 </button>
-                <h2 className="text-gray-900 font-bold">Product Offerings</h2>
-                {productOfferings.map((result) => {
-                  return (
-                    <div
-                      key={result.id}
-                      className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left mb-4"
-                    >
-                      <div className="w-full max-w-6xl sm:flex sm:items-center sm:justify-between sm:space-x-5 rounded bg-white mx-auto text-gray-800 relative ms:text-left">
-                        <p className="text-lg font-bold text-purple-700 truncate hover:text-purple-500">
-                          <a
-                            className="underline"
-                            href={`product-offering/${result.id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {result.name}
-                          </a>
-                        </p>
-                        <div className="mt-2 sm:mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
-                          <p className="text-gray-600 text-md">
-                            {result.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
 
-                {/* Result product specification by word */}
+                <h2 className="text-blue-800 font-bold text-center">
+                  Product Offerings
+                </h2>
 
-                <div className="w-full  px-4 lg:p-5  absolute">
-                  <h2 className="text-gray-900 font-bold">
-                    Product specification
-                  </h2>
-                  {productSpecifications.map((result) => {
-                    return (
-                      <div
-                        key={result._id}
-                        className="w-full max-w-6xl rounded bg-white shadow-xl p-6 lg:p-6 mx-auto text-gray-800 relative ms:text-left mb-4"
-                      >
-                        <div className="w-full max-w-6xl sm:flex sm:items-center sm:justify-between sm:space-x-5 rounded bg-white mx-auto text-gray-800 relative ms:text-left">
-                          <p className="text-lg font-bold text-purple-700 truncate hover:text-purple-500">
-                            <a
-                              className="underline"
-                              href={`product-specification/${result._id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {result.name}
-                              <br />
-                            </a>
-                          </p>
-                          <div className="mt-2 sm:mt-0 mr-0 mb-0 ml-4 flex-1 min-w-0">
-                            <p className="text-gray-600 text-md">
-                              {result.description}
-                            </p>
+                {productOfferings.length > 0 ? (
+                  <ul>
+                    <div className="flex flex-wrap">
+                      {productOfferings.map((offering) => (
+                        <div
+                          key={offering._id}
+                          className="card focus:outline-none mx-2 w-72 xl:mb-0 mb-1 bg-white shadow rounded-lg p-4 cursor-pointer"
+                        >
+                          <div className="container ">
+                            <div className="max-w-md w-full bg-white  rounded-xl p-6">
+                              <div className="flex flex-col">
+                                <div className="">
+                                  <div className="relative h-62 w-full mb-3">
+                                    <div className="absolute flex flex-col top-0 right-0 p-3">
+                                      <button className="transition ease-in duration-300 bg-gray-800 hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1">
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="h-6 w-6"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                    <Image
+                                      src={product}
+                                      alt="Just a flower"
+                                      className="w-full h-full object-fill rounded-2xl"
+                                    />
+                                  </div>
+                                  <div className="flex-auto justify-evenly">
+                                    <div className="flex flex-wrap">
+                                      <div className="w-full flex-none text-sm flex items-center text-gray-600">
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="h-4 w-4 text-red-500 mr-1"
+                                          viewBox="0 0 20 20"
+                                          fill="currentColor"
+                                        >
+                                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                        <span className="text-gray-400 whitespace-nowrap mr-3">
+                                          4.60
+                                        </span>
+                                        <span className="mr-2 text-gray-400">
+                                          {offering.name}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center w-full justify-between min-w-0 ">
+                                        <h2 className="text-lg mr-auto cursor-pointer text-gray-800 hover:text-purple-500 truncate">
+                                          {offering.description}
+                                        </h2>
+                                        <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div>
+                                      </div>
+                                    </div>
+                                    <div className="text-xl text-white font-semibold mt-1">
+                                      $240.00
+                                    </div>
+                                    <div className="lg:flex py-4 text-sm text-gray-600">
+                                      <div className="flex-1 inline-flex items-center mb-3">
+                                        <div className="w-full flex-none text-sm flex items-center text-white">
+                                          <span
+                                            className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
+                                              offering.status,
+                                            )} leading-tight`}
+                                          >
+                                            <span
+                                              aria-hidden
+                                              className={`absolute inset-0 ${getStateBgColor(
+                                                offering.status,
+                                              )} rounded-full`}
+                                            ></span>
+                                            <span
+                                              className={`relative inset-0 ${getStateTextColor(
+                                                offering.status,
+                                              )} rounded-full`}
+                                            >
+                                              {offering.status}
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="flex space-x-2 text-sm font-medium justify-start">
+                                        <button className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg  text-white rounded-full hover:bg-purple-600">
+                                          <span>View Details</span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      ))}
+                    </div>
+                  </ul>
+                ) : (
+                  <div className="flex justify-center items-center">
+                    <Image
+                      src={result}
+                      alt="Just a flower"
+                      className="w-1/4 h-1/4 object-fill rounded-2xl"
+                    />
+                    <br />
+                    <div className="ml-4">
+                      <p className="text-gray-900 font-bold text-5xl">
+                        No Product Offering Found.
+                      </p>
+                      <br />
+                      <span className="text-gray-500 font-semibold text-2xl">
+                        Please Try another Keyword ...
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <h2 className="text-blue-800 font-bold text-center">
+                  Product Specification
+                </h2>
+
+                {productSpecifications.length > 0 ? (
+                  <ul>
+                    <div className="flex flex-wrap">
+                      {productSpecifications.map((specification) => (
+                        <div
+                          key={specification._id}
+                          className="card focus:outline-none mx-2 w-72 xl:mb-0 mb-8  shadow rounded-lg p-4 cursor-pointer"
+                        >
+                          <div>
+                            <Image
+                              alt="person capturing an image"
+                              src={image}
+                              className="focus:outline-none w-full h-44"
+                            />
+                          </div>
+                          <div className="bg-white">
+                            <div className="flex items-center justify-between px-4 pt-4">
+                              {/* <div> */}
+                              {/* <svg
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     className={`focus:outline-none ${
+                                       savedProducts.find(
+                                         (p) => p.productId === product.productId,
+                                       )
+                                         ? "text-green-500"
+                                         : "text-gray-500"
+                                     }`}
+                                     width="20"
+                                     height="20"
+                                     viewBox="0 0 24 24"
+                                     strokeWidth="1.5"
+                                     stroke={
+                                       savedProducts.find(
+                                         (p) => p.productId === product.productId,
+                                       )
+                                         ? "#34D399"
+                                         : "#2c3e50"
+                                     }
+                                     fill="none"
+                                     strokeLinecap="round"
+                                     strokeLinejoin="round"
+                                     //onClick={() => handleSaveButtonClick(product.productId)}
+                                   > */}
+                              {/* <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                     <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
+                                   </svg> */}
+                              {/* //</div> */}
+
+                              <div className="">
+                                <p className="focus:outline-none">
+                                  <span
+                                    className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
+                                      specification.status,
+                                    )} leading-tight`}
+                                  >
+                                    <span
+                                      aria-hidden
+                                      className={`absolute inset-0 ${getStateBgColor(
+                                        specification.status,
+                                      )}  rounded-full`}
+                                    ></span>
+                                    <span
+                                      className={`relative inset-0 ${getStateTextColor(
+                                        specification.status,
+                                      )}  rounded-full`}
+                                    >
+                                      {specification.status}
+                                    </span>
+                                  </span>
+                                </p>
+                              </div>
+                            </div>
+                            <div className="p-4">
+                              <div className="flex items-center">
+                                <h2 className="focus:outline-none text-lg font-semibold">
+                                  {specification.name}
+                                </h2>
+                                <p className="focus:outline-none  tiem-end text-xs text-gray-600 pl-5">
+                                  <Link
+                                    href={`/product-specification/${specification._id}`}
+                                    className=" button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
+                                  >
+                                    Details
+                                  </Link>
+                                </p>
+                              </div>
+                              <p className="focus:outline-none text-xs text-gray-600 mt-2">
+                                {specification.description}
+                              </p>
+                              <div className="flex mt-4 ">
+                                <div>
+                                  <p className="focus:outline-none text-xs text-white px-2 bg-indigo-500 py-1">
+                                    {specification?.validFor?.startDateTime}
+                                  </p>
+                                </div>
+                                <div className="pl-2">
+                                  <p className="focus:outline-none text-xs text-white px-2 bg-indigo-700 py-1">
+                                    {specification?.validFor?.endDateTime}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between py-4">
+                                <h2 className="focus:outline-none text-indigo-700 text-xs font-semibold">
+                                  {specification.lastUpdate}
+                                </h2>
+                                <h3 className="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>{" "}
+                  </ul>
+                ) : (
+                  <div className="flex justify-center items-center">
+                    <Image
+                      src={result2}
+                      alt="Just a flower"
+                      className="w-1/4 h-1/4 object-fill rounded-2xl"
+                    />
+                    <br />
+                    <div className="ml-4">
+                      <p className="text-gray-900 font-bold text-5xl">
+                        No Product Specification Found.
+                      </p>
+                      <br />
+                      <span className="text-gray-500 font-semibold text-2xl">
+                        Please Try another Keyword ...
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </ReactModal>
