@@ -150,25 +150,22 @@ const BarChart = () => {
                   <table className="text-left w-full border-collapse">
                     <thead>
                       <tr>
-                        <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Number
                         </th>
-                        {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Account
-                        </th> */}
-                        <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        </th>
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Created At
                         </th>
-                        <th className=" py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Status
                         </th>
-                        {/* <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
-                          Type
-                        </th> */}
-                        <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Requested Start Date
                         </th>
-                        <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Requested Completion Date
                         </th>
                         {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
@@ -197,11 +194,11 @@ const BarChart = () => {
                                 </div>
                               </td>
 
-                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
                                   {order.account}
                                 </p>
-                              </td> */}
+                              </td>
                               <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <p className="text-indigo-900  font-semibold whitespace-no-wrap">
                                   {new Date(order.orderDate).toDateString()}

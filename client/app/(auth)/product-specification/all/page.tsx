@@ -12,6 +12,7 @@ import image from "../../../../public/assets/wifi-survey2.jpg";
 import SavedProductSpecifications from "./SavedProducts";
 import { getProductSpecifications } from "../utils";
 import Banner from "../../dashboard/components/banner";
+import result from "../../../../public/assets/search.png";
 
 dotenv.config();
 
@@ -161,6 +162,7 @@ export default function AllProductSpecificationsPage({
 
   const sortValidFor = (a: ProductOrders, b: ProductOrders) => {
     const dateA = new Date(a.validFor.startDateTime);
+    console.log(dateA);
     const dateB = new Date(b.validFor.startDateTime);
 
     if (sortBy === "new") {
@@ -302,30 +304,29 @@ export default function AllProductSpecificationsPage({
                     </div>
                     <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                        {viewMode === "table" ? (
+                        {sortedData.length > 0 && viewMode === "table" && (
                           <table className="w-full border-collapse">
                             <thead>
                               <tr>
-                                <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                   Name
                                 </th>
-                                <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                   Version
                                 </th>
-                                <th className=" py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                   Description
                                 </th>
-                                <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                   state
                                 </th>
-                                <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                   Start Date
                                 </th>
-                                <th className=" py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                   End Date
                                 </th>
-
-                                <th className=" py-4 px-6 text-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white">
                                   Action
                                 </th>
                               </tr>
@@ -336,33 +337,28 @@ export default function AllProductSpecificationsPage({
                                 .map((product: any, index: number) => {
                                   return (
                                     <tr key={index}>
-                                      <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
-                                        <p className="text-gray-900 whitespace-no-wrap  font-lg text-semibold leading-6 ">
+                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                        <p className="text-gray-900 whitespace-no-wrap font-lg text-semibold leading-6">
                                           {product.name}
                                         </p>
                                       </td>
-                                      <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
+                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <p className="text-indigo-700 whitespace-no-wrap font-semibold">
                                           {product.version}
                                         </p>
                                       </td>
-                                      <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
-                                        <div className="flex items-center ">
-                                          <div className="ml-3 ">
+                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                        <div className="flex items-center">
+                                          <div className="ml-3">
                                             <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
                                               {product.description}
                                             </p>
                                           </div>
                                         </div>
                                       </td>
-                                      <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
+                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="ml-3">
-                                            {/* <p className="text-gray-900  whitespace-no-wrap">
-                                        {new Date(
-                                          product.lastUpdate,
-                                        ).toDateString()}
-                                      </p> */}
                                             <span
                                               className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                                 product.status,
@@ -385,30 +381,29 @@ export default function AllProductSpecificationsPage({
                                           </div>
                                         </div>
                                       </td>
-                                      <td className=" border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
-                                        <div className="flex items-center ">
-                                          <div className="ml-3 ">
+                                      <td className="border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                        <div className="flex items-center">
+                                          <div className="ml-3">
                                             <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
                                               {product?.validFor?.startDateTime}
                                             </p>
                                           </div>
                                         </div>
                                       </td>
-                                      <td className=" border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
-                                        <div className="flex items-center ">
-                                          <div className="ml-3 ">
+                                      <td className="border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                        <div className="flex items-center">
+                                          <div className="ml-3">
                                             <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
                                               {product?.validFor?.endDateTime}
                                             </p>
                                           </div>
                                         </div>
                                       </td>
-
-                                      <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md ">
+                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <div className="flex item-center justify-center">
                                           <Link
                                             href={`/product-specification/${product._id}`}
-                                            className=" button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
+                                            className="button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                                           >
                                             Details
                                           </Link>
@@ -419,7 +414,8 @@ export default function AllProductSpecificationsPage({
                                 })}
                             </tbody>
                           </table>
-                        ) : (
+                        )}
+                        {sortedData.length > 0 && viewMode === "card" && (
                           <div className="grid grid-cols-1 justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {sortedData
                               .slice(indexOfFirstOrder, indexOfLastOrder)
@@ -428,7 +424,7 @@ export default function AllProductSpecificationsPage({
                                   key={index}
                                   onClick={() => handleProductClick(product.id)}
                                 >
-                                  <div className="focus:outline-none mx-2 w-72 xl:mb-0 mb-8  shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
+                                  <div className="focus:outline-none mx-2 w-72 xl:mb-0 mb-8 shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
                                     <div>
                                       <Image
                                         alt="person capturing an image"
@@ -476,7 +472,6 @@ export default function AllProductSpecificationsPage({
                                             <path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"></path>
                                           </svg>
                                         </div>
-
                                         <div className="">
                                           <p className="focus:outline-none">
                                             <span
@@ -509,7 +504,7 @@ export default function AllProductSpecificationsPage({
                                           <p className="focus:outline-none  tiem-end text-xs text-gray-600 pl-5">
                                             <Link
                                               href={`/product-specification/${product._id}`}
-                                              className=" button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
+                                              className="button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
                                             >
                                               Details
                                             </Link>
@@ -542,6 +537,54 @@ export default function AllProductSpecificationsPage({
                                 </div>
                               ))}
                           </div>
+                        )}
+                        {sortedData.length === 0 && (
+                          <table className="w-full border-collapse">
+                            <thead>
+                              <tr>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  Name
+                                </th>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  Version
+                                </th>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  Description
+                                </th>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  state
+                                </th>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  Start Date
+                                </th>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  End Date
+                                </th>
+                                <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="mx-auto">
+                              <tr>
+                                <td colSpan={6} className="text-center">
+                                  <div className="flex justify-center items-center">
+                                    <Image
+                                      src={result}
+                                      alt="Just a flower"
+                                      className="w-1/4 h-1/4 object-fill rounded-2xl"
+                                    />
+                                    <br />
+                                  </div>
+                                  <div className="ml-4">
+                                    <p className="text-gray-900 font-bold text-xl">
+                                      No Result Found ...
+                                    </p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         )}
 
                         <div className="text-center">

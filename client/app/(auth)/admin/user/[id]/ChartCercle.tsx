@@ -11,7 +11,7 @@ interface ProductOfferings {
   link: string;
   name: string;
   description: string;
-  status: string;
+  state: string;
   internalVersion: string;
   orderDate: string;
   lastUpdate: string;
@@ -36,7 +36,9 @@ const DoughnutChart = () => {
 
   async function getProductOfferings() {
     try {
-      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
+      const response = await axios.get(
+        `http://localhost:5000/api/product-offering`,
+      );
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
@@ -54,14 +56,11 @@ const DoughnutChart = () => {
       // Comptez le nombre de product offerings par état
       const stateCounts: { [key: string]: number } = {};
       productOfferings.forEach((productOffering) => {
-        const { status } = productOffering;
-        if (
-          status &&
-          Object.prototype.hasOwnProperty.call(stateCounts, status)
-        ) {
-          stateCounts[status] += 1;
+        const { state } = productOffering;
+        if (state && Object.prototype.hasOwnProperty.call(stateCounts, state)) {
+          stateCounts[state] += 1;
         } else {
-          stateCounts[status] = 1;
+          stateCounts[state] = 1;
         }
       });
 
@@ -76,11 +75,11 @@ const DoughnutChart = () => {
             label: "Nombre de product offerings par état",
             data: data,
             backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-              "rgba(255, 255, 140, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(201, 203, 207, 0.2)",
+              "rgba(255, 99, 132, 0.9)",
+              "rgba(255, 159, 64, 0.9)",
+              "rgba(255, 255, 140, 0.9)",
+              "rgba(153, 102, 255, 0.9)",
+              "rgba(201, 203, 207, 0.9)",
             ],
             hoverOffset: 4,
           },

@@ -3,14 +3,18 @@ import * as dotenv from "dotenv";
 import { off } from "process";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 // import { off } from "process";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
+import result from "../../../../public/assets/search.png";
 
 // Importing utility functions
 import { getProductSpecification } from "../utils";
 import ChartSpecification from "./ChartSpecification";
 import Banner from "../../dashboard/components/banner";
+import StatisticCards from "../../dashboard/components/StatisticCards";
+import Statistique from "./Statistique";
 
 const SingleProductSpecificationPage = ({
   params,
@@ -73,15 +77,48 @@ const SingleProductSpecificationPage = ({
       fetchData();
     }, 1000);
   }, [productSpec]);
+  const totalOffering = productOfferings.length;
+  const RetiredProductOfferings = productOfferings.filter(
+    (product) => product.status === "retired",
+  );
+  const totalRetiredProductOfferings = RetiredProductOfferings.length;
+  const percentRetiredProductOfferings = Math.floor(
+    (totalRetiredProductOfferings / productOfferings.length) * 100,
+  );
+  const ArchivedProductOfferings = productOfferings.filter(
+    (product) => product.status === "archived",
+  );
+  const totalArchivedProductOfferings = ArchivedProductOfferings.length;
+  const percentArchivedProductOfferings = Math.floor(
+    (totalArchivedProductOfferings / productOfferings.length) * 100,
+  );
+  const DraftProductOfferings = productOfferings.filter(
+    (product) => product.status === "draft",
+  );
+  const totalDraftProductOfferings = DraftProductOfferings.length;
+  const percentDraftProductOfferings = Math.floor(
+    (totalDraftProductOfferings / productOfferings.length) * 100,
+  );
+  const PublishedProductOffering = productOfferings.filter(
+    (product) => product.status === "published",
+  );
+  const totalPublishedProductOffering = PublishedProductOffering.length;
+  {
+    /*  Statistics %  Canceled Costumer Orders */
+  }
+  const percentPublishedProductOffering = Math.floor(
+    (totalPublishedProductOffering / productOfferings.length) * 100,
+  );
+  console.log("totalOffering:", totalOffering);
   function getStateTextColor(status: string) {
     switch (status) {
       case "retired":
-        return " text-yellow-900";
-      case "in progress":
+        return " text-white";
+      case "published":
         return "text-blue-900";
-      case "completed":
-        return "text-green-900";
-      case "canceled":
+      case "draft":
+        return "text-white";
+      case "archived":
         return "text-red-900";
       default:
         return "";
@@ -91,13 +128,13 @@ const SingleProductSpecificationPage = ({
   function getStateBgColor(status: string) {
     switch (status) {
       case "retired":
-        return "bg-yellow-200 shadow-blue-300";
+        return "bg-red-600 shadow-red-300";
       case "draft":
-        return "bg-blue-200  shadow-yellow-300";
+        return "bg-purple-600  shadow-yellow-300";
       case "published":
         return "bg-green-200 shadow-green-300";
       case "archived":
-        return "bg-red-200 shadow-red-300";
+        return "bg-yellow-200 shadow-yellow-300";
       default:
         return "";
     }
@@ -120,35 +157,135 @@ const SingleProductSpecificationPage = ({
               <div>
                 <div className="h-full bg-white p-8">
                   <div className="bg-white rounded-lg shadow-xl pb-8">
+                    <span className="text-purple-800 text-center text-xl font-bold">
+                      Statistics
+                    </span>
+                    <div className="flex justify-center bg-white py-10 p-14">
+                      <div className="container mx-auto pr-4">
+                        <div className="w-72 bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
+                          <div className="h-20 bg-gradient-to-r from-red-500 via-red-600 to-red-400  flex items-center justify-between">
+                            <p className="mr-0 text-white text-lg pl-5">
+                              RETIRED
+                            </p>
+                          </div>
+                          <div className="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
+                            <p>TOTAL</p>
+                            <h3 className="mt-2 text-3xl font-bold leading-8">
+                              {totalRetiredProductOfferings}
+                            </h3>
+
+                            <div className="bg-gradient-to-r from-red-500 via-red-600 to-red-400 w-12 h-12  rounded-full shadow-xl shadow-green-300 border-white   border-2  flex justify-center items-center ">
+                              <div>
+                                <h1 className="text-white mt-1 text-base">
+                                  {percentRetiredProductOfferings} %<br />
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="container mx-auto pr-4">
+                        <div className="w-72 bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
+                          <div className="h-20  bg-gradient-to-r from-blue-500 via-blue-600 to-blue-400  flex items-center justify-between">
+                            <p className="mr-0 text-white text-lg pl-5">
+                              IN DRAFT
+                            </p>
+                          </div>
+                          <div className="flex justify-between px-5 pt-6 mb-2 text-sm text-gray-600">
+                            <p>TOTAL</p>
+                            <h3 className="mt-2 text-3xl font-bold leading-8">
+                              {" "}
+                              {totalDraftProductOfferings}
+                            </h3>
+
+                            <div className=" bg-gradient-to-r from-blue-500 via-blue-600 to-blue-400 w-12 h-12  rounded-full shadow-xl shadow-green-300 border-white   border-2  flex justify-center items-center ">
+                              <div>
+                                <h1 className="text-white mt-1 text-base">
+                                  {percentDraftProductOfferings} %<br />
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="container mx-auto pr-4">
+                        <div className="w-72 bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
+                          <div className="h-20 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-400 flex items-center justify-between">
+                            <p className="mr-0 text-white text-lg pl-5">
+                              PUBLISHED
+                            </p>
+                          </div>
+                          <div className="flex justify-between pt-6 px-5 mb-2 text-sm text-gray-600">
+                            <p>TOTAL</p>
+                            <h3 className="mt-2 text-3xl font-bold leading-8">
+                              {totalPublishedProductOffering}
+                            </h3>
+
+                            <div className="bg-gradient-to-r from-purple-400 via-purple-500 to-purple-400 w-12 h-12  rounded-full shadow-xl shadow-green-300 border-white   border-2  flex justify-center items-center ">
+                              <div>
+                                <h1 className="text-white mt-1 text-base">
+                                  {percentPublishedProductOffering} %<br />
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="container mx-auto">
+                        <div className="w-72 bg-white max-w-xs mx-auto rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 transform hover:scale-100 cursor-pointer">
+                          <div className="h-20 bg-gradient-to-r from-purple-800 via-purple-900 to-purple-800 flex items-center justify-between">
+                            <p className="mr-0 text-white text-lg pl-5">
+                              Archived
+                            </p>
+                          </div>
+                          <div className="flex justify-between pt-6 px-5 mb-2 text-sm text-gray-600">
+                            <p>TOTAL</p>
+                            <h3 className="mt-2 text-3xl font-bold leading-8">
+                              {totalArchivedProductOfferings}
+                            </h3>
+
+                            <div className="bg-gradient-to-r from-purple-800 via-purple-900 to-purple-800 w-12 h-12  rounded-full shadow-xl shadow-green-300 border-white   border-2  flex justify-center items-center ">
+                              <div>
+                                <h1 className="text-white mt-1 text-base">
+                                  {percentArchivedProductOfferings} %<br />
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div className="mx-2 flex items-center font-semibold text-gray-900 text-xl leading-8">
-                      <span className="text-purple-500"></span>
                       <span>Related Product Offerings</span>
                     </div>
                     <div className="flex items-center mt-2">
                       <div className="mx-2 w-full flex items-center space-x-4">
                         {productOfferings.length === 0 && (
                           <div className="w-full">
-                            <div className="bg-white px-4 pt-4 pb-2 rounded-lg shadow-lg">
+                            <div className="bg-white px-4 pt-2 pb-2">
                               <table className="w-full">
                                 <thead>
                                   <tr className="bg-gray-100 border-b">
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-2 px-6 text-center bg-purple-800 text-white">
                                       Display Name
                                     </th>
 
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-2 px-6 text-center bg-purple-800 text-white">
                                       Description
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-2 px-6 text-center bg-purple-800 text-white">
                                       Version
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-2 px-6 text-center bg-purple-800 text-white">
                                       Product Specification
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-2 px-6 text-center bg-purple-800 text-white">
                                       Last Update
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-2 px-6 text-center bg-purple-800 text-white">
                                       Status
                                     </th>
                                   </tr>
@@ -156,9 +293,19 @@ const SingleProductSpecificationPage = ({
                                 <tbody className="mx-auto">
                                   <tr>
                                     <td colSpan={6} className="text-center">
-                                      <span className="text-red-700 font-semibold text-md">
-                                        No related offerings found.
-                                      </span>
+                                      <div className="flex justify-center items-center">
+                                        <Image
+                                          src={result}
+                                          alt="Just a flower"
+                                          className="w-1/4 h-1/4 object-fill rounded-2xl"
+                                        />
+                                        <br />
+                                      </div>
+                                      <div className="ml-4">
+                                        <p className="text-gray-900 font-bold text-xl">
+                                          No Related Offering Found ...
+                                        </p>
+                                      </div>
                                     </td>
                                   </tr>
                                 </tbody>
@@ -173,23 +320,23 @@ const SingleProductSpecificationPage = ({
                               <table className="w-full">
                                 <thead>
                                   <tr className="bg-gray-100 border-b">
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 text-white">
                                       Display Name
                                     </th>
 
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Description
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Version
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Product Specification
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Last Update
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Status
                                     </th>
                                   </tr>
@@ -414,16 +561,16 @@ const SingleProductSpecificationPage = ({
                               <table className="text-left w-full border-collapse">
                                 <thead>
                                   <tr>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-4 px-6 text-center  bg-purple-800  font-bold uppercase text-sm text-white ">
                                       Name
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 font-bold uppercase text-sm text-white border p-2 border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Description
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       Value Type
                                     </th>
-                                    <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       start Date time
                                     </th>
                                   </tr>
@@ -488,13 +635,13 @@ const Table1 = ({ product }: any) => {
             {/* <th className="py-4 px-6 bg-purple-400 font-bold uppercase text-sm text-white border-b border-grey-light">
             Id
           </th> */}
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               Name
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2 border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               version
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               internalVersion
             </th>
           </tr>
@@ -534,23 +681,23 @@ const Table2 = ({ product }: any) => {
       <table className="text-left w-full border-collapse">
         <thead>
           <tr>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               Name
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               Version
             </th>
 
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               internal Version
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               type
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               Start Date Time
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               End Date Time
             </th>
           </tr>
@@ -611,14 +758,14 @@ const Table3 = ({ product }: any) => {
       <table className="text-left w-full border-collapse">
         <thead>
           <tr>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               Name
             </th>
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               Version
             </th>
 
-            <th className="py-4 px-6 text-center bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400  font-bold uppercase text-sm text-white border p-2  border-grey-light">
+            <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
               internal Version
             </th>
           </tr>
