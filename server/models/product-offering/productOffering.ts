@@ -99,6 +99,8 @@ const productOfferingSchema = new Schema({
   validFor: { type: validForSchema, required: false },
   version: { type: String, required: false },
   status: { type: String, required: false }, //this
+  createdBy: { type: String, required: true },
+  created: { type: Date, required: true, default: Date.now() },
 });
 
 const ProductOfferingModel = model<IProductOfferingDocument>(

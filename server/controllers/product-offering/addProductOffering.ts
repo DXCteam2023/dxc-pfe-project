@@ -86,6 +86,7 @@ export default async function addProductOffering(req: Request, res: Response) {
       productSpecCharacteristic: req.body.productSpecCharacteristic,
       channel: req.body.channel,
       category: req.body.category,
+      externalId: savedProduct.id,
     };
 
     console.log("testeeee" + req.body.productOfferingPrice);
