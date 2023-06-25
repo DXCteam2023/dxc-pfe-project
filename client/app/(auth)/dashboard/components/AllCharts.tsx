@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
 import CercleChart from "./ChartCercle";
 import ChartProduct from "./ProductChart";
 import Chartt from "./chart";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.AXIOS_URL;
 
 interface ProductOfferings {
   link: string;
@@ -30,9 +35,7 @@ const AllCharts = () => {
 
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
 

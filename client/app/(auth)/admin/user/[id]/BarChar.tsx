@@ -24,7 +24,7 @@ const BarChart = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/customer-order/product`,
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
 
