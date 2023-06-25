@@ -95,7 +95,7 @@ export default interface IServiceOrderDocument {
   serviceOrderItem?: ServiceOrderItem[];
   completionDate?: string;
   expectedCompletionDate?: string;
-  state: string;
+  status: string;
   ponr: boolean;
   "@type": string;
 }

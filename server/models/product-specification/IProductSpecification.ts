@@ -55,4 +55,5 @@ export default interface IProductSpecificationDocument {
   serviceSpecification?: ServiceSpecification[];
   validFor: ValidFor;
   version?: string;
+  status: string;
 }
