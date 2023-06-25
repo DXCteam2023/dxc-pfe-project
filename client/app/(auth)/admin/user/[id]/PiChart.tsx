@@ -70,9 +70,7 @@ const PieChart = () => {
 
   async function getUsers() {
     try {
-      const response = await axios.get<TUser[]>(
-        `http://localhost:5000/api/user`,
-      );
+      const response = await axios.get<TUser[]>(`${AXIOS_URL}/api/user`);
       const usersData = response.data;
       setUsers(usersData);
     } catch (error) {

@@ -97,7 +97,7 @@ const Header = () => {
   async function getProductSpecifications() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/product-specification`,
+        `${AXIOS_URL}/api/product-specification`,
       );
       const specificationData: TDataProductSpecification[] = response.data;
       setProductSpecifications(specificationData);
@@ -110,9 +110,7 @@ const Header = () => {
   }
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings: TDataProductOffering[] = response.data;
       setProductOfferings(allProductOfferings);
     } catch (error) {
