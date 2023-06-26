@@ -7,7 +7,7 @@ import Chartt from "./chart";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOfferings {
   link: string;
@@ -189,7 +189,7 @@ const AllCharts = () => {
             </div>
           </div>
           <div>
-            <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md bg-white">
+            <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
               <Chartt />
               <div className="mt-14">
                 <h5 className="text-xl text-gray-600 text-center">
