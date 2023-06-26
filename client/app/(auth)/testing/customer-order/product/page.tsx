@@ -344,11 +344,11 @@ export default function AddNewProductOrderPage() {
       } catch (error: any) {
         return { error: error.response.data };
       }
-      const dbPayload = { ...payload, orderNumber: "", state: "in draft" };
+      const dbPayload = { ...payload, orderNumber: "", status: "in draft" };
 
       dbPayload.externalId = newServiceNowOrder.data.productOrder.id;
       dbPayload.orderNumber = newServiceNowOrder.data.productOrder.externalId;
-      dbPayload.state = newServiceNowOrder.data.productOrder.state;
+      dbPayload.status = newServiceNowOrder.data.productOrder.status;
 
       try {
         await axios.post(`${AXIOS_URL}/api/customer-order/product`, dbPayload);
