@@ -274,7 +274,7 @@ const TableProductOfferings = () => {
                             .map((product, index) => {
                               return (
                                 <tr key={index}>
-                                  <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
                                     <div className="flex items-center">
                                       <div className="ml-3">
                                         <p className="text-gray-900 whitespace-no-wrap text-main-color">
@@ -288,17 +288,17 @@ const TableProductOfferings = () => {
                                       </div>
                                     </div>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       {product.description}
                                     </p>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       {product.internalVersion}
                                     </p>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
                                     <span
                                       className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                         product.status,
@@ -319,7 +319,7 @@ const TableProductOfferings = () => {
                                       </span>
                                     </span>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
                                     <p className="text-indigo-700  font-semibold whitespace-no-wrap">
                                       {new Date(
                                         product.lastUpdate,

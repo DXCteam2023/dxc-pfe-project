@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 Chart.register(...registerables);
 
@@ -24,7 +24,7 @@ const BarChart = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/customer-order/product`,
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
 

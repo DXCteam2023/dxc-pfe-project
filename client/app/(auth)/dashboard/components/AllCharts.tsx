@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import * as dotenv from "dotenv";
 import CercleChart from "./ChartCercle";
 import ChartProduct from "./ProductChart";
 import Chartt from "./chart";
+
+dotenv.config();
+
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOfferings {
   link: string;
@@ -30,9 +35,7 @@ const AllCharts = () => {
 
   async function getProductOfferings() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/product-offering`,
-      );
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       setProductOfferings(allProductOfferings);
 
@@ -186,7 +189,7 @@ const AllCharts = () => {
             </div>
           </div>
           <div>
-            <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md bg-white">
+            <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
               <Chartt />
               <div className="mt-14">
                 <h5 className="text-xl text-gray-600 text-center">

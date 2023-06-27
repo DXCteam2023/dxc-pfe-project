@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const AXIOS_URL = process.env.AXIOS_URL;
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 export type TUser = {
   _id: string;
@@ -70,9 +70,7 @@ const PieChart = () => {
 
   async function getUsers() {
     try {
-      const response = await axios.get<TUser[]>(
-        `http://localhost:5000/api/user`,
-      );
+      const response = await axios.get<TUser[]>(`${AXIOS_URL}/api/user`);
       const usersData = response.data;
       setUsers(usersData);
     } catch (error) {
