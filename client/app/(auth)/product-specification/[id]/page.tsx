@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 // import { off } from "process";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 import result from "../../../../public/assets/search.png";
@@ -15,6 +17,7 @@ import ChartSpecification from "./ChartSpecification";
 import Banner from "../../dashboard/components/banner";
 import StatisticCards from "../../dashboard/components/StatisticCards";
 import Statistique from "./Statistique";
+import PieChart from "../../admin/user/[id]/managerPie";
 
 const SingleProductSpecificationPage = ({
   params,
@@ -32,12 +35,20 @@ const SingleProductSpecificationPage = ({
   const [activeTab, setActiveTab] = useState(0);
   const [productSpec, setProductSpec] = useState<any>();
   const [productOfferings, setProductOfferings] = useState<any[]>([]);
-  const [filteredOffering, SetFiltredOffering] = useState<any[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 4;
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
+  const handleStatusFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusFilter(event.target.value);
+  };
   const handleTabClick = (index: any) => {
     setActiveTab(index);
   };
@@ -69,14 +80,79 @@ const SingleProductSpecificationPage = ({
 
   useEffect(() => {
     async function fetchData() {
-      const offerings = await getProductOfferingsBySpecification();
-      setProductOfferings(offerings);
+      try {
+        const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
+        const allProductOfferings = response.data;
+        console.log(allProductOfferings);
+
+        const filteredOfferings = allProductOfferings.filter(
+          (offering: any) => {
+            return (
+              offering.productSpecification &&
+              offering.productSpecification.id &&
+              offering.productSpecification.id.trim() === productSpec.id.trim()
+            );
+          },
+        );
+
+        console.log("filteredOfferings", filteredOfferings);
+        setProductOfferings(filteredOfferings); // Mettre à jour les offres de produits
+
+        const filteredProducts = filteredOfferings.filter((product: any) => {
+          const productValues = Object.values(product).join(" ").toLowerCase();
+          const isMatchingSearchTerm = productValues.includes(
+            searchTerm.toLowerCase(),
+          );
+          const isMatchingStatus =
+            statusFilter === "All" || product.status === statusFilter;
+
+          return isMatchingSearchTerm && isMatchingStatus;
+        });
+
+        console.log("filteredProducts", filteredProducts);
+        setFilteredProducts(filteredProducts);
+      } catch (error) {
+        console.error("Error reading product offerings:", error);
+        setFilteredProducts([]); // Gérer les erreurs
+      }
     }
+
     setTimeout(() => {
-      console.log("After 2s");
+      console.log("After 1s");
       fetchData();
-    }, 1000);
-  }, [productSpec]);
+    }, 1000 / 2);
+  }, [productSpec, searchTerm, statusFilter]);
+  const [pinnedProducts, setPinnedProducts] = useState<string[]>([]);
+  // const togglePinProduct = (productId: string) => {
+  //   const updatedPinnedProducts = pinnedProducts.includes(productId)
+  //     ? pinnedProducts.filter((id) => id !== productId)
+  //     : [...pinnedProducts, productId];
+  //   setPinnedProducts(updatedPinnedProducts);
+  // };
+  const togglePinProduct = (productId: string) => {
+    if (pinnedProducts.includes(productId)) {
+      const updatedPinnedProducts = pinnedProducts.filter(
+        (pinnedProductId) => pinnedProductId !== productId,
+      );
+      setPinnedProducts(updatedPinnedProducts);
+    } else {
+      const updatedPinnedProducts = [productId, ...pinnedProducts];
+      setPinnedProducts(updatedPinnedProducts);
+    }
+  };
+
+  const sortedProductOfferings = [...filteredProducts].sort((a, b) => {
+    const aPinned = pinnedProducts.includes(a.id);
+    const bPinned = pinnedProducts.includes(b.id);
+    if (aPinned && !bPinned) {
+      return -1;
+    } else if (!aPinned && bPinned) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
   const totalOffering = productOfferings.length;
   const RetiredProductOfferings = productOfferings.filter(
     (product) => product.status === "retired",
@@ -263,8 +339,33 @@ const SingleProductSpecificationPage = ({
                     </div>
                     <div className="flex items-center mt-2">
                       <div className="mx-2 w-full flex items-center space-x-4">
-                        {productOfferings.length === 0 && (
+                        {sortedProductOfferings.length === 0 && (
                           <div className="w-full">
+                            <div className="my-2 flex sm:flex-row flex-col">
+                              <div className="flex flex-row mb-1 sm:mb-0">
+                                <div className="relative">
+                                  <select
+                                    value={statusFilter}
+                                    onChange={handleStatusFilter}
+                                    className="ml-2 px-8 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                                  >
+                                    <option value="All">All</option>
+                                    <option value="retired">Retired</option>
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="archived">Archived</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="block relative">
+                                <input
+                                  placeholder="Search..."
+                                  className="mx-2 px-7 py-2 border border-purple-300 focus:outline-none rounded-lg shadow-sm"
+                                  value={searchTerm}
+                                  onChange={handleSearch}
+                                />
+                              </div>
+                            </div>
                             <div className="bg-white px-4 pt-2 pb-2">
                               <table className="w-full">
                                 <thead>
@@ -314,12 +415,45 @@ const SingleProductSpecificationPage = ({
                           </div>
                         )}
 
-                        {productOfferings.length > 0 && (
+                        {sortedProductOfferings.length > 0 && (
                           <div className="w-full">
+                            <div className="my-2 flex sm:flex-row flex-col">
+                              <div className="flex flex-row mb-1 sm:mb-0">
+                                <div className="relative">
+                                  <select
+                                    value={statusFilter}
+                                    onChange={handleStatusFilter}
+                                    className="ml-2 px-8 py-2 border border-gray-300 focus:outline-none rounded-lg shadow-sm"
+                                  >
+                                    <option value="All">All</option>
+                                    <option value="retired">Retired</option>
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="archived">Archived</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="block relative">
+                                <input
+                                  placeholder="Search..."
+                                  className="mx-2 px-7 py-2 border border-purple-300 focus:outline-none rounded-lg shadow-sm"
+                                  value={searchTerm}
+                                  onChange={handleSearch}
+                                />
+                              </div>
+                            </div>
                             <div className="bg-white px-4 pt-4 pb-2 rounded-lg shadow-lg">
                               <table className="w-full">
                                 <thead>
                                   <tr className="bg-gray-100 border-b">
+                                    <th className="py-4 px-3 text-center bg-purple-800 text-white">
+                                      <label className="inline-flex items-center">
+                                        <input
+                                          type="checkbox"
+                                          className="form-checkbox text-gray-800"
+                                        />
+                                      </label>
+                                    </th>
                                     <th className="py-4 px-6 text-center bg-purple-800 text-white">
                                       Display Name
                                     </th>
@@ -342,13 +476,31 @@ const SingleProductSpecificationPage = ({
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {productOfferings
+                                  {sortedProductOfferings
                                     .slice(indexOfFirstOrder, indexOfLastOrder)
                                     .map((offering: any) => (
                                       <tr
                                         key={offering.id}
                                         className="border-b"
                                       >
+                                        <td>
+                                          <button
+                                            onClick={() =>
+                                              togglePinProduct(offering.id)
+                                            }
+                                            className={`font-bold border p-2  border-grey-light ${
+                                              pinnedProducts.includes(
+                                                offering.id,
+                                              )
+                                                ? "text-blue-600"
+                                                : "text-black"
+                                            }`}
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faThumbtack}
+                                            />
+                                          </button>
+                                        </td>
                                         <td className="py-4 px-6 text-indigo-00 border p-2  border-grey-light">
                                           {offering.name}
                                         </td>
@@ -438,40 +590,26 @@ const SingleProductSpecificationPage = ({
                           </li>
                           <li className="flex border-b py-2">
                             <span className="font-bold w-24">Name:</span>
-                            <span className="text-gray-700">
+                            <span className=" text-blue-900 font-semibold">
                               {" "}
                               {productSpec.name}
                             </span>
                           </li>
                           <li className="flex border-b py-2">
                             <span className="font-bold w-24">Version:</span>
-                            <span className="text-gray-700">
+                            <span className="text-gray-700 ">
                               {productSpec.version}
                             </span>
                           </li>
                           <li className="flex border-b py-2">
-                            <span className="font-bold w-40">
-                              Internal Version:
-                            </span>
-                            <span className="text-gray-700">
-                              {productSpec.internalVersion}
-                            </span>
-                          </li>
-                          {/* <li className="flex border-b py-2">
-                          <span className="font-bold w-24">Internal ID:</span>
-                          <span className="text-gray-700">
-                            {productSpec.internalId}
-                          </span>
-                        </li> */}
-                          <li className="flex border-b py-2">
                             <span className="font-bold w-24">Description:</span>
-                            <span className="text-gray-700">
+                            <span className="text-indigo-800 font-bold">
                               {productSpec.description}
                             </span>
                           </li>
                           <li className="flex border-b py-2">
                             <span className="font-bold w-40">Last Update:</span>
-                            <span className="text-gray-700">
+                            <span className=" text-blue-700 font-semibold">
                               {new Date(productSpec.lastUpdate).toDateString()}
                             </span>
                           </li>
@@ -479,7 +617,7 @@ const SingleProductSpecificationPage = ({
                             <span className="font-bold w-40">
                               Start Date Time:
                             </span>
-                            <span className="text-gray-700">
+                            <span className="text-blue-800 font-semibold">
                               {productSpec?.validFor?.startDateTime}
                             </span>
                           </li>
@@ -487,7 +625,7 @@ const SingleProductSpecificationPage = ({
                             <span className="font-bold w-40">
                               End Date Time:
                             </span>
-                            <span className="text-gray-700">
+                            <span className="text-blue-800 font-semibold">
                               {productSpec?.validFor?.endDateTime}
                             </span>
                           </li>
@@ -513,8 +651,8 @@ const SingleProductSpecificationPage = ({
                                     onClick={() => handleTabClick(0)}
                                     className={`${
                                       activeTab === 0
-                                        ? "bg-purple-600 text-white"
-                                        : ""
+                                        ? "bg-purple-800 text-white"
+                                        : "bg-purple-600 text-white "
                                     } px-4 py-2 rounded-l-md transition duration-100`}
                                   >
                                     Service Specification
@@ -523,8 +661,8 @@ const SingleProductSpecificationPage = ({
                                     onClick={() => handleTabClick(1)}
                                     className={`${
                                       activeTab === 1
-                                        ? "bg-purple-600 text-white"
-                                        : ""
+                                        ? "bg-purple-800 text-white"
+                                        : "bg-purple-600 text-white "
                                     } px-4 py-2 transition duration-100`}
                                   >
                                     Product Specification Relationship
@@ -533,8 +671,8 @@ const SingleProductSpecificationPage = ({
                                     onClick={() => handleTabClick(2)}
                                     className={`${
                                       activeTab === 2
-                                        ? "bg-purple-600 text-white"
-                                        : ""
+                                        ? "bg-purple-800 text-white"
+                                        : "bg-purple-600 text-white "
                                     } px-4 py-2 rounded-r-md transition duration-100`}
                                   >
                                     Resource Specification
@@ -589,7 +727,7 @@ const SingleProductSpecificationPage = ({
                                           key={index}
                                           className="hover:bg-grey-lighter "
                                         >
-                                          <td className="py-4 px-6  border p-2  border-grey-light">
+                                          <td className="py-4 px-6  border p-2  border-grey-light text-purple-900 font-semibold">
                                             {name}
                                           </td>
                                           <td className="py-4 px-6  border p-2  border-grey-light">
