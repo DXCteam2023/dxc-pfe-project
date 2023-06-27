@@ -279,7 +279,7 @@ const TableProductOfferings = () => {
                                       <div className="ml-3">
                                         <p className="text-gray-900 whitespace-no-wrap text-main-color">
                                           <a
-                                            href={product.link}
+                                            href={`/product-offering/${product._id}`}
                                             className="text-blue-500 hover:text-blue-700"
                                           >
                                             {product.name}
@@ -344,7 +344,7 @@ const TableProductOfferings = () => {
                                 <div className="max-w-md w-full bg-white shadow-lg rounded-xl p-6">
                                   <div className="flex flex-col">
                                     <div className="">
-                                      <div className="relative h-62 w-full mb-3">
+                                      <div className="relative h-62  w-30 w-full mb-3">
                                         <div className="absolute flex flex-col top-0 right-0 p-3">
                                           <button className="transition ease-in duration-300 bg-white hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1">
                                             <svg
@@ -432,8 +432,13 @@ const TableProductOfferings = () => {
                                             </span>
                                           </div>
                                           <div className="flex space-x-2 text-sm font-medium justify-start">
-                                            <button className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600">
-                                              <span>View Details </span>
+                                            <button
+                                              onClick={() => {
+                                                window.location.href = `/product-offering/${product._id}`;
+                                              }}
+                                              className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
+                                            >
+                                              <span>View Details</span>
                                             </button>
                                           </div>
                                         </div>
