@@ -10,7 +10,7 @@ const incidentSchema = new mongoose.Schema({
   state: { type: String, required: true },
   updateDate: { type: Date, default: Date.now },
   createDate: { type: Date, default: Date.now },
-  read: { type: Boolean, defeault: false },
+  read: { type: Boolean, default: false },
 });
 
 const IncidentModel = mongoose.model("Incidents", incidentSchema);
