@@ -43,18 +43,8 @@ export type NewCustomerOrderContextType = {
     propertyName: keyof ProductOrderType,
     propertyValue: any,
   ) => void;
-  // firstname: string;
-  // setFirstname: React.Dispatch<React.SetStateAction<string>>;
-  // lastname: string;
-  // setLastname: React.Dispatch<React.SetStateAction<string>>;
-  // email: string;
-  // setEmail: React.Dispatch<React.SetStateAction<string>>;
-  // mobilenumber: string;
-  // setMobilenumber: React.Dispatch<React.SetStateAction<string>>;
-  // selectedOfferings: Array<OptionType>;
-  // quantity: number;
-  // setQuantity: React.Dispatch<React.SetStateAction<number>>;
-  // setSelectedOfferings: React.Dispatch<React.SetStateAction<Array<OptionType>>>;
+  deleteProductOffering: (index: number) => void;
+  deleteSelectedLocation: () => void;
   // STEP 3
   number: string;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
@@ -150,6 +140,39 @@ const NewCustomerOrderContextProvider = ({
     });
   };
 
+  const deleteProductOffering = (index: number) => {
+    setProductOrders((previousProductOrders: Array<ProductOrderType>) => {
+      return previousProductOrders.map(
+        (previousProductOrdersItem: ProductOrderType) => {
+          if (previousProductOrdersItem.locationId === selectedLocationId) {
+            return {
+              ...previousProductOrdersItem,
+              offerings: previousProductOrdersItem.offerings.filter(
+                (offering, index2) => index !== index2,
+              ),
+            };
+          } else {
+            return previousProductOrdersItem;
+          }
+        },
+      );
+    });
+  };
+
+  const deleteSelectedLocation = () => {
+    const tmp = locations.filter(
+      (location) => location.value !== selectedLocationId,
+    );
+    setLocations(tmp);
+    setProductOrders(
+      productOrders.filter(
+        (productOrder) => productOrder.locationId !== selectedLocationId,
+      ),
+    );
+    const firstLocation = tmp[0]?.value;
+    setSelectedLocationId(firstLocation || "");
+  };
+
   return (
     <NewCustomerOrderContext.Provider
       value={{
@@ -167,18 +190,8 @@ const NewCustomerOrderContextProvider = ({
         setSelectedLocationId,
         getSelectedProductOrder,
         updateSelectedProductOrder,
-        // firstname,
-        // setFirstname,
-        // lastname,
-        // setLastname,
-        // email,
-        // setEmail,
-        // mobilenumber,
-        // setMobilenumber,
-        // selectedOfferings,
-        // setSelectedOfferings,
-        // quantity,
-        // setQuantity,
+        deleteProductOffering,
+        deleteSelectedLocation,
         // STEP 3
         number,
         setNumber,
