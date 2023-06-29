@@ -103,14 +103,14 @@ export default function AllProductSpecificationsPage({
 
   function getStateTextColor(status: string) {
     switch (status) {
-      case "active":
+      case "archived":
         return "text-blue-900";
-      case "in progress":
-        return "text-yellow-900";
-      case "completed":
+      case "draft":
+        return "text-blue-900";
+      case "published":
         return "text-green-900";
-      case "canceled":
-        return "text-red-900";
+      case "retired":
+        return "text-white";
       default:
         return "";
     }
@@ -122,12 +122,10 @@ export default function AllProductSpecificationsPage({
         return "bg-blue-200 shadow-blue-300";
       case "published":
         return "bg-green-200 shadow-yellow-300";
-      case "completed":
+      case "archived":
         return "bg-yellow-200 shadow-green-300";
-      case "on hold":
-        return "bg-orange-200 shadow-red-300";
-      case "canceled":
-        return "bg-red-200 shadow-red-300";
+      case "retired":
+        return "bg-red-500 shadow-red-300";
       default:
         return "";
     }
@@ -175,7 +173,7 @@ export default function AllProductSpecificationsPage({
   };
 
   const sortedData = filteredProds.sort(sortValidFor);
-  const [viewMode, setViewMode] = useState("table");
+  const [viewMode, setViewMode] = useState("card");
 
   const toggleViewMode = () => {
     setViewMode(viewMode === "table" ? "card" : "table");
@@ -338,19 +336,19 @@ export default function AllProductSpecificationsPage({
                                   return (
                                     <tr key={index}>
                                       <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
-                                        <p className="text-gray-900 whitespace-no-wrap font-lg text-semibold leading-6">
+                                        <p className="text-blue-800 font-semibold whitespace-no-wrap font-lg text-semibold leading-6">
                                           {product.name}
                                         </p>
                                       </td>
                                       <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
-                                        <p className="text-indigo-700 whitespace-no-wrap font-semibold">
+                                        <p className="text-puprle-700 whitespace-no-wrap font-semibold">
                                           {product.version}
                                         </p>
                                       </td>
                                       <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
-                                          <div className="ml-3">
-                                            <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
+                                          <div className="">
+                                            <p className="text-md text-gray-900 hover:text-gray-600 leading-6">
                                               {product.description}
                                             </p>
                                           </div>
@@ -358,7 +356,7 @@ export default function AllProductSpecificationsPage({
                                       </td>
                                       <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
-                                          <div className="ml-3">
+                                          <div className="">
                                             <span
                                               className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                                 product.status,
@@ -384,7 +382,7 @@ export default function AllProductSpecificationsPage({
                                       <td className="border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="ml-3">
-                                            <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
+                                            <p className="text-md text-green-700 font-semibold hover:text-gray-600 leading-6">
                                               {product?.validFor?.startDateTime}
                                             </p>
                                           </div>
@@ -393,7 +391,7 @@ export default function AllProductSpecificationsPage({
                                       <td className="border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="ml-3">
-                                            <p className="text-md text-gray-700 hover:text-gray-600 leading-6">
+                                            <p className="text-md text-red-700  font-semibold hover:text-gray-600 leading-6">
                                               {product?.validFor?.endDateTime}
                                             </p>
                                           </div>
@@ -403,7 +401,7 @@ export default function AllProductSpecificationsPage({
                                         <div className="flex item-center justify-center">
                                           <Link
                                             href={`/product-specification/${product._id}`}
-                                            className="button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                                            className="button text-sm bg-blue-600 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                                           >
                                             Details
                                           </Link>
