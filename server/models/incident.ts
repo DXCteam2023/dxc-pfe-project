@@ -11,6 +11,7 @@ const incidentSchema = new mongoose.Schema({
   updateDate: { type: Date, default: Date.now },
   createDate: { type: Date, default: Date.now },
   read: { type: Boolean, defeault: false },
+  caller: { type: String, required: true }, // Add caller field
 });
 
 const IncidentModel = mongoose.model("Incidents", incidentSchema);

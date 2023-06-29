@@ -70,6 +70,7 @@ const Header = () => {
     incidentNumber: string;
     state: string;
     read: Boolean;
+    caller: string;
     // other properties...
   }
   const [productOrders, setProductOrders] = React.useState<
@@ -696,7 +697,7 @@ const Header = () => {
                     <div className="flex justify-between py-4 px-6 rounded-lg">
                       <div key={index} className="flex items-center space-x-4">
                         <div className="flex flex-col space-y-1">
-                          <span className="font-bold">caller</span>
+                          <span className="font-bold">{incident.caller}</span>
                           <span className="text-sm">
                             <p
                               onClick={() => handleIncidentClick(incident._id)}

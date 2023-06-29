@@ -8,9 +8,16 @@ import IncidentDetailsModal from "./IncidentDetailsModal";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
 
+interface Incident {
+  _id: string; // Replace with the actual type of `_id`
+  // Define other properties of the Incident object
+  // assignmentGroup: string | number | readonly string[] | undefined;
+  // shortDescription: string | number | readonly string[] | undefined;
+  // priority: string | number | readonly string[] | undefined;
+  // ...
+}
 const IncidentTable = () => {
   const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
-
   const [incidents, setIncidents] = useState([]);
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,35 +36,36 @@ const IncidentTable = () => {
       console.error("Error fetching incidents:", error);
     }
   };
-  // console.log("incidents ", incidents);
-  //   const handleDelete = async (incidentId: any) => {
-  //     const confirmDelete = window.confirm(
-  //       "Are you sure you want to delete this record?",
-  //     );
+  const handleDelete = async (incidentId: any) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this record?",
+    );
 
-  //     if (confirmDelete) {
-  //       try {
-  //         const response = await axios.delete(
-  //           `${AXIOS_URL}api/incidents/${incidentId}`,
-  //         );
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(
+          `${AXIOS_URL}/api/incidents/${incidentId}`,
+        );
 
-  //         if (response.status === 200) {
-  //           setIncidents((prevIncidents) =>
-  //             prevIncidents.filter((incident) => incident._id !== incidentId),
-  //           );
-  //           console.log(
-  //             `Incident with ID ${incidentId} deleted successfully from MongoDB.`,
-  //           );
-  //         } else {
-  //           console.error(
-  //             `Failed to delete incident with ID ${incidentId} from MongoDB.`,
-  //           );
-  //         }
-  //       } catch (error) {
-  //         console.error("Error deleting incident:", error);
-  //       }
-  //     }
-  //   };
+        if (response.status === 200) {
+          setIncidents((prevIncidents) =>
+            prevIncidents.filter(
+              (incident: Incident) => incident._id !== incidentId,
+            ),
+          );
+          console.log(
+            `Incident with ID ${incidentId} deleted successfully from MongoDB.`,
+          );
+        } else {
+          console.error(
+            `Failed to delete incident with ID ${incidentId} from MongoDB.`,
+          );
+        }
+      } catch (error) {
+        console.error("Error deleting incident:", error);
+      }
+    }
+  };
 
   const handleViewDetails = (incident: React.SetStateAction<null>) => {
     setSelectedIncident(incident);
@@ -125,6 +133,9 @@ const IncidentTable = () => {
                               Incident Number
                             </th>
                             <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Caller
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Short Description
                             </th>
                             <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
@@ -161,6 +172,11 @@ const IncidentTable = () => {
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                   <p className="text-gray-900 whitespace-no-wrap">
                                     {incident.incidentNumber}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {incident.caller}
                                   </p>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -252,12 +268,12 @@ const IncidentTable = () => {
                                     >
                                       <FaEye className="text-purple-800 hover:text-purple-500" />
                                     </div>
-                                    {/* <div
-                                // onClick={() => handleDelete(incident._id)}
-                                className="cursor-pointer"
-                              >
-                                <FaTrashAlt className="text-purple-800 hover:text-purple-500" />
-                              </div> */}
+                                    <div
+                                      onClick={() => handleDelete(incident._id)}
+                                      className="cursor-pointer"
+                                    >
+                                      <FaTrashAlt className="text-purple-800 hover:text-purple-500" />
+                                    </div>
                                   </div>
                                 </td>
                               </tr>
