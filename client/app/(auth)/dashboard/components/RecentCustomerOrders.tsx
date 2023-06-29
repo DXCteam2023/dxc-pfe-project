@@ -2,12 +2,16 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import * as dotenv from "dotenv";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 
 dotenv.config();
 
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOrders {
+  id: string;
+  _id: string;
   state: string;
   orderDate: string;
   ponr: string;
@@ -74,7 +78,7 @@ const BarChart = () => {
     switch (state) {
       case "new":
         return "text-blue-900";
-      case "in progress":
+      case "in_progress":
         return "text-yellow-900";
       case "in draft":
         return "text-orange-900";
@@ -91,7 +95,7 @@ const BarChart = () => {
     switch (state) {
       case "new":
         return "bg-blue-200 shadow-blue-300";
-      case "in progress":
+      case "in_progress":
         return "bg-yellow-200 shadow-yellow-300";
       case "in draft":
         return "bg-orange-200 shadow-orange-300";
@@ -108,7 +112,30 @@ const BarChart = () => {
     const date2 = new Date(b.orderDate);
     return date2.getTime() - date1.getTime();
   });
+  const [pinnedProductOrders, setPinnedProductOrders] = useState<string[]>([]);
+  const togglePinProduct = (orderId: string) => {
+    if (pinnedProductOrders.includes(orderId)) {
+      const updatedPinnedProductOrders = pinnedProductOrders.filter(
+        (pinnedOrderId) => pinnedOrderId !== orderId,
+      );
+      setPinnedProductOrders(updatedPinnedProductOrders);
+    } else {
+      const updatedPinnedProductOrders = [orderId, ...pinnedProductOrders];
+      setPinnedProductOrders(updatedPinnedProductOrders);
+    }
+  };
 
+  const sortedProductOrders = [...recentOrders].sort((a, b) => {
+    const aPinned = pinnedProductOrders.includes(a._id);
+    const bPinned = pinnedProductOrders.includes(b._id);
+    if (aPinned && !bPinned) {
+      return -1;
+    } else if (!aPinned && bPinned) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
   return (
     <div className="flex w-full">
       <div className="w-full">
@@ -130,7 +157,7 @@ const BarChart = () => {
                     >
                       <option value="All">All</option>
                       <option value="new">New</option>
-                      <option value="in progress">In progress</option>
+                      <option value="in_progress">In progress</option>
                       <option value="completed">Completed</option>
                       <option value="canceled">Canceled</option>
                     </select>
@@ -151,11 +178,20 @@ const BarChart = () => {
                     <thead>
                       <tr>
                         <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
-                          Number
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox text-gray-800"
+                            />
+                          </label>
                         </th>
                         <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
-                          Account
+                          Number
                         </th>
+
+                        {/* <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                          Account
+                        </th> */}
                         <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Created At
                         </th>
@@ -168,37 +204,49 @@ const BarChart = () => {
                         <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Requested Completion Date
                         </th>
-                        {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                          Total
-                        </th> */}
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-sm font-semibold uppercase tracking-wider">
+                          Created By
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {recentOrders
+                      {sortedProductOrders
                         .slice(indexOfFirstOrder, indexOfLastOrder)
                         .map((order: any, index: number) => {
                           return (
                             <tr key={index}>
+                              <td>
+                                <button
+                                  onClick={() => togglePinProduct(order._id)}
+                                  className={`font-bold border p-2  border-grey-light ${
+                                    pinnedProductOrders.includes(order._id)
+                                      ? "text-blue-600"
+                                      : "text-black"
+                                  }`}
+                                >
+                                  <FontAwesomeIcon icon={faThumbtack} />
+                                </button>
+                              </td>
                               <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       <a
-                                        href={order.link}
+                                        href={`/customer-order/product/${order._id}`}
                                         className="text-blue-500 hover:text-blue-700 text-main-color"
                                       >
-                                        {order.number}
+                                        {order.orderNumber}
                                       </a>
                                     </p>
                                   </div>
                                 </div>
                               </td>
 
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
                                   {order.account}
                                 </p>
-                              </td>
+                              </td> */}
                               <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <p className="text-indigo-900  font-semibold whitespace-no-wrap">
                                   {new Date(order.orderDate).toDateString()}
@@ -254,11 +302,11 @@ const BarChart = () => {
                                   ).toDateString()}
                                 </p>
                               </td>
-                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {order.price}
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-md">
+                                <p className="text-pink-700 font-semibold whitespace-no-wrap">
+                                  {order.createdBy}
                                 </p>
-                              </td> */}
+                              </td>
                             </tr>
                           );
                         })}

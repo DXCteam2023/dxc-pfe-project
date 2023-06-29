@@ -22,9 +22,6 @@ const ChartProduct = () => {
 
   async function getProductOfferings() {
     try {
-      // const response = await axios.get(
-      //  `http://localhost:5000/api/product-offering`,
-      // );
       const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings = response.data;
       const months = [];
