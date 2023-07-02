@@ -13,7 +13,7 @@ import result from "../../../../public/assets/search.png";
 
 // Importing utility functions
 import { getProductSpecification } from "../utils";
-import ChartSpecification from "./ChartSpecification";
+import ProductOfferingsChart from "./ChartSpecification";
 import Banner from "../../dashboard/components/banner";
 import StatisticCards from "../../dashboard/components/StatisticCards";
 import Statistique from "./Statistique";
@@ -96,7 +96,7 @@ const SingleProductSpecificationPage = ({
         );
 
         console.log("filteredOfferings", filteredOfferings);
-        setProductOfferings(filteredOfferings); // Mettre à jour les offres de produits
+        setProductOfferings(filteredOfferings); 
 
         const filteredProducts = filteredOfferings.filter((product: any) => {
           const productValues = Object.values(product).join(" ").toLowerCase();
@@ -113,7 +113,7 @@ const SingleProductSpecificationPage = ({
         setFilteredProducts(filteredProducts);
       } catch (error) {
         console.error("Error reading product offerings:", error);
-        setFilteredProducts([]); // Gérer les erreurs
+        setFilteredProducts([]); 
       }
     }
 
@@ -501,9 +501,20 @@ const SingleProductSpecificationPage = ({
                                             />
                                           </button>
                                         </td>
-                                        <td className="py-4 px-6 text-indigo-00 border p-2  border-grey-light">
-                                          {offering.name}
-                                        </td>
+                                        <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                    <div className="flex items-center">
+                                      <div className="ml-3">
+                                        <p className="text-gray-900 whitespace-no-wrap text-main-color">
+                                          <a
+                                            href={`/product-offering/${offering._id}`}
+                                            className="text-blue-500 hover:text-blue-700"
+                                          >
+                                            {offering.name}
+                                          </a>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </td>
                                         <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
                                           {offering.description}
                                         </td>
@@ -582,12 +593,6 @@ const SingleProductSpecificationPage = ({
                           Product Specification Informations
                         </h4>
                         <ul className="mt-2 text-gray-700">
-                          <li className="flex border-y py-2">
-                            <span className="font-bold w-24"> ID:</span>
-                            <span className="text-purple-800 font-semibold">
-                              {productSpec.id}
-                            </span>
-                          </li>
                           <li className="flex border-b py-2">
                             <span className="font-bold w-24">Name:</span>
                             <span className=" text-blue-900 font-semibold">
@@ -632,7 +637,7 @@ const SingleProductSpecificationPage = ({
                         </ul>
                       </div>
                       <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
-                        {/* <ChartSpecification /> */}
+                       <ProductOfferingsChart params={params}/> 
                       </div>
                     </div>
                     <div className="flex  flex-col w-full 2xl:w-2/3">
