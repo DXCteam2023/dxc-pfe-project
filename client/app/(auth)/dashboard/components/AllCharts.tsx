@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { CircleLoader } from "react-spinners";
 import * as dotenv from "dotenv";
 import CercleChart from "./ChartCercle";
 import ChartProduct from "./ProductChart";
@@ -32,7 +33,6 @@ const AllCharts = () => {
   useEffect(() => {
     getProductOfferings();
   }, []);
-
   async function getProductOfferings() {
     try {
       const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
@@ -63,15 +63,12 @@ const AllCharts = () => {
         },
       );
 
-      console.log("Totals by Month:");
       Object.keys(totalsByMonth).forEach((month) => {
         console.log(month + ": " + totalsByMonth[month]);
       });
 
       const comparisonResult = compareTotals(totalsByMonth);
       setComparisonResult(String(comparisonResult));
-
-      console.log("Comparison Result:", comparisonResult);
     } catch (error) {
       console.error("Erreur lors de la récupération des produits :", error);
     }
@@ -79,9 +76,8 @@ const AllCharts = () => {
 
   function compareTotals(totals: { [key: string]: number }): string | number {
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Get the current month (1-12)
+    const currentMonth = currentDate.getMonth() + 1;
     if (currentMonth === 1) {
-      // Special case for January, compare with December of the previous year
       return compareWithPreviousMonth(totals, "January", "December");
     } else {
       const previousMonth = getMonthName(currentMonth - 1);
@@ -113,12 +109,12 @@ const AllCharts = () => {
       ).toFixed(2);
       return `-${decreasePercentage}%`;
     } else {
-      return 0; // Return 0 for no change
+      return 0;
     }
   }
   function getMonthName(month: number): string {
     const date = new Date();
-    date.setMonth(month - 1); // Set the date to the specified month (0-11)
+    date.setMonth(month - 1);
     return date.toLocaleString("default", { month: "long" });
   }
 
@@ -133,9 +129,7 @@ const AllCharts = () => {
   const percentPublichedProductOfferings = Math.floor(
     (totalPublichedProductOfferings / productOfferings.length) * 100,
   );
-  const totalsByMonth = {
-    /* your totals by month data */
-  };
+  const totalsByMonth = {};
 
   return (
     <div>
@@ -143,7 +137,9 @@ const AllCharts = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div className="md:col-span-2 lg:col-span-1">
             <div className="h-full py-8 px-6 space-y-6 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
-              <ChartProduct />
+              <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
+                <ChartProduct />
+              </div>
               <div className="mt-6">
                 <h5 className="text-xl text-gray-700 text-center">
                   Total Products
@@ -152,19 +148,41 @@ const AllCharts = () => {
                   <h3 className="text-3xl font-bold text-gray-700">
                     {totalProductOfferings}
                   </h3>
-                  <div className="flex items-end gap-1 text-green-500">
-                    <svg
-                      className="w-3"
-                      viewBox="0 0 12 15"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6.00001 0L12 8H-3.05176e-05L6.00001 0Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    <span>{comparisonResult}</span>
+                  <div className="flex items-end gap-1 text-blue-700">
+                    <span>
+                      {parseFloat(comparisonResult) < 0 ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="red"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+                          />
+                        </svg>
+                      )}
+                      {comparisonResult}
+                    </span>
                   </div>
                 </div>
 
@@ -176,12 +194,14 @@ const AllCharts = () => {
           </div>
           <div>
             <div className="h-full py-6 px-6 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-mdbg-white">
-              <CercleChart />
-              <h5 className="text-xl text-gray-700">Published</h5>
-              <div className="my-8">
-                <h1 className="text-5xl font-bold text-gray-800">
+              <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
+                <CercleChart />
+              </div>
+              <h5 className=" mt-8 text-xl text-gray-700 text-center">Published</h5>
+              <div className="my-4">
+                <h3 className="text-3xl font-bold text-gray-800 text-center">
                   {percentPublichedProductOfferings}%
-                </h1>
+                </h3>
                 {/* <span className="text-gray-500">
                   Compared to last week $13,988
                 </span> */}
@@ -190,7 +210,9 @@ const AllCharts = () => {
           </div>
           <div>
             <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
+            <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
               <Chartt />
+              </div>
               <div className="mt-14">
                 <h5 className="text-xl text-gray-600 text-center">
                   Total Revenues
