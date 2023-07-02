@@ -112,7 +112,7 @@ export default function SelectProduct() {
     const result = await ProductOrderServices.createOrder(requestBody);
 
     // read response
-    const updatedData = readCreateOrderResponse(result.data);
+    const updatedData = readCreateOrderResponse(result.data.productOrder);
 
     // store updated data
     myContext.updateProductOrdersOnCreateOrder(updatedData);
