@@ -96,7 +96,7 @@ const SingleProductSpecificationPage = ({
         );
 
         console.log("filteredOfferings", filteredOfferings);
-        setProductOfferings(filteredOfferings); 
+        setProductOfferings(filteredOfferings);
 
         const filteredProducts = filteredOfferings.filter((product: any) => {
           const productValues = Object.values(product).join(" ").toLowerCase();
@@ -113,7 +113,7 @@ const SingleProductSpecificationPage = ({
         setFilteredProducts(filteredProducts);
       } catch (error) {
         console.error("Error reading product offerings:", error);
-        setFilteredProducts([]); 
+        setFilteredProducts([]);
       }
     }
 
@@ -502,19 +502,19 @@ const SingleProductSpecificationPage = ({
                                           </button>
                                         </td>
                                         <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
-                                    <div className="flex items-center">
-                                      <div className="ml-3">
-                                        <p className="text-gray-900 whitespace-no-wrap text-main-color">
-                                          <a
-                                            href={`/product-offering/${offering._id}`}
-                                            className="text-blue-500 hover:text-blue-700"
-                                          >
-                                            {offering.name}
-                                          </a>
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </td>
+                                          <div className="flex items-center">
+                                            <div className="ml-3">
+                                              <p className="text-gray-900 whitespace-no-wrap text-main-color">
+                                                <a
+                                                  href={`/product-offering/${offering._id}`}
+                                                  className="text-blue-500 hover:text-blue-700"
+                                                >
+                                                  {offering.name}
+                                                </a>
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </td>
                                         <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
                                           {offering.description}
                                         </td>
@@ -637,7 +637,7 @@ const SingleProductSpecificationPage = ({
                         </ul>
                       </div>
                       <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
-                       <ProductOfferingsChart params={params}/> 
+                        <ProductOfferingsChart params={params} />
                       </div>
                     </div>
                     <div className="flex  flex-col w-full 2xl:w-2/3">

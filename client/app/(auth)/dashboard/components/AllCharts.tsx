@@ -197,7 +197,9 @@ const AllCharts = () => {
               <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
                 <CercleChart />
               </div>
-              <h5 className=" mt-8 text-xl text-gray-700 text-center">Published</h5>
+              <h5 className=" mt-8 text-xl text-gray-700 text-center">
+                Published
+              </h5>
               <div className="my-4">
                 <h3 className="text-3xl font-bold text-gray-800 text-center">
                   {percentPublichedProductOfferings}%
@@ -210,8 +212,8 @@ const AllCharts = () => {
           </div>
           <div>
             <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
-            <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
-              <Chartt />
+              <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
+                <Chartt />
               </div>
               <div className="mt-14">
                 <h5 className="text-xl text-gray-600 text-center">

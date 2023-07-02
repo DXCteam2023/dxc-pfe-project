@@ -61,15 +61,14 @@ interface ProductOrders {
   requestedCompletionDate: string;
   orderDate: string;
   ponr: string;
-  createdBy:string;
-  
+  createdBy: string;
 }
 interface Incident {
   _id: number;
   incidentNumber: string;
   state: string;
   read: Boolean;
-  userID:string;
+  userID: string;
 }
 const Page = ({
   params,
@@ -110,48 +109,46 @@ const Page = ({
       const id = params.id;
       const response = await axios.get(`${AXIOS_URL}/api/user/${id}`);
       const userData = response.data;
-      
+
       const responseIncidents = await axios.get(`${AXIOS_URL}/api/incidents`);
       const incidentData = responseIncidents.data;
-      
-      const notifIncident = incidentData.filter((incident:any) => {
+
+      const notifIncident = incidentData.filter((incident: any) => {
         return (
           !incident.read &&
           (incident.state === "New" || incident.state === "In Progress") &&
-          incident.userID === id 
+          incident.userID === id
         );
       });
-      
+
       const notifProductOrder = products.filter((productOrder) => {
-        return (
-          productOrder.state === "new" && productOrder.createdBy === id
-        );
+        return productOrder.state === "new" && productOrder.createdBy === id;
       });
-      
+
       console.log("Incidents non lus:", notifIncident);
       console.log("Commandes de produit nouvelles:", notifProductOrder);
       console.log("incidentData:", responseIncidents.data);
-      
+
       setUser(userData);
       getProductOrders(userData.userID);
       getProductOfferings(userData.userID);
-      
+
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
         `${AXIOS_URL}/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
-      
+
       const filteredSimilarProfilesData = similarProfilesData.filter(
         (similarProfile: any) => similarProfile._id !== id,
       );
-      
+
       setSimilarProfiles(filteredSimilarProfilesData);
     } catch (error) {
       console.error("Error while fetching user data:", error);
     }
   };
-  
+
   const updateUserPassword = async () => {
     try {
       console.log(user._id);
@@ -1470,11 +1467,9 @@ const Page = ({
                                     <div className=" mx-2 w-1/2  rounded-lg shadow-xl p-8">
                                       <BarChart />
                                     </div>
-                                   
                                   </div>
-                                  
                                 </div>
-                               
+
                                 <div className="flex flex-wrap mt-4">
                                   <div className="w-1/2">
                                     <div className="py-12 chart-container bg-white rounded-lg shadow-xl p-8">
