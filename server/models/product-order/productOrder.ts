@@ -1,131 +1,5 @@
 import { Schema, model } from "mongoose";
-
-type Channel = {
-  id: string;
-  name?: string;
-};
-
-type Note = {
-  text: string;
-};
-
-enum Action {
-  ADD = "add",
-  CHANGE = "change",
-  DELETE = "delete",
-  DEFAULT = "",
-}
-
-type TaxIncludedAmount = {
-  unit?: string;
-  value?: string;
-};
-
-type Price = {
-  taxIncludedAmount?: TaxIncludedAmount;
-};
-
-type ItemPrice = {
-  price?: Price;
-  priceType?: string;
-  recurringChargePeriod?: string;
-};
-
-type Place = {
-  id: string;
-  "@type": string;
-};
-
-type ProductCharacterisic = {
-  name?: string;
-  previousValue?: string;
-  value?: string;
-};
-
-type ProductSpecification = {
-  id: string;
-  internalVersion?: string;
-  name?: string;
-  version?: string;
-  "@type": string;
-};
-
-type ProductRelatedParty = {
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  "@referredType": string;
-  "@type": string;
-};
-
-type Product = {
-  id: string;
-  place?: Place;
-  productCharacteristic?: ProductCharacterisic[];
-  productSpecification: ProductSpecification;
-  relatedParty?: ProductRelatedParty[];
-  "@type": string;
-};
-
-type ProductOffering = {
-  id: string;
-  internalVersion?: string;
-  name?: string;
-  version?: string;
-};
-
-enum RelationshipType {
-  HASCHILD = "HasChild",
-  HASPARENT = "HasParent",
-}
-
-type ProductOrderItemRelationship = {
-  id: string;
-  relationshipType: RelationshipType;
-};
-
-type ProductOrderItem = {
-  action: Action;
-  id: string;
-  itemPrice?: ItemPrice[];
-  product: Product;
-  productOffering: ProductOffering;
-  productOrderItemRelationship: ProductOrderItemRelationship[];
-  quantity?: number;
-  state: string;
-  "@type": string;
-};
-
-enum ReferredType {
-  CUSTOMER = "Customer",
-  CONTACT = "CustomerContact",
-}
-
-type RelatedParty = {
-  id?: string;
-  name?: string;
-  "@referredType": ReferredType;
-  "@type": string;
-};
-
-export interface IProductOrderDocument {
-  orderNumber: string;
-  channel: Channel[];
-  externalId?: string;
-  note?: Note[];
-  orderCurrency: string;
-  productOrderItem: ProductOrderItem[];
-  relatedParty?: RelatedParty[];
-  orderDate?: string;
-  requestedCompletionDate?: string;
-  requestedStartDate?: string;
-  completionDate?: string;
-  expectedCompletionDate?: string;
-  ponr: boolean;
-  state: string;
-  "@type": string;
-}
+import IProductOrderDocument from "./IProductOrder";
 
 const channelSchema = new Schema({
   id: { type: String, required: true, default: "" },
@@ -255,12 +129,16 @@ const productOrderSchema = new Schema({
   requestedStartDate: { type: String, required: false, default: "" },
   completionDate: { type: String, required: false, default: "" },
   expectedCompletionDate: { type: String, required: false, default: "" },
-  state: { type: String, required: false, default: "in draft" },
+  status: { type: String, required: false, default: "in draft" },
+  createdBy: { type: String, required: true },
+  created: { type: Date, required: true, default: Date.now() },
   ponr: { type: Boolean, required: false, default: false },
   "@type": { type: String, required: true, default: "ProductOrder" },
 });
 
-export const ProductOrder = model<IProductOrderDocument>(
+const ProductOrderModel = model<IProductOrderDocument>(
   "ProductOrder",
   productOrderSchema
 );
+
+export default ProductOrderModel;

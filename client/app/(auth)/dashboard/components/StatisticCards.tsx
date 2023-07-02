@@ -47,7 +47,6 @@ const StatisticCards = () => {
       );
       const productsData = response.data;
       setProducts(productsData);
-      console.log("hello", productsData);
     } catch (error) {
       console.error("Erreur lors de la récupération des products:", error);
     }
@@ -111,7 +110,6 @@ const StatisticCards = () => {
   const PublichedProductOfferings = productOfferings.filter(
     (product) => product.status === "published",
   );
-  console.log(PublichedProductOfferings);
   const totalPublichedProductOfferings = PublichedProductOfferings.length;
   {
     /*  Statistics %  Published Product Offering  */
@@ -310,7 +308,7 @@ const StatisticCards = () => {
                   </h3>
                   <button
                     onClick={() =>
-                      (window.location.href = "/product-offering/all/archived/")
+                      (window.location.href = "/product-offering/all/")
                     }
                     className="text-sm mt-6 px-4 py-2 bg-indigo-400 text-white rounded-lg  tracking-wider hover:bg-indigo-500 outline-none"
                   >

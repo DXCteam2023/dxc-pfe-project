@@ -55,6 +55,8 @@
     "no-param-reassign": "off",
     "import/no-extraneous-dependencies": "off",
     "no-plusplus": "off",
-    "no-new": "off"
+    "no-new": "off",
+    "import/no-relative-packages": "off",
+    "import/no-named-as-default": "off"
   }
 }

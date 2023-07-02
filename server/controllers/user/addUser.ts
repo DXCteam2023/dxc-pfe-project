@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, validation } from "../../models/user";
+import { User, validation } from "../../models/user/user";
 import bcrypt from "bcryptjs";
 
 export default async function addUser(req: Request, res: Response) {
@@ -21,7 +21,7 @@ export default async function addUser(req: Request, res: Response) {
 
     await new User({ ...req.body, password: hashPassword }).save();
     res.status(201).send({
-      message: "User created successfully, Go to Login ",
+      message: "User created successfully",
     });
   } catch (error) {
     res.status(500).send({ message: "Internal server Error - users" });

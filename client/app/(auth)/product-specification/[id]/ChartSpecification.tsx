@@ -1,84 +1,117 @@
-"use client";
-import React, { useEffect, useRef } from "react";
-// import { Chart, initTE } from "tw-elements";
+import React, { useEffect, useState } from "react";
+import { Chart } from "chart.js/auto";
+import axios from "axios";
+import * as dotenv from "dotenv";
+import { getProductSpecification } from "../utils";
 
-// Chart.register(initTE);
+dotenv.config();
 
-const ChartSpecification = () => {
-  // const barChartRef = useRef<HTMLCanvasElement>(null);
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
-  // useEffect(() => {
-  //   initTE({ Chart });
+interface ProductOfferings {
+  _id: string;
+  id: string;
+  link: string;
+  name: string;
+  description: string;
+  state: string;
+  internalVersion: string;
+  orderDate: string;
+  lastUpdate: string;
+  status: string;
+}
 
-  //   const dataBarCustomOptions = {
-  //     type: "bar",
-  //     data: {
-  //       labels: ["January", "February", "March", "April", "May", "June"],
-  //       datasets: [
-  //         {
-  //           label: "Traffic",
-  //           data: [30, 15, 62, 65, 61, 6],
-  //           backgroundColor: [
-  //             "rgba(255, 99, 132, 0.2)",
-  //             "rgba(54, 162, 235, 0.2)",
-  //             "rgba(255, 206, 86, 0.2)",
-  //             "rgba(75, 192, 192, 0.2)",
-  //             "rgba(153, 102, 255, 0.2)",
-  //             "rgba(255, 159, 64, 0.2)",
-  //           ],
-  //           borderColor: [
-  //             "rgba(255,99,132,1)",
-  //             "rgba(54, 162, 235, 1)",
-  //             "rgba(255, 206, 86, 1)",
-  //             "rgba(75, 192, 192, 1)",
-  //             "rgba(153, 102, 255, 1)",
-  //             "rgba(255, 159, 64, 1)",
-  //           ],
-  //           borderWidth: 1,
-  //         },
-  //       ],
-  //     },
-  //   };
+const ProductOfferingsChart = ({
+  params,
+}: {
+  params: {
+    id: string;
+    productSpecification: string;
+    productSpecificationName: string;
+    name: string;
+    internalId: string;
+  };
+}) => {
+  const [productOfferings, setProductOfferings] = useState<ProductOfferings[]>(
+    [],
+  );
+  const [productSpec, setProductSpec] = useState<any>();
 
-  //   const optionsBarCustomOptions = {
-  //     plugins: {
-  //       legend: {
-  //         position: "top",
-  //         labels: {
-  //           color: "green",
-  //         },
-  //       },
-  //     },
-  //     scales: {
-  //       x: {
-  //         ticks: {
-  //           color: "#4285F4",
-  //         },
-  //       },
-  //       y: {
-  //         ticks: {
-  //           color: "#f44242",
-  //         },
-  //       },
-  //     },
-  //   };
+  useEffect(() => {
+    getProductSpecification(params.id, setProductSpec);
+  }, [params.id]);
 
-  //   if (barChartRef.current) {
-  //     new Chart(
-  //       barChartRef.current,
-  //       dataBarCustomOptions,
-  //       optionsBarCustomOptions,
-  //     );
-  //   }
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, [productSpec]);
+
+  useEffect(() => {
+    if (productOfferings.length > 0) {
+      createChart();
+    }
+  }, [productOfferings]);
+
+  async function fetchData() {
+    try {
+      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
+      const allProductOfferings = response.data;
+      console.log(allProductOfferings);
+
+      const filteredOfferings = allProductOfferings.filter((offering: any) => {
+        return (
+          offering.productSpecification &&
+          offering.productSpecification.id &&
+          offering.productSpecification.id.trim() === productSpec.id.trim()
+        );
+      });
+
+      console.log("filteredOfferings", filteredOfferings);
+      setProductOfferings(filteredOfferings);
+    } catch (error) {
+      console.error("Error reading product offerings:", error);
+      setProductOfferings([]);
+    }
+  }
+
+  function createChart() {
+    const states: { [key: string]: number } = {};
+    productOfferings.forEach((offering) => {
+      const state = offering.status;
+      if (states[state]) {
+        states[state]++;
+      } else {
+        states[state] = 1;
+      }
+    });
+
+    const labels = Object.keys(states);
+    const data = Object.values(states);
+    const chart = new Chart("productOfferingsChart", {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: data,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.9)",
+              "rgba(54, 162, 235, 0.9)",
+              "rgba(255, 206, 86, 0.9)",
+              "rgba(75, 192, 192, 0.9)",
+              "rgba(153, 102, 255, 0.9)",
+              "rgba(255, 159, 64, 0.9)",
+            ],
+          },
+        ],
+      },
+    });
+  }
 
   return (
-    <div className="mt-4 flex p-2">
-      <div className="w-full ">
-        {/* <canvas ref={barChartRef} id="bar-chart-custom-options"></canvas> */}
-      </div>
+    <div>
+      <canvas id="productOfferingsChart"></canvas>
     </div>
   );
 };
 
-export default ChartSpecification;
+export default ProductOfferingsChart;

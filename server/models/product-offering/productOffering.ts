@@ -1,80 +1,5 @@
 import { Schema, model } from "mongoose";
-
-type Category = {
-  id: string;
-  name?: string;
-};
-
-type Channel = {
-  description?: string;
-  id: string;
-  name?: string;
-};
-
-
-type ProductCharacteristic = {
-  name?: string;
-  value?: string;
-};
-
-type TaxIncludedAmount = {
-  unit?: string;
-  value?: string;
-};
-
-type Price = {
-  taxIncludedAmount: TaxIncludedAmount;
-};
-
-type ProductOfferingPrice = {
-  price?: Price;
-  priceType?: string;
-};
-
-type ProductSpecification = {
-  id: string;
-  name?:string;
-  internalId?: string;
-  internalVersion?: string;
-  version?: string;
-};
-
-type ProductSpecCharacteristicValue = {
-  value: string;
-};
-
-type ValidFor = {
-  endDateTime?: string;
-  startDateTime?: string;
-};
-
-type ProdSpecCharValueUse = {
-  productSpecCharacteristicValue: ProductSpecCharacteristicValue[];
-  description?: string;
-  name: string;
-  validFor?: ValidFor;
-  valueType?: string;
-};
-export interface IProductOfferingDocument {
-  number: string;
-  category: Category[];
-  channel: Channel[];
-  description: string;
-  externalId?: string;
-  id: string;
-  internalId: string;
-  internalVersion?: string;
-  lastUpdate?: string;
-  name: string;
-  productCharacteristic: ProductCharacteristic[];
-  productOfferingPrice: ProductOfferingPrice[];
-  productOfferingTerm?: string;
-  productSpecification: ProductSpecification;
-  prodSpecCharValueUse?: ProdSpecCharValueUse[];
-  validFor: ValidFor;
-  version?: string;
-  state: string;
-}
+import IProductOfferingDocument from "./IProductOffering";
 
 const categorySchema = new Schema({
   id: { type: String, required: false },
@@ -83,24 +8,22 @@ const categorySchema = new Schema({
 
 const channelSchema = new Schema({
   description: { type: String, required: false, default: "" },
-  id: { type: String, required: false},
+  id: { type: String, required: false },
   name: { type: String, required: false, default: "" },
 });
 
 const productSpecCharacteristicSchema = new Schema({
   name: { type: String, required: false, default: "" },
   valueType: { type: String, required: false },
-  productSpecCharacteristicValue: [{
-    value: {
-      type: String,
-      required: false
-    }
-  }],
+  productSpecCharacteristicValue: [
+    {
+      value: {
+        type: String,
+        required: false,
+      },
+    },
+  ],
 });
-
-
-
-
 
 const taxIncludedAmountSchema = new Schema({
   unit: { type: String, required: false },
@@ -129,7 +52,7 @@ const productSpecificationSchema = new Schema({
 });
 
 const productSpecCharacteristicValueSchema = new Schema({
-  value: { type: String, required: false}, 
+  value: { type: String, required: false },
 });
 
 const validForSchema = new Schema({
@@ -149,12 +72,13 @@ const prodSpecCharValueUseSchema = new Schema({
 });
 
 const productOfferingSchema = new Schema({
+  // _id: { type: String, required: false},
   number: { type: String, required: false }, //this
   category: { type: Array(categorySchema), required: false },
   channel: { type: Array(channelSchema), required: false },
   description: { type: String, required: false },
   externalId: { type: String, required: false, default: "" },
-  id: { type: String, required: false},//this
+  id: { type: String, required: false }, //this
   internalId: { type: String, required: false },
   lastUpdate: { type: String, required: false, default: "" },
   name: { type: String, required: false },
@@ -174,10 +98,14 @@ const productOfferingSchema = new Schema({
   },
   validFor: { type: validForSchema, required: false },
   version: { type: String, required: false },
-  state: { type: String, required: false }, //this
+  status: { type: String, required: false }, //this
+  createdBy: { type: String, required: true },
+  created: { type: Date, required: true, default: Date.now() },
 });
 
-export const ProductOffering = model<IProductOfferingDocument>(
+const ProductOfferingModel = model<IProductOfferingDocument>(
   "ProductOffering",
   productOfferingSchema
 );
+
+export default ProductOfferingModel;

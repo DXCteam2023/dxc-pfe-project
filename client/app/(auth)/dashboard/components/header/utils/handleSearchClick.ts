@@ -1,40 +1,56 @@
-import { TDataCustomerOrder, TDataProductOffering } from "../types";
+import {
+  TDataCustomerOrder,
+  TDataProductOffering,
+  TDataProductSpecification,
+} from "../types";
 
 const handleSearchClick = (
   e: React.FormEvent<HTMLFormElement>,
   {
     setPopupOpen,
-    dataCostumerOrders,
+    products,
     searchTerm,
-    setCustomerResults,
-    dataProductOfferings,
-    setSearchResults,
+    setProducts,
+    productOfferings,
+    setProductOfferings,
+    productSpecifications,
+    setProductSpecifications,
   }: {
     setPopupOpen: (value: React.SetStateAction<boolean>) => void;
-    dataCostumerOrders: TDataCustomerOrder[];
+    products: TDataCustomerOrder[];
     searchTerm: string;
-    setCustomerResults: (
-      value: React.SetStateAction<TDataCustomerOrder[]>,
-    ) => void;
-    dataProductOfferings: TDataProductOffering[];
-    setSearchResults: (
+    setProducts: (value: React.SetStateAction<TDataCustomerOrder[]>) => void;
+    productOfferings: TDataProductOffering[];
+    setProductOfferings: (
       value: React.SetStateAction<TDataProductOffering[]>,
+    ) => void;
+    productSpecifications: TDataProductSpecification[];
+    setProductSpecifications: (
+      value: React.SetStateAction<TDataProductSpecification[]>,
     ) => void;
   },
 ) => {
   e.preventDefault();
   setPopupOpen(true);
-  const filteredOrders = dataCostumerOrders.filter((order) => {
-    const orderValues = Object.values(order).join(" ").toLowerCase();
-    return orderValues.includes(searchTerm.toLowerCase());
-  });
-  setCustomerResults(filteredOrders);
-  const filteredProducts = dataProductOfferings.filter((product) => {
+  console.log(searchTerm);
+  console.log(products);
+
+  const filteredProductOfferings = productOfferings.filter((product) => {
     const productValues = Object.values(product).join(" ").toLowerCase();
     return productValues.includes(searchTerm.toLowerCase());
   });
-  setSearchResults(filteredProducts);
-  setPopupOpen(true);
+  setProductOfferings(filteredProductOfferings);
+  console.log("Result Product Offering:", filteredProductOfferings);
+
+  console.log(productSpecifications);
+  const filteredProductSpecifications = productSpecifications.filter(
+    (product) => {
+      const productValues = Object.values(product).join(" ").toLowerCase();
+      return productValues.includes(searchTerm.toLowerCase());
+    },
+  );
+  setProductSpecifications(filteredProductSpecifications);
+  console.log("Result Product Specifications:", filteredProductSpecifications);
 };
 
 export default handleSearchClick;

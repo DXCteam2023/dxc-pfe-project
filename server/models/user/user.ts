@@ -2,44 +2,13 @@ import mongoose, { Schema, model } from "mongoose";
 import jwt from "jsonwebtoken";
 import Joi from "joi";
 import passwordComplexity from "joi-password-complexity";
-
-type Order = {
-  orderNumber: string;
-  id: string;
-  productOfferings: string[];
-  state: string;
-  orderDate: string;
-  type: string;
-};
-
-type ProductOffering = {
-  number: string;
-  id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  contractTerm: string;
-  state: string;
-};
-export interface IUserDocument {
-  userID: string;
-  username: string;
-  password: string;
-  profile: string;
-  role: string;
-  createdAt: Date;
-  orders?: Order[];
-  totalOrders?: number;
-  productOfferings?: ProductOffering[];
-  totalProductOfferings?: number;
-  generateAuthToken(): string;
-}
+import IUserDocument from "./IUser";
 
 const orderSchema = new Schema({
   orderNumber: { type: String, required: true },
   id: { type: String, required: true },
   productOfferings: { type: Array(String), required: true },
-  state: { type: String, required: true },
+  status: { type: String, required: true },
   orderDate: { type: String, required: true },
   type: { type: String, required: true },
 });
@@ -51,7 +20,7 @@ const productOfferingSchema = new Schema({
   startDate: { type: String, required: true },
   endDate: { type: String, required: true },
   contractTerm: { type: String, required: true },
-  state: { type: String, required: true },
+  status: { type: String, required: true },
 });
 
 const userSchema = new mongoose.Schema({

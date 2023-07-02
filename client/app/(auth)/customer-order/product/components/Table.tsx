@@ -25,7 +25,7 @@ dotenv.config();
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 const Table = () => {
-  const [selectedState, setSelectedState] = useState("");
+  // const [selectedState, setSelectedState] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterState, setFilterState] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,7 +81,7 @@ const Table = () => {
   async function getProductOrders() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/customer-order/product",
+        `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData = response.data;
       console.log(productsData);
@@ -132,7 +132,7 @@ const Table = () => {
     );
     const isPonrMatch =
       selectedPONR === "" || order.ponr === (selectedPONR === "true");
-    const isStateMatch = selectedState === "" || order.state === selectedState;
+    const isStateMatch = filterState === "all" || order.state === filterState;
 
     return isMatchingSearchTerm && isPonrMatch && isStateMatch;
   });
@@ -170,7 +170,7 @@ const Table = () => {
             <div className="container mx-auto px-4 sm:px-8">
               <div className="py-8">
                 <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                  <h1 className=" mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  <h1 className=" mb-2 text-xl font-semibold tracking-tight text-gray-900">
                     Product customer orders
                   </h1>
 
@@ -353,13 +353,13 @@ const Table = () => {
                                       </div>
                                     </div>
                                   </td>
-                                  <div className="flex items-center">
+                                  {/* <div className="flex items-center">
                                     <div className="ml-3">
                                       <p className="text-gray-900 whitespace-no-wrap">
                                         {order.id}
                                       </p>
                                     </div>
-                                  </div>
+                                  </div> */}
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       {JSON.stringify(

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProductSpecification } from "../../models/productSpecification";
+import ProductSpecificationModel from "../../models/product-specification/productSpecification";
 
 export default async function getProductSpecificationById(
   req: Request,
@@ -7,7 +7,7 @@ export default async function getProductSpecificationById(
 ) {
   try {
     const productSpecificationId = req.params.id;
-    const productSpecification = await ProductSpecification.findById(
+    const productSpecification = await ProductSpecificationModel.findById(
       productSpecificationId
     );
 

@@ -8,7 +8,7 @@ import {
   faLinkedinIn,
 } from "@fortawesome/free-brands-svg-icons";
 
-import dxc from "@/public/assets/dxc.jpg";
+import dxc from "../../../public/assets/dxc.jpg";
 
 import styles from "./footer.module.css";
 

@@ -1,63 +1,5 @@
 import { Schema, model } from "mongoose";
-
-type ProductSpecCharacteristicValue = {
-  value: string;
-};
-
-type ValidFor = {
-  endDateTime?: string;
-  startDateTime?: string;
-};
-
-type ProductSpecCharacteristic = {
-  description?: string;
-  name: string;
-  productSpecCharacteristicValue: ProductSpecCharacteristicValue[];
-  validFor?: ValidFor;
-  valueType?: string;
-};
-
-enum RelationshipType {
-  COMPOSED_OF = "composed_of",
-  BUNDLES = "bundles",
-}
-
-type ProductSpecificationRelationship = {
-  id?: string;
-  type: RelationshipType;
-  validFor?: ValidFor;
-};
-
-type ResourceSpecification = {
-  id: string;
-  internalId?: string;
-  internalVersion?: string;
-  name?: string;
-  version?: string;
-};
-
-type ServiceSpecification = {
-  id?: string;
-  internalId?: string;
-  internalVersion?: string;
-  name?: string;
-  version?: string;
-};
-export interface IProductSpecificationDocument {
-  description: string;
-  externalId?: string;
-  id: string;
-  internalId?: string;
-  internalVersion?: string;
-  lastUpdate?: string;
-  name: string;
-  productSpecCharacteristic?: ProductSpecCharacteristic[];
-  productSpecificationRelationship?: ProductSpecificationRelationship[];
-  resourceSpecification: ResourceSpecification[];
-  serviceSpecification?: ServiceSpecification[];
-  validFor: ValidFor;
-  version?: string;
-}
+import IProductSpecificationDocument from "./IProductSpecification";
 
 const productSpecCharacteristicValueSchema = new Schema({
   value: { type: String, required: true },
@@ -127,10 +69,12 @@ const productSpecificationSchema = new Schema({
   },
   validFor: { type: validForSchema, required: true },
   version: { type: String, required: false },
-  state: { type: String, required: false },
+  status: { type: String, required: true },
 });
 
-export const ProductSpecification = model<IProductSpecificationDocument>(
+const ProductSpecificationModel = model<IProductSpecificationDocument>(
   "ProductSpecification",
   productSpecificationSchema
 );
+
+export default ProductSpecificationModel;

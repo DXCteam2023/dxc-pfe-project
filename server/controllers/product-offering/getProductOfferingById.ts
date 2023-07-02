@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ProductOffering } from "../../models/productOffering";
+import ProductOfferingModel from "../../models/product-offering/productOffering";
 
 export default async function getProductOfferingById(
   req: Request,
@@ -7,7 +7,7 @@ export default async function getProductOfferingById(
 ) {
   const { id } = req.params;
   try {
-    const productOffering = await ProductOffering.findById(id);
+    const productOffering = await ProductOfferingModel.findById(id);
     res.setHeader("Content-Type", "application/json");
     if (productOffering) {
       res.status(200).send(JSON.stringify(productOffering));

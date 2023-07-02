@@ -1,103 +1,151 @@
-import React, { useEffect, useState } from "react";
-// import { Chart, initTE } from "tw-elements";
+import React, { useEffect, useRef, useState } from "react";
+import { Chart, registerables } from "chart.js";
 import axios from "axios";
+import * as dotenv from "dotenv";
 
-// Chart.register(initTE);
-interface ProductOrders {
-  state: string;
-  orderDate: string;
-  ponr: string;
-}
+dotenv.config();
 
-const Chartt = () => {
-  // initTE({ Chart });
+const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
-  // const [chartData, setChartData] = useState<ProductOrders[]>([]);
+Chart.register(...registerables);
 
-  // useEffect(() => {
-  //   getProductOrders();
-  // }, []);
+const BarChart = () => {
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const chartInstance = useRef<Chart<"bar", number[], string> | null>(null);
+  const [products, setProducts] = useState<{
+    labels: string[];
+    data: number[];
+  }>({ labels: [], data: [] });
 
-  // async function getProductOrders() {
-  //   try {
-  //     const response = await axios.get(
-  //       "https://dxc-pfe-project-server.vercel.app/api/customer-order/product",
-  //     );
-  //     const productsData = response.data;
-  //     setChartData(productsData);
-  //   } catch (error) {
-  //     console.error("Erreur lors de la récupération des produits :", error);
-  //   }
-  // }
+  useEffect(() => {
+    getProductOrders();
+  }, []);
 
-  // const generateChartData = () => {
-  //   const data = chartData.reduce((acc: any, productOrder: ProductOrders) => {
-  //     const orderDate = new Date(productOrder.orderDate);
-  //     const week = getWeekNumber(orderDate);
-  //     if (!acc[week]) {
-  //       acc[week] = 0;
-  //     }
-  //     acc[week]++;
-  //     return acc;
-  //   }, {});
+  async function getProductOrders() {
+    try {
+      const response = await axios.get(
+        `${AXIOS_URL}/api/customer-order/product`,
+      );
+      const productsData = response.data;
+      // Obtenez les mois de la date actuelle à la date actuelle moins 6 mois
+      const months = [];
+      const currentDate = new Date();
+      for (let i = 0; i < 12; i += 1) {
+        const date = new Date(currentDate.getFullYear(), i, 1);
+        months.push(date.toLocaleString("default", { month: "long" }));
+      }
 
-  //   return {
-  //     labels: Object.keys(data),
-  //     data: Object.values(data),
-  //   };
-  // };
+      // Initialisez un objet pour stocker le décompte des commandes par mois
+      const ordersByMonth: { [key: string]: number } = {};
+      months.forEach((month) => {
+        ordersByMonth[month] = 0;
+      });
 
-  // const getWeekNumber = (date: Date) => {
-  //   const d = new Date(
-  //     Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
-  //   );
-  //   const dayNum = d.getUTCDay() || 7;
-  //   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  //   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  //   return Math.ceil(((d.valueOf() - yearStart.valueOf()) / 86400000 + 1) / 7);
-  // };
+      // Parcourez les données des produits et incrémentez le décompte des commandes pour chaque mois correspondant
+      productsData.forEach((product: { orderDate: string }) => {
+        const orderDate = new Date(product.orderDate);
+        const orderMonth = orderDate.toLocaleString("default", {
+          month: "long",
+        });
+        if (Object.prototype.hasOwnProperty.call(ordersByMonth, orderMonth)) {
+          ordersByMonth[orderMonth] += 1;
+        }
+      });
 
-  // const PolarAreaChart = () => {
-  //   useEffect(() => {
-  //     const ctx = document.getElementById("polar-area-chart");
+      // Convertissez le décompte des commandes par mois en un tableau pour les étiquettes et les données du graphique
+      const labels = Object.keys(ordersByMonth);
+      const data = Object.values(ordersByMonth);
 
-  //     if (ctx && chartData) {
-  //       const { labels, data } = generateChartData();
+      setProducts({ labels, data });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des produits :", error);
+    }
+  }
 
-  //       const dataPolar = {
-  //         type: "polarArea",
-  //         data: {
-  //           labels,
-  //           datasets: [
-  //             {
-  //               label: "Customer Orders",
-  //               data,
-  //               backgroundColor: [
-  //                 "rgba(63, 81, 181, 0.5)",
-  //                 "rgba(77, 182, 172, 0.5)",
-  //                 "rgba(66, 133, 244, 0.5)",
-  //                 "rgba(156, 39, 176, 0.5)",
-  //                 "rgba(233, 30, 99, 0.5)",
-  //                 "rgba(66, 73, 244, 0.4)",
-  //                 "rgba(66, 133, 244, 0.2)",
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //       };
+  useEffect(() => {
+    if (chartRef.current) {
+      const ctx = chartRef.current.getContext("2d");
+      if (ctx) {
+        const backgroundColors = [
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(255, 159, 64, 0.7)",
+          "rgba(255, 205, 86, 0.7)",
+          "rgba(75, 192, 192, 0.7)",
+          "rgba(54, 162, 235, 0.7)",
+          "rgba(153, 102, 255, 0.7)",
+          "rgba(201, 203, 207, 0.7)",
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(255, 159, 64, 0.7)",
+          "rgba(255, 255, 140, 0.7)",
+          "rgba(153, 102, 255, 0.7)",
+          "rgba(201, 203, 207, 0.7)",
+        ];
 
-  //       new Chart(ctx, dataPolar);
-  //     }
-  //   }, [chartData]);
+        const config: any = {
+          type: "bar",
+          data: {
+            labels: products.labels,
+            datasets: [
+              {
+                label: "Nombre de commandes",
+                data: products.data,
+                backgroundColor: backgroundColors.slice(
+                  0,
+                  products.labels.length,
+                ),
+                borderColor: [
+                  "rgb(255, 99, 132,0.9)",
+                  "rgb(255, 159, 64,0.9)",
+                  "rgb(255, 205, 86,0.9)",
+                  "rgb(75, 192, 192,0.9)",
+                  "rgb(54, 162, 235,0.9)",
+                  "rgb(153, 102, 255,0.9)",
+                  "rgb(201, 203, 207,0.9)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        };
 
-  //   return (
-  //     <div className="mx-auto w-3/5 overflow-hidden">
-  //       <canvas id="polar-area-chart"></canvas>
-  //     </div>
-  //   );
-  // };
+        if (chartInstance.current) {
+          chartInstance.current.destroy();
+        }
 
-  return <div className="mt-4 flex p-2">{/* <PolarAreaChart /> */}</div>;
+        chartInstance.current = new Chart<"bar", number[], string>(ctx, config);
+      } else {
+        console.error("Le contexte de rendu du canvas est null.");
+      }
+    }
+  }, [products]);
+
+  return (
+    <div>
+      {products.labels.length === 0 ? (
+        <div className="flex justify-center items-center">
+          <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+        </div>
+      ) : (
+        <div className="mx-auto py-4 text-center">
+          <canvas ref={chartRef} />
+          <p className="mt-2 text-purple-600 font-semibold">
+            Product Orders By Month
+          </p>
+        </div>
+      )}
+
+      {/* <div className="item-end">
+        <p className="mt-2 text-gray-600 font-semibold">Total Revenue : </p>
+      </div> */}
+    </div>
+  );
 };
 
-export default Chartt;
+export default BarChart;

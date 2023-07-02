@@ -26,8 +26,6 @@ export type TUser = {
 const Table = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [profileFilter, setProfileFilter] = useState("All");
-  const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
   const [selectedUsers, setSelectedUsers] = useState<any>([]);
   const [data, setData] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -38,9 +36,8 @@ const Table = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    // Récupérer les utilisateurs depuis le backend
     getUsers();
-  }, []);
+  }, [users]);
 
   async function getUsers() {
     try {
@@ -74,9 +71,9 @@ const Table = () => {
     setData(filteredUsers);
   }, [searchTerm, profileFilter, users]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [data]);
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [data]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -86,19 +83,23 @@ const Table = () => {
     setProfileFilter(value);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 8;
+
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    setCurrentPage(currentPage + 1);
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    setCurrentPage(currentPage - 1);
   };
-
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const handleDeleteClick = (userId: string) => {
     const updatedData = users.filter((user: TUser) => user._id !== userId);
     setUsers(updatedData);
     console.log("Utilisateur supprimé avec succès.");
-    // console.log("data:", updatedData); // Vérifiez la valeur de data après la mise à jour
+    // console.log("data:", updatedData);
   };
   const handleDeleteUser = async (userId: string) => {
     try {
@@ -169,47 +170,22 @@ const Table = () => {
     setIsUpdateFormVisible(true);
   };
 
-  //const handleCancelEdit = () => {
-  // setEditingIndex(null);
-  // };
-
-  //const handleUpdateUser = (updatedUser) => {
-  // setEditingIndex(null);
-  //};
-
-  //const editUser = (selectedUser) => {
-  //  console.log(selectedUser)
-  // }
-
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const filteredUsers = data.filter((user: TUser) => {
     if (profileFilter === "All") {
       return true;
     }
     return user.profile.toLowerCase() === profileFilter.toLowerCase();
   });
-
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
   const [showForm, setShowForm] = useState(false);
-
-  //const handleViewDetail = () => {
-  ////  window.open("/admin/user/");
-
-  //console.log("click");
-  //};
   return (
     <div>
-      <div className="ml-2 container mx-auto px-4 sm:px-8 flex mt-2">
-        {editingUserId !== null && +editingUserId !== 0 && (
-          <UpdateUserForm
-            user={users.find((user: TUser) => user._id === editingUserId)}
-            onCancel={() => setEditingUserId(null)}
-            onClose={() => setShowForm(false)}
-            // userToEdit={userToEdit}
-          />
-        )}
-      </div>
+      {editingUserId !== null && +editingUserId !== 0 && (
+        <UpdateUserForm
+          user={users.find((user: TUser) => user._id === editingUserId)}
+          onCancel={() => setEditingUserId(null)}
+          onClose={() => setShowForm(false)}
+        />
+      )}
 
       <div className="flex w-full">
         <div className="w-full">
@@ -252,193 +228,164 @@ const Table = () => {
                     </button>
                   )}
                 </div>
-                <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                  <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                    <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative min-w-full leading-normal">
-                      <thead>
-                        <tr className="text-left">
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            <label className="inline-flex items-center">
-                              <input
-                                type="checkbox"
-                                className="form-checkbox text-gray-800"
-                                checked={selectAll}
-                                onChange={handleSelectAll}
-                              />
-                            </label>
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Username
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Profile
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Role
-                          </th>
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            UserID
-                          </th>
-
-                          <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredUsers.map((user: TUser, index: number) => (
-                          <tr key={user._id}>
-                            <td className="border-dashed border-t border-gray-200 px-3">
+                {users.length === 0 ? (
+                  <div className="flex justify-center items-center">
+                    <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+                  </div>
+                ) : (
+                  <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                    <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                      <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative min-w-full leading-normal">
+                        <thead>
+                          <tr className="text-left">
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               <label className="inline-flex items-center">
                                 <input
                                   type="checkbox"
                                   className="form-checkbox text-gray-800"
-                                  checked={selectedUsers.includes(user._id)}
-                                  onChange={(event) =>
-                                    handleCheckboxChange(
-                                      event.currentTarget.checked,
-                                      user._id,
-                                    )
-                                  }
+                                  checked={selectAll}
+                                  onChange={handleSelectAll}
                                 />
                               </label>
-                            </td>
-                            <td className="border-dashed border-t border-gray-200 px-3">
-                              {editingIndex === index ? (
-                                <input
-                                  type="text"
-                                  className="border border-gray-300 px-3 py-1 w-full"
-                                />
-                              ) : (
-                                <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                  {user.username}
-                                </span>
-                              )}
-                            </td>
-                            <td className="border-dashed border-t border-gray-200 px-3">
-                              {editingIndex === index ? (
-                                <input
-                                  type="text"
-                                  className="border border-gray-300 px-3 py-1 w-full"
-                                />
-                              ) : (
-                                <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                  {user.profile}
-                                </span>
-                              )}
-                            </td>
-                            <td className="border-dashed border-t border-gray-200 px-3">
-                              {editingIndex === index ? (
-                                <input
-                                  type="text"
-                                  className="border border-gray-300 px-3 py-1 w-full"
-                                />
-                              ) : (
-                                <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                  {user.role}
-                                </span>
-                              )}
-                            </td>
-                            <td className="border-dashed border-t border-gray-200 px-3">
-                              {editingIndex === index ? (
-                                <input
-                                  type="text"
-                                  className="border border-gray-300 px-3 py-1 w-full"
-                                />
-                              ) : (
-                                <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                  {user.userID}
-                                </span>
-                              )}
-                            </td>
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Username
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Profile
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Role
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              UserID
+                            </th>
 
-                            <td className="border-dashed border-t border-gray-200 px-3">
-                              <div className="flex">
-                                <Link href={`/admin/user/${user._id}`}>
-                                  <FaEye className="text-blue-500 text-lg" />
-                                </Link>
-
-                                <button
-                                  className="w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
-                                  //value={currentUser.id}
-                                  onClick={() => handleEditUser(user)}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="green"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                    />
-                                  </svg>
-                                </button>
-
-                                {/* <button
-                                  className="w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
-                                  onClick={() => handleDeleteClick(user._id)}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="red"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </button> */}
-                                <button
-                                  className="w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
-                                  onClick={() => handleDeleteUser(user._id)}
-                                >
-                                  {" "}
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="red"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </div>
-                            </td>
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                              Actions
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+
+                        <tbody>
+                          {filteredUsers
+                            .slice(indexOfFirstOrder, indexOfLastOrder)
+                            .map((user: TUser, index: number) => (
+                              <tr key={user._id}>
+                                <td className="border-dashed border-t border-gray-200 px-3">
+                                  <label className="inline-flex items-center">
+                                    <input
+                                      type="checkbox"
+                                      className="form-checkbox text-gray-800"
+                                      checked={selectedUsers.includes(user._id)}
+                                      onChange={(event) =>
+                                        handleCheckboxChange(
+                                          event.currentTarget.checked,
+                                          user._id,
+                                        )
+                                      }
+                                    />
+                                  </label>
+                                </td>
+                                <td className="border-dashed border-t border-gray-200 px-3">
+                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                    {user.username}
+                                  </span>
+                                </td>
+                                <td className="border-dashed border-t border-gray-200 px-3">
+                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                    {user.profile}
+                                  </span>
+                                </td>
+                                <td className="border-dashed border-t border-gray-200 px-3">
+                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                    {user.role}
+                                  </span>
+                                </td>
+                                <td className="border-dashed border-t border-gray-200 px-3">
+                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                    {user.userID}
+                                  </span>
+                                </td>
+
+                                <td className="border-dashed border-t border-gray-200 px-3">
+                                  <div className="flex">
+                                    <Link href={`/admin/user/${user._id}`}>
+                                      <FaEye className="text-blue-500 text-lg" />
+                                    </Link>
+
+                                    <button
+                                      className="mx-2 w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                      //value={currentUser.id}
+                                      onClick={() => handleEditUser(user)}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="green"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth="2"
+                                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                        />
+                                      </svg>
+                                    </button>
+
+                                    <button
+                                      className="mx-2 w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                      onClick={() => handleDeleteUser(user._id)}
+                                    >
+                                      {" "}
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="red"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                      <span className="text-xs xs:text-sm text-gray-900">
+                        Showing {indexOfFirstOrder + 1} to{" "}
+                        {Math.min(indexOfLastOrder, filteredUsers.length)} of{" "}
+                        {filteredUsers.length} Entries
+                      </span>
+                      <div className="inline-flex mt-2 xs:mt-0">
+                        <button
+                          className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                          onClick={handlePreviousPage}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </button>
+
+                        <button
+                          className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
+                          onClick={handleNextPage}
+                          disabled={indexOfLastOrder >= filteredUsers.length}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between mt-4">
-                    <button
-                      onClick={handlePreviousPage}
-                      disabled={currentPage === 1}
-                      className="bg-purple-300 hover:bg-purple-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                    >
-                      Previous Page
-                    </button>
-                    <button
-                      onClick={handleNextPage}
-                      disabled={currentUsers.length < usersPerPage}
-                      className="bg-purple-300 hover:bg-purple-400  text-gray-800 font-semibold py-2 px-4 rounded-r"
-                    >
-                      Next Page
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

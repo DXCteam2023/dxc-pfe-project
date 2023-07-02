@@ -92,7 +92,7 @@ const page = ({ params }: { params: { id: string } }) => {
                       <li className="inline-flex items-center">
                         <a
                           href="#"
-                          className="inline-flex items-center text-sm font-medium text-purple-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                          className="inline-flex items-center text-sm font-medium text-purple-700 hover:text-gray-900"
                         >
                           <svg
                             className="w-4 h-4 mr-2"
@@ -121,7 +121,7 @@ const page = ({ params }: { params: { id: string } }) => {
                           </svg>
                           <a
                             href="#"
-                            className="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                            className="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2"
                           >
                             Product Orders
                           </a>
@@ -142,6 +142,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product._id}
+                        disabled
                       ></input>
                     </div>
                     <div className="w-full md:w-1/3 px-3">
@@ -152,6 +153,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.state}
+                        disabled
                       ></input>
                     </div>
 
@@ -160,7 +162,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         Order Date:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.orderDate}
                       ></input>
@@ -170,7 +172,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         Resquested Completion Date:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.requestedCompletionDate}
                       ></input>
@@ -180,7 +182,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         PONR:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.ponr ? "True" : "False"}
                       ></input>
@@ -191,7 +193,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         Channel:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.channel[0].name}
                       ></input>
@@ -201,7 +203,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         Expected Completion Date:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.expectedCompletionDate}
                       ></input>
@@ -211,7 +213,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         Completion Date:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.completionDate}
                       ></input>
@@ -221,7 +223,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         Requested Start Date:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
                         value={product.requestedStartDate}
                       ></input>

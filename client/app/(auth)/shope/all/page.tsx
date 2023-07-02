@@ -1,20 +1,21 @@
 "use client";
+import * as dotenv from "dotenv";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import Header from "../components/Header";
 
 const HomePage = () => {
+  dotenv.config();
+  const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
   const [data, setData] = useState([]);
   useEffect(() => {
     getData();
   }, []);
   async function getData() {
-    await axios
-      .get("https://dxc-pfe-project-server.vercel.app/api/product-offering")
-      .then((response) => {
-        setData(response.data);
-      });
+    await axios.get(`${AXIOS_URL}/api/product-offering`).then((response) => {
+      setData(response.data);
+    });
   }
 
   return (

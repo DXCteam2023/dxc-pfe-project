@@ -1,11 +1,11 @@
 export type TDataProductOffering = {
-  number: string;
-  display_name: string;
-  version: string;
-  state: string;
-  price: string;
+  _id: string;
+  id: string;
+  link: string;
+  name: string;
   description: string;
-  Contract_terms: string;
-  start_date: string;
-  end_date: string;
+  status: string;
+  internalVersion: string;
+  orderDate: string;
+  lastUpdate: string;
 };

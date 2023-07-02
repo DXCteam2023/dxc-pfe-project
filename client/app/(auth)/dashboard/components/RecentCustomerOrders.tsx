@@ -2,12 +2,18 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import * as dotenv from "dotenv";
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
+import result from "../../../../public/assets/search.png";
 
 dotenv.config();
 
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
 interface ProductOrders {
+  id: string;
+  _id: string;
   state: string;
   orderDate: string;
   ponr: string;
@@ -74,12 +80,14 @@ const BarChart = () => {
     switch (state) {
       case "new":
         return "text-blue-900";
-      case "in progress":
+      case "in_progress":
         return "text-yellow-900";
+      case "in draft":
+        return "text-orange-900";
       case "completed":
         return "text-green-900";
-      case "canceled":
-        return "text-red-900";
+      case "cancellation_received":
+        return "text-white";
       default:
         return "";
     }
@@ -89,36 +97,53 @@ const BarChart = () => {
     switch (state) {
       case "new":
         return "bg-blue-200 shadow-blue-300";
-      case "in progress":
+      case "in_progress":
         return "bg-yellow-200 shadow-yellow-300";
+      case "in draft":
+        return "bg-orange-200 shadow-orange-300";
       case "completed":
         return "bg-green-200 shadow-green-300";
-      case "canceled":
-        return "bg-red-200 shadow-red-300";
+      case "cancellation_received":
+        return "bg-red-600 shadow-red-300";
       default:
         return "";
     }
   }
   const recentOrders = filteredOrders.sort((a, b) => {
-    const date1 = new Date(
-      parseInt(a.orderDate.split("/")[2]),
-      parseInt(a.orderDate.split("/")[1]) - 1,
-      parseInt(a.orderDate.split("/")[0]),
-    );
-    const date2 = new Date(
-      parseInt(b.orderDate.split("/")[2]),
-      parseInt(b.orderDate.split("/")[1]) - 1,
-      parseInt(b.orderDate.split("/")[0]),
-    );
+    const date1 = new Date(a.orderDate);
+    const date2 = new Date(b.orderDate);
     return date2.getTime() - date1.getTime();
   });
+  const [pinnedProductOrders, setPinnedProductOrders] = useState<string[]>([]);
+  const togglePinProduct = (orderId: string) => {
+    if (pinnedProductOrders.includes(orderId)) {
+      const updatedPinnedProductOrders = pinnedProductOrders.filter(
+        (pinnedOrderId) => pinnedOrderId !== orderId,
+      );
+      setPinnedProductOrders(updatedPinnedProductOrders);
+    } else {
+      const updatedPinnedProductOrders = [orderId, ...pinnedProductOrders];
+      setPinnedProductOrders(updatedPinnedProductOrders);
+    }
+  };
 
+  const sortedProductOrders = [...recentOrders].sort((a, b) => {
+    const aPinned = pinnedProductOrders.includes(a._id);
+    const bPinned = pinnedProductOrders.includes(b._id);
+    if (aPinned && !bPinned) {
+      return -1;
+    } else if (!aPinned && bPinned) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
   return (
-    <div className="flex w-full  shadow ">
+    <div className="flex w-full">
       <div className="w-full">
         <div className=" flex mt-2 ">
           <div className="container mx-auto ">
-            <div className="py-8">
+            <div className="py-1">
               <div>
                 <h2 className="text-2xl font-semibold leading-tight">
                   Recents Customer Orders
@@ -134,9 +159,9 @@ const BarChart = () => {
                     >
                       <option value="All">All</option>
                       <option value="new">New</option>
-                      <option value="in progress">In progress</option>
+                      <option value="in_progress">In progress</option>
                       <option value="completed">Completed</option>
-                      <option value="canceled">Canceled</option>
+                      <option value="cancellation_received">Canceled</option>
                     </select>
                   </div>
                 </div>
@@ -150,51 +175,69 @@ const BarChart = () => {
                 </div>
               </div>
               <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                <div className="inline-block min-w-full  overflow-hidden">
                   <table className="text-left w-full border-collapse">
                     <thead>
                       <tr>
-                        <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                          <label className="inline-flex items-center">
+                            <input
+                              type="checkbox"
+                              className="form-checkbox text-gray-800"
+                            />
+                          </label>
+                        </th>
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Number
                         </th>
-                        {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
+
+                        {/* <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Account
                         </th> */}
-                        <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Created At
                         </th>
-                        <th className=" py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Status
                         </th>
-                        {/* <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
-                          Type
-                        </th> */}
-                        <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
-                          Contact
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                          Requested Start Date
                         </th>
-                        <th className="py-4 px-6 text-center bg-purple-800 font-semibold uppercase text-sm text-white border p-2 border-grey-light">
+                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                          Requested Completion Date
+                        </th>
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-sm font-semibold uppercase tracking-wider">
                           Created By
                         </th>
-                        {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                          Total
-                        </th> */}
                       </tr>
                     </thead>
                     <tbody>
-                      {recentOrders
+                      {sortedProductOrders
                         .slice(indexOfFirstOrder, indexOfLastOrder)
                         .map((order: any, index: number) => {
                           return (
                             <tr key={index}>
-                              <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                              <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
+                                <button
+                                  onClick={() => togglePinProduct(order._id)}
+                                  className={`font-bold  ${
+                                    pinnedProductOrders.includes(order._id)
+                                      ? "text-blue-600"
+                                      : "text-black"
+                                  }`}
+                                >
+                                  <FontAwesomeIcon icon={faThumbtack} />
+                                </button>
+                              </td>
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       <a
-                                        href={order.link}
+                                        href={`/customer-order/product/${order._id}`}
                                         className="text-blue-500 hover:text-blue-700 text-main-color"
                                       >
-                                        {order.number}
+                                        {order.orderNumber}
                                       </a>
                                     </p>
                                   </div>
@@ -206,12 +249,12 @@ const BarChart = () => {
                                   {order.account}
                                 </p>
                               </td> */}
-                              <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
-                                <p className="text-gray-900 whitespace-no-wrap">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                                <p className="text-indigo-900  font-semibold whitespace-no-wrap">
                                   {new Date(order.orderDate).toDateString()}
                                 </p>
                               </td>
-                              <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <span
                                   className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                     order.state,
@@ -228,7 +271,11 @@ const BarChart = () => {
                                       order.state,
                                     )} rounded-full`}
                                   >
-                                    {order.state}
+                                    {order.state === "in_progress"
+                                      ? "In Progress"
+                                      : order.state === "cancellation_received"
+                                      ? "Canceled"
+                                      : order.state}
                                   </span>
                                 </span>
                               </td>
@@ -242,7 +289,7 @@ const BarChart = () => {
                                   </div>
                                 </div>
                               </td> */}
-                              <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <div className="flex items-center">
                                   <div className="ml-3">
                                     <p className="text-gray-900 whitespace-no-wrap">
@@ -254,30 +301,55 @@ const BarChart = () => {
                                 </div>
                               </td>
 
-                              <td className="px-5 py-5 border p-2  border-grey-light border-purple-400 bg-white text-md">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
                                 <p className="text-gray-900 whitespace-no-wrap">
                                   {new Date(
                                     order.requestedCompletionDate,
                                   ).toDateString()}
                                 </p>
                               </td>
-                              {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {order.price}
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-md">
+                                <p className="text-pink-700 font-semibold whitespace-no-wrap">
+                                  {order.createdBy}
                                 </p>
-                              </td> */}
+                              </td>
                             </tr>
                           );
                         })}
                     </tbody>
                   </table>
+                  {sortedProductOrders.length === 0 && (
+                    <table className="w-full border-collapse">
+                      <tbody className="mx-auto">
+                        <tr>
+                          <td colSpan={6} className="text-center">
+                            <div className="flex justify-center items-center">
+                              <Image
+                                src={result}
+                                alt="Just a flower"
+                                className="w-1/4 h-1/4 object-fill rounded-2xl"
+                              />
+                              <br />
+                            </div>
+                            <div className="ml-4">
+                              <p className="text-gray-900 font-bold text-xl">
+                                No Result Found ...
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
                   <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                     <span className="text-xs xs:text-sm text-gray-900">
-                      Showing 1 to 4 of 50 Entries
+                      Showing {indexOfFirstOrder + 1} to{" "}
+                      {Math.min(indexOfLastOrder, recentOrders.length)} of{" "}
+                      {recentOrders.length} Entries
                     </span>
                     <div className="inline-flex mt-2 xs:mt-0">
                       <button
-                        className="text-sm bg-purple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                        className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
                         onClick={handlePreviousPage}
                         disabled={currentPage === 1}
                       >
@@ -285,7 +357,7 @@ const BarChart = () => {
                       </button>
 
                       <button
-                        className="text-sm bg-purple-700 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
+                        className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
                         onClick={handleNextPage}
                         disabled={indexOfLastOrder >= recentOrders.length}
                       >
