@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
-import generateDateBasedId from "../utils/generateDateBasedId";
+
+const { v4: uuidv4 } = require("uuid");
 
 export type OptionType = {
   value: string;
@@ -11,6 +12,7 @@ export type ProductOfferingType = {
   label: string;
   productOfferingObject: any;
   quantity: number;
+  generatedId?: string;
 };
 
 export type ProductOrderType = {
@@ -38,13 +40,21 @@ export type NewCustomerOrderContextType = {
   >;
   selectedLocationId: string;
   setSelectedLocationId: React.Dispatch<React.SetStateAction<string>>;
-  getSelectedProductOrder: () => ProductOrderType | undefined;
+  getSelectedProductOrder: (
+    locationId?: string,
+  ) => ProductOrderType | undefined;
   updateSelectedProductOrder: (
     propertyName: keyof ProductOrderType,
     propertyValue: any,
   ) => void;
+  updateSelectedProductOrderOfferingById: (
+    locationId: string,
+    generatedId: string,
+    updateOffering: any,
+  ) => void;
   deleteProductOffering: (index: number) => void;
   deleteSelectedLocation: () => void;
+  updateProductOrdersOnCreateOrder: (data: any) => void;
   // STEP 3
   number: string;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
@@ -85,6 +95,7 @@ const NewCustomerOrderContextProvider = ({
 
   const [selectedLocationId, setSelectedLocationId] = useState("");
 
+  const [orderDetails, setOrderDetails] = useState();
   // STEP 3
   const [number, setNumber] = useState("");
   const [location, setLocation] = useState("");
@@ -97,17 +108,18 @@ const NewCustomerOrderContextProvider = ({
   const [monthlyRecurringChangesPerUnit, setMonthlyRecurringChangesPerUnit] =
     useState(1);
 
-  const getSelectedProductOrder = () => {
+  const getSelectedProductOrder = (locationId?: string) => {
+    const targetedLocationId = locationId || selectedLocationId;
     let productOrderFound = productOrders.find(
       (productOrdersItem) =>
-        productOrdersItem.locationId === selectedLocationId,
+        productOrdersItem.locationId === targetedLocationId,
     );
 
     if (!productOrderFound) {
       // add a new product order with selected location to productOrders
       productOrderFound = {
-        id: generateDateBasedId(),
-        locationId: selectedLocationId,
+        id: uuidv4(),
+        locationId: targetedLocationId,
         firstname: "",
         lastname: "",
         email: "",
@@ -131,6 +143,32 @@ const NewCustomerOrderContextProvider = ({
             return {
               ...previousProductOrdersItem,
               [propertyName]: propertyValue,
+            };
+          } else {
+            return previousProductOrdersItem;
+          }
+        },
+      );
+    });
+  };
+
+  const updateSelectedProductOrderOfferingById = (
+    locationId: string,
+    generatedId: string,
+    updateOffering: any,
+  ) => {
+    setProductOrders((previousProductOrders: Array<ProductOrderType>) => {
+      return previousProductOrders.map(
+        (previousProductOrdersItem: ProductOrderType) => {
+          if (previousProductOrdersItem.locationId === locationId) {
+            return {
+              ...previousProductOrdersItem,
+              offerings: previousProductOrdersItem.offerings.map(
+                (offering: any) =>
+                  offering.generatedId === generatedId
+                    ? { ...offering, ...updateOffering }
+                    : offering,
+              ),
             };
           } else {
             return previousProductOrdersItem;
@@ -173,6 +211,62 @@ const NewCustomerOrderContextProvider = ({
     setSelectedLocationId(firstLocation || "");
   };
 
+  const updateProductOrderByLocationId = (
+    locationId: string,
+    id: string,
+    productSpecification: any,
+    productOffering: any,
+  ) => {
+    setProductOrders((previousProductOrders: Array<ProductOrderType>) => {
+      return previousProductOrders.map(
+        (previousProductOrdersItem: ProductOrderType) => {
+          if (previousProductOrdersItem.locationId === locationId) {
+            return {
+              ...previousProductOrdersItem,
+
+              offerings: previousProductOrdersItem.offerings.map(
+                (offering: ProductOfferingType) => {
+                  if (offering.value === productOffering.id) {
+                    return {
+                      ...offering,
+                      generatedId: id,
+                      productOfferingObject: {
+                        ...offering.productOfferingObject,
+                        productSpecification,
+                        sys_id: productOffering.sys_id,
+                        internalVersion: productOffering.internalVersion,
+                        version: productOffering.version,
+                        status: productOffering.status,
+                        internalId: productOffering.internalId,
+                      },
+                    };
+                  }
+                  return offering;
+                },
+              ),
+            };
+          } else {
+            return previousProductOrdersItem;
+          }
+        },
+      );
+    });
+  };
+
+  const updateProductOrdersOnCreateOrder = (data: any) => {
+    setOrderDetails(data.orderDetails);
+
+    for (let i = 0; i < data.items.length; i++) {
+      const currentItem = data.items[i];
+      updateProductOrderByLocationId(
+        currentItem.locationId,
+        currentItem.id,
+        currentItem.productSpecification,
+        currentItem.productOffering,
+      );
+    }
+  };
+
   return (
     <NewCustomerOrderContext.Provider
       value={{
@@ -190,8 +284,10 @@ const NewCustomerOrderContextProvider = ({
         setSelectedLocationId,
         getSelectedProductOrder,
         updateSelectedProductOrder,
+        updateSelectedProductOrderOfferingById,
         deleteProductOffering,
         deleteSelectedLocation,
+        updateProductOrdersOnCreateOrder,
         // STEP 3
         number,
         setNumber,

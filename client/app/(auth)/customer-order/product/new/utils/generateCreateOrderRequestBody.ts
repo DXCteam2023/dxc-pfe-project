@@ -1,9 +1,10 @@
 import { NewCustomerOrderContextType } from "../context/new-customer-order-context";
-import generateDateBasedId from "./generateDateBasedId";
+
+const { v4: uuidv4 } = require("uuid");
 
 const generateOneProductOrderItem = (offering: any) => {
   return {
-    id: generateDateBasedId(),
+    id: uuidv4(),
     action: "add",
     itemPrice: offering.productOfferingObject.productOfferingPrice,
     product: {

@@ -20,6 +20,7 @@ import {
 } from "../services";
 import ProductOfferingItem from "./ProductOfferingItem";
 import generateCreateOrderRequestBody from "../utils/generateCreateOrderRequestBody";
+import readCreateOrderResponse from "../utils/readCreateOrderResponse";
 
 export default function SelectProduct() {
   const route = useRouter();
@@ -108,10 +109,16 @@ export default function SelectProduct() {
     console.log("handleConfigureOnClick requestBody", requestBody);
 
     // call instance to create order
-    await ProductOrderServices.createOrder(requestBody);
+    const result = await ProductOrderServices.createOrder(requestBody);
+
+    // read response
+    const updatedData = readCreateOrderResponse(result.data);
+
+    // store updated data
+    myContext.updateProductOrdersOnCreateOrder(updatedData);
 
     // redirect to step 3
-    // route.push("/customer-order/product/new/configure-product");
+    route.push("/customer-order/product/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {
