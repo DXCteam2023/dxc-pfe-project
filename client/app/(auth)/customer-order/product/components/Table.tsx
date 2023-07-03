@@ -93,11 +93,10 @@ const Table = () => {
   if (productOrders.length === 0) {
     return (
       <center>
-        <div className="loader">     
-        {/* <div className="loader-small"></div>
+        <div className="loader">
+          {/* <div className="loader-small"></div>
   <div className="loader-large"></div> */}
-  </div>
-   
+        </div>
       </center>
     );
   }
@@ -233,7 +232,9 @@ const Table = () => {
                       <div className="submenu">
                         <button>State</button>
                         <div className="submenu-content">
-                          <button onClick={() => handleStateFilter("completed")}>
+                          <button
+                            onClick={() => handleStateFilter("completed")}
+                          >
                             <p className="text-black-500">Completed</p>
                           </button>
                           <button onClick={() => handleStateFilter("canceled")}>
@@ -242,10 +243,14 @@ const Table = () => {
                           <button onClick={() => handleStateFilter("on hold")}>
                             <p className="text-black-500">On Hold</p>
                           </button>
-                          <button onClick={() => handleStateFilter("In progress")}>
+                          <button
+                            onClick={() => handleStateFilter("In progress")}
+                          >
                             <p className="text-black-500">In Progress</p>
                           </button>
-                          <button onClick={() => handleStateFilter("scheduled")}>
+                          <button
+                            onClick={() => handleStateFilter("scheduled")}
+                          >
                             <p className="text-black-500">Scheduled</p>
                           </button>
                           <button onClick={() => handleStateFilter("new")}>
