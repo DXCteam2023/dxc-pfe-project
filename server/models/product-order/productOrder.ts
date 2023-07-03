@@ -116,6 +116,11 @@ const relatedPartySchema = new Schema({
   "@type": { type: String, required: true, default: "RelatedParty" },
 });
 
+const soldProductsSchema = new Schema({
+  orderLineID: { type: String, required: false },
+  soldProductID: { type: String, required: false },
+});
+
 const productOrderSchema = new Schema({
   orderNumber: { type: String, required: true },
   channel: { type: Array(channelSchema), required: false },
@@ -129,10 +134,11 @@ const productOrderSchema = new Schema({
   requestedStartDate: { type: String, required: false, default: "" },
   completionDate: { type: String, required: false, default: "" },
   expectedCompletionDate: { type: String, required: false, default: "" },
-  status: { type: String, required: false, default: "in draft" },
+  state: { type: String, required: true, default: "draft" },
   createdBy: { type: String, required: true },
   created: { type: Date, required: true, default: Date.now() },
   ponr: { type: Boolean, required: false, default: false },
+  soldProducts: { type: Array(soldProductsSchema), required: false },
   "@type": { type: String, required: true, default: "ProductOrder" },
 });
 

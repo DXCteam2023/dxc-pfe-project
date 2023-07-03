@@ -153,16 +153,23 @@ export default async function addProductOrderToServiceNow(
               "Error occured while creating a new product order in the servicenow instance",
           })
         );
+      } else {
+        res.status(201).send(
+          JSON.stringify({
+            message: "New Product Order inserted in servicenow",
+            productOrder: newProductOrder,
+          })
+        );
       }
+    } else {
+      res.status(201).send(
+        JSON.stringify({
+          message: "New Product Order inserted in servicenow",
+          productOrder: newProductOrder,
+        })
+      );
     }
   } catch (error) {
     return { error };
   }
-
-  res.status(201).send(
-    JSON.stringify({
-      message: "New Product Order inserted in servicenow",
-      productOrder: newProductOrder,
-    })
-  );
 }
