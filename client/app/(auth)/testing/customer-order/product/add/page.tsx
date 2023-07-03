@@ -335,7 +335,11 @@ const payload = {
   "@type": "ProductOrder",
 };
 
-const loggedUser = JSON.parse(localStorage.getItem("user") || '{ userID: "" }');
+let loggedUser = { userID: "" };
+
+if (typeof window !== "undefined") {
+  loggedUser = JSON.parse(localStorage.getItem("user") || '{ userID: "" }');
+}
 
 export default function AddNewProductOrderPage() {
   const isMount = useIsMount();
