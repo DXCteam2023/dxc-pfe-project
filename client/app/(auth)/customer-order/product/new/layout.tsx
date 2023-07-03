@@ -1,9 +1,11 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-import NewCustomerOrderContextProvider from "./context/new-customer-order-context";
+import NewCustomerOrderContextProvider, {
+  NewCustomerOrderContext,
+} from "./context/new-customer-order-context";
 import Header from "../../../dashboard/components/header/Header";
 import Footer from "../../../dashboard/components/Footer";
 import Sidebar from "../../../dashboard/components/Sidebar";
@@ -21,19 +23,25 @@ const STEPS: StepType[] = [
   { id: 4, title: "Review Order", path: "review-order" },
 ];
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function RootLayout({ children }: { children: React.ReactNode }) {
   const route = useRouter();
   const pathname = usePathname();
+
+  const myContext = useContext(NewCustomerOrderContext);
 
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleStepOnClick = (step: StepType) => {
     route.push("/customer-order/product/new/" + step.path);
   };
+
+  useEffect(() => {
+    if (!myContext.account.value && currentStep >= 2) {
+      handleStepOnClick(STEPS[0]);
+    } else if (!myContext.selectedLocationId && currentStep >= 3) {
+      handleStepOnClick(STEPS[1]);
+    }
+  }, [myContext.account, myContext.selectedLocationId, currentStep]);
 
   useEffect(() => {
     const target = pathname?.split("/")?.slice(-1)?.[0];
@@ -51,6 +59,16 @@ export default function RootLayout({
           <Header />
           <div className="new-customer-order">
             <h1 className="p-4">New Product Order</h1>
+            <div className="flex gap-4 p-2 text-sm">
+              <div className="flex flex-col">
+                <h4>Account</h4>
+                <h5 className="text-sky-600">{myContext.account?.label}</h5>
+              </div>
+              <div className="flex flex-col">
+                <h4>Contact</h4>
+                <h5 className="text-sky-600">{myContext.contact?.label}</h5>
+              </div>
+            </div>
             <div className="flex justify-center gap-4 font-extrabold p-4 border-b-2 border-t-2 border-gray-500">
               {STEPS.map((step, index) => (
                 <Fragment key={step.id}>
@@ -87,15 +105,23 @@ export default function RootLayout({
               ))}
             </div>
 
-            <div className="flex">
-              <NewCustomerOrderContextProvider>
-                {children}
-              </NewCustomerOrderContextProvider>
-            </div>
+            <div className="flex">{children}</div>
           </div>
           <Footer />
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ExtraLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <NewCustomerOrderContextProvider>
+      <RootLayout>{children}</RootLayout>
+    </NewCustomerOrderContextProvider>
   );
 }

@@ -18,9 +18,9 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const corsConfig = {
-  origin: "https://dxc-pfe-project.vercel.app",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
+origin: ["https://dxc-pfe-project.vercel.app","http://localhost:3000"], 
+credentials: true,
+methods: ["GET", "POST", "PUT", "DELETE"],
 };
 
 app.use(express.json());
@@ -46,5 +46,5 @@ app.use("/api/incidents", incidentRouter);
 // Account router
 app.use("/api/account", accountRoute);
 
-// app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
 export default app;

@@ -4,6 +4,8 @@ import { ObjectId } from "mongodb";
 import DataModel from "../../../models/data";
 import qs from "qs";
 
+const { INSTANCE_URL } = process.env
+
 export default async function addProductOrderToServiceNow(
   req: Request,
   res: Response
@@ -38,7 +40,7 @@ export default async function addProductOrderToServiceNow(
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://dev174830.service-now.com/api/sn_ind_tmt_orm/order/productOrder",
+      url: `${INSTANCE_URL}/api/sn_ind_tmt_orm/order/productOrder`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${access_token}`,
@@ -75,7 +77,7 @@ export default async function addProductOrderToServiceNow(
       let oAuthTokenConfig = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "https://dev174830.service-now.com/oauth_token.do",
+        url: `${INSTANCE_URL}/oauth_token.do`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Cookie:
@@ -119,7 +121,7 @@ export default async function addProductOrderToServiceNow(
       // let config = {
       //   method: "post",
       //   maxBodyLength: Infinity,
-      //   url: "https://dev106794.service-now.com/api/sn_ind_tmt_orm/order/productOrder",
+      //   url: `${INSTANCE_URL}/api/sn_ind_tmt_orm/order/productOrder`,
       //   headers: {
       //     "Content-Type": "application/json",
       //     Authorization: `Bearer ${newToken.access_token}`,
