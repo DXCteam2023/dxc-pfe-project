@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputText from "./InputText";
+
 import SelectInput from "./SelectInput";
 
 type OptionType = { value: string; label: string };
@@ -8,9 +8,15 @@ type PropsType = {
   options: Array<OptionType>;
   onAdd: (newLocations: Array<OptionType>) => void;
   onCancel: () => void;
+  cancelDisabled: boolean;
 };
 
-export default function LocationModal({ options, onAdd, onCancel }: PropsType) {
+export default function LocationModal({
+  options,
+  onAdd,
+  onCancel,
+  cancelDisabled,
+}: PropsType) {
   const [selectedLocations, setSelectedLocations] = useState([]);
 
   const handleOnAdd = () => {
@@ -43,6 +49,7 @@ export default function LocationModal({ options, onAdd, onCancel }: PropsType) {
                       options={options}
                       selected={selectedLocations}
                       onChange={setSelectedLocations}
+                      isMulti={true}
                     />
                   </div>
                 </div>
@@ -58,8 +65,11 @@ export default function LocationModal({ options, onAdd, onCancel }: PropsType) {
               </button>
               <button
                 type="button"
-                className="mt-3 inline-flex w-full justify-center rounded-mdv bg-white px-6 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                className={`mt-3 inline-flex w-full justify-center rounded-mdv  px-6 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto ${
+                  cancelDisabled ? "bg-gray-300 cursor-not-allowed" : "bg-white"
+                }`}
                 onClick={onCancel}
+                disabled={cancelDisabled}
               >
                 Cancel
               </button>

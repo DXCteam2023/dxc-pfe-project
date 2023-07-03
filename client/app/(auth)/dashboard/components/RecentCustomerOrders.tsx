@@ -2,8 +2,10 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import * as dotenv from "dotenv";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
+import result from "../../../../public/assets/search.png";
 
 dotenv.config();
 
@@ -84,8 +86,8 @@ const BarChart = () => {
         return "text-orange-900";
       case "completed":
         return "text-green-900";
-      case "canceled":
-        return "text-red-900";
+      case "cancellation_received":
+        return "text-white";
       default:
         return "";
     }
@@ -101,8 +103,8 @@ const BarChart = () => {
         return "bg-orange-200 shadow-orange-300";
       case "completed":
         return "bg-green-200 shadow-green-300";
-      case "canceled":
-        return "bg-red-200 shadow-red-300";
+      case "cancellation_received":
+        return "bg-red-600 shadow-red-300";
       default:
         return "";
     }
@@ -159,7 +161,7 @@ const BarChart = () => {
                       <option value="new">New</option>
                       <option value="in_progress">In progress</option>
                       <option value="completed">Completed</option>
-                      <option value="canceled">Canceled</option>
+                      <option value="cancellation_received">Canceled</option>
                     </select>
                   </div>
                 </div>
@@ -215,10 +217,10 @@ const BarChart = () => {
                         .map((order: any, index: number) => {
                           return (
                             <tr key={index}>
-                              <td>
+                              <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
                                 <button
                                   onClick={() => togglePinProduct(order._id)}
-                                  className={`font-bold border p-2  border-grey-light ${
+                                  className={`font-bold  ${
                                     pinnedProductOrders.includes(order._id)
                                       ? "text-blue-600"
                                       : "text-black"
@@ -269,7 +271,11 @@ const BarChart = () => {
                                       order.state,
                                     )} rounded-full`}
                                   >
-                                    {order.state}
+                                    {order.state === "in_progress"
+                                      ? "In Progress"
+                                      : order.state === "cancellation_received"
+                                      ? "Canceled"
+                                      : order.state}
                                   </span>
                                 </span>
                               </td>
@@ -312,6 +318,29 @@ const BarChart = () => {
                         })}
                     </tbody>
                   </table>
+                  {sortedProductOrders.length === 0 && (
+                    <table className="w-full border-collapse">
+                      <tbody className="mx-auto">
+                        <tr>
+                          <td colSpan={6} className="text-center">
+                            <div className="flex justify-center items-center">
+                              <Image
+                                src={result}
+                                alt="Just a flower"
+                                className="w-1/4 h-1/4 object-fill rounded-2xl"
+                              />
+                              <br />
+                            </div>
+                            <div className="ml-4">
+                              <p className="text-gray-900 font-bold text-xl">
+                                No Result Found ...
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
                   <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                     <span className="text-xs xs:text-sm text-gray-900">
                       Showing {indexOfFirstOrder + 1} to{" "}

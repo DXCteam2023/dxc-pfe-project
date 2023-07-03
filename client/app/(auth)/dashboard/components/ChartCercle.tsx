@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Chart, registerables } from "chart.js";
+import { ClockLoader } from "react-spinners";
+import Loader from "react-loader-spinner";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -29,11 +31,16 @@ const DoughnutChart = () => {
     number[],
     string
   > | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getProductOfferings();
   }, []);
-
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
   async function getProductOfferings() {
     try {
       const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
@@ -101,11 +108,19 @@ const DoughnutChart = () => {
   }, [productOfferings]);
 
   return (
-    <div className="mx-auto w-2/3 text-center">
-      <canvas ref={chartRef} />
-      <p className="mt-2 p-3 text-indigo-800 font-semibold">
-        Product Offering By State
-      </p>
+    <div>
+      {productOfferings.length === 0 ? (
+        <div className="flex justify-center items-center">
+          <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+        </div>
+      ) : (
+        <div className="mx-auto w-2/3 text-center">
+          <canvas ref={chartRef} />
+          <p className="mt-2 p-3 text-indigo-800 font-semibold">
+            Product Offering By State
+          </p>
+        </div>
+      )}
     </div>
   );
 };

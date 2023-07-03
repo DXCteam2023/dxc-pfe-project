@@ -70,7 +70,17 @@ const UserChart = ({ userID }: { userID: string }) => {
     }
   }
 
-  return <canvas ref={chartRef} />;
+  return (
+    <div>
+      {productOfferings.length === 0 ? (
+        <div className="flex justify-center items-center">
+          <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+        </div>
+      ) : (
+        <canvas ref={chartRef} />
+      )}{" "}
+    </div>
+  );
 };
 
 export default UserChart;

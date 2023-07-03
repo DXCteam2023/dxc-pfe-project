@@ -63,16 +63,25 @@ const AgentChart = ({ userID }: { userID: string }) => {
       const ordersByUser = productsData.filter(
         (order: any) => order.createdBy === userID,
       );
-
-      console.log("Commandes de l'utilisateur :", ordersByUser);
-
       setProducts(ordersByUser);
     } catch (error) {
       console.error("Erreur lors de la récupération des commandes :", error);
     }
   }
 
-  return <canvas ref={chartRef} />;
+  return (
+    <div>
+      {products.length === 0 ? (
+        <div className="flex justify-center items-center">
+          <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+        </div>
+      ) : (
+        <div className="w-full flex justify-center ">
+          <canvas ref={chartRef} />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default AgentChart;

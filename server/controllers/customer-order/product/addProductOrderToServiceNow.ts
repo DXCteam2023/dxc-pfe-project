@@ -119,7 +119,7 @@ export default async function addProductOrderToServiceNow(
       // let config = {
       //   method: "post",
       //   maxBodyLength: Infinity,
-      //   url: "https://dev106794.service-now.com/api/sn_ind_tmt_orm/order/productOrder",
+      //   url: `${INSTANCE_URL}/api/sn_ind_tmt_orm/order/productOrder`,
       //   headers: {
       //     "Content-Type": "application/json",
       //     Authorization: `Bearer ${newToken.access_token}`,
@@ -151,16 +151,23 @@ export default async function addProductOrderToServiceNow(
               "Error occured while creating a new product order in the servicenow instance",
           })
         );
+      } else {
+        res.status(201).send(
+          JSON.stringify({
+            message: "New Product Order inserted in servicenow",
+            productOrder: newProductOrder,
+          })
+        );
       }
+    } else {
+      res.status(201).send(
+        JSON.stringify({
+          message: "New Product Order inserted in servicenow",
+          productOrder: newProductOrder,
+        })
+      );
     }
   } catch (error) {
     return { error };
   }
-
-  res.status(201).send(
-    JSON.stringify({
-      message: "New Product Order inserted in servicenow",
-      productOrder: newProductOrder,
-    })
-  );
 }
