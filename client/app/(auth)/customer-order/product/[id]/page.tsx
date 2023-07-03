@@ -10,6 +10,7 @@ import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 
 import "../styles.css";
+import { FaUser, FaUserCircle } from "react-icons/fa";
 
 dotenv.config();
 
@@ -229,14 +230,13 @@ const page = ({ params }: { params: { id: string } }) => {
                       ></input>
                     </div>
                   </div>
-                </div>
-
+                  
                 <div className="tabs">
                   <div
                     className={`tab ${activeTab === 0 ? "active" : ""}`}
                     onClick={() => handleTabClick(0)}
                   >
-                    product Order Item
+                    Product Order Item
                   </div>
                   <div
                     className={`tab ${activeTab === 1 ? "active" : ""}`}
@@ -269,23 +269,23 @@ const page = ({ params }: { params: { id: string } }) => {
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a href="#">SHOW/HIDE</a>
+                        <button>SHOW/HIDE</button>
                         <div className="submenu-content">
-                          <a
+                          <button
                             className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
                             onClick={() =>
                               setVersionColumnVisible(!versionColumnVisible)
                             }
                           >
                             {versionColumnVisible ? "Hide" : "Show"} version
-                          </a>
-                          <a
+                          </button>
+                          <button
                             className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
                             onClick={() => setidColumnVisible(!idColumnVisible)}
                           >
                             {idColumnVisible ? "Hide" : "Show"} ID
-                          </a>
-                          <a
+                          </button>
+                          <button
                             className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
                             onClick={() =>
                               setrelationColumnVisible(!relationColumnVisible)
@@ -293,7 +293,7 @@ const page = ({ params }: { params: { id: string } }) => {
                           >
                             {relationColumnVisible ? "Hide" : "Show"}{" "}
                             relationship
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -304,40 +304,40 @@ const page = ({ params }: { params: { id: string } }) => {
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a href="#">State</a>
+                        <button >State</button>
                         <div className="submenu-content">
-                          <a onClick={() => handleStateFilter("completed")}>
+                          <button onClick={() => handleStateFilter("completed")}>
                             <p className="text-black-500">Completed</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("canceled")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("canceled")}>
                             <p className="text-black-500">Canceled</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("on hold")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("on hold")}>
                             <p className="text-black-500">On Hold</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("In progress")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("In progress")}>
                             <p className="text-black-500">In Progress</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("scheduled")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("scheduled")}>
                             <p className="text-black-500">Scheduled</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("new")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("new")}>
                             <p className="text-black-500">New</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("in draft")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("in draft")}>
                             <p className="text-black-500">in draft</p>
-                          </a>
+                          </button>
                         </div>
                       </div>
                       <div className="submenu">
-                        <a href="#">PONR</a>
+                        <button >PONR</button>
                         <div className="submenu-content">
-                          <a onClick={() => handlePONRFilter("true")}>
+                          <button onClick={() => handlePONRFilter("true")}>
                             <p className="text-black-500">True</p>
-                          </a>
-                          <a onClick={() => handlePONRFilter("false")}>
+                          </button>
+                          <button onClick={() => handlePONRFilter("false")}>
                             <p className="text-black-500">False</p>
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -505,13 +505,17 @@ const page = ({ params }: { params: { id: string } }) => {
                                         aria-hidden
                                         className={`absolute inset-0 ${
                                           item.state === "completed"
-                                            ? "bg-green-200"
+                                            ? "bg-blue-200"
                                             : item.state === "on hold"
+                                            ? "bg-gray-200"
+                                            : item.state === "in draft"
                                             ? "bg-yellow-200"
                                             : item.state === "in progress"
-                                            ? "bg-blue-200"
+                                            ? "bg-orange-200"
                                             : item.state === "canceled"
                                             ? "bg-red-200"
+                                            : item.state === "new"
+                                            ? "bg-green-200"
                                             : item.state === "scheduled"
                                             ? "bg-purple-200"
                                             : ""
@@ -533,36 +537,20 @@ const page = ({ params }: { params: { id: string } }) => {
                                     </p>
                                   </td>
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                    {item.itemPrice.map(
-                                      (
-                                        price: {
-                                          priceType: string;
-                                          price: {
-                                            taxIncludedAmount: {
-                                              value: any;
-                                              unit: any;
-                                            };
-                                          };
-                                        },
-                                        priceIndex:
-                                          | React.Key
-                                          | null
-                                          | undefined,
-                                      ) => {
-                                        if (price.priceType === "recurring") {
-                                          return (
-                                            <p
-                                              key={priceIndex}
-                                              className="text-gray-900 whitespace-no-wrap"
-                                            >
-                                              {`${price.price.taxIncludedAmount.value} ${price.price.taxIncludedAmount.unit}`}
-                                            </p>
-                                          );
-                                        }
-                                        return null;
-                                      },
-                                    )}
-                                  </td>
+  {item.itemPrice.map((price: { priceType: string; price: { taxIncludedAmount: { value: any; unit: any; }; }; }, priceIndex: React.Key | null | undefined) => {
+    if (price.priceType === "recurring" && price.price.taxIncludedAmount) {
+      return (
+        <p
+          key={priceIndex}
+          className="text-gray-900 whitespace-no-wrap"
+        >
+          {`${price.price.taxIncludedAmount.value} ${price.price.taxIncludedAmount.unit}`}
+        </p>
+      );
+    }
+    return null;
+  })}
+</td>
                                 </tr>
                               ))
                           )}
@@ -571,27 +559,12 @@ const page = ({ params }: { params: { id: string } }) => {
                     </div>
                   </div>
                 </div>
-
                 <div
                   className={`tab-content ${activeTab === 1 ? "active" : ""}`}
                 >
                   <div className="overflow-x-auto table-container">
                     <div className="table-responsive">
-                      <div className="dropdown">
-                        <button className="dropbtn" title="Refresh">
-                          <FiRefreshCcw size={20} color="white" />
-                        </button>
-                      </div>
-                      <div className="dropdown">
-                        <button className="dropbtn" title="Refresh">
-                          <IoMdOptions size={20} color="white" />
-                        </button>
-                      </div>
-                      <div className="dropdown">
-                        <button className="dropbtn" title="Refresh">
-                          <FiFilter size={20} color="white" />
-                        </button>
-                      </div>
+                    
                       <table className=" w-full max-w-full mx-auto shadow rounded-lg overflow-hidden">
                         <thead>
                           <tr>
@@ -651,15 +624,31 @@ const page = ({ params }: { params: { id: string } }) => {
                   </div>
                 </div>
 
-                <div
-                  className={`tab-content ${activeTab === 2 ? "active" : ""}`}
-                >
-                  <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                    type="text"
-                    value={product.note}
-                  ></input>
+                <div className={`tab-content ${activeTab === 2 ? "active" : ""}`}>
+  {product.note.map((noteItem: { date: string | number | Date; author: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; text: string | number | readonly string[] | undefined; }, index: React.Key | null | undefined) => {
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour:'numeric', minute:'2-digit' };
+    const formattedDate = new Date(noteItem.date).toLocaleDateString("en-US", options);
+
+    return (
+      <div key={index}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px',marginBottom: '2px', fontWeight: 'bold', color: '#8b2d8c' }}>
+          <FaUserCircle  />
+          <p >
+            {noteItem.author}
+          </p>
+        </div>
+        <p style={{fontStyle:'italic', color: 'gray' ,fontSize:'14px'}}>{formattedDate}</p>
+        <textarea
+          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          value={noteItem.text}
+          readOnly
+        ></textarea>
+      </div>
+    );
+  })}
+</div>
                 </div>
+
               </div>
             </div>
           )}
