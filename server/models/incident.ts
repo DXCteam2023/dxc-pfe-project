@@ -10,7 +10,8 @@ const incidentSchema = new mongoose.Schema({
   state: { type: String, required: true },
   updateDate: { type: Date, default: Date.now },
   createDate: { type: Date, default: Date.now },
-  read: { type: Boolean, defeault: false },
+  read: { type: Boolean, default: false },
+  caller: { type: String, required: true }, // Add caller field
 });
 
 const IncidentModel = mongoose.model("Incidents", incidentSchema);

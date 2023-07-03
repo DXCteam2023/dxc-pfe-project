@@ -13,7 +13,6 @@ import {
   OptionType,
 } from "../context/new-customer-order-context";
 import LocationModal from "../components/LocationModal";
-import SelectInput from "../components/SelectInput";
 import {
   ProductOfferingServices,
   LocationServices,
@@ -21,6 +20,7 @@ import {
 } from "../services";
 import ProductOfferingItem from "./ProductOfferingItem";
 import generateCreateOrderRequestBody from "../utils/generateCreateOrderRequestBody";
+import readCreateOrderResponse from "../utils/readCreateOrderResponse";
 
 export default function SelectProduct() {
   const route = useRouter();
@@ -39,6 +39,12 @@ export default function SelectProduct() {
   const [accountLocations, setAccountLocations] = useState(
     [] as Array<OptionType>,
   );
+
+  useEffect(() => {
+    if (myContext.locations.length === 0) {
+      setShowNewLocationModal(true);
+    }
+  }, []);
 
   useEffect(() => {
     const getLocationsByAccountId = async () => {
@@ -103,10 +109,16 @@ export default function SelectProduct() {
     console.log("handleConfigureOnClick requestBody", requestBody);
 
     // call instance to create order
-    await ProductOrderServices.createOrder(requestBody);
+    const result = await ProductOrderServices.createOrder(requestBody);
+
+    // read response
+    const updatedData = readCreateOrderResponse(result.data.productOrder);
+
+    // store updated data
+    myContext.updateProductOrdersOnCreateOrder(updatedData);
 
     // redirect to step 3
-    // route.push("/customer-order/product/new/configure-product");
+    route.push("/customer-order/product/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {
@@ -118,8 +130,10 @@ export default function SelectProduct() {
   };
 
   const handleLocationOnAdd = (newLocations: Array<OptionType>) => {
+    console.log("location", newLocations);
     const tamp = myContext.locations.concat(newLocations);
     myContext.setLocations(tamp);
+    myContext.setSelectedLocationId(newLocations[0].value);
     setShowNewLocationModal(false);
   };
 
@@ -129,6 +143,10 @@ export default function SelectProduct() {
 
   const handleAddLocationOnClick = () => {
     setShowNewLocationModal(true);
+  };
+
+  const handleDeleteLocationOnClick = () => {
+    myContext.deleteSelectedLocation();
   };
 
   const handleProductOfferingOnChange = (option: OptionType, index: number) => {
@@ -153,6 +171,10 @@ export default function SelectProduct() {
     myContext.setSelectedLocationId(locationId);
   };
 
+  const handleProductOfferingOnDelete = (index: number) => {
+    myContext.deleteProductOffering(index);
+  };
+
   // console.log("OFFERING - ", myContext.selectedOfferings);
   return (
     <SubLayout
@@ -160,15 +182,25 @@ export default function SelectProduct() {
         <div className="flex flex-col">
           {showNewLocationModal && (
             <LocationModal
-              options={accountLocations}
+              options={accountLocations.filter(
+                // filter to only not selected locations
+                (location) =>
+                  !myContext.locations.find(
+                    (location2) => location.value === location2.value,
+                  ),
+              )}
               onAdd={handleLocationOnAdd}
               onCancel={handleLocationOnCancel}
+              cancelDisabled={myContext.locations.length === 0}
             />
           )}
           <div className="flex gap-4 justify-between items-center p-4">
             <h4 className="font-extrabold">Locations</h4>
             <span className="flex gap-4 justify-between items-center">
-              <BsFillTrash3Fill className="cursor-pointer" />
+              <BsFillTrash3Fill
+                className="cursor-pointer"
+                onClick={handleDeleteLocationOnClick}
+              />
               <BsPlusLg
                 className="cursor-pointer"
                 onClick={handleAddLocationOnClick}
@@ -255,6 +287,7 @@ export default function SelectProduct() {
                 onChange={(option) =>
                   handleProductOfferingOnChange(option, index)
                 }
+                onDelete={() => handleProductOfferingOnDelete(index)}
               />
             ))}
           </div>

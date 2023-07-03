@@ -25,7 +25,6 @@ const AdminStatistique = () => {
       );
       const productSpecification = response.data;
       setProducts(productSpecification);
-      console.log("hello", productSpecification);
     } catch (error) {
       console.error("Erreur lors de la récupération des services:", error);
     }

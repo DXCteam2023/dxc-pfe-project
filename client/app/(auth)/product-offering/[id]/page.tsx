@@ -11,6 +11,14 @@ dotenv.config();
 
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
 
+const publishProductOffering = (id: string) => {
+  try {
+    axios.patch(`${AXIOS_URL}/api/product-offering/${id}`);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export default async function SingleProductOfferingPage({
   params,
 }: {
@@ -47,16 +55,16 @@ export default async function SingleProductOfferingPage({
             </span>
           </div>
           <div className="action-buttons flex gap-4">
-            <button className="bg-blue-400 py-1 px-3 rounded-md text-white font-medium hover:bg-blue-500 shadow-sm hover:shadow-md duration-300">
-              Copy
-            </button>
-            {productOffering?.status === "published" ? (
-              <button className="bg-orange-300 py-1 px-3 rounded-md font-medium hover:bg-blue-500 shadow-sm hover:shadow-md duration-300">
-                Archive
+            {productOffering?.status === "draft" ? (
+              <button
+                className="bg-green-400 py-1 px-3 rounded-md font-medium hover:bg-green-500 shadow-sm hover:shadow-md duration-300"
+                onClick={() => publishProductOffering(id)}
+              >
+                Publish
               </button>
             ) : (
-              <button className="bg-green-400 py-1 px-3 rounded-md font-medium hover:bg-green-500 shadow-sm hover:shadow-md duration-300">
-                Publish
+              <button className="bg-orange-300 py-1 px-3 rounded-md font-medium hover:bg-orange-400 shadow-sm hover:shadow-md duration-300">
+                Archive
               </button>
             )}
           </div>

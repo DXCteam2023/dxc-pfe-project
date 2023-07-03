@@ -23,9 +23,6 @@ const BarChart = () => {
 
   async function getProductOrders() {
     try {
-      // const response = await axios.get(
-      //  `http://localhost:5000/api/customer-order/product`,
-      // );
       const response = await axios.get(
         `${AXIOS_URL}/api/customer-order/product`,
       );
@@ -131,12 +128,19 @@ const BarChart = () => {
 
   return (
     <div>
-      <div className="mx-auto py-4 text-center">
-        <canvas ref={chartRef} />
-        <p className="mt-2 text-purple-600 font-semibold">
-          Product Orders By Month
-        </p>
-      </div>
+      {products.labels.length === 0 ? (
+        <div className="flex justify-center items-center">
+          <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+        </div>
+      ) : (
+        <div className="mx-auto py-4 text-center">
+          <canvas ref={chartRef} />
+          <p className="mt-2 text-purple-600 font-semibold">
+            Product Orders By Month
+          </p>
+        </div>
+      )}
+
       {/* <div className="item-end">
         <p className="mt-2 text-gray-600 font-semibold">Total Revenue : </p>
       </div> */}

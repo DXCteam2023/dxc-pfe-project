@@ -70,6 +70,7 @@ const Header = () => {
     incidentNumber: string;
     state: string;
     read: Boolean;
+    caller: string;
     // other properties...
   }
   const [productOrders, setProductOrders] = React.useState<
@@ -401,13 +402,13 @@ const Header = () => {
                                         <span className="text-gray-400 whitespace-nowrap mr-3">
                                           4.60
                                         </span>
-                                        <span className="mr-2 text-gray-400">
-                                          {offering.name}
+                                        <span className="mr-2  text-gray-800 w-40 h-8 ">
+                                          {offering.description}
                                         </span>
                                       </div>
                                       <div className="flex items-center w-full justify-between min-w-0 ">
-                                        <h2 className="text-lg mr-auto cursor-pointer text-gray-800 hover:text-purple-500 truncate">
-                                          {offering.description}
+                                        <h2 className="mt-8 text-lg mr-auto cursor-pointer text-gray-400  hover:text-purple-500 truncate">
+                                          {offering.name}
                                         </h2>
                                         <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div>
                                       </div>
@@ -440,8 +441,15 @@ const Header = () => {
                                         </div>
                                       </div>
                                       <div className="flex space-x-2 text-sm font-medium justify-start">
-                                        <button className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg  text-white rounded-full hover:bg-purple-600">
-                                          <span>View Details</span>
+                                        <button
+                                          onClick={() => {
+                                            window.location.href = `/product-offering/${offering._id}`;
+                                          }}
+                                          className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 w-35 h-8 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
+                                        >
+                                          <span className="text-center mx-2">
+                                            View Details
+                                          </span>
                                         </button>
                                       </div>
                                     </div>
@@ -696,7 +704,7 @@ const Header = () => {
                     <div className="flex justify-between py-4 px-6 rounded-lg">
                       <div key={index} className="flex items-center space-x-4">
                         <div className="flex flex-col space-y-1">
-                          <span className="font-bold">caller</span>
+                          <span className="font-bold">{incident.caller}</span>
                           <span className="text-sm">
                             <p
                               onClick={() => handleIncidentClick(incident._id)}

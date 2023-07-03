@@ -71,7 +71,7 @@ export default interface IProductOfferingDocument {
   prodSpecCharValueUse?: ProdSpecCharValueUse[];
   validFor: ValidFor;
   version?: string;
-  status: string;
-  createdBy: String;
-  created: Date;
+  status?: string;
+  // createdBy: String;
+  // created: Date;
 }
