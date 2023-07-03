@@ -107,6 +107,11 @@ type RelatedParty = {
   "@type": string;
 };
 
+type SoldProduct = {
+  orderLineID: string;
+  soldProductID: string;
+};
+
 export default interface IProductOrderDocument {
   orderNumber: string;
   channel: Channel[];
@@ -121,8 +126,9 @@ export default interface IProductOrderDocument {
   completionDate?: string;
   expectedCompletionDate?: string;
   ponr: boolean;
-  status: string;
+  state: string;
   createdBy: string;
   created: Date;
+  soldProducts?: SoldProduct[];
   "@type": string;
 }
