@@ -148,20 +148,21 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     }
   };
 
-  const handleSubmitEditPublish: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmitEditPublish: FormEventHandler<HTMLFormElement> = async (
+    e,
+  ) => {
     e.preventDefault();
     try {
       const id = product.externalId;
       console.log(id);
-  
+
       const url = `http://localhost:5000/api/product-offering/${id}`;
       await axios.patch(url);
-  
+
       // Handle the successful response
-  
     } catch (error) {
       console.error("An error occurred:", error);
-  
+
       // Handle different types of errors
       if (axios.isAxiosError(error)) {
         // Axios error
@@ -185,12 +186,10 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         console.error("Unknown error:", error);
         // Handle other errors
       }
-  
+
       // Display an error message to the user or perform any other error handling
-  
     }
   };
-
 
   const handleSubmitEditRe: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
