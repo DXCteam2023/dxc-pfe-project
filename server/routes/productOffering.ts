@@ -4,6 +4,7 @@ import {
   getArchivedProductOfferings,
   getProductOfferingById,
   getProductOfferings,
+  
   publishProductOffering,
 } from "../controllers/product-offering";
 
@@ -15,7 +16,9 @@ productOfferingRoute.get("/:id", getProductOfferingById);
 
 productOfferingRoute.post("/", addProductOffering);
 
-productOfferingRoute.patch("/:id", publishProductOffering);
+productOfferingRoute.patch("/:id", publishProductOffering,);
+
+//productOfferingRoute.patch("/:id", updateProductOffering);
 
 productOfferingRoute.get("/archived/all", getArchivedProductOfferings);
 

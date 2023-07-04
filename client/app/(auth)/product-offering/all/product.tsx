@@ -148,32 +148,49 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     }
   };
 
-  const handleSubmitEditPublish: FormEventHandler<HTMLFormElement> = async (
-    e,
-  ) => {
+  const handleSubmitEditPublish: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      // Make sure to replace the placeholders with the actual values
       const id = product.externalId;
-      axios.patch(`${AXIOS_URL}/api/product-offering/${id}`);
+      console.log(id);
+  
+      const url = `http://localhost:5000/api/product-offering/${id}`;
+      await axios.patch(url);
+  
+      // Handle the successful response
+  
     } catch (error) {
       console.error("An error occurred:", error);
-      // Handle any other errors
+  
+      // Handle different types of errors
       if (axios.isAxiosError(error)) {
+        // Axios error
         const axiosError = error as AxiosError;
         if (axiosError.response) {
+          // The request was made and the server responded with a status code
           console.error("Response status:", axiosError.response.status);
           console.error("Response data:", axiosError.response.data);
+          // Handle specific status codes or error messages
         } else if (axiosError.request) {
+          // The request was made but no response was received
           console.error("No response received:", axiosError.request);
+          // Handle the lack of response
         } else {
+          // Something else happened while setting up the request
           console.error("Error setting up the request:", axiosError.message);
+          // Handle other errors
         }
       } else {
-        console.error("Unkown error:", error);
+        // Other unknown error
+        console.error("Unknown error:", error);
+        // Handle other errors
       }
+  
+      // Display an error message to the user or perform any other error handling
+  
     }
   };
+
 
   const handleSubmitEditRe: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
