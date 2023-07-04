@@ -193,7 +193,6 @@ export default function ConfigureProduct() {
               />
             </div>
           </div>
-         
         </>
       }
       bottomChildren={
