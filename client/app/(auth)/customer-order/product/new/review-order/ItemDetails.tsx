@@ -1,7 +1,7 @@
 import React from "react";
 import InputText from "../components/InputText";
 
-type ItemDetailsType = { item: any, onClose: () => void };
+type ItemDetailsType = { item: any; onClose: () => void };
 
 export default function ItemDetails({ item, onClose }: ItemDetailsType) {
   console.log("ITEM DETAIL PROPS", item);
@@ -45,7 +45,12 @@ export default function ItemDetails({ item, onClose }: ItemDetailsType) {
         placeholder="price"
         value={item.price}
       />
-      <button className="border bg-[#5f249f] text-white w-fit p-1 px-4 rounded-[5px] hover:opacity-80" onClick={onClose}>Close</button>
+      <button
+        className="border bg-[#5f249f] text-white w-fit p-1 px-4 rounded-[5px] hover:opacity-80"
+        onClick={onClose}
+      >
+        Close
+      </button>
     </div>
   );
 }
