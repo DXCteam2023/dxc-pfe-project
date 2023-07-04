@@ -1,9 +1,9 @@
 import React from "react";
 import InputText from "../components/InputText";
 
-type ItemDetailsType = { item: any };
+type ItemDetailsType = { item: any, onClose: () => void };
 
-export default function ItemDetails({ item }: ItemDetailsType) {
+export default function ItemDetails({ item, onClose }: ItemDetailsType) {
   console.log("ITEM DETAIL PROPS", item);
   return (
     <div className="create-order flex flex-col p-4 gap-4 w-full">
@@ -21,7 +21,7 @@ export default function ItemDetails({ item }: ItemDetailsType) {
           title="Location"
           required={false}
           placeholder="Location"
-          value={item.productSpecification}
+          value={item.location.name}
         />
       </div>
       <InputText
@@ -29,15 +29,23 @@ export default function ItemDetails({ item }: ItemDetailsType) {
         title="Product Specification"
         required={false}
         placeholder="Product Specification"
-        value={item.location}
+        value={item.productSpecification}
       />
       <InputText
-        slug="Something"
-        title="Something"
+        slug="quantity"
+        title="quantity"
         required={false}
-        placeholder="Something"
+        placeholder="quantity"
         value={item.orderedQuantity}
       />
+      <InputText
+        slug="price"
+        title="Price"
+        required={false}
+        placeholder="price"
+        value={item.price}
+      />
+      <button className="border bg-[#5f249f] text-white w-fit p-1 px-4 rounded-[5px] hover:opacity-80" onClick={onClose}>Close</button>
     </div>
   );
 }
