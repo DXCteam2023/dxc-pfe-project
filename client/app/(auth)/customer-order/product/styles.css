@@ -92,7 +92,7 @@ thead {
 }
 
 /* Links inside the dropdown */
-.dropdown-content a {
+.dropdown-content button {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
@@ -168,29 +168,7 @@ thead {
   }
 }
 
-/*Modal*/
-.Details {
-  width: 100%;
-}
-.navbar {
-  background-color: #8b2d8c;
-  padding: 10px;
-  margin-bottom: 20px;
-}
-h3 {
-  font-weight: bold;
-  color: white;
-  margin-left: 10px;
-}
 
-/*close*/
-
-.close-button {
-  color: white;
-  display: inline;
-
-  float: right;
-}
 .Infos {
   margin-left: 40px;
   margin-right: 40px;
@@ -208,13 +186,56 @@ h3 {
 }
 
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #8b2d8c; /* Blue */
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #8b2d8c; 
   border-radius: 50%;
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
 }
+/* .loader {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.loader-large {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: #D4ADFC;
+  border-radius: 10px;
+  animation: loading 2s infinite;
+}
+
+.loader-small {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  inset: 0;
+  margin: auto;
+  background-color: #5C469C;
+  z-index: 2;
+  border-radius: 6px;
+  animation: loading 2s infinite reverse;
+} */
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotateY(180deg);
+  }
+
+  100% {
+    transform: rotateX(180deg);
+  }
+}
+
 
 @keyframes spin {
   0% {
@@ -231,10 +252,13 @@ h3 {
 }
 
 .tab {
-  padding: 10px 20px;
+  padding:auto;
+  min-height: 50px;
+  height: auto;
+  width: auto;
+  color: gray;
   background-color: #f2f2f2;
   cursor: pointer;
-
   border: 1px solid #ccc;
 }
 
@@ -274,3 +298,4 @@ h2 {
   color: #8b2d8c;
   margin-left: 15px;
 }
+/* load */

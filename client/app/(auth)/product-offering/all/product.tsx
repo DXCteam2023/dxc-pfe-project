@@ -7,7 +7,7 @@ import {
 import { FormEventHandler, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrStatusDisabled, GrView } from "react-icons/gr";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as dotenv from "dotenv";
 import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
 import Modal from "./Modal";
@@ -154,32 +154,24 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     e.preventDefault();
     try {
       // Make sure to replace the placeholders with the actual values
-      const id = product.id;
-      const po = {
-        status: "Published",
-      };
-      try {
-        const productOffering = await axios
-          .get(`${AXIOS_URL}/api/product-offering/${id}`)
-          .then((res) => res.data)
-          .catch((e) => console.log(e));
-
-        const poId = productOffering._id;
-
-        const updatePo = await axios
-          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
-          .then((res) => res.data)
-          .catch((error) => console.log({ error }));
-
-        console.log("Updated Product Offering:", updatePo);
-        setModalOpen(false);
-        window.location.reload();
-      } catch (e) {
-        console.log("Axios error:", e);
-      }
+      const id = product.externalId;
+      axios.patch(`${AXIOS_URL}/api/product-offering/${id}`);
     } catch (error) {
       console.error("An error occurred:", error);
       // Handle any other errors
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          console.error("Response status:", axiosError.response.status);
+          console.error("Response data:", axiosError.response.data);
+        } else if (axiosError.request) {
+          console.error("No response received:", axiosError.request);
+        } else {
+          console.error("Error setting up the request:", axiosError.message);
+        }
+      } else {
+        console.error("Unkown error:", error);
+      }
     }
   };
 
