@@ -10,23 +10,23 @@ export default async function updatePassword(req: Request, res: Response) {
     const user = await User.findById(id);
 
     if (!user) {
-      return res.status(404).send({ message: "User not found" });
+      res.status(404).send({ message: "User not found" });
     }
 
     const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).send({ message: "Invalid old password" });
+      res.status(401).send({ message: "Invalid old password" });
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedNewPassword;
     await user.save();
 
-    return res.status(200).send({ message: "Password updated successfully" });
+    res.status(200).send({ message: "Password updated successfully" });
   } catch (error) {
     console.log("error:", error);
-    return res.status(500).send({
+    res.status(500).send({
       message: "Internal server error - Error while updating password",
     });
   }
