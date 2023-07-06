@@ -253,7 +253,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           className="text-green-500"
           size={25}
         /> */}
-        <button className="btn btn-sm btn-info" onClick={() => setModalOpen(true)}>Update</button>
+        <button
+          className="btn btn-sm btn-info"
+          onClick={() => setModalOpen(true)}
+        >
+          Update
+        </button>
         &nbsp;
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <form onSubmit={handleSubmitEditProOf}>
@@ -319,8 +324,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           //   cursor="pointer"
           //   onClick={() => setOpenModalPublish(true)}
           // />
-          <button className="btn btn-sm btn-success" onClick={() => setOpenModalPublish(true)} >Publish</button>
-          
+          <button
+            className="btn btn-sm btn-success"
+            onClick={() => setOpenModalPublish(true)}
+          >
+            Publish
+          </button>
         ) : null}
         &nbsp;
         <Modal modalOpen={openModalPublish} setModalOpen={setOpenModalPublish}>
@@ -354,7 +363,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           //   cursor="pointer"
           //   onClick={() => setOpenModalRetired(true)}
           // />
-          <button className="btn btn-sm btn-warning" onClick={() => setOpenModalRetired(true)}>Retire</button>
+          <button
+            className="btn btn-sm btn-warning"
+            onClick={() => setOpenModalRetired(true)}
+          >
+            Retire
+          </button>
         ) : null}
         &nbsp;
         <Modal modalOpen={openModalRetired} setModalOpen={setOpenModalRetired}>
