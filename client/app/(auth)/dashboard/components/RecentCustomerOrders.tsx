@@ -4,7 +4,7 @@ import axios from "axios";
 import * as dotenv from "dotenv";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
+// import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import result from "../../../../public/assets/search.png";
 
 dotenv.config();
@@ -226,7 +226,7 @@ const BarChart = () => {
                                       : "text-black"
                                   }`}
                                 >
-                                  <FontAwesomeIcon icon={faThumbtack} />
+                                  {/* <FontAwesomeIcon icon={faThumbtack} /> */}
                                 </button>
                               </td>
                               <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">

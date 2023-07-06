@@ -10,7 +10,7 @@ import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 
 import "../styles.css";
-import { FaUser, FaUserCircle } from "react-icons/fa";
+import { FaArrowRight, FaCheck, FaTimes, FaUser, FaUserCircle } from "react-icons/fa";
 
 dotenv.config();
 
@@ -194,10 +194,11 @@ const page = ({ params }: { params: { id: string } }) => {
                         Channel:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        type="text"
-                        value={product.channel[0].name}
-                      ></input>
+  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+  type="text"
+  value={product.channel && product.channel[0] ? product.channel[0].name : ''}
+/>
+
                     </div>
                     <div className="w-full md:w-1/3 px-3">
                       <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
@@ -230,7 +231,183 @@ const page = ({ params }: { params: { id: string } }) => {
                       ></input>
                     </div>
                   </div>
-                  
+                  <div className="w-full md:w-1/1 px-3">
+  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+    tracking:
+  </label>
+  <div>
+    
+    <div style={{  alignItems: 'center' }}>
+  
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'new' && <FaArrowRight color="blue" size={24} />}
+    {product.state !== 'new' && <FaCheck color="green" size={24} />}
+  </div>
+  <p style={{ marginLeft: '10px' }}>Waiting for Approval (Approved)</p>
+
+  </div>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'rejected' && <FaCheck color="green" size={24} />}
+    </div>
+    <p style={{ marginLeft: '10px' }}>Order rejected (Rejected)</p></div>
+   
+
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {((product.state !== 'new' && product.state !== 'in_progress') ||(product.state === 'in_progress' && product.productOrderItem.some((item: { state: string; }) => item.state === 'completed') )) && <FaCheck color="green" size={24} />}
+
+    {product.state === 'in_progress' && (product.productOrderItem.filter((item: { state: string; }) => item.state === 'completed').length===0) && <FaArrowRight color="blue" size={24} />}
+    </div>
+    <p style={{ marginLeft: '10px' }}>Order In Progress (In Progress)</p>
+   
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+   
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'completed' && <FaCheck color="green" size={24} />}
+    {product.state === 'in_progress' && (product.productOrderItem.filter((item: { state: string; }) => item.state === 'completed').length!==0) && <FaArrowRight color="blue" size={24} />}
+
+    </div>
+    <p style={{ marginLeft: '10px' }}>Fulfillment (In Progress)</p>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'completed' && <FaCheck color="green" size={24} />}
+    </div>
+    <p style={{ marginLeft: '10px' }}>Customer Order (Completed)</p>
+
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+  <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {(product.state === 'cancellation_received' || product.state === 'canceled') && (
+      <FaCheck color="green" size={24} />
+    )}
+    {(product.state === 'assessing_cancellation'&& 
+      <FaArrowRight color="blue" size={24} />
+    )}
+    
+  </div>
+  <p style={{ marginLeft: '10px' }}>Cancellation request (Assessing cancellation)</p>
+
+</div>
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'cancellation_received' &&  (
+        <FaArrowRight color="blue" size={24} />
+
+)}
+{product.state === 'canceled' && (
+       <FaCheck color="green" size={24} />
+
+)}
+</div>
+<p style={{ marginLeft: '10px' }}>Cancellation approved (Cancellation in progress)</p>
+</div>
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'canceled' && (
+        <FaCheck color="green" size={24} />
+
+)}
+ </div>
+ <p style={{ marginLeft: '10px' }}>Customer Order (Cancelled)</p>
+ </div>
+    </div>
+    </div>
+  
+</div>
+
                 <div className="tabs">
                   <div
                     className={`tab ${activeTab === 0 ? "active" : ""}`}
@@ -248,7 +425,7 @@ const page = ({ params }: { params: { id: string } }) => {
                     className={`tab ${activeTab === 2 ? "active" : ""}`}
                     onClick={() => handleTabClick(2)}
                   >
-                    Note
+                    Notes
                   </div>
                 </div>
                 <div
@@ -271,30 +448,32 @@ const page = ({ params }: { params: { id: string } }) => {
                       <div className="submenu">
                         <button>SHOW/HIDE</button>
                         <div className="submenu-content">
-                          <button
-                            className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-                            onClick={() =>
-                              setVersionColumnVisible(!versionColumnVisible)
-                            }
-                          >
-                            {versionColumnVisible ? "Hide" : "Show"} version
-                          </button>
-                          <button
-                            className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-                            onClick={() => setidColumnVisible(!idColumnVisible)}
-                          >
-                            {idColumnVisible ? "Hide" : "Show"} ID
-                          </button>
-                          <button
-                            className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-                            onClick={() =>
-                              setrelationColumnVisible(!relationColumnVisible)
-                            }
-                          >
-                            {relationColumnVisible ? "Hide" : "Show"}{" "}
-                            relationship
-                          </button>
-                        </div>
+  <button
+    onClick={() => setVersionColumnVisible(!versionColumnVisible)}
+  >
+        <p className="text-black-500">        {versionColumnVisible ? "Hide" : "Show"} version
+
+
+</p>
+  </button>
+
+  <button
+    onClick={() => setidColumnVisible(!idColumnVisible)}
+  >
+    <p className="text-black-500">     {idColumnVisible ? "Hide" : "Show"} ID
+
+</p>
+  </button>
+  
+  <button
+   
+    onClick={() => setrelationColumnVisible(!relationColumnVisible)}
+  >
+     <p className="text-black-500"> {relationColumnVisible ? "Hide" : "Show"} relationship
+</p>
+  </button>
+</div>
+
                       </div>
                     </div>
                   </div>
@@ -309,13 +488,13 @@ const page = ({ params }: { params: { id: string } }) => {
                           <button onClick={() => handleStateFilter("completed")}>
                             <p className="text-black-500">Completed</p>
                           </button>
-                          <button onClick={() => handleStateFilter("canceled")}>
-                            <p className="text-black-500">Canceled</p>
+                          <button onClick={() => handleStateFilter("cancellation_received")}>
+                            <p className="text-black-500">cancellation_received</p>
                           </button>
                           <button onClick={() => handleStateFilter("on hold")}>
                             <p className="text-black-500">On Hold</p>
                           </button>
-                          <button onClick={() => handleStateFilter("In progress")}>
+                          <button onClick={() => handleStateFilter("in_progress")}>
                             <p className="text-black-500">In Progress</p>
                           </button>
                           <button onClick={() => handleStateFilter("scheduled")}>
@@ -507,7 +686,7 @@ const page = ({ params }: { params: { id: string } }) => {
                                           item.state === "completed"
                                             ? "bg-blue-200"
                                             : item.state === "on hold"
-                                            ? "bg-gray-200"
+                                            ? "bg-brown-200"
                                             : item.state === "in draft"
                                             ? "bg-yellow-200"
                                             : item.state === "in progress"
@@ -518,6 +697,8 @@ const page = ({ params }: { params: { id: string } }) => {
                                             ? "bg-green-200"
                                             : item.state === "scheduled"
                                             ? "bg-purple-200"
+                                            : item.state === "assessing_cancellation"
+                                            ? "bg-gray-200"
                                             : ""
                                         } rounded-full`}
                                       ></span>
@@ -646,7 +827,7 @@ const page = ({ params }: { params: { id: string } }) => {
       </div>
     );
   })}
-</div>
+                </div>
                 </div>
 
               </div>
