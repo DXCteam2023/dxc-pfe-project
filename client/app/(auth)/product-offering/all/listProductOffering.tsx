@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import './form.css';
 import { useRouter } from "next/navigation";
 import * as dotenv from "dotenv";
 import Product from "./product";
@@ -14,10 +15,15 @@ interface ProductProps {
 }
 const listProductOffering: React.FC = () => {
   const router = useRouter();
-  const [tableData, setTableData] = useState<IProductOfferingDocument[]>([]);
-  const productsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<IProductOfferingDocument[]>([]);
+  const [currentPage, setCurrentPage]= useState(1)
+  const recordsPerPage = 5;
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const records = products.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(products.length/ recordsPerPage)
+  // const numbers = [...Array(npage + 1).keys()].slice(1);
+  const numbers = Array.from({ length: npage }, (_, i) => i + 1);
 
   useEffect(() => {
     fetchProducts();
@@ -39,16 +45,7 @@ const listProductOffering: React.FC = () => {
       console.error(error);
     }
   };
-  // const totalPages = Math.ceil(products.length / productsPerPage);
 
-  const handlePageChange = (pageNumber: any) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const endIndex = startIndex + productsPerPage;
-  const visibleProducts = products.slice(startIndex, endIndex);
-  console.log(products, visibleProducts);
 
   return (
     <div
@@ -58,9 +55,9 @@ const listProductOffering: React.FC = () => {
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            {/* <th scope="col" className="px-6 py-3">
               Number
-            </th>
+            </th> */}
             <th scope="col" className="px-6 py-3">
               Display Name
             </th>
@@ -85,13 +82,44 @@ const listProductOffering: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {visibleProducts.map((product) => (
+          {records.map((product) => (
             <Product key={product.id} product={product} />
           ))}
         </tbody>
       </table>
+      <nav  className="flex justify-center">
+        <ul className="pagination flex space-x-2">
+          <li className="page-item">
+            <a href="#"  onClick={prePage}>Prev</a>
+          </li>
+          {
+             numbers.map((n, i) => (
+              <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
+                <a href="#"  onClick={() => changePage(n)}>{n}</a>
+              </li>
+            ))
+          }
+          <li className="page-item">
+            <a href="#" onClick={nextPage}>Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
+  function prePage(){
+    if(currentPage !== 1){
+      setCurrentPage(currentPage-1);
+    }
+  }
+  function nextPage(){
+    if(currentPage !== npage){
+      setCurrentPage(currentPage+1);
+    }
+  }
+  function changePage(n: number): void {
+    setCurrentPage(n);
+  }
+
 };
 
 export default listProductOffering;

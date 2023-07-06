@@ -226,12 +226,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <tr key={product.id}>
-      <td
+      {/* <td
         className="px-6 py-4 cursor-pointer"
         onClick={() => setModalOpenView(true)}
       >
         {product.number}
-      </td>
+      </td> */}
       <td className="px-6 py-4">{product.name}</td>
       <td className="px-6 py-4">{product.description}</td>
       <td className="px-6 py-4">
@@ -239,21 +239,22 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           ? product.productSpecification.name
           : "Product Specification Name"}
       </td>
-      <td className="px-6 py-4">{product.version}</td>
+      <td className="px-6 py-4">{product.internalVersion}</td>
       <td className="px-6 py-4">{product.status}</td>
       <td className="px-6 py-4">{product.validFor.startDateTime}</td>
       <td
         className="px-6 py-4"
         style={{ display: "flex", alignItems: "center" }}
       >
-        <FiEdit
+        {/* <FiEdit
           onClick={() => setModalOpen(true)}
           title="Edit"
           cursor="pointer"
           className="text-green-500"
           size={25}
-        />
-
+        /> */}
+        <button className="btn btn-sm btn-info" onClick={() => setModalOpen(true)}>Update</button>
+        &nbsp;
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <form onSubmit={handleSubmitEditProOf}>
             <h3 className="font-bold text-lg">Edit product</h3>
@@ -307,17 +308,21 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               <button type="submit" className="btn">
                 Update
               </button>
+              &nbsp;
             </div>
           </form>
         </Modal>
         {product.status === "draft" || product.status === "In Draft" ? (
-          <MdOutlinePublishedWithChanges
-            size={25}
-            title="Publish"
-            cursor="pointer"
-            onClick={() => setOpenModalPublish(true)}
-          />
+          // <MdOutlinePublishedWithChanges
+          //   size={25}
+          //   title="Publish"
+          //   cursor="pointer"
+          //   onClick={() => setOpenModalPublish(true)}
+          // />
+          <button className="btn btn-sm btn-success" onClick={() => setOpenModalPublish(true)} >Publish</button>
+          
         ) : null}
+        &nbsp;
         <Modal modalOpen={openModalPublish} setModalOpen={setOpenModalPublish}>
           <form onSubmit={handleSubmitEditPublish}>
             <h3 style={{ color: "black", textAlign: "center" }}>
@@ -343,13 +348,15 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </form>
         </Modal>
         {product.status === "Published" || product.status === "published" ? (
-          <GrStatusDisabled
-            size={25}
-            title="Retire"
-            cursor="pointer"
-            onClick={() => setOpenModalRetired(true)}
-          />
+          // <GrStatusDisabled
+          //   size={25}
+          //   title="Retire"
+          //   cursor="pointer"
+          //   onClick={() => setOpenModalRetired(true)}
+          // />
+          <button className="btn btn-sm btn-warning" onClick={() => setOpenModalRetired(true)}>Retire</button>
         ) : null}
+        &nbsp;
         <Modal modalOpen={openModalRetired} setModalOpen={setOpenModalRetired}>
           <form onSubmit={handleSubmitEditRe}>
             <h3 style={{ color: "black", textAlign: "center" }}>
@@ -374,12 +381,13 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             </div>
           </form>
         </Modal>
-        <GrView
+        {/* <GrView
           title="View"
           cursor="pointer"
           className="text-blue-500"
           size={25}
-        />
+        /> */}
+        <button className="btn btn-sm btn-active">View</button>
         <Modal modalOpen={modalOpenView} setModalOpen={setModalOpenView}>
           <form onSubmit={handleSubmitEditProOf}>
             <h3 className="font-bold text-lg">Product details</h3>
