@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import './form.css';
+import "./form.css";
 import { useRouter } from "next/navigation";
 import * as dotenv from "dotenv";
 import Product from "./product";
@@ -16,12 +16,12 @@ interface ProductProps {
 const listProductOffering: React.FC = () => {
   const router = useRouter();
   const [products, setProducts] = useState<IProductOfferingDocument[]>([]);
-  const [currentPage, setCurrentPage]= useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
   const records = products.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(products.length/ recordsPerPage)
+  const npage = Math.ceil(products.length / recordsPerPage);
   // const numbers = [...Array(npage + 1).keys()].slice(1);
   const numbers = Array.from({ length: npage }, (_, i) => i + 1);
 
@@ -45,7 +45,6 @@ const listProductOffering: React.FC = () => {
       console.error(error);
     }
   };
-
 
   return (
     <div
@@ -87,39 +86,45 @@ const listProductOffering: React.FC = () => {
           ))}
         </tbody>
       </table>
-      <nav  className="flex justify-center">
+      <nav className="flex justify-center">
         <ul className="pagination flex space-x-2">
           <li className="page-item">
-            <a href="#"  onClick={prePage}>Prev</a>
+            <a href="#" onClick={prePage}>
+              Prev
+            </a>
           </li>
-          {
-             numbers.map((n, i) => (
-              <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
-                <a href="#"  onClick={() => changePage(n)}>{n}</a>
-              </li>
-            ))
-          }
+          {numbers.map((n, i) => (
+            <li
+              className={`page-item ${currentPage === n ? "active" : ""}`}
+              key={i}
+            >
+              <a href="#" onClick={() => changePage(n)}>
+                {n}
+              </a>
+            </li>
+          ))}
           <li className="page-item">
-            <a href="#" onClick={nextPage}>Next</a>
+            <a href="#" onClick={nextPage}>
+              Next
+            </a>
           </li>
         </ul>
       </nav>
     </div>
   );
-  function prePage(){
-    if(currentPage !== 1){
-      setCurrentPage(currentPage-1);
+  function prePage() {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
     }
   }
-  function nextPage(){
-    if(currentPage !== npage){
-      setCurrentPage(currentPage+1);
+  function nextPage() {
+    if (currentPage !== npage) {
+      setCurrentPage(currentPage + 1);
     }
   }
   function changePage(n: number): void {
     setCurrentPage(n);
   }
-
 };
 
 export default listProductOffering;
