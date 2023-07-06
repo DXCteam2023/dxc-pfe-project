@@ -88,6 +88,8 @@ const BarChart = () => {
         return "text-green-900";
       case "cancellation_received":
         return "text-white";
+      case "assessing_cancellation":
+        return "text-white";
       default:
         return "";
     }
@@ -105,15 +107,19 @@ const BarChart = () => {
         return "bg-green-200 shadow-green-300";
       case "cancellation_received":
         return "bg-red-600 shadow-red-300";
+      case "assessing_cancellation":
+        return "bg-gray-400 shadow-gray-300";
       default:
         return "";
     }
   }
-  const recentOrders = filteredOrders.sort((a, b) => {
-    const date1 = new Date(a.orderDate);
-    const date2 = new Date(b.orderDate);
-    return date2.getTime() - date1.getTime();
-  });
+  const recentOrders = filteredOrders
+    .sort((a, b) => {
+      const date1 = new Date(a.orderDate);
+      const date2 = new Date(b.orderDate);
+      return date2.getTime() - date1.getTime();
+    })
+    .slice(0, 9);
   const [pinnedProductOrders, setPinnedProductOrders] = useState<string[]>([]);
   const togglePinProduct = (orderId: string) => {
     if (pinnedProductOrders.includes(orderId)) {
