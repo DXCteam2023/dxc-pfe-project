@@ -60,11 +60,13 @@ const TableProductOfferings = () => {
     getProductOfferings();
   }, []);
 
-  const recentOffers = productOfferings.sort((a, b) => {
-    const date1 = new Date(a.lastUpdate);
-    const date2 = new Date(b.lastUpdate);
-    return date2.getTime() - date1.getTime();
-  });
+  const recentOffers = productOfferings
+    .sort((a, b) => {
+      const date1 = new Date(a.lastUpdate);
+      const date2 = new Date(b.lastUpdate);
+      return date2.getTime() - date1.getTime();
+    })
+    .slice(0, 9);
 
   const filteredProducts = recentOffers.filter((product) => {
     const orderValues = Object.values(product).join(" ").toLowerCase();

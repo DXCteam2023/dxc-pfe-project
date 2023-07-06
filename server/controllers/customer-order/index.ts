@@ -9,6 +9,7 @@ import getServiceOrderById from "./service/getServiceOrderById";
 import addServiceOrder from "./service/addServiceOrder";
 import updateServiceOrder from "./service/updateServiceOrder";
 import addProductOrderToServiceNow from "./product/addProductOrderToServiceNow";
+import cancelProductOrder from "./product/cancelProductOrder";
 
 export {
   getCustomerOrderById,
@@ -22,4 +23,5 @@ export {
   addServiceOrder,
   updateServiceOrder,
   addProductOrderToServiceNow,
+  cancelProductOrder,
 };

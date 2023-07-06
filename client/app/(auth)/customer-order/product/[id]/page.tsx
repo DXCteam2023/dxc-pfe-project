@@ -5,6 +5,7 @@ import Image from "next/image";
 import { IoMdOptions } from "react-icons/io";
 import { FiFilter, FiRefreshCcw } from "react-icons/fi";
 import * as dotenv from "dotenv";
+import { FaUser, FaUserCircle } from "react-icons/fa";
 import NoRecord from "../../../../../public/assets/NoRecord.png";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
@@ -422,8 +423,7 @@ const page = ({ params }: { params: { id: string } }) => {
                     Related Party
                   </div>
                   <div
-                    className={`tab ${activeTab === 2 ? "active" : ""}`}
-                    onClick={() => handleTabClick(2)}
+                    className={`tab-content ${activeTab === 0 ? "active" : ""}`}
                   >
                     Notes
                   </div>
@@ -520,162 +520,344 @@ const page = ({ params }: { params: { id: string } }) => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="overflow-x-auto table-container">
-                    <div className="table-responsive">
-                      <table className="w-full max-w-full mx-auto shadow rounded-lg overflow-hidden">
-                        <thead>
-                          <tr>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              Order Line Item
-                            </th>
-                            <th
-                              className={`px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider ${
-                                idColumnVisible ? "" : "hidden"
-                              }`}
+                    <div className="dropdown">
+                      <button className="dropbtn">
+                        <FiFilter size={20} color="white" />
+                      </button>
+                      <div className="dropdown-content">
+                        <div className="submenu">
+                          <button>State</button>
+                          <div className="submenu-content">
+                            <button
+                              onClick={() => handleStateFilter("completed")}
                             >
-                              id
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              ponr
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              quantity
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              action
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              product Specification
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              Product Offering
-                            </th>
-                            <th
-                              className={`px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider ${
-                                relationColumnVisible ? "" : "hidden"
-                              }`}
+                              <p className="text-black-500">Completed</p>
+                            </button>
+                            <button
+                              onClick={() => handleStateFilter("canceled")}
                             >
-                              Relationship
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              state
-                            </th>
-                            <th
-                              className={`px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider ${
-                                versionColumnVisible ? "" : "hidden"
-                              }`}
+                              <p className="text-black-500">Canceled</p>
+                            </button>
+                            <button
+                              onClick={() => handleStateFilter("on hold")}
                             >
-                              {" "}
-                              version
-                            </th>
+                              <p className="text-black-500">On Hold</p>
+                            </button>
+                            <button
+                              onClick={() => handleStateFilter("In progress")}
+                            >
+                              <p className="text-black-500">In Progress</p>
+                            </button>
+                            <button
+                              onClick={() => handleStateFilter("scheduled")}
+                            >
+                              <p className="text-black-500">Scheduled</p>
+                            </button>
+                            <button onClick={() => handleStateFilter("new")}>
+                              <p className="text-black-500">New</p>
+                            </button>
+                            <button
+                              onClick={() => handleStateFilter("in draft")}
+                            >
+                              <p className="text-black-500">in draft</p>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="submenu">
+                          <button>PONR</button>
+                          <div className="submenu-content">
+                            <button onClick={() => handlePONRFilter("true")}>
+                              <p className="text-black-500">True</p>
+                            </button>
+                            <button onClick={() => handlePONRFilter("false")}>
+                              <p className="text-black-500">False</p>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="overflow-x-auto table-container">
+                      <div className="table-responsive">
+                        <table className="w-full max-w-full mx-auto shadow rounded-lg overflow-hidden">
+                          <thead>
+                            <tr>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                Order Line Item
+                              </th>
+                              <th
+                                className={`px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider ${
+                                  idColumnVisible ? "" : "hidden"
+                                }`}
+                              >
+                                id
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                ponr
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                quantity
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                action
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                product Specification
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                Product Offering
+                              </th>
+                              <th
+                                className={`px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider ${
+                                  relationColumnVisible ? "" : "hidden"
+                                }`}
+                              >
+                                Relationship
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                state
+                              </th>
+                              <th
+                                className={`px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider ${
+                                  versionColumnVisible ? "" : "hidden"
+                                }`}
+                              >
+                                {" "}
+                                version
+                              </th>
 
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              itemPrice
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {product.productOrderItem.length === 0 ? (
-                            <tr className="tabbody">
-                              <td colSpan={8} className="no-results">
-                                <center>
-                                  <Image
-                                    className="image"
-                                    src={NoRecord}
-                                    alt="No record"
-                                  />
-                                </center>
-                                <center>No records to display</center>
-                              </td>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                itemPrice
+                              </th>
                             </tr>
-                          ) : (
-                            product.productOrderItem
-                              .filter((item: any) => {
-                                // Filtrer par état
-                                if (
-                                  stateFilter !== "" &&
-                                  item.state !== stateFilter
-                                ) {
-                                  return false;
-                                }
+                          </thead>
+                          <tbody>
+                            {product.productOrderItem.length === 0 ? (
+                              <tr className="tabbody">
+                                <td colSpan={8} className="no-results">
+                                  <center>
+                                    <Image
+                                      className="image"
+                                      src={NoRecord}
+                                      alt="No record"
+                                    />
+                                  </center>
+                                  <center>No records to display</center>
+                                </td>
+                              </tr>
+                            ) : (
+                              product.productOrderItem
+                                .filter((item: any) => {
+                                  // Filtrer par état
+                                  if (
+                                    stateFilter !== "" &&
+                                    item.state !== stateFilter
+                                  ) {
+                                    return false;
+                                  }
 
-                                // Filtrer par PONR
-                                if (
-                                  selectedPONR !== "" &&
-                                  item.ponr !== selectedPONR
-                                ) {
-                                  return false;
-                                }
+                                  // Filtrer par PONR
+                                  if (
+                                    selectedPONR !== "" &&
+                                    item.ponr !== selectedPONR
+                                  ) {
+                                    return false;
+                                  }
 
-                                return true;
-                              })
-                              .map((item: any, index: number) => (
-                                <tr key={index}>
-                                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                    <div className="flex items-center">
-                                      <div className="ml-3">
-                                        <a className="text-gray-900 whitespace-no-wrap">{`ORDL${(
-                                          index + 1
-                                        )
-                                          .toString()
-                                          .padStart(7, "0")}`}</a>{" "}
+                                  return true;
+                                })
+                                .map((item: any, index: number) => (
+                                  <tr key={index}>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <div className="flex items-center">
+                                        <div className="ml-3">
+                                          <a className="text-gray-900 whitespace-no-wrap">{`ORDL${(
+                                            index + 1
+                                          )
+                                            .toString()
+                                            .padStart(7, "0")}`}</a>{" "}
+                                        </div>
                                       </div>
-                                    </div>
-                                  </td>
-                                  <td
-                                    className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
-                                      idColumnVisible ? "" : "hidden"
-                                    }`}
-                                  >
-                                    {" "}
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {item.id}
-                                    </p>
-                                  </td>
-                                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                    <span
-                                      className={`relative inline-block px-3 py-1 font-semibold rounded-full text-black-900 leading-tight ${
-                                        item.ponr
-                                          ? "bg-green-200"
-                                          : "bg-red-200"
+                                    </td>
+                                    <td
+                                      className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
+                                        idColumnVisible ? "" : "hidden"
                                       }`}
                                     >
-                                      <span className="relative ">
-                                        {item.ponr ? "True" : "False"}
+                                      {" "}
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {item.id}
+                                      </p>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <span
+                                        className={`relative inline-block px-3 py-1 font-semibold rounded-full text-black-900 leading-tight ${
+                                          item.ponr
+                                            ? "bg-green-200"
+                                            : "bg-red-200"
+                                        }`}
+                                      >
+                                        <span className="relative ">
+                                          {item.ponr ? "True" : "False"}
+                                        </span>
                                       </span>
-                                    </span>
-                                  </td>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {item.quantity}
+                                      </p>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {item.action}
+                                      </p>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {item.product.productSpecification.name}
+                                      </p>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {item.productOffering.name}
+                                      </p>
+                                    </td>
+                                    <td
+                                      className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
+                                        relationColumnVisible ? "" : "hidden"
+                                      }`}
+                                    >
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {
+                                          item.productOrderItemRelationship[0]
+                                            .relationshipType
+                                        }
+                                      </p>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      <span className="relative inline-block px-3 py-1 font-semibold leading-tight">
+                                        <span
+                                          aria-hidden
+                                          className={`absolute inset-0 ${
+                                            item.state === "completed"
+                                              ? "bg-blue-200"
+                                              : item.state === "on hold"
+                                              ? "bg-gray-200"
+                                              : item.state === "in draft"
+                                              ? "bg-yellow-200"
+                                              : item.state === "in progress"
+                                              ? "bg-orange-200"
+                                              : item.state === "canceled"
+                                              ? "bg-red-200"
+                                              : item.state === "new"
+                                              ? "bg-green-200"
+                                              : item.state === "scheduled"
+                                              ? "bg-purple-200"
+                                              : ""
+                                          } rounded-full`}
+                                        ></span>
+                                        <span className="relative">
+                                          {item.state}
+                                        </span>
+                                      </span>
+                                    </td>
+                                    <td
+                                      className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
+                                        versionColumnVisible ? "" : "hidden"
+                                      }`}
+                                    >
+                                      {" "}
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {item.version}
+                                      </p>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                      {item.itemPrice.map(
+                                        (
+                                          price: {
+                                            priceType: string;
+                                            price: {
+                                              taxIncludedAmount: {
+                                                value: any;
+                                                unit: any;
+                                              };
+                                            };
+                                          },
+                                          priceIndex:
+                                            | React.Key
+                                            | null
+                                            | undefined,
+                                        ) => {
+                                          if (
+                                            price.priceType === "recurring" &&
+                                            price.price.taxIncludedAmount
+                                          ) {
+                                            return (
+                                              <p
+                                                key={priceIndex}
+                                                className="text-gray-900 whitespace-no-wrap"
+                                              >
+                                                {`${price.price.taxIncludedAmount.value} ${price.price.taxIncludedAmount.unit}`}
+                                              </p>
+                                            );
+                                          }
+                                          return null;
+                                        },
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`tab-content ${activeTab === 1 ? "active" : ""}`}
+                  >
+                    <div className="overflow-x-auto table-container">
+                      <div className="table-responsive">
+                        <table className=" w-full max-w-full mx-auto shadow rounded-lg overflow-hidden">
+                          <thead>
+                            <tr>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                Name
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                id
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                REFERRED TYPE
+                              </th>
+                              <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
+                                TYPE
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {product.relatedParty.map(
+                              (
+                                relatedParty: {
+                                  [x: string]: any;
+                                  _id: any;
+                                  name: any;
+                                },
+                                index: React.Key | null | undefined,
+                              ) => (
+                                <tr key={index}>
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {item.quantity}
+                                      {relatedParty.name}
                                     </p>
                                   </td>
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {item.action}
+                                      {relatedParty._id}
                                     </p>
                                   </td>
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {item.product.productSpecification.name}
-                                    </p>
-                                  </td>
-                                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {item.productOffering.name}
-                                    </p>
-                                  </td>
-                                  <td
-                                    className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
-                                      relationColumnVisible ? "" : "hidden"
-                                    }`}
-                                  >
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {
-                                        item.productOrderItemRelationship[0]
-                                          .relationshipType
-                                      }
+                                      {relatedParty["@referredType"]}
                                     </p>
                                   </td>
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
@@ -717,99 +899,50 @@ const page = ({ params }: { params: { id: string } }) => {
                                       {item.version}
                                     </p>
                                   </td>
-                                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-  {item.itemPrice.map((price: { priceType: string; price: { taxIncludedAmount: { value: any; unit: any; }; }; }, priceIndex: React.Key | null | undefined) => {
-    if (price.priceType === "recurring" && price.price.taxIncludedAmount) {
-      return (
-        <p
-          key={priceIndex}
-          className="text-gray-900 whitespace-no-wrap"
-        >
-          {`${price.price.taxIncludedAmount.value} ${price.price.taxIncludedAmount.unit}`}
-        </p>
-      );
-    }
-    return null;
-  })}
-</td>
                                 </tr>
-                              ))
-                          )}
-                        </tbody>
-                      </table>
+                              ),
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  className={`tab-content ${activeTab === 1 ? "active" : ""}`}
-                >
-                  <div className="overflow-x-auto table-container">
-                    <div className="table-responsive">
-                    
-                      <table className=" w-full max-w-full mx-auto shadow rounded-lg overflow-hidden">
-                        <thead>
-                          <tr>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              Name
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              id
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              REFERRED TYPE
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-200 bg-700 text-white text-center text-xs font-semibold uppercase tracking-wider">
-                              TYPE
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {product.relatedParty.map(
-                            (
-                              relatedParty: {
-                                [x: string]: any;
-                                _id: any;
-                                name: any;
-                              },
-                              index: React.Key | null | undefined,
-                            ) => (
-                              <tr key={index}>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {relatedParty.name}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {relatedParty._id}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {relatedParty["@referredType"]}
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {relatedParty["@type"]}
-                                    </p>
-                                  </div>
-                                </td>
-                              </tr>
-                            ),
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
 
-                <div className={`tab-content ${activeTab === 2 ? "active" : ""}`}>
-  {product.note.map((noteItem: { date: string | number | Date; author: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; text: string | number | readonly string[] | undefined; }, index: React.Key | null | undefined) => {
-    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour:'numeric', minute:'2-digit' };
-    const formattedDate = new Date(noteItem.date).toLocaleDateString("en-US", options);
-
+                  <div
+                    className={`tab-content ${activeTab === 2 ? "active" : ""}`}
+                  >
+                    {product.note.map(
+                      (
+                        noteItem: {
+                          date: string | number | Date;
+                          author:
+                            | string
+                            | number
+                            | boolean
+                            | React.ReactElement<
+                                any,
+                                string | React.JSXElementConstructor<any>
+                              >
+                            | React.ReactFragment
+                            | React.ReactPortal
+                            | React.PromiseLikeOfReactNode
+                            | null
+                            | undefined;
+                          text: string | number | readonly string[] | undefined;
+                        },
+                        index: React.Key | null | undefined,
+                      ) => {
+                        const options: Intl.DateTimeFormatOptions = {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                        };
+                        const formattedDate = new Date(
+                          noteItem.date,
+                        ).toLocaleDateString("en-US", options);
     return (
       <div key={index}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px',marginBottom: '2px', fontWeight: 'bold', color: '#8b2d8c' }}>
@@ -829,7 +962,6 @@ const page = ({ params }: { params: { id: string } }) => {
   })}
                 </div>
                 </div>
-
               </div>
             </div>
           )}
