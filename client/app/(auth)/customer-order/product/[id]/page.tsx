@@ -11,6 +11,7 @@ import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 
 import "../styles.css";
+import { FaArrowRight, FaCheck, FaTimes, FaUser, FaUserCircle } from "react-icons/fa";
 
 dotenv.config();
 
@@ -194,10 +195,11 @@ const page = ({ params }: { params: { id: string } }) => {
                         Channel:
                       </label>
                       <input
-                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        type="text"
-                        value={product.channel[0].name}
-                      ></input>
+  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+  type="text"
+  value={product.channel && product.channel[0] ? product.channel[0].name : ''}
+/>
+
                     </div>
                     <div className="w-full md:w-1/3 px-3">
                       <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
@@ -230,73 +232,291 @@ const page = ({ params }: { params: { id: string } }) => {
                       ></input>
                     </div>
                   </div>
+                  <div className="w-full md:w-1/1 px-3">
+  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+    tracking:
+  </label>
+  <div>
+    
+    <div style={{  alignItems: 'center' }}>
+  
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'new' && <FaArrowRight color="blue" size={24} />}
+    {product.state !== 'new' && <FaCheck color="green" size={24} />}
+  </div>
+  <p style={{ marginLeft: '10px' }}>Waiting for Approval (Approved)</p>
 
-                  <div className="tabs">
-                    <div
-                      className={`tab ${activeTab === 0 ? "active" : ""}`}
-                      onClick={() => handleTabClick(0)}
-                    >
-                      Product Order Item
-                    </div>
-                    <div
-                      className={`tab ${activeTab === 1 ? "active" : ""}`}
-                      onClick={() => handleTabClick(1)}
-                    >
-                      Related Party
-                    </div>
-                    <div
-                      className={`tab ${activeTab === 2 ? "active" : ""}`}
-                      onClick={() => handleTabClick(2)}
-                    >
-                      Note
-                    </div>
+  </div>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'rejected' && <FaCheck color="green" size={24} />}
+    </div>
+    <p style={{ marginLeft: '10px' }}>Order rejected (Rejected)</p></div>
+   
+
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {((product.state !== 'new' && product.state !== 'in_progress') ||(product.state === 'in_progress' && product.productOrderItem.some((item: { state: string; }) => item.state === 'completed') )) && <FaCheck color="green" size={24} />}
+
+    {product.state === 'in_progress' && (product.productOrderItem.filter((item: { state: string; }) => item.state === 'completed').length===0) && <FaArrowRight color="blue" size={24} />}
+    </div>
+    <p style={{ marginLeft: '10px' }}>Order In Progress (In Progress)</p>
+   
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+   
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'completed' && <FaCheck color="green" size={24} />}
+    {product.state === 'in_progress' && (product.productOrderItem.filter((item: { state: string; }) => item.state === 'completed').length!==0) && <FaArrowRight color="blue" size={24} />}
+
+    </div>
+    <p style={{ marginLeft: '10px' }}>Fulfillment (In Progress)</p>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'completed' && <FaCheck color="green" size={24} />}
+    </div>
+    <p style={{ marginLeft: '10px' }}>Customer Order (Completed)</p>
+
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+  <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {(product.state === 'cancellation_received' || product.state === 'canceled') && (
+      <FaCheck color="green" size={24} />
+    )}
+    {(product.state === 'assessing_cancellation'&& 
+      <FaArrowRight color="blue" size={24} />
+    )}
+    
+  </div>
+  <p style={{ marginLeft: '10px' }}>Cancellation request (Assessing cancellation)</p>
+
+</div>
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'cancellation_received' &&  (
+        <FaArrowRight color="blue" size={24} />
+
+)}
+{product.state === 'canceled' && (
+       <FaCheck color="green" size={24} />
+
+)}
+</div>
+<p style={{ marginLeft: '10px' }}>Cancellation approved (Cancellation in progress)</p>
+</div>
+<div style={{ display: 'flex', alignItems: 'center' }}>
+    
+    <div
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      border: '1px solid gray',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+    }}
+  >
+    {product.state === 'canceled' && (
+        <FaCheck color="green" size={24} />
+
+)}
+ </div>
+ <p style={{ marginLeft: '10px' }}>Customer Order (Cancelled)</p>
+ </div>
+    </div>
+    </div>
+  
+</div>
+
+                <div className="tabs">
+                  <div
+                    className={`tab ${activeTab === 0 ? "active" : ""}`}
+                    onClick={() => handleTabClick(0)}
+                  >
+                    Product Order Item
+                  </div>
+                  <div
+                    className={`tab ${activeTab === 1 ? "active" : ""}`}
+                    onClick={() => handleTabClick(1)}
+                  >
+                    Related Party
                   </div>
                   <div
                     className={`tab-content ${activeTab === 0 ? "active" : ""}`}
                   >
-                    <div className="dropdown">
-                      <button
-                        className="dropbtn"
-                        onClick={handleAllFilter}
-                        title="Refresh"
-                      >
-                        <FiRefreshCcw size={20} color="white" />
-                      </button>
+                    Notes
+                  </div>
+                </div>
+                <div
+                  className={`tab-content ${activeTab === 0 ? "active" : ""}`}
+                >
+                  <div className="dropdown">
+                    <button
+                      className="dropbtn"
+                      onClick={handleAllFilter}
+                      title="Refresh"
+                    >
+                      <FiRefreshCcw size={20} color="white" />
+                    </button>
+                  </div>
+                  <div className="dropdown">
+                    <button className="dropbtn">
+                      <IoMdOptions size={20} color="white" />
+                    </button>
+                    <div className="dropdown-content">
+                      <div className="submenu">
+                        <button>SHOW/HIDE</button>
+                        <div className="submenu-content">
+  <button
+    onClick={() => setVersionColumnVisible(!versionColumnVisible)}
+  >
+        <p className="text-black-500">        {versionColumnVisible ? "Hide" : "Show"} version
+
+
+</p>
+  </button>
+
+  <button
+    onClick={() => setidColumnVisible(!idColumnVisible)}
+  >
+    <p className="text-black-500">     {idColumnVisible ? "Hide" : "Show"} ID
+
+</p>
+  </button>
+  
+  <button
+   
+    onClick={() => setrelationColumnVisible(!relationColumnVisible)}
+  >
+     <p className="text-black-500"> {relationColumnVisible ? "Hide" : "Show"} relationship
+</p>
+  </button>
+</div>
+
+                      </div>
                     </div>
-                    <div className="dropdown">
-                      <button className="dropbtn">
-                        <IoMdOptions size={20} color="white" />
-                      </button>
-                      <div className="dropdown-content">
-                        <div className="submenu">
-                          <button>SHOW/HIDE</button>
-                          <div className="submenu-content">
-                            <button
-                              className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-                              onClick={() =>
-                                setVersionColumnVisible(!versionColumnVisible)
-                              }
-                            >
-                              {versionColumnVisible ? "Hide" : "Show"} version
-                            </button>
-                            <button
-                              className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-                              onClick={() =>
-                                setidColumnVisible(!idColumnVisible)
-                              }
-                            >
-                              {idColumnVisible ? "Hide" : "Show"} ID
-                            </button>
-                            <button
-                              className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
-                              onClick={() =>
-                                setrelationColumnVisible(!relationColumnVisible)
-                              }
-                            >
-                              {relationColumnVisible ? "Hide" : "Show"}{" "}
-                              relationship
-                            </button>
-                          </div>
+                  </div>
+                  <div className="dropdown">
+                    <button className="dropbtn">
+                      <FiFilter size={20} color="white" />
+                    </button>
+                    <div className="dropdown-content">
+                      <div className="submenu">
+                        <button >State</button>
+                        <div className="submenu-content">
+                          <button onClick={() => handleStateFilter("completed")}>
+                            <p className="text-black-500">Completed</p>
+                          </button>
+                          <button onClick={() => handleStateFilter("cancellation_received")}>
+                            <p className="text-black-500">cancellation_received</p>
+                          </button>
+                          <button onClick={() => handleStateFilter("on hold")}>
+                            <p className="text-black-500">On Hold</p>
+                          </button>
+                          <button onClick={() => handleStateFilter("in_progress")}>
+                            <p className="text-black-500">In Progress</p>
+                          </button>
+                          <button onClick={() => handleStateFilter("scheduled")}>
+                            <p className="text-black-500">Scheduled</p>
+                          </button>
+                          <button onClick={() => handleStateFilter("new")}>
+                            <p className="text-black-500">New</p>
+                          </button>
+                          <button onClick={() => handleStateFilter("in draft")}>
+                            <p className="text-black-500">in draft</p>
+                          </button>
+                        </div>
+                      </div>
+                      <div className="submenu">
+                        <button >PONR</button>
+                        <div className="submenu-content">
+                          <button onClick={() => handlePONRFilter("true")}>
+                            <p className="text-black-500">True</p>
+                          </button>
+                          <button onClick={() => handlePONRFilter("false")}>
+                            <p className="text-black-500">False</p>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -641,11 +861,43 @@ const page = ({ params }: { params: { id: string } }) => {
                                     </p>
                                   </td>
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-                                    <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
-                                        {relatedParty["@type"]}
-                                      </p>
-                                    </div>
+                                    <span className="relative inline-block px-3 py-1 font-semibold leading-tight">
+                                      <span
+                                        aria-hidden
+                                        className={`absolute inset-0 ${
+                                          item.state === "completed"
+                                            ? "bg-blue-200"
+                                            : item.state === "on hold"
+                                            ? "bg-brown-200"
+                                            : item.state === "in draft"
+                                            ? "bg-yellow-200"
+                                            : item.state === "in progress"
+                                            ? "bg-orange-200"
+                                            : item.state === "canceled"
+                                            ? "bg-red-200"
+                                            : item.state === "new"
+                                            ? "bg-green-200"
+                                            : item.state === "scheduled"
+                                            ? "bg-purple-200"
+                                            : item.state === "assessing_cancellation"
+                                            ? "bg-gray-200"
+                                            : ""
+                                        } rounded-full`}
+                                      ></span>
+                                      <span className="relative">
+                                        {item.state}
+                                      </span>
+                                    </span>
+                                  </td>
+                                  <td
+                                    className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
+                                      versionColumnVisible ? "" : "hidden"
+                                    }`}
+                                  >
+                                    {" "}
+                                    <p className="text-gray-900 whitespace-no-wrap">
+                                      {item.version}
+                                    </p>
                                   </td>
                                 </tr>
                               ),
@@ -691,41 +943,24 @@ const page = ({ params }: { params: { id: string } }) => {
                         const formattedDate = new Date(
                           noteItem.date,
                         ).toLocaleDateString("en-US", options);
-
-                        return (
-                          <div key={index}>
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "4px",
-                                marginBottom: "2px",
-                                fontWeight: "bold",
-                                color: "#8b2d8c",
-                              }}
-                            >
-                              <FaUserCircle />
-                              <p>{noteItem.author}</p>
-                            </div>
-                            <p
-                              style={{
-                                fontStyle: "italic",
-                                color: "gray",
-                                fontSize: "14px",
-                              }}
-                            >
-                              {formattedDate}
-                            </p>
-                            <textarea
-                              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                              value={noteItem.text}
-                              readOnly
-                            ></textarea>
-                          </div>
-                        );
-                      },
-                    )}
-                  </div>
+    return (
+      <div key={index}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px',marginBottom: '2px', fontWeight: 'bold', color: '#8b2d8c' }}>
+          <FaUserCircle  />
+          <p >
+            {noteItem.author}
+          </p>
+        </div>
+        <p style={{fontStyle:'italic', color: 'gray' ,fontSize:'14px'}}>{formattedDate}</p>
+        <textarea
+          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          value={noteItem.text}
+          readOnly
+        ></textarea>
+      </div>
+    );
+  })}
+                </div>
                 </div>
               </div>
             </div>
