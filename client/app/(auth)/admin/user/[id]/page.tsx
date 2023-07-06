@@ -284,8 +284,10 @@ const Page = ({
         return "text-orange-900";
       case "completed":
         return "text-green-900";
-      case "canceled":
+      case "cancellation_received":
         return "text-red-900";
+      case "assessing_cancellation":
+        return "text-white";
       default:
         return "";
     }
@@ -301,8 +303,10 @@ const Page = ({
         return "bg-orange-200 shadow-orange-300";
       case "completed":
         return "bg-green-200 shadow-green-300";
-      case "canceled":
+      case "cancellation_received":
         return "bg-red-200 shadow-red-300";
+      case "assessing_cancellation":
+        return "bg-gray-400 shadow-gray-300";
       default:
         return "";
     }
