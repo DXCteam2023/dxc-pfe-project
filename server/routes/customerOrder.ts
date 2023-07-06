@@ -3,6 +3,7 @@ import {
   addProductOrder,
   addProductOrderToServiceNow,
   addServiceOrder,
+  cancelProductOrder,
   getCustomerOrderById,
   getCustomerOrders,
   getProductOrderById,
@@ -36,5 +37,7 @@ customerOrderRoute.post("/product/servicenow", addProductOrderToServiceNow);
 customerOrderRoute.patch("/product/:id", updateProductOrder);
 
 customerOrderRoute.patch("/service/:id", updateServiceOrder);
+
+customerOrderRoute.post("/product/cancel", cancelProductOrder);
 
 export default customerOrderRoute;
