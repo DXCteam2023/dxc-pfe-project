@@ -11,10 +11,6 @@ import "./Form.css";
 // eslint-disable-next-line import/order
 import Swal from "sweetalert2";
 
-dotenv.config();
-
-const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
-
 interface ProductSpecification {
   _id: string;
   name: string;
@@ -98,10 +94,11 @@ export default function NewProductOfferingPage() {
   useEffect(() => {
     fetchProductSpecifications();
   }, []);
+
   const fetchProductSpecifications = async () => {
     try {
       const response = await axios.get<ProductSpecification[]>(
-        `${AXIOS_URL}/api/product-specification`,
+        "http://localhost:5000/api/product-specification",
       );
       const data = response.data;
       setProductSpecifications(data);
@@ -113,7 +110,7 @@ export default function NewProductOfferingPage() {
   const fetchSpecificationDetails = async () => {
     try {
       const response = await axios.get<SelectedProductSpec>(
-        `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`,
+        `http://localhost:5000/api/product-specification/id/${chosenProductSpecification}`,
       );
       const data = response.data;
       console.log("Fetched specification details:", data);
@@ -137,7 +134,7 @@ export default function NewProductOfferingPage() {
           async (relatedProductId: string) => {
             try {
               const response = await axios.get<RelatedProductSpec>(
-                `${AXIOS_URL}/api/product-specification/byid/${relatedProductId}`,
+                `http://localhost:5000/api/product-specification/byid/${relatedProductId}`,
               );
               return response.data;
             } catch (error) {
@@ -168,6 +165,7 @@ export default function NewProductOfferingPage() {
       );
     }
   };
+
   const handleCharacteristicChange = (
     event: ChangeEvent<HTMLSelectElement>,
     index: number,
@@ -201,9 +199,9 @@ export default function NewProductOfferingPage() {
     event.preventDefault();
 
     try {
-      const url = `${AXIOS_URL}/api/product-offering`;
+      const url = "http://localhost:5000/api/product-offering";
 
-      const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
+      const specificationUrl = `http://localhost:5000/api/product-specification/id/${chosenProductSpecification}`;
       const specificationResponse = await axios.get<SelectedProductSpec>(
         specificationUrl,
       );
@@ -226,11 +224,13 @@ export default function NewProductOfferingPage() {
             name: characteristic,
             valueType: selectedCharacteristicData?.valueType,
             productSpecCharacteristicValue: selectedValues,
-            /*productSpecification: {
-            id: specificationData.id,
-            name: specificationData.name,
-            version: specificationData.version,
-          },*/
+            productSpecification: {
+              id: specificationData.id,
+              name: specificationData.name,
+              version: "",
+              internalVersion: specificationData.version,
+              internalId: specificationData.id,
+            },
           };
         },
       );
@@ -259,7 +259,7 @@ export default function NewProductOfferingPage() {
           startDateTime: startDate,
           endDateTime: endDate,
         },
-        productSpecCharacteristic: productSpecCharacteristics,
+        prodSpecCharValueUse: productSpecCharacteristics,
         productOfferingPrice: [
           {
             price: {
@@ -276,8 +276,7 @@ export default function NewProductOfferingPage() {
       console.log("Product Data:", productData);
 
       await axios.post(url, productData);
-      // alert("Product created successfully");
-
+      //alert("Product created successfully");
       Swal.fire("Done", "Product created successfully", "success");
 
       setProductName("");
@@ -299,6 +298,7 @@ export default function NewProductOfferingPage() {
       console.error(error);
     }
   };
+
   return (
     <div className="bg-gray-100 flex">
       <Sidebar />
@@ -328,7 +328,10 @@ export default function NewProductOfferingPage() {
                       />
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
+                      <label
+                        htmlFor="productSpecification"
+                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                      >
                         Productspecifecation:
                       </label>
 
@@ -393,8 +396,10 @@ export default function NewProductOfferingPage() {
                         <select
                           className="block w-full bg-white text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
                           id={`characteristic-${index}`}
-                          value={characteristic}
-                          onChange={(e) => handleCharacteristicChange(e, index)}
+                          value={selectedCharacteristic[index]}
+                          onChange={(event) =>
+                            handleCharacteristicChange(event, index)
+                          }
                         >
                           <option value="">Select Characteristic</option>
                           {selectedProductSpec &&
@@ -406,6 +411,7 @@ export default function NewProductOfferingPage() {
                                 </option>
                               ),
                             )}
+
                           {relatedProductSpecCharacteristics &&
                             relatedProductSpecCharacteristics.flatMap(
                               (relatedSpec) =>
@@ -419,75 +425,61 @@ export default function NewProductOfferingPage() {
                             )}
                         </select>
 
-                        {index === selectedCharacteristic.length - 1 && (
-                          <div>
-                            <label
-                              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                              htmlFor={`values-${index}`}
-                            >
-                              Characteristic Value:
-                            </label>
-                            <select
-                              className="block w-full bg-white text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
-                              id={`values-${index}`}
-                              multiple
-                              value={selectedCharacteristicValues[index]}
-                              onChange={(event) =>
-                                handleCharacteristicValueChange(event, index)
-                              }
-                            >
-                              {(selectedProductSpec &&
-                                selectedCharacteristic[index] &&
-                                selectedProductSpec.productSpecCharacteristic
-                                  .find(
-                                    (char) =>
-                                      char.name ===
-                                      selectedCharacteristic[index],
-                                  )
-                                  ?.productSpecCharacteristicValue.map(
-                                    (value) => (
-                                      <option
-                                        key={value.value}
-                                        value={value.value}
-                                      >
-                                        {value.value}
-                                      </option>
-                                    ),
-                                  )) ||
-                                (relatedProductSpecCharacteristics &&
-                                  selectedCharacteristic[index] &&
-                                  relatedProductSpecCharacteristics.flatMap(
-                                    (relatedSpec) =>
-                                      relatedSpec.productSpecCharacteristic
-                                        .filter(
-                                          (char) =>
-                                            char.name ===
-                                            selectedCharacteristic[index],
-                                        )
-                                        .flatMap((char) =>
-                                          char.productSpecCharacteristicValue.map(
-                                            (value) => (
-                                              <option
-                                                key={value.value}
-                                                value={value.value}
-                                              >
-                                                {value.value}
-                                              </option>
-                                            ),
-                                          ),
+                        <label
+                          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                          htmlFor={`values-${index}`}
+                        >
+                          Characteristic Values:
+                        </label>
+                        <select
+                          className="block w-full bg-white text-gray-700 border border-Gray-500 py-3 px-4 mb-3 leading-tight focus:outline-none rounded-md"
+                          id={`values-${index}`}
+                          multiple
+                          value={selectedCharacteristicValues[index]}
+                          onChange={(event) =>
+                            handleCharacteristicValueChange(event, index)
+                          }
+                        >
+                          {(selectedProductSpec &&
+                            selectedCharacteristic[index] &&
+                            selectedProductSpec.productSpecCharacteristic
+                              .find(
+                                (char) =>
+                                  char.name === selectedCharacteristic[index],
+                              )
+                              ?.productSpecCharacteristicValue.map((value) => (
+                                <option key={value.value} value={value.value}>
+                                  {value.value}
+                                </option>
+                              ))) ||
+                            (relatedProductSpecCharacteristics &&
+                              selectedCharacteristic[index] &&
+                              relatedProductSpecCharacteristics.flatMap(
+                                (relatedSpec) =>
+                                  relatedSpec.productSpecCharacteristic
+                                    .filter(
+                                      (char) =>
+                                        char.name ===
+                                        selectedCharacteristic[index],
+                                    )
+                                    .flatMap((char) =>
+                                      char.productSpecCharacteristicValue.map(
+                                        (value) => (
+                                          <option
+                                            key={value.value}
+                                            value={value.value}
+                                          >
+                                            {value.value}
+                                          </option>
                                         ),
-                                  ))}
-                            </select>
-                          </div>
-                        )}
+                                      ),
+                                    ),
+                              ))}
+                        </select>
                       </div>
                     ))}
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <button
-                        className="buttonadd"
-                        type="button"
-                        onClick={addCharacteristic}
-                      >
+                      <button type="button" onClick={addCharacteristic}>
                         Add Characteristic
                       </button>
                     </div>
@@ -524,10 +516,9 @@ export default function NewProductOfferingPage() {
                         Price Unit::
                       </label>
 
-                      <input
+                      <select
                         className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         id="unit"
-                        type="text"
                         value={
                           productOfferingPrice.price.taxIncludedAmount.unit
                         }
@@ -543,7 +534,15 @@ export default function NewProductOfferingPage() {
                             },
                           }))
                         }
-                      />
+                      >
+                        <option value="">Select Unit</option>
+                        <option value="USD">USD</option>
+                        <option value="CHF">CHF</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="JPY">JPY</option>
+                        {/* Add more options for different units */}
+                      </select>
                     </div>
 
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -613,6 +612,7 @@ export default function NewProductOfferingPage() {
                       </Link>
                       <button
                         type="submit"
+                        disabled={!chosenProductSpecification}
                         className="rounded-md bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Save

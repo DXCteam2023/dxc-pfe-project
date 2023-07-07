@@ -160,18 +160,23 @@ const Page = ({
       if (response.status === 200) {
         Swal.fire({
           icon: "success",
-          text: "Le mot de passe a été modifié avec succès.",
+          text: response.data.message,
         });
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
       } else {
         Swal.fire({
           icon: "error",
-          text: "Une erreur s'est produite lors de la modification du mot de passe.",
+          text: "An error occurred while changing the password ",
         });
       }
     } catch (error: any) {
       Swal.fire({
         icon: "error",
-        text: `Une erreur est survenue lors de la modification du mot de passe : ${error.message}`,
+        text: `An error occurred while changing the password :  ${error.response.data.message}`,
       });
     }
   };
@@ -181,36 +186,36 @@ const Page = ({
     if (newPassword !== confirmPassword) {
       Swal.fire({
         icon: "error",
-        text: "Les mots de passe ne correspondent pas.",
+        text: "The passwords are different",
       });
       return;
     }
     updateUserPassword();
   };
 
-  const handleConfirmation = () => {
-    setShowConfirmationAlert(false);
-    Swal.fire({
-      title: "Réinitialiser le mot de passe",
-      text: "Voulez-vous vraiment réinitialiser le mot de passe ?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Confirmer",
-      cancelButtonText: "Annuler",
-      showLoaderOnConfirm: true,
-      preConfirm: () => {
-        return new Promise<void>((resolve) => {
-          setTimeout(() => {
-            resolve();
-          }, 1000);
-        });
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Mot de passe réinitialisé avec succès !", "", "success");
-      }
-    });
-  };
+  // const handleConfirmation = () => {
+  //   setShowConfirmationAlert(false);
+  //   Swal.fire({
+  //     title: "Updating password",
+  //     text: "Do you really want to reset the password? ?",
+  //     icon: "question",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Confirm",
+  //     cancelButtonText: "cancel",
+  //     showLoaderOnConfirm: true,
+  //     preConfirm: () => {
+  //       return new Promise<void>((resolve) => {
+  //         setTimeout(() => {
+  //           resolve();
+  //         }, 1000);
+  //       });
+  //     },
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire("", "success", "success");
+  //     }
+  //   });
+  // };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -279,8 +284,10 @@ const Page = ({
         return "text-orange-900";
       case "completed":
         return "text-green-900";
-      case "canceled":
+      case "cancellation_received":
         return "text-red-900";
+      case "assessing_cancellation":
+        return "text-white";
       default:
         return "";
     }
@@ -296,8 +303,10 @@ const Page = ({
         return "bg-orange-200 shadow-orange-300";
       case "completed":
         return "bg-green-200 shadow-green-300";
-      case "canceled":
+      case "cancellation_received":
         return "bg-red-200 shadow-red-300";
+      case "assessing_cancellation":
+        return "bg-gray-400 shadow-gray-300";
       default:
         return "";
     }

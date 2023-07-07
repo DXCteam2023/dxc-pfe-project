@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addProductOffering,
+  archiveProductOffering,
   getArchivedProductOfferings,
   getProductOfferingById,
   getProductOfferings,
@@ -15,7 +16,9 @@ productOfferingRoute.get("/:id", getProductOfferingById);
 
 productOfferingRoute.post("/", addProductOffering);
 
-productOfferingRoute.patch("/:id", publishProductOffering);
+productOfferingRoute.patch("/publish/servicenow/:id", publishProductOffering);
+
+productOfferingRoute.post("/archive/:id", archiveProductOffering);
 
 productOfferingRoute.get("/archived/all", getArchivedProductOfferings);
 

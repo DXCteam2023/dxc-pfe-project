@@ -11,7 +11,7 @@ export default async function getAccount(
   try {
     const response = await axios.get(`${AXIOS_URL}/api/account/${id}`);
     const AccountData = response.data;
-    console.log(response.data);
+    // console.log(response.data);
     setAccount(AccountData);
   } catch (error) {
     console.error("Error while fetching account:", error);

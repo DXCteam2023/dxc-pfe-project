@@ -636,8 +636,11 @@ const SingleProductSpecificationPage = ({
                           </li>
                         </ul>
                       </div>
-                      <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                      <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8 text-center">
                         <ProductOfferingsChart params={params} />
+                        <p className="mt-2 text-gray-600 font-semibold">
+                          Related Products Offering By Stats
+                        </p>
                       </div>
                     </div>
                     <div className="flex  flex-col w-full 2xl:w-2/3">
@@ -714,6 +717,9 @@ const SingleProductSpecificationPage = ({
                                       Value Type
                                     </th>
                                     <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                      Value
+                                    </th>
+                                    <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                                       start Date time
                                     </th>
                                   </tr>
@@ -732,16 +738,29 @@ const SingleProductSpecificationPage = ({
                                           key={index}
                                           className="hover:bg-grey-lighter "
                                         >
-                                          <td className="py-4 px-6  border p-2  border-grey-light text-purple-900 font-semibold">
+                                          <td className="py-4 px-4  border p-2  border-grey-light text-purple-900 font-semibold">
                                             {name}
                                           </td>
-                                          <td className="py-4 px-6  border p-2  border-grey-light">
+                                          <td className="py-4 px-4  border p-2  border-grey-light">
                                             {description}
                                           </td>
-                                          <td className="py-4 px-6  border p-2 border-grey-light">
+                                          <td className="py-4 px-4  border p-2 border-grey-light">
                                             {valueType}
                                           </td>
-                                          <td className="py-4 px-6 border text-indigo-600 font-semibold p-2 border-grey-light">
+                                          <td className="py-4 px-6  border p-2 border-grey-light">
+                                            {relation.productSpecCharacteristicValue.map(
+                                              (charVar: any, index: number) => {
+                                                return (
+                                                  <ul>
+                                                    <li>
+                                                      - {charVar["value"]}
+                                                    </li>
+                                                  </ul>
+                                                );
+                                              },
+                                            )}
+                                          </td>
+                                          <td className="py-4 px-4 border text-indigo-600 font-semibold p-2 border-grey-light">
                                             {new Date(
                                               productSpec?.productSpecCharacteristic[0]?.validFor?.startDatetime,
                                             ).toDateString()}

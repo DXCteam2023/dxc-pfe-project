@@ -12,7 +12,7 @@ export default async function addProductOffering(req: Request, res: Response) {
     // Create a new product using the request body data
     const product = new ProductOfferingModel({
       name: req.body.name,
-      state: "In Draft",
+      status: "draft",
       description: req.body.description,
       productOfferingPrice: [
         {
@@ -34,7 +34,7 @@ export default async function addProductOffering(req: Request, res: Response) {
         startDateTime: req.body.validFor.startDateTime,
         endDateTime: req.body.validFor.endDateTime,
       },
-      productSpecCharacteristic: req.body.productSpecCharacteristic,
+      prodSpecCharValueUse: req.body.prodSpecCharValueUse,
       number: number,
       id: "", // Placeholder for the actual _id value
     });
@@ -71,6 +71,7 @@ export default async function addProductOffering(req: Request, res: Response) {
     // Make the POST request to ServiceNow API
     const url =
       "https://dev174830.service-now.com/api/sn_prd_pm_adv/catalogmanagement/productoffering";
+
     const auth = {
       username: "admin",
       password: "rL4=I7iLPw%n",
@@ -83,17 +84,26 @@ export default async function addProductOffering(req: Request, res: Response) {
       productOfferingTerm: "12_months",
       productOfferingPrice: req.body.productOfferingPrice,
       productSpecification: req.body.productSpecification,
-      productSpecCharacteristic: req.body.productSpecCharacteristic,
+      prodSpecCharValueUse: req.body.prodSpecCharValueUse,
+
       channel: req.body.channel,
       category: req.body.category,
       externalId: savedProduct.id,
     };
 
-    console.log("testeeee" + req.body.productOfferingPrice);
     const response = await axios.post(url, payload, { auth });
+    console.log("Response Data:", response.data);
+    console.log(response.data.id);
 
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
+      // Retrieve the sys_id from the response data
+      const sysId = response.data.id;
+
+      // Update the savedProduct document with the externalId
+      savedProduct.externalId = sysId;
+      await savedProduct.save();
       console.log("Payload sent to ServiceNow successfully.");
+      //console.log(savedProduct);
     } else {
       console.error("Failed to send payload to ServiceNow.", response.data);
     }

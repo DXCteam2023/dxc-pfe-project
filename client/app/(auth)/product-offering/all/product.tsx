@@ -153,25 +153,41 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   ) => {
     e.preventDefault();
     try {
-      // Make sure to replace the placeholders with the actual values
       const id = product.externalId;
-      axios.patch(`${AXIOS_URL}/api/product-offering/${id}`);
+      console.log(id);
+
+      const url = `http://localhost:5000/api/product-offering/${id}`;
+      await axios.patch(url);
+
+      // Handle the successful response
     } catch (error) {
       console.error("An error occurred:", error);
-      // Handle any other errors
+
+      // Handle different types of errors
       if (axios.isAxiosError(error)) {
+        // Axios error
         const axiosError = error as AxiosError;
         if (axiosError.response) {
+          // The request was made and the server responded with a status code
           console.error("Response status:", axiosError.response.status);
           console.error("Response data:", axiosError.response.data);
+          // Handle specific status codes or error messages
         } else if (axiosError.request) {
+          // The request was made but no response was received
           console.error("No response received:", axiosError.request);
+          // Handle the lack of response
         } else {
+          // Something else happened while setting up the request
           console.error("Error setting up the request:", axiosError.message);
+          // Handle other errors
         }
       } else {
-        console.error("Unkown error:", error);
+        // Other unknown error
+        console.error("Unknown error:", error);
+        // Handle other errors
       }
+
+      // Display an error message to the user or perform any other error handling
     }
   };
 
@@ -210,12 +226,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <tr key={product.id}>
-      <td
+      {/* <td
         className="px-6 py-4 cursor-pointer"
         onClick={() => setModalOpenView(true)}
       >
         {product.number}
-      </td>
+      </td> */}
       <td className="px-6 py-4">{product.name}</td>
       <td className="px-6 py-4">{product.description}</td>
       <td className="px-6 py-4">
@@ -223,21 +239,27 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           ? product.productSpecification.name
           : "Product Specification Name"}
       </td>
-      <td className="px-6 py-4">{product.version}</td>
+      <td className="px-6 py-4">{product.internalVersion}</td>
       <td className="px-6 py-4">{product.status}</td>
       <td className="px-6 py-4">{product.validFor.startDateTime}</td>
       <td
         className="px-6 py-4"
         style={{ display: "flex", alignItems: "center" }}
       >
-        <FiEdit
+        {/* <FiEdit
           onClick={() => setModalOpen(true)}
           title="Edit"
           cursor="pointer"
           className="text-green-500"
           size={25}
-        />
-
+        /> */}
+        <button
+          className="btn btn-sm btn-info"
+          onClick={() => setModalOpen(true)}
+        >
+          Update
+        </button>
+        &nbsp;
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <form onSubmit={handleSubmitEditProOf}>
             <h3 className="font-bold text-lg">Edit product</h3>
@@ -291,17 +313,25 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               <button type="submit" className="btn">
                 Update
               </button>
+              &nbsp;
             </div>
           </form>
         </Modal>
         {product.status === "draft" || product.status === "In Draft" ? (
-          <MdOutlinePublishedWithChanges
-            size={25}
-            title="Publish"
-            cursor="pointer"
+          // <MdOutlinePublishedWithChanges
+          //   size={25}
+          //   title="Publish"
+          //   cursor="pointer"
+          //   onClick={() => setOpenModalPublish(true)}
+          // />
+          <button
+            className="btn btn-sm btn-success"
             onClick={() => setOpenModalPublish(true)}
-          />
+          >
+            Publish
+          </button>
         ) : null}
+        &nbsp;
         <Modal modalOpen={openModalPublish} setModalOpen={setOpenModalPublish}>
           <form onSubmit={handleSubmitEditPublish}>
             <h3 style={{ color: "black", textAlign: "center" }}>
@@ -327,13 +357,20 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </form>
         </Modal>
         {product.status === "Published" || product.status === "published" ? (
-          <GrStatusDisabled
-            size={25}
-            title="Retire"
-            cursor="pointer"
+          // <GrStatusDisabled
+          //   size={25}
+          //   title="Retire"
+          //   cursor="pointer"
+          //   onClick={() => setOpenModalRetired(true)}
+          // />
+          <button
+            className="btn btn-sm btn-warning"
             onClick={() => setOpenModalRetired(true)}
-          />
+          >
+            Retire
+          </button>
         ) : null}
+        &nbsp;
         <Modal modalOpen={openModalRetired} setModalOpen={setOpenModalRetired}>
           <form onSubmit={handleSubmitEditRe}>
             <h3 style={{ color: "black", textAlign: "center" }}>
@@ -358,12 +395,13 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             </div>
           </form>
         </Modal>
-        <GrView
+        {/* <GrView
           title="View"
           cursor="pointer"
           className="text-blue-500"
           size={25}
-        />
+        /> */}
+        <button className="btn btn-sm btn-active">View</button>
         <Modal modalOpen={modalOpenView} setModalOpen={setModalOpenView}>
           <form onSubmit={handleSubmitEditProOf}>
             <h3 className="font-bold text-lg">Product details</h3>

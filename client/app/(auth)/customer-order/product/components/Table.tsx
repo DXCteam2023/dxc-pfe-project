@@ -237,6 +237,24 @@ const Table = () => {
                           >
                             <p className="text-black-500">Completed</p>
                           </button>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("cancellation_received")
+                            }
+                          >
+                            <p className="text-black-500">
+                              Cancellation Received
+                            </p>
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("assessing_cancellation")
+                            }
+                          >
+                            <p className="text-black-500">
+                              Assessing Cancellation
+                            </p>
+                          </button>
                           <button onClick={() => handleStateFilter("canceled")}>
                             <p className="text-black-500">Canceled</p>
                           </button>
@@ -244,7 +262,7 @@ const Table = () => {
                             <p className="text-black-500">On Hold</p>
                           </button>
                           <button
-                            onClick={() => handleStateFilter("In progress")}
+                            onClick={() => handleStateFilter("in_progress")}
                           >
                             <p className="text-black-500">In Progress</p>
                           </button>
@@ -354,11 +372,7 @@ const Table = () => {
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <div className="flex items-center">
                                       <div className="ml-3">
-                                        <a className="text-gray-900 whitespace-no-wrap">{`PO${(
-                                          index + 1
-                                        )
-                                          .toString()
-                                          .padStart(7, "0")}`}</a>
+                                        {order.orderNumber}
                                       </div>
                                     </div>
                                   </td>
@@ -403,17 +417,21 @@ const Table = () => {
                                           order.state === "completed"
                                             ? "bg-blue-200"
                                             : order.state === "on hold"
-                                            ? "bg-gray-200"
+                                            ? "bg-brown-200"
                                             : order.state === "in draft"
                                             ? "bg-yellow-200"
-                                            : order.state === "In progress"
+                                            : order.state === "in_progress"
                                             ? "bg-orange-200"
-                                            : order.state === "canceled"
+                                            : order.state ===
+                                              "cancellation_received"
                                             ? "bg-red-200"
                                             : order.state === "new"
                                             ? "bg-green-200"
                                             : order.state === "scheduled"
                                             ? "bg-purple-200"
+                                            : order.state ===
+                                              "assessing_cancellation"
+                                            ? "bg-gray-200"
                                             : ""
                                         } rounded-full`}
                                       ></span>
