@@ -16,7 +16,7 @@ const fetchProductSpecificationDetails = async (
   chosenProductSpecification: string,
 ) => {
   try {
-    const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
+    const specificationUrl = `${AXIOS_URL}/api/product-specification/id/${chosenProductSpecification}`;
     const specificationResponse = await axios.get(specificationUrl);
     const specificationData = await specificationResponse.data;
     setSelectedProductSpec(specificationData);
