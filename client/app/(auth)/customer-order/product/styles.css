@@ -1,6 +1,6 @@
 .tabbody:hover {
   background-color: #f5f5f5;
-  /* Autres styles à appliquer lors du survol */
+  /* Autres styles Ã  appliquer lors du survol */
 }
 th {
   text-align: center;
@@ -168,7 +168,6 @@ thead {
   }
 }
 
-
 .Infos {
   margin-left: 40px;
   margin-right: 40px;
@@ -186,8 +185,8 @@ thead {
 }
 
 .loader {
-  border: 16px solid #f3f3f3; 
-  border-top: 16px solid #8b2d8c; 
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #8b2d8c;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -236,7 +235,6 @@ thead {
   }
 }
 
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -252,7 +250,7 @@ thead {
 }
 
 .tab {
-  padding:auto;
+  padding: auto;
   min-height: 50px;
   height: auto;
   width: auto;
