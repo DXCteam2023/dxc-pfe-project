@@ -237,11 +237,23 @@ const Table = () => {
                           >
                             <p className="text-black-500">Completed</p>
                           </button>
-                          <button onClick={() => handleStateFilter("cancellation_received")}>
-                            <p className="text-black-500">Cancellation Received</p>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("cancellation_received")
+                            }
+                          >
+                            <p className="text-black-500">
+                              Cancellation Received
+                            </p>
                           </button>
-                          <button onClick={() => handleStateFilter("assessing_cancellation")}>
-                            <p className="text-black-500">Assessing Cancellation</p>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("assessing_cancellation")
+                            }
+                          >
+                            <p className="text-black-500">
+                              Assessing Cancellation
+                            </p>
                           </button>
                           <button onClick={() => handleStateFilter("canceled")}>
                             <p className="text-black-500">Canceled</p>
@@ -249,7 +261,9 @@ const Table = () => {
                           <button onClick={() => handleStateFilter("on hold")}>
                             <p className="text-black-500">On Hold</p>
                           </button>
-                          <button onClick={() => handleStateFilter("in_progress")}>
+                          <button
+                            onClick={() => handleStateFilter("in_progress")}
+                          >
                             <p className="text-black-500">In Progress</p>
                           </button>
                           <button
@@ -358,8 +372,7 @@ const Table = () => {
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <div className="flex items-center">
                                       <div className="ml-3">
-                                        
-                                          {order.orderNumber}
+                                        {order.orderNumber}
                                       </div>
                                     </div>
                                   </td>
@@ -409,13 +422,15 @@ const Table = () => {
                                             ? "bg-yellow-200"
                                             : order.state === "in_progress"
                                             ? "bg-orange-200"
-                                            : order.state === "cancellation_received"
+                                            : order.state ===
+                                              "cancellation_received"
                                             ? "bg-red-200"
                                             : order.state === "new"
                                             ? "bg-green-200"
                                             : order.state === "scheduled"
                                             ? "bg-purple-200"
-                                            : order.state === "assessing_cancellation"
+                                            : order.state ===
+                                              "assessing_cancellation"
                                             ? "bg-gray-200"
                                             : ""
                                         } rounded-full`}
