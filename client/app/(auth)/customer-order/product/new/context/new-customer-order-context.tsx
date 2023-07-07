@@ -7,10 +7,18 @@ export type OptionType = {
   label: string;
 };
 
+export type CharacteristicType = {
+  id: string;
+  name: string;
+  isMandatory: boolean;
+};
+
 export type ProductOfferingType = {
   value: string;
   label: string;
   productOfferingObject: any;
+  optionsCharacteristics: Array<CharacteristicType>;
+  selectedCharacteristicsIds: Array<string>;
   quantity: number;
   generatedId?: string;
 };
