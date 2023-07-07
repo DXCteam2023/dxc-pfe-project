@@ -110,7 +110,7 @@ export default function NewProductOfferingPage() {
   const fetchSpecificationDetails = async () => {
     try {
       const response = await axios.get<SelectedProductSpec>(
-        `http://localhost:5000/api/product-specification/${chosenProductSpecification}`,
+        `http://localhost:5000/api/product-specification/id/${chosenProductSpecification}`,
       );
       const data = response.data;
       console.log("Fetched specification details:", data);
@@ -201,7 +201,7 @@ export default function NewProductOfferingPage() {
     try {
       const url = "http://localhost:5000/api/product-offering";
 
-      const specificationUrl = `http://localhost:5000/api/product-specification/${chosenProductSpecification}`;
+      const specificationUrl = `http://localhost:5000/api/product-specification/id/${chosenProductSpecification}`;
       const specificationResponse = await axios.get<SelectedProductSpec>(
         specificationUrl,
       );

@@ -11,7 +11,7 @@ export default async function getProductSpecification(
 ) {
   try {
     const response = await axios.get(
-      `${AXIOS_URL}/api/product-specification/${id}`,
+      `${AXIOS_URL}/api/product-specification/id/${id}`,
     );
 
     const productData = response.data;

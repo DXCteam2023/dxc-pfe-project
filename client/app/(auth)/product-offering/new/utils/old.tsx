@@ -81,7 +81,7 @@ export default function NewProductOfferingPage() {
 
   const fetchSpecificationDetails = async () => {
     try {
-      const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
+      const specificationUrl = `${AXIOS_URL}/api/product-specification/id/${chosenProductSpecification}`;
       const specificationResponse = await axios.get(specificationUrl);
       const specificationData = specificationResponse.data;
       setSelectedProductSpec(specificationData);
@@ -136,7 +136,7 @@ export default function NewProductOfferingPage() {
 
       const url = `${AXIOS_URL}/api/product-offering`;
 
-      const specificationUrl = `${AXIOS_URL}/api/product-specification/${chosenProductSpecification}`;
+      const specificationUrl = `${AXIOS_URL}/api/product-specification/id/${chosenProductSpecification}`;
       const specificationResponse = await axios.get(specificationUrl);
       const specificationData = specificationResponse.data;
 
