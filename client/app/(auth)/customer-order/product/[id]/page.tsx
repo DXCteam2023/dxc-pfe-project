@@ -5,13 +5,18 @@ import Image from "next/image";
 import { IoMdOptions } from "react-icons/io";
 import { FiFilter, FiRefreshCcw } from "react-icons/fi";
 import * as dotenv from "dotenv";
-import { FaUser, FaUserCircle } from "react-icons/fa";
-import NoRecord from "../../../../../public/assets/NoRecord.png";
+import {
+  FaArrowRight,
+  FaCheck,
+  FaTimes,
+  FaUser,
+  FaUserCircle,
+} from "react-icons/fa";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
+import NoRecord from "../../../../../public/assets/NoRecord.png";
 
 import "../styles.css";
-import { FaArrowRight, FaCheck, FaTimes, FaUser, FaUserCircle } from "react-icons/fa";
 
 dotenv.config();
 
@@ -195,219 +200,254 @@ const page = ({ params }: { params: { id: string } }) => {
                         Channel:
                       </label>
                       <input
-  className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-  type="text"
-  value={product.channel && product.channel[0] ? product.channel[0].name : ''}
-/>
-
-                    </div>
-                    <div className="w-full md:w-1/3 px-3">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
-                        Expected Completion Date:
-                      </label>
-                      <input
-                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                        className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                         type="text"
-                        value={product.expectedCompletionDate}
-                      ></input>
-                    </div>
-                    <div className="w-full md:w-1/3 px-3">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
-                        Completion Date:
-                      </label>
-                      <input
-                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        type="text"
-                        value={product.completionDate}
-                      ></input>
-                    </div>
-                    <div className="w-full md:w-1/3 px-3">
-                      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
-                        Requested Start Date:
-                      </label>
-                      <input
-                        className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        type="text"
-                        value={product.requestedStartDate}
-                      ></input>
+                        value={
+                          product.channel && product.channel[0]
+                            ? product.channel[0].name
+                            : ""
+                        }
+                      />
                     </div>
                   </div>
-                  <div className="w-full md:w-1/1 px-3">
-  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-    tracking:
-  </label>
-  <div>
-    
-    <div style={{  alignItems: 'center' }}>
-  
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {product.state === 'new' && <FaArrowRight color="blue" size={24} />}
-    {product.state !== 'new' && <FaCheck color="green" size={24} />}
-  </div>
-  <p style={{ marginLeft: '10px' }}>Waiting for Approval (Approved)</p>
+                  <div className="w-full md:w-1/3 px-3">
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
+                      Expected Completion Date:
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      type="text"
+                      value={product.expectedCompletionDate}
+                    ></input>
+                  </div>
+                  <div className="w-full md:w-1/3 px-3">
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
+                      Completion Date:
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      type="text"
+                      value={product.completionDate}
+                    ></input>
+                  </div>
+                  <div className="w-full md:w-1/3 px-3">
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 ">
+                      Requested Start Date:
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-white text-gray-700 border border-Gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      type="text"
+                      value={product.requestedStartDate}
+                    ></input>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/1 px-3">
+                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    tracking:
+                  </label>
+                  <div>
+                    <div style={{ alignItems: "center" }}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {product.state === "new" && (
+                            <FaArrowRight color="blue" size={24} />
+                          )}
+                          {product.state !== "new" && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Waiting for Approval (Approved)
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {product.state === "rejected" && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Order rejected (Rejected)
+                        </p>
+                      </div>
 
-  </div>
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {product.state === 'rejected' && <FaCheck color="green" size={24} />}
-    </div>
-    <p style={{ marginLeft: '10px' }}>Order rejected (Rejected)</p></div>
-   
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {((product.state !== "new" &&
+                            product.state !== "in_progress") ||
+                            (product.state === "in_progress" &&
+                              product.productOrderItem.some(
+                                (item: { state: string }) =>
+                                  item.state === "completed",
+                              ))) && <FaCheck color="green" size={24} />}
 
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {((product.state !== 'new' && product.state !== 'in_progress') ||(product.state === 'in_progress' && product.productOrderItem.some((item: { state: string; }) => item.state === 'completed') )) && <FaCheck color="green" size={24} />}
-
-    {product.state === 'in_progress' && (product.productOrderItem.filter((item: { state: string; }) => item.state === 'completed').length===0) && <FaArrowRight color="blue" size={24} />}
-    </div>
-    <p style={{ marginLeft: '10px' }}>Order In Progress (In Progress)</p>
-   
-    </div>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-   
-    <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {product.state === 'completed' && <FaCheck color="green" size={24} />}
-    {product.state === 'in_progress' && (product.productOrderItem.filter((item: { state: string; }) => item.state === 'completed').length!==0) && <FaArrowRight color="blue" size={24} />}
-
-    </div>
-    <p style={{ marginLeft: '10px' }}>Fulfillment (In Progress)</p>
-    </div>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {product.state === 'completed' && <FaCheck color="green" size={24} />}
-    </div>
-    <p style={{ marginLeft: '10px' }}>Customer Order (Completed)</p>
-
-    </div>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-  <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {(product.state === 'cancellation_received' || product.state === 'canceled') && (
-      <FaCheck color="green" size={24} />
-    )}
-    {(product.state === 'assessing_cancellation'&& 
-      <FaArrowRight color="blue" size={24} />
-    )}
-    
-  </div>
-  <p style={{ marginLeft: '10px' }}>Cancellation request (Assessing cancellation)</p>
-
-</div>
-<div style={{ display: 'flex', alignItems: 'center' }}>
-    <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {product.state === 'cancellation_received' &&  (
-        <FaArrowRight color="blue" size={24} />
-
-)}
-{product.state === 'canceled' && (
-       <FaCheck color="green" size={24} />
-
-)}
-</div>
-<p style={{ marginLeft: '10px' }}>Cancellation approved (Cancellation in progress)</p>
-</div>
-<div style={{ display: 'flex', alignItems: 'center' }}>
-    
-    <div
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      border: '1px solid gray',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    }}
-  >
-    {product.state === 'canceled' && (
-        <FaCheck color="green" size={24} />
-
-)}
- </div>
- <p style={{ marginLeft: '10px' }}>Customer Order (Cancelled)</p>
- </div>
-    </div>
-    </div>
-  
-</div>
+                          {product.state === "in_progress" &&
+                            product.productOrderItem.filter(
+                              (item: { state: string }) =>
+                                item.state === "completed",
+                            ).length === 0 && (
+                              <FaArrowRight color="blue" size={24} />
+                            )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Order In Progress (In Progress)
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {product.state === "completed" && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                          {product.state === "in_progress" &&
+                            product.productOrderItem.filter(
+                              (item: { state: string }) =>
+                                item.state === "completed",
+                            ).length !== 0 && (
+                              <FaArrowRight color="blue" size={24} />
+                            )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Fulfillment (In Progress)
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {product.state === "completed" && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Customer Order (Completed)
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {(product.state === "cancellation_received" ||
+                            product.state === "canceled") && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                          {product.state === "assessing_cancellation" && (
+                            <FaArrowRight color="blue" size={24} />
+                          )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Cancellation request (Assessing cancellation)
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {product.state === "cancellation_received" && (
+                            <FaArrowRight color="blue" size={24} />
+                          )}
+                          {product.state === "canceled" && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Cancellation approved (Cancellation in progress)
+                        </p>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            border: "1px solid gray",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          {product.state === "canceled" && (
+                            <FaCheck color="green" size={24} />
+                          )}
+                        </div>
+                        <p style={{ marginLeft: "10px" }}>
+                          Customer Order (Cancelled)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div className="tabs">
                   <div
@@ -448,32 +488,38 @@ const page = ({ params }: { params: { id: string } }) => {
                       <div className="submenu">
                         <button>SHOW/HIDE</button>
                         <div className="submenu-content">
-  <button
-    onClick={() => setVersionColumnVisible(!versionColumnVisible)}
-  >
-        <p className="text-black-500">        {versionColumnVisible ? "Hide" : "Show"} version
+                          <button
+                            onClick={() =>
+                              setVersionColumnVisible(!versionColumnVisible)
+                            }
+                          >
+                            <p className="text-black-500">
+                              {" "}
+                              {versionColumnVisible ? "Hide" : "Show"} version
+                            </p>
+                          </button>
 
+                          <button
+                            onClick={() => setidColumnVisible(!idColumnVisible)}
+                          >
+                            <p className="text-black-500">
+                              {" "}
+                              {idColumnVisible ? "Hide" : "Show"} ID
+                            </p>
+                          </button>
 
-</p>
-  </button>
-
-  <button
-    onClick={() => setidColumnVisible(!idColumnVisible)}
-  >
-    <p className="text-black-500">     {idColumnVisible ? "Hide" : "Show"} ID
-
-</p>
-  </button>
-  
-  <button
-   
-    onClick={() => setrelationColumnVisible(!relationColumnVisible)}
-  >
-     <p className="text-black-500"> {relationColumnVisible ? "Hide" : "Show"} relationship
-</p>
-  </button>
-</div>
-
+                          <button
+                            onClick={() =>
+                              setrelationColumnVisible(!relationColumnVisible)
+                            }
+                          >
+                            <p className="text-black-500">
+                              {" "}
+                              {relationColumnVisible ? "Hide" : "Show"}{" "}
+                              relationship
+                            </p>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -483,21 +529,33 @@ const page = ({ params }: { params: { id: string } }) => {
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <button >State</button>
+                        <button>State</button>
                         <div className="submenu-content">
-                          <button onClick={() => handleStateFilter("completed")}>
+                          <button
+                            onClick={() => handleStateFilter("completed")}
+                          >
                             <p className="text-black-500">Completed</p>
                           </button>
-                          <button onClick={() => handleStateFilter("cancellation_received")}>
-                            <p className="text-black-500">cancellation_received</p>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("cancellation_received")
+                            }
+                          >
+                            <p className="text-black-500">
+                              cancellation_received
+                            </p>
                           </button>
                           <button onClick={() => handleStateFilter("on hold")}>
                             <p className="text-black-500">On Hold</p>
                           </button>
-                          <button onClick={() => handleStateFilter("in_progress")}>
+                          <button
+                            onClick={() => handleStateFilter("in_progress")}
+                          >
                             <p className="text-black-500">In Progress</p>
                           </button>
-                          <button onClick={() => handleStateFilter("scheduled")}>
+                          <button
+                            onClick={() => handleStateFilter("scheduled")}
+                          >
                             <p className="text-black-500">Scheduled</p>
                           </button>
                           <button onClick={() => handleStateFilter("new")}>
@@ -509,7 +567,7 @@ const page = ({ params }: { params: { id: string } }) => {
                         </div>
                       </div>
                       <div className="submenu">
-                        <button >PONR</button>
+                        <button>PONR</button>
                         <div className="submenu-content">
                           <button onClick={() => handlePONRFilter("true")}>
                             <p className="text-black-500">True</p>
@@ -860,7 +918,7 @@ const page = ({ params }: { params: { id: string } }) => {
                                       {relatedParty["@referredType"]}
                                     </p>
                                   </td>
-                                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                  {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <span className="relative inline-block px-3 py-1 font-semibold leading-tight">
                                       <span
                                         aria-hidden
@@ -888,7 +946,7 @@ const page = ({ params }: { params: { id: string } }) => {
                                         {item.state}
                                       </span>
                                     </span>
-                                  </td>
+                                  </td> */}
                                   <td
                                     className={`px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ${
                                       versionColumnVisible ? "" : "hidden"
@@ -896,7 +954,7 @@ const page = ({ params }: { params: { id: string } }) => {
                                   >
                                     {" "}
                                     <p className="text-gray-900 whitespace-no-wrap">
-                                      {item.version}
+                                      {/* {item.version} */}
                                     </p>
                                   </td>
                                 </tr>
@@ -943,30 +1001,47 @@ const page = ({ params }: { params: { id: string } }) => {
                         const formattedDate = new Date(
                           noteItem.date,
                         ).toLocaleDateString("en-US", options);
-    return (
-      <div key={index}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px',marginBottom: '2px', fontWeight: 'bold', color: '#8b2d8c' }}>
-          <FaUserCircle  />
-          <p >
-            {noteItem.author}
-          </p>
-        </div>
-        <p style={{fontStyle:'italic', color: 'gray' ,fontSize:'14px'}}>{formattedDate}</p>
-        <textarea
-          className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          value={noteItem.text}
-          readOnly
-        ></textarea>
-      </div>
-    );
-  })}
-                </div>
+                        return (
+                          <div key={index}>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "4px",
+                                marginBottom: "2px",
+                                fontWeight: "bold",
+                                color: "#8b2d8c",
+                              }}
+                            >
+                              <FaUserCircle />
+                              <p>{noteItem.author}</p>
+                            </div>
+                            <p
+                              style={{
+                                fontStyle: "italic",
+                                color: "gray",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {formattedDate}
+                            </p>
+                            <textarea
+                              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-500 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                              value={noteItem.text}
+                              readOnly
+                            ></textarea>
+                          </div>
+                        );
+                      },
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           )}
         </div>
       </div>
+      )
     </div>
   );
 };
