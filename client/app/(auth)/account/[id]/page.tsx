@@ -20,7 +20,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
   //console.log(account);
 
   return (
-    <p>
+    <>
       <div className="bg-gray-100 flex">
         <Sidebar />
         <div className="bg-white  min-h-screen-100 w-5/6 ">
@@ -94,14 +94,62 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                       </div>
                     </div>
                   </div>
+                  <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="last-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Locations
+                      </label>
+                      <div className="mt-2 ">
+                        {account && account.locations.length >= 0 && (
+                          <textarea
+                            rows={3}
+                            name="locations"
+                            id="locations"
+                            autoComplete="locations"
+                            value={account.locations.map(
+                              (locations: any) => `${locations.location} \n`,
+                            )}
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            disabled
+                          />
+                        )}
+                      </div>
+                    </div>
 
+                    <div className="sm:col-span-3 ml-12">
+                      <label
+                        htmlFor="last-name"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Contacts
+                      </label>
+                      <div className="mt-2 ">
+                        {account && account.contacts.length >= 0 && (
+                          <textarea
+                            rows={3}
+                            name="contacts"
+                            id="contacts"
+                            autoComplete="contacts"
+                            value={account.contacts.map(
+                              (contacts: any) => `${contacts.name} \n`,
+                            )}
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-pink-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-950 sm:text-sm sm:leading-6"
+                            disabled
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div className="sm:col-span-3 mr-12">
                       <label
                         htmlFor="first-name"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Phone
+                        Contact phone
                       </label>
                       <div className="mt-2 ">
                         {account && (
@@ -296,9 +344,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
                         )}
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div className="sm:col-span-3">
+                    <div className="sm:col-span-3 ml-12">
                       <label
                         htmlFor="last-name"
                         className="block text-sm font-medium leading-6 text-gray-900"
@@ -350,7 +396,7 @@ const SingleAcountPage = ({ params }: { params: { id: string } }) => {
         </div>
         {/* Autres composants ou contenu de la page */}
       </div>
-    </p>
+    </>
   );
 };
 

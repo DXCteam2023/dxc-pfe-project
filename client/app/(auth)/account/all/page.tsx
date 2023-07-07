@@ -17,37 +17,50 @@ export default function AllAccountage() {
       _id: string;
       country: string;
       notes: string | null;
-      stock_symbol: string | null;
+      //stock_symbol: string | null;
       number: string;
       sys_updated_by: string;
       sys_created_on: string;
-      contact: string | null;
-      stock_price: number | null;
+      //stock_price: number | null;
       state: string | null;
       sys_created_by: string;
-      zip: string;
+      //zip: string;
       phone: string;
-      fax_phone: string | null;
+      //fax_phone: string | null;
       name: string;
       account_code: string;
-      primary: boolean;
-      city: string;
-      sys_class_name: string;
-      manufacturer: boolean;
-      street: string;
-      vendor: boolean;
-      theme: string | null;
-      vendor_type: string | null;
-      sn_ind_tsm_core_external_id: string | null;
-      website: string | null;
-      registration_code: string;
-      customer: boolean;
-      email: string;
+      //primary: boolean;
+      //city: string;
+      //sys_class_name: string;
+      //manufacturer: boolean;
+      //street: string;
+      //vendor: boolean;
+      //theme: string | null;
+      //vendor_type: string | null;
+      //sn_ind_tsm_core_external_id: string | null;
+      //website: string | null;
+      //registration_code: string;
+      // customer: boolean;
+      //email: string;
+      contacts:
+        | {
+            id: string;
+            name: string;
+            // Add other properties of contact object if needed
+          }[]
+        | null;
+      locations:
+        | {
+            id: string;
+            location: string;
+            // Add other properties of location object if needed
+          }[]
+        | null;
     }>
   >([]);
 
   const [currentPage, setCurrentPage] = useState(1); // State for current page
-  const [numLines, setNumLines] = useState(2); // State for selected number of lines
+  const [numLines, setNumLines] = useState(5); // State for selected number of lines
   // Handler for previous page button click
 
   const handlePreviousPage = () => {
@@ -76,7 +89,6 @@ export default function AllAccountage() {
       try {
         const response = await axios.get(`${AXIOS_URL}/api/account`);
         setAccounts(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -120,7 +132,7 @@ export default function AllAccountage() {
                       <div className="flex flex-row mb-1 sm:mb-0">
                         <div className="relative">
                           <select
-                            className="appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             value={numLines}
                             onChange={handleFilterChange}
                           >
@@ -154,29 +166,22 @@ export default function AllAccountage() {
                       <table className="min-w-full leading-normal">
                         <thead>
                           <tr>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 text-center bg-purple-800 font-bold uppercase text-sm text-white">
                               Number
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                               Name
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                              Phone Number
-                            </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                               Customer
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                              Zip
+                            <th className="px-5 py-3 border-b-2 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                              contact
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                              City
+                            <th className="px-5 py-3 border-b-2 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                              location
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
-                              Account
-                            </th>
-
-                            <th className="px-5 py-3 border-b-2 border-fuchsia-950 bg-fuchsia-950 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                               Action
                             </th>
                           </tr>
@@ -203,42 +208,44 @@ export default function AllAccountage() {
                                     {account.name}
                                   </p>
                                 </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {account.phone}
-                                  </p>
-                                </td>
+
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                   <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                     <span
                                       aria-hidden
                                       className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
                                     ></span>
-                                    <span className="relative">
-                                      {account.customer ? "True" : "False"}
-                                    </span>
+                                    <span className="relative">True</span>
                                   </span>
                                 </td>
+
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <div className="flex items-center">
-                                    <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
-                                        {account.zip}
-                                      </p>
-                                    </div>
-                                  </div>
+                                  {account.contacts &&
+                                    account.contacts.length > 0 && (
+                                      <ul>
+                                        {account.contacts.map((contacts) => (
+                                          <li key={contacts.id}>
+                                            {contacts.name}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    )}
                                 </td>
+
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {account.city}
-                                  </p>
+                                  {account.locations &&
+                                    account.locations.length > 0 && (
+                                      <ul>
+                                        {account.locations.map((location) => (
+                                          <li key={location.id}>
+                                            {location.location}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    )}
                                 </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
-                                    {account.country}
-                                  </p>
-                                </td>
-                                <td className="py-3 px-6 text-center">
+
+                                <td className="py-3 px-6 border-b border-gray-200 text-center">
                                   <div className="flex item-center justify-center">
                                     <Link href={`/account/${account._id}`}>
                                       <div className="w-4 mr-2 transform hover:text-fuchsia-950 hover:scale-110">
@@ -276,14 +283,14 @@ export default function AllAccountage() {
                         </span>
                         <div className="inline-flex mt-2 xs:mt-0">
                           <button
-                            className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
+                            className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-l"
                             onClick={handlePreviousPage}
                             disabled={currentPage === 1}
                           >
                             Prev
                           </button>
                           <button
-                            className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
+                            className="text-sm bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:bg-purple-400 text-white font-semibold py-2 px-4 rounded-r"
                             onClick={handleNextPage}
                             disabled={nextPageData.length === 0}
                           >
