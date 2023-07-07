@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import ProductOfferingCharacteristics from "./ProductOfferingCharacteristics";
 
 export default function ProductOfferingItem({ item, onSelect, selected }: any) {
+  const [selectedCharcteristics, setSelectedCharcteristics] = useState([]);
+
+  useEffect(() => {
+    const mandatoryPlusSelectedCharacteristics =
+      item?.optionsCharacteristics.filter(
+        (item: any) =>
+          item.isMandatory ||
+          item?.selectedCharacteristicsIds?.includes(item.id),
+      );
+    // characteristics(with all properties) that are selected
+    const tmp2 = item?.productOfferingObject?.prodSpecCharValueUse.filter(
+      (item: any) =>
+        mandatoryPlusSelectedCharacteristics.find(
+          (item2: any) => item2.name === item.name,
+        ),
+    );
+    setSelectedCharcteristics(tmp2);
+  }, [
+    item?.productOfferingObject?.prodSpecCharValueUse,
+    item?.optionsCharacteristics,
+    item?.selectedCharacteristicsIds,
+  ]);
+
   return (
     <div>
       <div
@@ -14,9 +38,7 @@ export default function ProductOfferingItem({ item, onSelect, selected }: any) {
       >
         {item?.productOfferingObject?.productSpecification?.name}
       </div>
-      <ProductOfferingCharacteristics
-        items={item?.productOfferingObject?.prodSpecCharValueUse}
-      />
+      <ProductOfferingCharacteristics items={selectedCharcteristics} />
     </div>
   );
 }

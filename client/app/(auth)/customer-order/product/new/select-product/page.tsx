@@ -149,9 +149,68 @@ export default function SelectProduct() {
     myContext.deleteSelectedLocation();
   };
 
-  const handleProductOfferingOnChange = (option: OptionType, index: number) => {
+  const handleProductOfferingOnChange = async (
+    option: ProductOfferingType,
+    index: number,
+  ) => {
     console.log("handleProductOfferingOnChange onChange", option);
     const currentOfferings = currentProductOrder?.offerings || [];
+
+    // get all characteristics ids by offering
+    // then get their details (including is_mandatory)
+    // store in context
+    const offeringId = option.productOfferingObject.id;
+
+    const response =
+      await ProductOfferingServices.getCharacteristicsByOfferingId(offeringId);
+
+    console.log(
+      "getCharacteristicsByOfferingId mandatory",
+      response.data.result,
+    );
+    const characteristicsIds = response.data.result.map(
+      (item: any) => item.characteristic.value,
+    );
+
+    console.log(
+      "getCharacteristicsByOfferingId characteristicsIds",
+      characteristicsIds,
+    );
+
+    const mandatoryCharacteristicsIds = response.data.result
+      .filter((item: any) => item.is_mandatory === "true")
+      .map((item: any) => item.characteristic.value);
+
+    console.log(
+      "getCharacteristicsByOfferingId mandatoryCharacteristicsIds",
+      mandatoryCharacteristicsIds,
+    );
+
+    // get mandatory characteristics by characteristics ids
+    const response2 = await ProductOfferingServices.getCharacteristicsByIds(
+      characteristicsIds,
+    );
+    console.log("getCharacteristicsByOfferingId response2", response2);
+
+    const optionsCharacteristics = response2.data.result.map((item: any) => {
+      const isMandatory = mandatoryCharacteristicsIds.find(
+        (item2: any) => item2 === item.sys_id,
+      );
+      return {
+        id: item.sys_id,
+        name: item.name,
+        isMandatory: !!isMandatory,
+      };
+    });
+
+    console.log(
+      "getCharacteristicsByOfferingId optionsCharacteristics",
+      optionsCharacteristics,
+    );
+
+    option.optionsCharacteristics = optionsCharacteristics;
+    option.selectedCharacteristicsIds = [];
+
     myContext.updateSelectedProductOrder(
       "offerings",
       currentOfferings.map((offering, i) => (i === index ? option : offering)),

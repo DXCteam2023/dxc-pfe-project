@@ -3,6 +3,14 @@ import { NewCustomerOrderContextType } from "../context/new-customer-order-conte
 const { v4: uuidv4 } = require("uuid");
 
 const generateOneProductOrderItem = (offering: any) => {
+  const allCharacteristics =
+    offering.productOfferingObject.prodSpecCharValueUse;
+  const mandatoryCharacteristics = offering.optionsCharacteristics.filter(
+    (item: any) => item.isMandatory,
+  );
+  const productCharacteristic = allCharacteristics.filter((item: any) =>
+    mandatoryCharacteristics.find((item2: any) => item2.name === item.name),
+  );
   return {
     id: uuidv4(),
     action: "add",
@@ -12,8 +20,7 @@ const generateOneProductOrderItem = (offering: any) => {
         id: offering.locationId,
         "@type": "Place",
       },
-      productCharacteristic:
-        offering.productOfferingObject.prodSpecCharValueUse,
+      productCharacteristic,
       productSpecification: {
         ...offering.productOfferingObject.productSpecification,
         "@type": "ProductSpecificationRef",
