@@ -118,84 +118,97 @@ const ArchivedProductOfferings = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data
-                        .slice(indexOfFirstOrder, indexOfLastOrder)
-                        .map((order: any, index: number) => {
-                          return (
-                            <tr key={index}>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      <a className="text-blue-500 hover:text-blue-700 text-main-color">
-                                        {order.name}
-                                      </a>
-                                    </p>
+                      {data.length === 0 ? (
+                        <tr>
+                          <td colSpan={8} className="px-6 py-4">
+                            <div
+                              className="flex justify-center items-center rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"
+                              style={{ margin: "0 auto" }}
+                            ></div>
+                          </td>
+                        </tr>
+                      ) : (
+                        data
+                          .slice(indexOfFirstOrder, indexOfLastOrder)
+                          .map((order: any, index: number) => {
+                            return (
+                              <tr key={index}>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        <a className="text-blue-500 hover:text-blue-700 text-main-color">
+                                          {order.name}
+                                        </a>
+                                      </p>
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
+                                </td>
 
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {order.description}
-                                </p>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {order.lastUpdate}
-                                </p>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <span
-                                  className={`relative inline-block px-3 py-1 font-semibold  leading-tight`}
-                                >
-                                  <span className="relative">
-                                    {order.version}
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {order.description}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {order.lastUpdate}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <span
+                                    className={`relative inline-block px-3 py-1 font-semibold  leading-tight`}
+                                  >
+                                    <span className="relative">
+                                      {order.version}
+                                    </span>
                                   </span>
-                                </span>
-                              </td>
+                                </td>
 
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.productOfferingTerm}
-                                    </p>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {order.productOfferingTerm}
+                                      </p>
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div className="flex items-center">
-                                  <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      {order.productSpecification.name}
-                                    </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <div className="flex items-center">
+                                    <div className="ml-3">
+                                      <p className="text-gray-900 whitespace-no-wrap">
+                                        {order.productSpecification.name}
+                                      </p>
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
+                                </td>
 
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {order.status}
-                                </p>
-                              </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <p className="text-gray-900 whitespace-no-wrap">
-                                  {order.category[0].name}
-                                </p>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {order.status}
+                                  </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    {order.category[0].name}
+                                  </p>
+                                </td>
+                              </tr>
+                            );
+                          })
+                      )}
                     </tbody>
                   </table>
                   <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                     <span className="text-xs xs:text-sm text-gray-900">
-                      Showing 1 to 4 of 50 Entries
+                      Showing {indexOfFirstOrder + 1} to{" "}
+                      {Math.min(indexOfLastOrder, data.length)} of {data.length}{" "}
+                      Entries
                     </span>
                     <div className="inline-flex mt-2 xs:mt-0">
                       <button
-                        className="text-sm bg-wpurple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
+                        className="text-sm bg-purple-700 hover:bg-purple-400 text-white fo font-semibold py-2 px-4 rounded-l"
                         onClick={handlePreviousPage}
                         disabled={currentPage === 1}
                       >

@@ -46,13 +46,14 @@ export default function AllProductOfferingsPage() {
         <Sidebar />
         <div className="bg-white  min-h-screen-100 w-5/6">
           <Header />
-          <h1 className="text-center mt-8 font-medium">
+          <h1 className="text-center text-blue-700 text-4xl font-bold my-5">
             All Product Offerings
           </h1>
           <ListProductOffering />
+
+          <Footer />
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
