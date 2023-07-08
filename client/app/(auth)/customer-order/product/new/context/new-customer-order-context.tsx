@@ -165,7 +165,7 @@ const NewCustomerOrderContextProvider = ({
     generatedId: string,
     updateOffering: any,
   ) => {
-    setProductOrders((previousProductOrders: Array<ProductOrderType>) => {
+    const updateF = (previousProductOrders: Array<ProductOrderType>) => {
       return previousProductOrders.map(
         (previousProductOrdersItem: ProductOrderType) => {
           if (previousProductOrdersItem.locationId === locationId) {
@@ -183,7 +183,8 @@ const NewCustomerOrderContextProvider = ({
           }
         },
       );
-    });
+    }
+    setProductOrders(updateF(productOrders));
   };
 
   const deleteProductOffering = (index: number) => {

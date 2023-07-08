@@ -10,6 +10,7 @@ import {
   OptionType,
 } from "../context/new-customer-order-context";
 import ProductOfferingItem from "./ProductOfferingItem";
+import AddOrderItemModal from "./AddOrderItemModal";
 
 export default function ConfigureProduct() {
   const route = useRouter();
@@ -17,6 +18,8 @@ export default function ConfigureProduct() {
   const myContext = useContext(NewCustomerOrderContext);
 
   const [selected, setSelected] = useState<any>();
+
+  const [showAddOrderItemModal, setShowAddOrderItemModal] = useState(false);
 
   useEffect(() => {
     if (selected?.offering?.generatedId) {
@@ -56,6 +59,27 @@ export default function ConfigureProduct() {
     );
   };
 
+  const handleAddOrderItemOnClick = () => {
+    setShowAddOrderItemModal(true);
+  };
+
+  const handleAddOrderItemOnAdd = (item: any) => {
+    const updatedOffering = item.offering
+    updatedOffering.selectedCharacteristicsIds.push(item.id)
+    console.log("data",item, updatedOffering)
+    myContext.updateSelectedProductOrderOfferingById(
+      item.locationId,
+      item.offering.generatedId,
+      updatedOffering
+
+    )
+    setShowAddOrderItemModal(false);
+  };
+
+  const handleAddOrderItemOnCancel = () => {
+    setShowAddOrderItemModal(false);
+  };
+
   return (
     <SubLayout
       leftChildren={
@@ -64,7 +88,18 @@ export default function ConfigureProduct() {
             <h4 className="font-extrabold">Items</h4>
             <span className="flex gap-4 justify-between items-center">
               <BsFillTrash3Fill className="cursor-pointer" />
-              <BsPlusLg className="cursor-pointer" />
+              <BsPlusLg
+                className="cursor-pointer"
+                onClick={handleAddOrderItemOnClick}
+              />
+              {showAddOrderItemModal && (
+                <AddOrderItemModal
+                  productOrders={myContext?.productOrders}
+                  locations={myContext?.locations}
+                  onAdd={handleAddOrderItemOnAdd}
+                  onCancel={handleAddOrderItemOnCancel}
+                />
+              )}
             </span>
           </div>
           <div className="flex flex-col gap-2 text-xs whitespace-nowrap">

@@ -11,7 +11,7 @@ export default function ProductOfferingItem({ item, onSelect, selected }: any) {
         (item: any) =>
           item.isMandatory ||
           item?.selectedCharacteristicsIds?.includes(item.id),
-      );
+      );console.log('mandatoryPlusSelectedCharacteristics',mandatoryPlusSelectedCharacteristics,item)
     // characteristics(with all properties) that are selected
     const tmp2 = item?.productOfferingObject?.prodSpecCharValueUse.filter(
       (item: any) =>
