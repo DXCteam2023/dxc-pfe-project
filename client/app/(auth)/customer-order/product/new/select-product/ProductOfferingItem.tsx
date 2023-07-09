@@ -1,21 +1,22 @@
 import React from "react";
+import { BsFillTrash3Fill } from "react-icons/bs";
+
 import InputText from "../components/InputText";
 import SelectInput from "../components/SelectInput";
-import {
-  OptionType,
-  ProductOfferingType,
-} from "../context/new-customer-order-context";
+import { ProductOfferingType } from "../context/new-customer-order-context";
 
 type PropsType = {
   options: ProductOfferingType[];
   selected: ProductOfferingType;
   onChange: (option: ProductOfferingType) => void;
+  onDelete: () => void;
 };
 
 export default function ProductOfferingItem({
   options,
   selected,
   onChange,
+  onDelete,
 }: PropsType) {
   const handleSelectedOnChange = (option: any) => {
     onChange({ ...selected, ...option });
@@ -48,6 +49,10 @@ export default function ProductOfferingItem({
         placeholder="Quantity"
         value={selected?.quantity}
         onChange={handleQuantityOnChange}
+      />
+      <BsFillTrash3Fill
+        className="cursor-pointer text-[28px]"
+        onClick={onDelete}
       />
     </div>
   );

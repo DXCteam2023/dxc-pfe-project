@@ -65,6 +65,13 @@ const prodSpecCharValueUseSchema = new Schema({
     type: Array(productSpecCharacteristicValueSchema),
     required: false,
   },
+  productSpecification:{
+    id: { type: String, required: false },
+    name: { type: String, required: false },
+    version: { type: String, required: false },
+    internalVersion: { type: String, required: false },
+    internalId: { type: String, required: false },
+  },
   description: { type: String, required: false, default: "" },
   name: { type: String, required: false },
   validFor: { type: validForSchema, required: false },
@@ -83,10 +90,10 @@ const productOfferingSchema = new Schema({
   lastUpdate: { type: String, required: false, default: "" },
   name: { type: String, required: false },
   read: { type: Boolean, default: false },
-  productSpecCharacteristic: {
+  /*productSpecCharacteristic: {
     type: Array(productSpecCharacteristicSchema),
     required: false,
-  },
+  },*/
   productOfferingPrice: {
     type: Array(productOfferingPriceSchema),
     required: false,
@@ -94,14 +101,14 @@ const productOfferingSchema = new Schema({
   productOfferingTerm: { type: String, required: false, default: "" },
   productSpecification: { type: productSpecificationSchema, required: false },
   prodSpecCharValueUse: {
-    type: Array(prodSpecCharValueUseSchema),
+    type: [prodSpecCharValueUseSchema],
     required: false,
   },
   validFor: { type: validForSchema, required: false },
   version: { type: String, required: false },
   status: { type: String, required: false }, //this
-  createdBy: { type: String, required: true },
-  created: { type: Date, required: true, default: Date.now() },
+  // createdBy: { type: String, required: true },
+  // created: { type: Date, required: true, default: Date.now() },
 });
 
 const ProductOfferingModel = model<IProductOfferingDocument>(

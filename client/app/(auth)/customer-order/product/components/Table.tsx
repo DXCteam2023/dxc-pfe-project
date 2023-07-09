@@ -93,7 +93,10 @@ const Table = () => {
   if (productOrders.length === 0) {
     return (
       <center>
-        <div className="loader"></div>
+        <div className="loader">
+          {/* <div className="loader-small"></div>
+  <div className="loader-large"></div> */}
+        </div>
       </center>
     );
   }
@@ -205,9 +208,9 @@ const Table = () => {
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a href="#">SHOW/HIDE</a>
+                        <button>SHOW/HIDE</button>
                         <div className="submenu-content">
-                          <a
+                          <button
                             className="px-3 py-1.5 rounded-md bg-white border border-gray-300"
                             onClick={handleToggleTaskType}
                           >
@@ -216,7 +219,7 @@ const Table = () => {
                             ) : (
                               <p className="text-black-500">Show Task Type</p>
                             )}
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -227,40 +230,64 @@ const Table = () => {
                     </button>
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a href="#">State</a>
+                        <button>State</button>
                         <div className="submenu-content">
-                          <a onClick={() => handleStateFilter("completed")}>
+                          <button
+                            onClick={() => handleStateFilter("completed")}
+                          >
                             <p className="text-black-500">Completed</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("canceled")}>
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("cancellation_received")
+                            }
+                          >
+                            <p className="text-black-500">
+                              Cancellation Received
+                            </p>
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleStateFilter("assessing_cancellation")
+                            }
+                          >
+                            <p className="text-black-500">
+                              Assessing Cancellation
+                            </p>
+                          </button>
+                          <button onClick={() => handleStateFilter("canceled")}>
                             <p className="text-black-500">Canceled</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("on hold")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("on hold")}>
                             <p className="text-black-500">On Hold</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("In progress")}>
+                          </button>
+                          <button
+                            onClick={() => handleStateFilter("in_progress")}
+                          >
                             <p className="text-black-500">In Progress</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("scheduled")}>
+                          </button>
+                          <button
+                            onClick={() => handleStateFilter("scheduled")}
+                          >
                             <p className="text-black-500">Scheduled</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("new")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("new")}>
                             <p className="text-black-500">New</p>
-                          </a>
-                          <a onClick={() => handleStateFilter("in draft")}>
+                          </button>
+                          <button onClick={() => handleStateFilter("in draft")}>
                             <p className="text-black-500">in draft</p>
-                          </a>
+                          </button>
                         </div>
                       </div>
                       <div className="submenu">
-                        <a href="#">PONR</a>
+                        <button>PONR</button>
                         <div className="submenu-content">
-                          <a onClick={() => handlePONRFilter("true")}>
+                          <button onClick={() => handlePONRFilter("true")}>
                             <p className="text-black-500">True</p>
-                          </a>
-                          <a onClick={() => handlePONRFilter("false")}>
+                          </button>
+                          <button onClick={() => handlePONRFilter("false")}>
                             <p className="text-black-500">False</p>
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -272,14 +299,14 @@ const Table = () => {
 
                     <div className="dropdown-content">
                       <div className="submenu">
-                        <a>Sort by Order date</a>
+                        <button>Sort by Order date</button>
                         <div className="submenu-content">
-                          <a onClick={() => handleSort("newest")}>
+                          <button onClick={() => handleSort("newest")}>
                             <p className="text-black-500">Newest first</p>
-                          </a>
-                          <a onClick={() => handleSort("oldest")}>
+                          </button>
+                          <button onClick={() => handleSort("oldest")}>
                             <p className="text-black-500">Oldest first</p>
-                          </a>
+                          </button>
                         </div>
                       </div>
                       <div className="submenu"></div>
@@ -345,11 +372,7 @@ const Table = () => {
                                   <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                     <div className="flex items-center">
                                       <div className="ml-3">
-                                        <a className="text-gray-900 whitespace-no-wrap">{`PO${(
-                                          index + 1
-                                        )
-                                          .toString()
-                                          .padStart(7, "0")}`}</a>
+                                        {order.orderNumber}
                                       </div>
                                     </div>
                                   </td>
@@ -394,17 +417,21 @@ const Table = () => {
                                           order.state === "completed"
                                             ? "bg-blue-200"
                                             : order.state === "on hold"
-                                            ? "bg-gray-200"
+                                            ? "bg-brown-200"
                                             : order.state === "in draft"
                                             ? "bg-yellow-200"
-                                            : order.state === "In progress"
+                                            : order.state === "in_progress"
                                             ? "bg-orange-200"
-                                            : order.state === "canceled"
+                                            : order.state ===
+                                              "cancellation_received"
                                             ? "bg-red-200"
                                             : order.state === "new"
                                             ? "bg-green-200"
                                             : order.state === "scheduled"
                                             ? "bg-purple-200"
+                                            : order.state ===
+                                              "assessing_cancellation"
+                                            ? "bg-gray-200"
                                             : ""
                                         } rounded-full`}
                                       ></span>

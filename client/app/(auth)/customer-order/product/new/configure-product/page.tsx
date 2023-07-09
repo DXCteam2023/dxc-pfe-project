@@ -2,51 +2,94 @@
 
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill, BsPlusLg } from "react-icons/bs";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import InputText from "../components/InputText";
 import SubLayout from "../components/SubLayout";
-import { NewCustomerOrderContext } from "../context/new-customer-order-context";
+import {
+  NewCustomerOrderContext,
+  OptionType,
+} from "../context/new-customer-order-context";
+import ProductOfferingItem from "./ProductOfferingItem";
 
 export default function ConfigureProduct() {
   const route = useRouter();
 
   const myContext = useContext(NewCustomerOrderContext);
 
+  const [selected, setSelected] = useState<any>();
+
+  useEffect(() => {
+    if (selected?.offering?.generatedId) {
+      // when selected does exist, and changes happen in myContext?.productOrders
+      const productOrderFound = myContext.getSelectedProductOrder(
+        selected.location.value,
+      );
+      const offeringFound = productOrderFound?.offerings.find(
+        (offering) => offering.generatedId === selected.offering.generatedId,
+      );
+      // update selected.offering with the offeringFound in productOrderFound
+      setSelected({ ...selected, offering: offeringFound });
+    }
+  }, [myContext?.productOrders, selected?.offering?.generatedId]);
+
   const handleContinueOnClick = () => {
     route.push("/customer-order/product/new/review-order");
   };
 
-  const handleMonthlyRecurringChangesPerUnitOnChange = (value: string) => {
-    let tamp = value;
-    if (value === "") {
-      tamp = "1";
-    }
-    myContext.setMonthlyRecurringChangesPerUnit(parseInt(tamp));
+  const handleOfferingItemOnSelect = (offering: any, location: OptionType) => {
+    console.log("handleOfferingItemOnSelect", offering, location);
+    setSelected({
+      offering,
+      location,
+    });
   };
-  const handleTotalPriceOnChange = (value: string) => {
-    let tamp = value;
+  const handleQuantityOnChange = (value: string) => {
+    let tmp = value;
     if (value === "") {
-      tamp = "1";
+      tmp = "1";
     }
-    myContext.setTotalPrice(parseInt(tamp));
-  };
-  const handleNoneRecuringChangesPerUnitOnChange = (value: string) => {
-    let tamp = value;
-    if (value === "") {
-      tamp = "1";
-    }
-    myContext.setNoneRecuringChangesPerUnit(parseInt(tamp));
+
+    myContext.updateSelectedProductOrderOfferingById(
+      selected.location.value,
+      selected.offering.generatedId,
+      { quantity: parseInt(tmp) },
+    );
   };
 
   return (
     <SubLayout
       leftChildren={
-        <div className="flex gap-4 justify-between items-center">
-          <h4 className="font-extrabold">Items</h4>
-          <span className="flex gap-4 justify-between items-center">
-            <BsFillTrash3Fill className="cursor-pointer" />
-            <BsPlusLg className="cursor-pointer" />
-          </span>
+        <div className="flex flex-col">
+          <div className="flex gap-4 justify-between items-center p-4">
+            <h4 className="font-extrabold">Items</h4>
+            <span className="flex gap-4 justify-between items-center">
+              <BsFillTrash3Fill className="cursor-pointer" />
+              <BsPlusLg className="cursor-pointer" />
+            </span>
+          </div>
+          <div className="flex flex-col gap-2 text-xs whitespace-nowrap">
+            {myContext.locations.map((location) => (
+              <div>
+                <div className="p-1 pb-0 border-b-2">{location.label}</div>
+                <div className="flex flex-col">
+                  {myContext.productOrders
+                    ?.find(
+                      (productOrder) =>
+                        productOrder.locationId === location.value,
+                    )
+                    ?.offerings?.map((offering) => (
+                      <ProductOfferingItem
+                        item={offering}
+                        onSelect={() =>
+                          handleOfferingItemOnSelect(offering, location)
+                        }
+                        selected={selected}
+                      />
+                    ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       }
       rightChildren={
@@ -60,16 +103,16 @@ export default function ConfigureProduct() {
                   title="Number"
                   required={false}
                   placeholder="Number"
-                  value={myContext.number}
-                  onChange={myContext.setNumber}
+                  value={selected?.offering?.generatedId}
+                  disabled={true}
                 />
                 <InputText
                   slug="Location"
                   title="Location"
                   required={false}
                   placeholder="Location"
-                  value={myContext.location}
-                  onChange={myContext.setLocation}
+                  value={selected?.location.label}
+                  disabled={true}
                 />
               </div>
               <div className="flex justify-center gap-4">
@@ -78,16 +121,19 @@ export default function ConfigureProduct() {
                   title="Product Offering"
                   required={false}
                   placeholder="Product Offering"
-                  value={myContext.productOffering}
-                  onChange={myContext.setProductOffering}
+                  value={selected?.offering?.label}
+                  disabled={true}
                 />
                 <InputText
                   slug="Product Specification"
                   title="Product Specification"
                   required={false}
                   placeholder="Product Specification"
-                  value={myContext.productSpecification}
-                  onChange={myContext.setProductSpecification}
+                  value={
+                    selected?.offering?.productOfferingObject
+                      ?.productSpecification?.name
+                  }
+                  disabled={true}
                 />
               </div>
               <div className="flex justify-center gap-4 w-1/2 pr-2">
@@ -96,8 +142,8 @@ export default function ConfigureProduct() {
                   title="Ordered Quantity"
                   required={false}
                   placeholder="Ordered Quantity"
-                  value={myContext.orderedQuantity}
-                  onChange={myContext.setOrderedQuantity}
+                  value={selected?.offering?.quantity}
+                  onChange={handleQuantityOnChange}
                 />
               </div>
             </div>
@@ -107,39 +153,45 @@ export default function ConfigureProduct() {
             <div className="flex justify-center gap-4">
               <InputText
                 slug="Monthly Recurring Changes Per Unit"
-                title="Monthly Recurring Changes Per Unit"
+                title={`Monthly Recurring Changes Per Unit (${selected?.offering?.productOfferingObject?.productOfferingPrice?.[0]?.price?.taxIncludedAmount?.unit})`}
                 required={false}
                 placeholder="Monthly Recurring Changes Per Unit"
-                value={myContext.monthlyRecurringChangesPerUnit}
-                onChange={handleMonthlyRecurringChangesPerUnitOnChange}
+                value={
+                  selected?.offering?.productOfferingObject
+                    ?.productOfferingPrice[0].price.taxIncludedAmount.value
+                }
+                disabled={true}
               />
               <InputText
                 slug="Total Price"
                 title="Total Price"
                 required={false}
                 placeholder="Total Price"
-                value={myContext.totalPrice}
-                onChange={handleTotalPriceOnChange}
+                value={
+                  ((selected?.offering?.productOfferingObject
+                    ?.productOfferingPrice?.[0]?.price?.taxIncludedAmount
+                    ?.value || 0) +
+                    (selected?.offering?.productOfferingObject
+                      ?.productOfferingPrice?.[1]?.price?.taxIncludedAmount
+                      ?.value || 0)) *
+                  (selected?.offering?.quantity || 1)
+                }
+                disabled={true}
               />
             </div>
             <div className="flex justify-center gap-4 w-1/2 pr-2">
               <InputText
                 slug="None Recuring Changes Per Unit"
-                title="None Recuring Changes Per Unit"
+                title={`None Recuring Changes Per Unit (${selected?.offering?.productOfferingObject?.productOfferingPrice?.[1]?.price?.taxIncludedAmount?.unit})`}
                 required={false}
                 placeholder="None Recuring Changes Per Unit"
-                value={myContext.noneRecuringChangesPerUnit}
-                onChange={handleNoneRecuringChangesPerUnitOnChange}
+                value={
+                  selected?.offering?.productOfferingObject
+                    ?.productOfferingPrice[1].price.taxIncludedAmount.value
+                }
+                disabled={true}
               />
             </div>
-          </div>
-          <div>
-            <button
-              type="button"
-              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              Add Product Offerings
-            </button>
           </div>
         </>
       }

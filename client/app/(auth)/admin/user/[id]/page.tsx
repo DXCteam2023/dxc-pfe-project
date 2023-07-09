@@ -1,17 +1,18 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import Chart from "chart.js/auto";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as dotenv from "dotenv";
-// import { Chart, initTE } from "tw-elements";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
+import result from "../../../../../public/assets/search.png";
 import DoughnutChart from "./ChartCercle";
 import LineChart from "./LineChart";
 import PieChart from "./PiChart";
@@ -50,25 +51,30 @@ interface ProductOfferings {
     endDateTime: string;
   };
 }
-interface PieChartProps {
-  productOfferings: ProductOfferings[];
-}
 interface ProductOrders {
   _id: string;
   id: string;
+  externalId: string;
   state: string;
   orderNumber: string;
   requestedStartDate: string;
   requestedCompletionDate: string;
   orderDate: string;
   ponr: string;
+  createdBy: string;
+}
+interface Incident {
+  _id: number;
+  incidentNumber: string;
+  state: string;
+  read: Boolean;
+  userID: string;
 }
 const Page = ({
   params,
 }: {
   params: { id: string; profile: string; userID: string };
 }) => {
-  const chartRef = useRef(null);
   const [user, setUser] = useState<any>(null);
   const [similarProfiles, setSimilarProfiles] = useState([]);
   const [products, setProducts] = useState<ProductOrders[]>([]);
@@ -81,56 +87,96 @@ const Page = ({
   const [productOfferings, setProductOfferings] = useState<ProductOfferings[]>(
     [],
   );
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [localUser, setLocalUser] = useState(JSON.stringify({}));
+  const [pinnedProductOrders, setPinnedProductOrders] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmationAlert, setShowConfirmationAlert] = useState(false);
+  const [localToken, setLocalToken] = useState("");
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   useEffect(() => {
     getUserData();
   }, []);
   const getUserData = async () => {
     try {
       const id = params.id;
-      const userID = params.userID;
       const response = await axios.get(`${AXIOS_URL}/api/user/${id}`);
       const userData = response.data;
+
+      const responseIncidents = await axios.get(`${AXIOS_URL}/api/incidents`);
+      const incidentData = responseIncidents.data;
+
+      const notifIncident = incidentData.filter((incident: any) => {
+        return (
+          !incident.read &&
+          (incident.state === "New" || incident.state === "In Progress") &&
+          incident.userID === id
+        );
+      });
+
+      const notifProductOrder = products.filter((productOrder) => {
+        return productOrder.state === "new" && productOrder.createdBy === id;
+      });
+
+      console.log("Incidents non lus:", notifIncident);
+      console.log("Commandes de produit nouvelles:", notifProductOrder);
+      console.log("incidentData:", responseIncidents.data);
+
       setUser(userData);
       getProductOrders(userData.userID);
       getProductOfferings(userData.userID);
+
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
         `${AXIOS_URL}/api/user/similar-profile/${profile}`,
       );
       const similarProfilesData = similarProfilesResponse.data;
-      setSimilarProfiles(similarProfilesData);
+
+      const filteredSimilarProfilesData = similarProfilesData.filter(
+        (similarProfile: any) => similarProfile._id !== id,
+      );
+
+      setSimilarProfiles(filteredSimilarProfilesData);
     } catch (error) {
       console.error("Error while fetching user data:", error);
     }
   };
+
   const updateUserPassword = async () => {
     try {
-      const response = await axios.patch(
-        `${AXIOS_URL}/api/user/update-password`,
-        {
-          userId: user._id,
-          oldPassword,
-          newPassword,
-        },
-      );
+      console.log(user._id);
+      const response = await axios.patch(`${AXIOS_URL}/api/user/${user?._id}`, {
+        userId: user._id,
+        oldPassword,
+        newPassword,
+      });
       if (response.status === 200) {
         Swal.fire({
           icon: "success",
-          text: "Le mot de passe a été modifié avec succès.",
+          text: response.data.message,
         });
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
       } else {
         Swal.fire({
           icon: "error",
-          text: "Une erreur s'est produite lors de la modification du mot de passe.",
+          text: "An error occurred while changing the password ",
         });
       }
     } catch (error: any) {
       Swal.fire({
         icon: "error",
-        text: `Une erreur est survenue lors de la modification du mot de passe : ${error.message}`,
+        text: `An error occurred while changing the password :  ${error.response.data.message}`,
       });
     }
   };
@@ -140,36 +186,36 @@ const Page = ({
     if (newPassword !== confirmPassword) {
       Swal.fire({
         icon: "error",
-        text: "Les mots de passe ne correspondent pas.",
+        text: "The passwords are different",
       });
       return;
     }
     updateUserPassword();
   };
 
-  const handleConfirmation = () => {
-    setShowConfirmationAlert(false);
-    Swal.fire({
-      title: "Réinitialiser le mot de passe",
-      text: "Voulez-vous vraiment réinitialiser le mot de passe ?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Confirmer",
-      cancelButtonText: "Annuler",
-      showLoaderOnConfirm: true,
-      preConfirm: () => {
-        return new Promise<void>((resolve) => {
-          setTimeout(() => {
-            resolve();
-          }, 1000);
-        });
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Mot de passe réinitialisé avec succès !", "", "success");
-      }
-    });
-  };
+  // const handleConfirmation = () => {
+  //   setShowConfirmationAlert(false);
+  //   Swal.fire({
+  //     title: "Updating password",
+  //     text: "Do you really want to reset the password? ?",
+  //     icon: "question",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Confirm",
+  //     cancelButtonText: "cancel",
+  //     showLoaderOnConfirm: true,
+  //     preConfirm: () => {
+  //       return new Promise<void>((resolve) => {
+  //         setTimeout(() => {
+  //           resolve();
+  //         }, 1000);
+  //       });
+  //     },
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire("", "success", "success");
+  //     }
+  //   });
+  // };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -178,12 +224,6 @@ const Page = ({
   if (!user) {
     return null;
   }
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  const closeModal = () => {
-    setIsOpen(false);
-  };
   async function getProductOrders(userID: string) {
     try {
       const response = await axios.get(
@@ -244,8 +284,10 @@ const Page = ({
         return "text-orange-900";
       case "completed":
         return "text-green-900";
-      case "canceled":
+      case "cancellation_received":
         return "text-red-900";
+      case "assessing_cancellation":
+        return "text-white";
       default:
         return "";
     }
@@ -261,8 +303,10 @@ const Page = ({
         return "bg-orange-200 shadow-orange-300";
       case "completed":
         return "bg-green-200 shadow-green-300";
-      case "canceled":
+      case "cancellation_received":
         return "bg-red-200 shadow-red-300";
+      case "assessing_cancellation":
+        return "bg-gray-400 shadow-gray-300";
       default:
         return "";
     }
@@ -356,6 +400,40 @@ const Page = ({
   const percentPublishedProductOffering = Math.floor(
     (totalPublishedProductOffering / productOfferings.length) * 100,
   );
+
+  const togglePinProduct = (orderId: string) => {
+    if (pinnedProductOrders.includes(orderId)) {
+      const updatedPinnedProductOrders = pinnedProductOrders.filter(
+        (pinnedOrderId) => pinnedOrderId !== orderId,
+      );
+      setPinnedProductOrders(updatedPinnedProductOrders);
+    } else {
+      const updatedPinnedProductOrders = [orderId, ...pinnedProductOrders];
+      setPinnedProductOrders(updatedPinnedProductOrders);
+    }
+  };
+  const sortedProductOfferings = [...productOfferings].sort((a, b) => {
+    const aPinned = pinnedProductOrders.includes(a._id);
+    const bPinned = pinnedProductOrders.includes(b._id);
+    if (aPinned && !bPinned) {
+      return -1;
+    } else if (!aPinned && bPinned) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  const sortedProductOrders = [...products].sort((a, b) => {
+    const aPinned = pinnedProductOrders.includes(a._id);
+    const bPinned = pinnedProductOrders.includes(b._id);
+    if (aPinned && !bPinned) {
+      return -1;
+    } else if (!aPinned && bPinned) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
   return (
     <div className="user">
       <div className="bg-gray-100 flex">
@@ -430,11 +508,7 @@ const Page = ({
 
                         <span>Update Password</span>
                       </button>
-                      <Modal
-                        isOpen={isOpen}
-                        onRequestClose={closeModal}
-                        className="modal flex items-center justify-center"
-                      >
+                      <Modal isOpen={isOpen} onRequestClose={closeModal}>
                         <div className="mt-5 bg-white p-4 rounded-md max-w-sm">
                           <div className="w-full">
                             <h2 className="text-lg font-bold mb-4">
@@ -593,25 +667,47 @@ const Page = ({
                                       </th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    {similarProfiles.map((profile: any) => (
-                                      <tr
-                                        className="hover:bg-grey-lighter"
-                                        key={profile.id}
-                                      >
-                                        <td className="py-4 px-6 border-b text-blue-700 border-grey-light">
-                                          <a
-                                            href={`/admin/user/${profile._id}`}
-                                          >
-                                            {profile.username}
-                                          </a>
-                                        </td>
-                                        <td className="py-4 px-6 text-center border-b border-grey-light">
-                                          {profile.profile}
+                                  {similarProfiles.length === 0 ? (
+                                    <tbody>
+                                      <tr>
+                                        <td colSpan={6} className="text-center">
+                                          <div className="flex justify-center items-center">
+                                            <Image
+                                              src={result}
+                                              alt="Just a flower"
+                                              className="w-1/3 h-1/3 object-fill rounded-2xl"
+                                            />
+                                            <br />
+                                          </div>
+                                          <div className="ml-4">
+                                            <p className="text-gray-900 font-bold text-xl">
+                                              No Result Found ...
+                                            </p>
+                                          </div>
                                         </td>
                                       </tr>
-                                    ))}
-                                  </tbody>
+                                    </tbody>
+                                  ) : (
+                                    <tbody>
+                                      {similarProfiles.map((profile: any) => (
+                                        <tr
+                                          className="hover:bg-grey-lighter"
+                                          key={profile.id}
+                                        >
+                                          <td className="py-4 px-6 border-b text-blue-700 border-grey-light">
+                                            <a
+                                              href={`/admin/user/${profile._id}`}
+                                            >
+                                              {profile.username}
+                                            </a>
+                                          </td>
+                                          <td className="py-4 px-6 text-center border-b border-grey-light">
+                                            {profile.profile}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  )}
                                 </table>
                               </div>
                             </div>
@@ -839,6 +935,14 @@ const Page = ({
                                   <table className="text-left w-full border-collapse">
                                     <thead>
                                       <tr>
+                                        <th className="py-4 px-6 text-center bg-indigo-800 font-bold uppercase text-sm text-white ">
+                                          <label className="inline-flex items-center">
+                                            <input
+                                              type="checkbox"
+                                              className="form-checkbox text-gray-800"
+                                            />
+                                          </label>
+                                        </th>
                                         <th className="py-4 px-6 bg-indigo-800 font-bold uppercase text-sm text-white border-b border-grey-light">
                                           NAME
                                         </th>
@@ -863,7 +967,7 @@ const Page = ({
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {productOfferings
+                                      {sortedProductOfferings
                                         .slice(
                                           indexOfFirstOrder,
                                           indexOfLastOrder,
@@ -873,6 +977,24 @@ const Page = ({
                                             className="hover:bg-grey-lighter"
                                             key={index}
                                           >
+                                            <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
+                                              <button
+                                                onClick={() =>
+                                                  togglePinProduct(product._id)
+                                                }
+                                                className={`font-bold  ${
+                                                  pinnedProductOrders.includes(
+                                                    product._id,
+                                                  )
+                                                    ? "text-blue-600"
+                                                    : "text-black"
+                                                }`}
+                                              >
+                                                <FontAwesomeIcon
+                                                  icon={faThumbtack}
+                                                />
+                                              </button>
+                                            </td>
                                             <td className="py-4 px-6 text-indigo-700 font-semibold border-b border-grey-light">
                                               <a
                                                 href={`/product-offering/${product._id}`}
@@ -1074,6 +1196,14 @@ const Page = ({
                                 <table className="text-left w-full border-collapse">
                                   <thead>
                                     <tr>
+                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                        <label className="inline-flex items-center">
+                                          <input
+                                            type="checkbox"
+                                            className="form-checkbox text-gray-800"
+                                          />
+                                        </label>
+                                      </th>
                                       <th className="py-4 px-6 bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
                                         NUMBER
                                       </th>
@@ -1092,7 +1222,7 @@ const Page = ({
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {products
+                                    {sortedProductOrders
                                       .slice(
                                         indexOfFirstOrder,
                                         indexOfLastOrder,
@@ -1102,6 +1232,24 @@ const Page = ({
                                           className="hover:bg-grey-lighter"
                                           key={index}
                                         >
+                                          <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
+                                            <button
+                                              onClick={() =>
+                                                togglePinProduct(product._id)
+                                              }
+                                              className={`font-bold  ${
+                                                pinnedProductOrders.includes(
+                                                  product._id,
+                                                )
+                                                  ? "text-blue-600"
+                                                  : "text-black"
+                                              }`}
+                                            >
+                                              <FontAwesomeIcon
+                                                icon={faThumbtack}
+                                              />
+                                            </button>
+                                          </td>
                                           <td className="py-4 px-6 text-center text-blue-400 border-b border-grey-light">
                                             <a
                                               href={`/customer-order/product/${product._id}`}
@@ -1131,7 +1279,12 @@ const Page = ({
                                                   product.state,
                                                 )} rounded-full`}
                                               >
-                                                {product.state}
+                                                {product.state === "in_progress"
+                                                  ? "In Progress"
+                                                  : product.state ===
+                                                    "cancellation_received"
+                                                  ? "Canceled"
+                                                  : product.state}
                                               </span>
                                             </span>
                                           </td>
@@ -1178,8 +1331,9 @@ const Page = ({
                                     </button>
                                   </div>
                                 </div>
+
                                 <div className="flex justify-center ">
-                                  <div className="w-2/4 flex justify-center  ">
+                                  <div className="w-full flex justify-center  ">
                                     <AgentChart userID={user.userID} />
                                   </div>
                                 </div>
@@ -1203,6 +1357,115 @@ const Page = ({
                                   <h4 className="text-xl text-gray-900 font-bold">
                                     Activities
                                   </h4>
+                                  {/* <table className="text-left w-full border-collapse">
+                                  <thead>
+                                    <tr>
+                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                                        <label className="inline-flex items-center">
+                                          <input
+                                            type="checkbox"
+                                            className="form-checkbox text-gray-800"
+                                          />
+                                        </label>
+                                      </th>
+                                      <th className="py-4 px-6 bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        NUMBER
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        ORDER DATE
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        STATE
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        Start Date
+                                      </th>
+                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
+                                        Completion Date
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {sortedProductOrders
+                                      .slice(
+                                        indexOfFirstOrder,
+                                        indexOfLastOrder,
+                                      )
+                                      .map((product, index) => (
+                                        <tr
+                                          className="hover:bg-grey-lighter"
+                                          key={index}
+                                        >
+                                          <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
+                                            <button
+                                              onClick={() =>
+                                                togglePinProduct(product._id)
+                                              }
+                                              className={`font-bold  ${
+                                                pinnedProductOrders.includes(
+                                                  product._id,
+                                                )
+                                                  ? "text-blue-600"
+                                                  : "text-black"
+                                              }`}
+                                            >
+                                              <FontAwesomeIcon
+                                                icon={faThumbtack}
+                                              />
+                                            </button>
+                                          </td>
+                                          <td className="py-4 px-6 text-center text-blue-400 border-b border-grey-light">
+                                            <a
+                                              href={`/customer-order/product/${product._id}`}
+                                            >
+                                              {product.orderNumber}
+                                            </a>
+                                          </td>
+                                          <td className="py-4 px-6 text-indigo-800 font-semibold border-b border-grey-light">
+                                            {new Date(
+                                              product.orderDate,
+                                            ).toDateString()}
+                                          </td>
+                                          <td className="py-4 px-6 text-center border-b border-grey-light">
+                                            <span
+                                              className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
+                                                product.state,
+                                              )} leading-tight`}
+                                            >
+                                              <span
+                                                aria-hidden
+                                                className={`absolute inset-0 ${getStateBgColor(
+                                                  product.state,
+                                                )} rounded-full`}
+                                              ></span>
+                                              <span
+                                                className={`relative inset-0 ${getStateTextColor(
+                                                  product.state,
+                                                )} rounded-full`}
+                                              >
+                                                {product.state === "in_progress"
+                                                  ? "In Progress"
+                                                  : product.state ===
+                                                    "cancellation_received"
+                                                  ? "Canceled"
+                                                  : product.state}
+                                              </span>
+                                            </span>
+                                          </td>
+                                          <td className="py-4 px-6 text-center text-green-700 font-semibold border-b border-grey-light">
+                                            {new Date(
+                                              product.requestedStartDate,
+                                            ).toDateString()}
+                                          </td>
+                                          <td className="py-4 px-6 text-center  text-red-600 font-semibold border-b border-grey-light">
+                                            {new Date(
+                                              product.requestedCompletionDate,
+                                            ).toDateString()}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                  </tbody>
+                                </table> */}
                                   <div className=" flex w-full">
                                     <div className="w-1/2  rounded-lg shadow-xl p-8">
                                       <LineChart />
@@ -1215,6 +1478,7 @@ const Page = ({
                                     </div>
                                   </div>
                                 </div>
+
                                 <div className="flex flex-wrap mt-4">
                                   <div className="w-1/2">
                                     <div className="py-12 chart-container bg-white rounded-lg shadow-xl p-8">

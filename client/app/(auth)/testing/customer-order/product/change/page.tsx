@@ -3,7 +3,7 @@
 import axios from "axios";
 import * as dotenv from "dotenv";
 import { useEffect, useState } from "react";
-import useIsMount from "../../../../hooks/useIsMount";
+import useIsMount from "../../../../../hooks/useIsMount";
 
 dotenv.config();
 
@@ -15,6 +15,12 @@ const payload = {
   orderDate: "2020-05-03T08:13:59.506Z",
   externalId: "PO-4ddd56",
   orderCurrency: "USD",
+  channel: [
+    {
+      id: "58ad5522c3702010df4773ce3640ddb2",
+      name: "Agent assist",
+    },
+  ],
   note: [
     {
       id: "1",
@@ -31,14 +37,16 @@ const payload = {
   ],
   productOrderItem: [
     {
-      id: "100",
-      quantity: 1,
+      id: "PO100",
+      quantity: 5,
       action: "add",
       product: {
+        id: "",
         isBundle: false,
         "@type": "Product",
         productSpecification: {
           id: "cfe5ef6a53702010cd6dddeeff7b12f6",
+          internalId: "cfe5ef6a53702010cd6dddeeff7b12f6",
           name: "SD-WAN Service Package",
           "@type": "ProductSpecificationRef",
         },
@@ -65,22 +73,22 @@ const payload = {
       },
       productOrderItemRelationship: [
         {
-          id: "110",
+          id: "PO101",
           relationshipType: "HasChild",
         },
         {
-          id: "120",
+          id: "PO102",
           relationshipType: "HasChild",
         },
         {
-          id: "130",
+          id: "PO103",
           relationshipType: "HasChild",
         },
       ],
       "@type": "ProductOrderItem",
     },
     {
-      id: "110",
+      id: "PO101",
       quantity: 1,
       action: "add",
       itemPrice: [
@@ -102,6 +110,7 @@ const payload = {
         },
       ],
       product: {
+        id: "",
         isBundle: false,
         "@type": "Product",
         productCharacteristic: [
@@ -143,14 +152,14 @@ const payload = {
       },
       productOrderItemRelationship: [
         {
-          id: "100",
+          id: "PO100",
           relationshipType: "HasParent",
         },
       ],
       "@type": "ProductOrderItem",
     },
     {
-      id: "120",
+      id: "PO102",
       action: "add",
       quantity: 1,
       itemPrice: [
@@ -173,6 +182,7 @@ const payload = {
         },
       ],
       product: {
+        id: "",
         isBundle: false,
         "@type": "Product",
         productCharacteristic: [
@@ -229,14 +239,14 @@ const payload = {
       },
       productOrderItemRelationship: [
         {
-          id: "100",
+          id: "PO100",
           relationshipType: "HasParent",
         },
       ],
       "@type": "ProductOrderItem",
     },
     {
-      id: "130",
+      id: "PO103",
       quantity: 1,
       action: "add",
       itemPrice: [
@@ -259,6 +269,7 @@ const payload = {
         },
       ],
       product: {
+        id: "",
         isBundle: false,
         "@type": "Product",
         productCharacteristic: [
@@ -300,7 +311,7 @@ const payload = {
       },
       productOrderItemRelationship: [
         {
-          id: "100",
+          id: "PO100",
           relationshipType: "HasParent",
         },
       ],
@@ -324,13 +335,21 @@ const payload = {
   "@type": "ProductOrder",
 };
 
-export default function AddNewProductOrderPage() {
+let loggedUser = { userID: "" };
+
+if (typeof window !== "undefined") {
+  loggedUser = JSON.parse(localStorage.getItem("user") || '{ userID: "" }');
+}
+
+export default function ChangeProductOrderPage() {
   const isMount = useIsMount();
 
-  const [newOrder, setNewOrder] = useState(false);
+  const [order, setOrder] = useState(0);
+  // const [newOrder, setNewOrder] = useState(false);
 
-  const createOrder = () => {
-    setNewOrder(!newOrder);
+  const createOrder = (order: number) => {
+    setOrder(order + 1);
+    // setNewOrder(!newOrder);
   };
 
   useEffect(() => {
@@ -344,11 +363,19 @@ export default function AddNewProductOrderPage() {
       } catch (error: any) {
         return { error: error.response.data };
       }
-      const dbPayload = { ...payload, orderNumber: "", status: "in draft" };
+      console.log(newServiceNowOrder);
+      const dbPayload = {
+        ...newServiceNowOrder.data.productOrder,
+        orderNumber: "",
+        state: "draft",
+        ponr: false,
+        soldProducts: [],
+      };
 
       dbPayload.externalId = newServiceNowOrder.data.productOrder.id;
       dbPayload.orderNumber = newServiceNowOrder.data.productOrder.externalId;
-      dbPayload.status = newServiceNowOrder.data.productOrder.status;
+      dbPayload.state = newServiceNowOrder.data.productOrder.state;
+      dbPayload.createdBy = loggedUser.userID;
 
       try {
         await axios.post(`${AXIOS_URL}/api/customer-order/product`, dbPayload);
@@ -359,7 +386,7 @@ export default function AddNewProductOrderPage() {
     if (!isMount) {
       handleProductOrderCreation();
     }
-  }, [newOrder]);
+  }, [order]);
 
   return (
     <div className="flex justify-center h-screen items-center">
@@ -367,7 +394,7 @@ export default function AddNewProductOrderPage() {
         <h1>New Product Order</h1>
         <button
           className="uppercase bg-blue-700 text-white py-2 px-4 rounded"
-          onClick={() => createOrder()}
+          onClick={() => createOrder(order)}
         >
           Add Order
         </button>

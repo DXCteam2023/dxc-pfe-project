@@ -1,9 +1,18 @@
 import { NewCustomerOrderContextType } from "../context/new-customer-order-context";
-import generateDateBasedId from "./generateDateBasedId";
+
+const { v4: uuidv4 } = require("uuid");
 
 const generateOneProductOrderItem = (offering: any) => {
+  const allCharacteristics =
+    offering.productOfferingObject.prodSpecCharValueUse;
+  const mandatoryCharacteristics = offering.optionsCharacteristics.filter(
+    (item: any) => item.isMandatory,
+  );
+  const productCharacteristic = allCharacteristics.filter((item: any) =>
+    mandatoryCharacteristics.find((item2: any) => item2.name === item.name),
+  );
   return {
-    id: generateDateBasedId(),
+    id: uuidv4(),
     action: "add",
     itemPrice: offering.productOfferingObject.productOfferingPrice,
     product: {
@@ -11,8 +20,7 @@ const generateOneProductOrderItem = (offering: any) => {
         id: offering.locationId,
         "@type": "Place",
       },
-      productCharacteristic:
-        offering.productOfferingObject.prodSpecCharValueUse,
+      productCharacteristic,
       productSpecification: {
         ...offering.productOfferingObject.productSpecification,
         "@type": "ProductSpecificationRef",

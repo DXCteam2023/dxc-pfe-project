@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SyntheticEvent, useState } from "react";
 import Swal from "sweetalert2";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -48,10 +49,10 @@ export default function AddUserForm({ onCancel }: { onCancel?: any }) {
     e.preventDefault();
     addUser();
   };
-
-  // const handleCancel = () => {
-  //   handleClose();
-  // };
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div>
@@ -91,15 +92,22 @@ export default function AddUserForm({ onCancel }: { onCancel?: any }) {
             <option value="Product Offering Manager">Manager</option>
           </select>
         </div>
-        <div className="input-type">
+        <div className="input-type relative">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             id="password"
             onChange={(e) => handleChange(e.currentTarget.value, "password")}
             className="border w-full px-5 py-3 focus:outline-none rounded-md"
             placeholder="Password"
           />
+          <button
+            type="button"
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
         </div>
         <div className="input-type">
           <input

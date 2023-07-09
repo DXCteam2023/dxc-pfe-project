@@ -13,7 +13,6 @@ import {
   OptionType,
 } from "../context/new-customer-order-context";
 import LocationModal from "../components/LocationModal";
-import SelectInput from "../components/SelectInput";
 import {
   ProductOfferingServices,
   LocationServices,
@@ -21,6 +20,7 @@ import {
 } from "../services";
 import ProductOfferingItem from "./ProductOfferingItem";
 import generateCreateOrderRequestBody from "../utils/generateCreateOrderRequestBody";
+import readCreateOrderResponse from "../utils/readCreateOrderResponse";
 
 export default function SelectProduct() {
   const route = useRouter();
@@ -39,6 +39,12 @@ export default function SelectProduct() {
   const [accountLocations, setAccountLocations] = useState(
     [] as Array<OptionType>,
   );
+
+  useEffect(() => {
+    if (myContext.locations.length === 0) {
+      setShowNewLocationModal(true);
+    }
+  }, []);
 
   useEffect(() => {
     const getLocationsByAccountId = async () => {
@@ -103,10 +109,16 @@ export default function SelectProduct() {
     console.log("handleConfigureOnClick requestBody", requestBody);
 
     // call instance to create order
-    await ProductOrderServices.createOrder(requestBody);
+    const result = await ProductOrderServices.createOrder(requestBody);
+
+    // read response
+    const updatedData = readCreateOrderResponse(result.data.productOrder);
+
+    // store updated data
+    myContext.updateProductOrdersOnCreateOrder(updatedData);
 
     // redirect to step 3
-    // route.push("/customer-order/product/new/configure-product");
+    route.push("/customer-order/product/new/configure-product");
   };
 
   const handleQuantityOnChange = (value: string) => {
@@ -118,8 +130,10 @@ export default function SelectProduct() {
   };
 
   const handleLocationOnAdd = (newLocations: Array<OptionType>) => {
+    console.log("location", newLocations);
     const tamp = myContext.locations.concat(newLocations);
     myContext.setLocations(tamp);
+    myContext.setSelectedLocationId(newLocations[0].value);
     setShowNewLocationModal(false);
   };
 
@@ -131,9 +145,72 @@ export default function SelectProduct() {
     setShowNewLocationModal(true);
   };
 
-  const handleProductOfferingOnChange = (option: OptionType, index: number) => {
+  const handleDeleteLocationOnClick = () => {
+    myContext.deleteSelectedLocation();
+  };
+
+  const handleProductOfferingOnChange = async (
+    option: ProductOfferingType,
+    index: number,
+  ) => {
     console.log("handleProductOfferingOnChange onChange", option);
     const currentOfferings = currentProductOrder?.offerings || [];
+
+    // get all characteristics ids by offering
+    // then get their details (including is_mandatory)
+    // store in context
+    const offeringId = option.productOfferingObject.id;
+
+    const response =
+      await ProductOfferingServices.getCharacteristicsByOfferingId(offeringId);
+
+    console.log(
+      "getCharacteristicsByOfferingId mandatory",
+      response.data.result,
+    );
+    const characteristicsIds = response.data.result.map(
+      (item: any) => item.characteristic.value,
+    );
+
+    console.log(
+      "getCharacteristicsByOfferingId characteristicsIds",
+      characteristicsIds,
+    );
+
+    const mandatoryCharacteristicsIds = response.data.result
+      .filter((item: any) => item.is_mandatory === "true")
+      .map((item: any) => item.characteristic.value);
+
+    console.log(
+      "getCharacteristicsByOfferingId mandatoryCharacteristicsIds",
+      mandatoryCharacteristicsIds,
+    );
+
+    // get mandatory characteristics by characteristics ids
+    const response2 = await ProductOfferingServices.getCharacteristicsByIds(
+      characteristicsIds,
+    );
+    console.log("getCharacteristicsByOfferingId response2", response2);
+
+    const optionsCharacteristics = response2.data.result.map((item: any) => {
+      const isMandatory = mandatoryCharacteristicsIds.find(
+        (item2: any) => item2 === item.sys_id,
+      );
+      return {
+        id: item.sys_id,
+        name: item.name,
+        isMandatory: !!isMandatory,
+      };
+    });
+
+    console.log(
+      "getCharacteristicsByOfferingId optionsCharacteristics",
+      optionsCharacteristics,
+    );
+
+    option.optionsCharacteristics = optionsCharacteristics;
+    option.selectedCharacteristicsIds = [];
+
     myContext.updateSelectedProductOrder(
       "offerings",
       currentOfferings.map((offering, i) => (i === index ? option : offering)),
@@ -153,6 +230,10 @@ export default function SelectProduct() {
     myContext.setSelectedLocationId(locationId);
   };
 
+  const handleProductOfferingOnDelete = (index: number) => {
+    myContext.deleteProductOffering(index);
+  };
+
   // console.log("OFFERING - ", myContext.selectedOfferings);
   return (
     <SubLayout
@@ -160,15 +241,25 @@ export default function SelectProduct() {
         <div className="flex flex-col">
           {showNewLocationModal && (
             <LocationModal
-              options={accountLocations}
+              options={accountLocations.filter(
+                // filter to only not selected locations
+                (location) =>
+                  !myContext.locations.find(
+                    (location2) => location.value === location2.value,
+                  ),
+              )}
               onAdd={handleLocationOnAdd}
               onCancel={handleLocationOnCancel}
+              cancelDisabled={myContext.locations.length === 0}
             />
           )}
           <div className="flex gap-4 justify-between items-center p-4">
             <h4 className="font-extrabold">Locations</h4>
             <span className="flex gap-4 justify-between items-center">
-              <BsFillTrash3Fill className="cursor-pointer" />
+              <BsFillTrash3Fill
+                className="cursor-pointer"
+                onClick={handleDeleteLocationOnClick}
+              />
               <BsPlusLg
                 className="cursor-pointer"
                 onClick={handleAddLocationOnClick}
@@ -255,6 +346,7 @@ export default function SelectProduct() {
                 onChange={(option) =>
                   handleProductOfferingOnChange(option, index)
                 }
+                onDelete={() => handleProductOfferingOnDelete(index)}
               />
             ))}
           </div>
