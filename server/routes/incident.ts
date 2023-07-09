@@ -1,19 +1,22 @@
 import { Router } from "express";
 
-import {getIncidents, getIncidentById, updateIncident} from "../controllers/incidents"
+import {
+  getIncidents,
+  getIncidentById,
+  updateIncident,
+} from "../controllers/incidents";
 import deletIncident from "../controllers/incidents/deletIncident";
 
 const incidentRouter = Router();
 
-
 // GET /api/incidents
-incidentRouter.get("/",getIncidents);
+incidentRouter.get("/", getIncidents);
 
 // GET /api/incidents/:id
-incidentRouter.get('/:id', getIncidentById);
+incidentRouter.get("/:id", getIncidentById);
 
 // PUT /api/incidents/:id
-incidentRouter.put('/:id', updateIncident);
-// Delet 
-incidentRouter.delete('/:id',deletIncident)
+incidentRouter.patch("/:id", updateIncident);
+// Delet
+incidentRouter.delete("/:id", deletIncident);
 export default incidentRouter;

@@ -13,6 +13,9 @@ export default async function updateProductOrder(req: Request, res: Response) {
       updates,
       { new: true }
     );
+    if (!productOrder) {
+      return res.status(404).send(JSON.stringify({ error: "Product order not found" }));
+    }
     res.status(200).send(JSON.stringify(productOrder));
   } catch (error) {
     res.status(500).send(JSON.stringify({ error }));

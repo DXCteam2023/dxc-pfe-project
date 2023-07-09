@@ -134,6 +134,7 @@ const productOrderSchema = new Schema({
   created: { type: Date, required: true, default: Date.now() },
   ponr: { type: Boolean, required: false, default: false },
   "@type": { type: String, required: true, default: "ProductOrder" },
+  read: { type: Boolean, default: false },
 });
 
 const ProductOrderModel = model<IProductOrderDocument>(
