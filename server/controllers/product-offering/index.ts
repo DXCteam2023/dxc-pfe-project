@@ -5,6 +5,7 @@ import updateProductOffering from "./updateProductOffering";
 import getArchivedProductOfferings from "./getArchivedProductOfferings";
 import publishProductOffering from "./publishProductOffering";
 import archiveProductOffering from "./archiveProductOffering";
+import retireProductOffering from "./retireProductOffering";
 
 export {
   updateProductOffering,
@@ -14,4 +15,5 @@ export {
   getArchivedProductOfferings,
   publishProductOffering,
   archiveProductOffering,
+  retireProductOffering,
 };
