@@ -89,6 +89,7 @@ const productOfferingSchema = new Schema({
   internalId: { type: String, required: false },
   lastUpdate: { type: String, required: false, default: "" },
   name: { type: String, required: false },
+  read: { type: Boolean, default: false },
   /*productSpecCharacteristic: {
     type: Array(productSpecCharacteristicSchema),
     required: false,

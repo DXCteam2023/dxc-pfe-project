@@ -66,6 +66,7 @@ const Header = () => {
     setLocalUser(user);
   }, []);
   interface Incident {
+    createdAt: string;
     _id: number;
     incidentNumber: string;
     state: string;
@@ -75,8 +76,12 @@ const Header = () => {
   }
   const [productOrders, setProductOrders] = React.useState<
     Array<{
+      created: string;
+      caller: string;
+      orderNumber: String;
       _id: number;
       id: string;
+      status: string;
       externalId: string;
       ponr: boolean;
       href: string;
@@ -88,6 +93,7 @@ const Header = () => {
       state: string;
       version: string;
       "@type": string;
+      read: Boolean;
     }>
   >([]);
 
@@ -109,15 +115,56 @@ const Header = () => {
       );
     }
   }
-  async function getProductOfferings() {
+  const getProductOfferings = async () => {
     try {
       const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
       const allProductOfferings: TDataProductOffering[] = response.data;
-      setProductOfferings(allProductOfferings);
+
+      // Calculate and format the time elapsed for each product offering
+      const formattedProductOfferings = allProductOfferings.map(
+        (productOffering) => {
+          const createdAt = new Date(productOffering.created);
+          const currentTime = new Date();
+
+          const timeDiff = Math.abs(
+            currentTime.getTime() - createdAt.getTime(),
+          );
+          let timeElapsed = "";
+
+          if (timeDiff < 1000) {
+            timeElapsed = `${Math.floor(timeDiff)} millisecond${
+              timeDiff !== 1 ? "s" : ""
+            }`;
+          } else if (timeDiff < 60000) {
+            timeElapsed = `${Math.floor(timeDiff / 1000)} second${
+              Math.floor(timeDiff / 1000) !== 1 ? "s" : ""
+            }`;
+          } else if (timeDiff < 3600000) {
+            timeElapsed = `${Math.floor(timeDiff / 60000)} minute${
+              Math.floor(timeDiff / 60000) !== 1 ? "s" : ""
+            }`;
+          } else if (timeDiff < 86400000) {
+            timeElapsed = `${Math.floor(timeDiff / 3600000)} hour${
+              Math.floor(timeDiff / 3600000) !== 1 ? "s" : ""
+            }`;
+          } else {
+            timeElapsed = `${Math.floor(timeDiff / 86400000)} day${
+              Math.floor(timeDiff / 86400000) !== 1 ? "s" : ""
+            }`;
+          }
+
+          return {
+            ...productOffering,
+            timeElapsed: timeElapsed,
+          };
+        },
+      );
+
+      setProductOfferings(formattedProductOfferings);
     } catch (error) {
       console.error("Erreur lors de la récupération des offerings:", error);
     }
-  }
+  };
   useEffect(() => {
     getProductOrders();
   }, []);
@@ -128,6 +175,8 @@ const Header = () => {
         `${AXIOS_URL}/api/customer-order/product`,
       );
       const productsData: TDataCustomerOrder[] = response.data;
+      // const productsDataString = JSON.stringify(productsData);
+      // console.log("productsData:", productsDataString);
       setProducts(productsData);
     } catch (error) {
       console.error("Erreur lors de la récupération des products:", error);
@@ -212,15 +261,24 @@ const Header = () => {
   const fetchIncidents = async () => {
     try {
       const response = await axios.get(`${AXIOS_URL}/api/incidents`);
-      setIncidents(response.data);
+      const fetchedIncidents = response.data.map(
+        (incident: { createDate: string | number | Date }) => {
+          return {
+            ...incident,
+            createdAt: new Date(incident.createDate).toISOString(), // Convert the creation timestamp to a valid ISO string
+          };
+        },
+      );
+      setIncidents(fetchedIncidents);
     } catch (error) {
       console.error("Error fetching incidents:", error);
     }
   };
+
   // Define your update incident function here
   const updateIncident = async (id: any, updates: any) => {
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
         `${AXIOS_URL}/api/incidents/${id}`,
         updates,
       );
@@ -243,10 +301,52 @@ const Header = () => {
       const response = await axios.get(
         `${AXIOS_URL}/api/customer-order/product`,
       );
-      // console.log("data" + JSON.stringify(response.data));
-      setProductOrders(response.data);
+      // console.log("productorders", response.data);
+
+      // Calculate and display the time taken for each product order
+      const productData = response.data.map(
+        (productOrder: { created: string | number | Date }) => {
+          const createdAt = new Date(productOrder.created);
+          const currentTime = new Date();
+
+          // Calculate time difference in milliseconds
+          const timeDiff = Math.abs(
+            currentTime.getTime() - createdAt.getTime(),
+          );
+          let timeElapsed = "";
+
+          if (timeDiff < 1000) {
+            timeElapsed = `${Math.floor(timeDiff)} millisecond${
+              timeDiff !== 1 ? "s" : ""
+            }`;
+          } else if (timeDiff < 60000) {
+            timeElapsed = `${Math.floor(timeDiff / 1000)} second${
+              Math.floor(timeDiff / 1000) !== 1 ? "s" : ""
+            }`;
+          } else if (timeDiff < 3600000) {
+            timeElapsed = `${Math.floor(timeDiff / 60000)} minute${
+              Math.floor(timeDiff / 60000) !== 1 ? "s" : ""
+            }`;
+          } else if (timeDiff < 86400000) {
+            timeElapsed = `${Math.floor(timeDiff / 3600000)} hour${
+              Math.floor(timeDiff / 3600000) !== 1 ? "s" : ""
+            }`;
+          } else {
+            timeElapsed = `${Math.floor(timeDiff / 86400000)} day${
+              Math.floor(timeDiff / 86400000) !== 1 ? "s" : ""
+            }`;
+          }
+
+          return {
+            ...productOrder,
+            timeElapsed: timeElapsed,
+          };
+        },
+      );
+
+      setProductOrders(productData);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching product orders:", error);
     }
   };
 
@@ -277,12 +377,19 @@ const Header = () => {
 
   // notification ProductOrders
   const notifProductOrder = productOrders.filter((productOrder) => {
-    return productOrder.state === "new";
+    return !productOrder.read && productOrder.state === "in_progress";
   });
 
   // console.log("Length: " + notifProductOrder.length);
   // // totl notification productorder
   const totalProductOrder = notifProductOrder.length;
+  // notificatin productoffering
+  const notifProductOffering = productOfferings.filter((productOffering) => {
+    return !productOffering.read && productOffering.status === "published";
+  });
+  // totl notification productoffering
+  const totalProductOffering = notifProductOffering.length;
+  // console.log(totalProductOffering)
 
   const handleIncidentClick = async (id: number) => {
     // Find the incident with the clicked id
@@ -301,6 +408,162 @@ const Header = () => {
       markAsRead(clickedIncident);
     }
   };
+  function getTimeElapsed(createdAt: string | number | Date) {
+    console.log("createdAt:", createdAt); // Check the value and type of createdAt
+
+    const currentTime = new Date();
+    const createdTime = new Date(createdAt);
+
+    // Check if the createdTime is a valid Date object
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(createdTime.getTime())) {
+      return "Invalid timestamp";
+    }
+
+    const timeDiff =
+      Math.abs(currentTime.getTime() - createdTime.getTime()) / 1000; // Difference in seconds
+
+    const seconds = Math.floor(timeDiff); // Calculate the duration in seconds
+
+    if (seconds < 60) {
+      return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
+    } else if (seconds < 3600) {
+      const minutes = Math.floor(seconds / 60); // Calculate the duration in minutes
+      return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+    } else if (seconds < 86400) {
+      const hours = Math.floor(seconds / 3600); // Calculate the duration in hours
+      return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+    } else {
+      const days = Math.floor(seconds / 86400); // Calculate the duration in days
+      return `${days} day${days !== 1 ? "s" : ""} ago`;
+    }
+  }
+
+  const updateProductOrder = async (id: any, updates: any) => {
+    try {
+      const response = await axios.patch(
+        `${AXIOS_URL}/api/customer-order/product/${id}`,
+        updates,
+      );
+      if (response) {
+        // Handle the response and update the incidents state if necessary
+      } else {
+        console.error("Empty response received");
+      }
+    } catch (error) {
+      console.error("Error updating incident:", error);
+    }
+  };
+
+  const markProductOrderAsRead = async (id: number) => {
+    try {
+      // Update the product order in the backend
+      await updateProductOrder(id, { read: true });
+
+      // Update the product order locally
+      const updatedProductOrders = productOrders.map((productOrder) => {
+        if (productOrder._id === id) {
+          return { ...productOrder, read: true };
+        }
+        return productOrder;
+      });
+
+      setProductOrders(updatedProductOrders);
+    } catch (error) {
+      console.error("Error updating product order:", error);
+    }
+  };
+
+  const handleProductOrderClick = async (id: number) => {
+    // Find the clicked product order
+    const clickedProductOrder = productOrders.find(
+      (productOrder) => productOrder._id === id,
+    );
+
+    if (clickedProductOrder) {
+      // Update the product order's read status locally
+      const updatedProductOrders = productOrders.map((productOrder) => {
+        if (productOrder._id === id) {
+          return { ...productOrder, read: true };
+        }
+        return productOrder;
+      });
+
+      setProductOrders(updatedProductOrders);
+
+      // Update the stored product orders in local storage
+      localStorage.setItem(
+        "productOrders",
+        JSON.stringify(updatedProductOrders),
+      );
+
+      await markProductOrderAsRead(id);
+    }
+  };
+  const updateProductOffering = async (id: any, updates: any) => {
+    try {
+      const response = await axios.patch(
+        `${AXIOS_URL}/api/product-offering/${id}`,
+        updates,
+      );
+      if (response) {
+        // Handle the response and update the incidents state if necessary
+      } else {
+        console.error("Empty response received");
+      }
+    } catch (error) {
+      console.error("Error updating incident:", error);
+    }
+  };
+  const markProductOfferingAsRead = async (id: string) => {
+    try {
+      // Update the product offering in the backend
+      await updateProductOffering(id, { read: true });
+
+      // Update the product offerings locally
+      const updatedProductOfferings = productOfferings.map(
+        (productOffering) => {
+          if (productOffering._id === id) {
+            return { ...productOffering, read: true };
+          }
+          return productOffering;
+        },
+      );
+
+      setProductOfferings(updatedProductOfferings);
+    } catch (error) {
+      console.error("Error updating product offering:", error);
+    }
+  };
+  const handleProductOfferingClick = async (id: string) => {
+    // Find the clicked product offering
+    const clickedProductOffering = productOfferings.find(
+      (productOffering) => productOffering.id === id,
+    );
+
+    if (clickedProductOffering) {
+      // Update the product offering's read status locally
+      const updatedProductOfferings = productOfferings.map(
+        (productOffering) => {
+          if (productOffering.id === id) {
+            return { ...productOffering, read: true };
+          }
+          return productOffering;
+        },
+      );
+
+      setProductOfferings(updatedProductOfferings);
+
+      // Update the stored product offerings in local storage
+      localStorage.setItem(
+        "productOfferings",
+        JSON.stringify(updatedProductOfferings),
+      );
+
+      await markProductOfferingAsRead(id);
+    }
+  };
+
   return (
     <div className="flex justify-between items-center px-5 py-5 bg-white relative">
       {/* Champ de modal & form */}
@@ -676,6 +939,18 @@ const Header = () => {
             <span className="ml-1 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
               {totalProductOrder}
             </span>
+          ) : totalProductOffering > 0 &&
+            localUser &&
+            JSON.parse(localUser).profile === "Commercial Agent" ? (
+            <span className="ml-1 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+              {totalProductOffering}
+            </span>
+          ) : totalProductOffering > 0 &&
+            localUser &&
+            JSON.parse(localUser).profile === "Product Offering Manager" ? (
+            <span className="ml-1 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+              {totalProductOffering}
+            </span>
           ) : (
             <span className="ml-1 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
               0
@@ -689,7 +964,7 @@ const Header = () => {
         <div
           id="dropdownNotification"
           // className="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow transition ease-out duration-100"
-          className="fixed right-20 top-20 z-20 border border-gray-300 rounded-lg"
+          className="fixed right-20 top-20 z-20 border border-gray-300 rounded-lg max-h-60 overflow-y-auto" // Add max height and overflow-y
           aria-labelledby="dropdownNotificationButton"
         >
           <div className="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 ">
@@ -697,82 +972,151 @@ const Header = () => {
           </div>
           <div className="bg-white">
             {/* Display the incidents */}
-            {localUser && JSON.parse(localUser).profile === "Administrator" ? (
-              notifIncident.map((incident, index) => {
-                return (
-                  <>
-                    <div className="flex justify-between py-4 px-6 rounded-lg">
-                      <div key={index} className="flex items-center space-x-4">
-                        <div className="flex flex-col space-y-1">
-                          <span className="font-bold">{incident.caller}</span>
-                          <span className="text-sm">
-                            <p
-                              onClick={() => handleIncidentClick(incident._id)}
-                            >
-                              A new incident &nbsp;
-                              <a
-                                className="text-blue-600"
-                                href={`http://localhost:3000/notification/${incident._id}`}
+            <div className="overflow-y-auto max-h-60">
+              {localUser &&
+              JSON.parse(localUser).profile === "Administrator" ? (
+                notifIncident.reverse().map((incident, index) => {
+                  return (
+                    <>
+                      <div className="flex justify-between py-4 px-6 rounded-lg">
+                        <div
+                          key={index}
+                          className="flex items-center space-x-4"
+                        >
+                          <div className="flex flex-col space-y-1">
+                            <span className="font-bold">{incident.caller}</span>
+                            <span className="text-sm">
+                              <p
+                                onClick={() =>
+                                  handleIncidentClick(incident._id)
+                                }
                               >
-                                {incident.incidentNumber}
-                              </a>
-                              &nbsp; was created
-                            </p>
-                          </span>
+                                A new incident &nbsp;
+                                <a
+                                  className="text-blue-600"
+                                  href={`/notification/${incident._id}`}
+                                >
+                                  {incident.incidentNumber}
+                                </a>
+                                &nbsp; has been created
+                              </p>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                          {getTimeElapsed(incident.createdAt)}
                         </div>
                       </div>
-                      <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
-                        40m ago
-                      </div>
-                    </div>
-                    {index !== notifIncident.length - 1 && (
-                      <hr className="border-b-[1px] my-4 border-gray" />
-                    )}
-                  </>
-                );
-              })
-            ) : localUser &&
-              JSON.parse(localUser).profile === "Commercial Agent" ? (
-              notifProductOrder.map((productOrder, index) => {
-                return (
-                  <>
-                    <div className="flex justify-between py-4 px-6 rounded-lg">
-                      <div key={index} className="flex items-center space-x-4">
-                        <div className="flex flex-col space-y-1">
-                          <span className="font-bold">caller</span>
-                          <span className="text-sm">
-                            <p>
-                              the productOrder &nbsp;
-                              <a href="#" className="text-blue-600">
-                                {productOrder.externalId}
-                              </a>
-                              &nbsp; state : {productOrder.state}
-                            </p>
-                          </span>
+                      {index !== notifIncident.length - 1 && (
+                        <hr className="border-b-[1px] my-4 border-gray" />
+                      )}
+                    </>
+                  );
+                })
+              ) : localUser &&
+                JSON.parse(localUser).profile === "Commercial Agent" ? (
+                notifProductOrder.reverse().map((productOrder, index) => {
+                  return (
+                    <>
+                      <div className="flex justify-between py-4 px-6 rounded-lg">
+                        <div
+                          key={index}
+                          className="flex items-center space-x-4"
+                        >
+                          <div className="flex flex-col space-y-1">
+                            <span className="text-sm">
+                              <p
+                                onClick={() =>
+                                  handleProductOrderClick(productOrder._id)
+                                }
+                              >
+                                The product order&nbsp;
+                                <a
+                                  href={`/customer-order/product/${productOrder._id}`}
+                                  className="text-blue-600"
+                                >
+                                  {productOrder.orderNumber}
+                                </a>
+                                &nbsp;is approved
+                              </p>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                          {getTimeElapsed(productOrder.created)}
                         </div>
                       </div>
-                      <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
-                        40m ago
+                      {index !== notifProductOrder.length - 1 && (
+                        <hr className="border-b-[1px] my-4 border-gray" />
+                      )}
+                    </>
+                  );
+                })
+              ) : localUser &&
+                JSON.parse(localUser).profile === "Product Offering Manager" ? (
+                notifProductOffering.reverse().map((productOffering, index) => {
+                  return (
+                    <>
+                      <div className="flex justify-between py-4 px-6 rounded-lg">
+                        <div
+                          key={index}
+                          className="flex items-center space-x-4"
+                        >
+                          <div className="flex flex-col space-y-1">
+                            <span className="text-sm">
+                              <p
+                                onClick={() =>
+                                  handleProductOfferingClick(
+                                    productOffering._id,
+                                  )
+                                }
+                              >
+                                The productOffering&nbsp;
+                                <a
+                                  href={`/product-offering/${productOffering._id}`}
+                                  className="text-blue-600"
+                                >
+                                  {productOffering.number}
+                                </a>
+                                &nbsp;is Published
+                              </p>
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                          {getTimeElapsed(productOffering.created)}
+                        </div>
                       </div>
-                    </div>
-                    {index !== notifIncident.length - 1 && (
-                      <hr className="border-b-[1px] my-4 border-gray" />
-                    )}
-                  </>
-                );
-              })
-            ) : (
-              <div className="flex px-4 py-3 hover:bg-gray-100">
-                No Notifications
-              </div>
-            )}
+                      {index !== notifProductOffering.length - 1 && (
+                        <hr className="border-b-[1px] my-4 border-gray" />
+                      )}
+                    </>
+                  );
+                })
+              ) : (
+                <div className="flex px-4 py-3 hover:bg-gray-100">
+                  No Notifications
+                </div>
+              )}
+            </div>
             {/* Display the productorders */}
             {/* Plus d'éléments de notification... */}
           </div>
 
+          {/* "View all" link based on the user profile */}
           <a
-            href="http://localhost:3000/notification"
-            className="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 "
+            href={
+              localUser && JSON.parse(localUser).profile === "Administrator"
+                ? "/notification"
+                : localUser &&
+                  JSON.parse(localUser).profile === "Commercial Agent"
+                ? "/customer-order/product"
+                : localUser &&
+                  JSON.parse(localUser).profile === "Product Offering Manager"
+                ? "/product-offering"
+                : ""
+            }
+            className="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100"
           >
             <div className="inline-flex items-center">
               <svg
@@ -788,7 +1132,19 @@ const Header = () => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              View all
+
+              {localUser &&
+              JSON.parse(localUser).profile === "Administrator" ? (
+                <span>View all (Incidents)</span>
+              ) : localUser &&
+                JSON.parse(localUser).profile === "Commercial Agent" ? (
+                <span>View all (Product Orders)</span>
+              ) : localUser &&
+                JSON.parse(localUser).profile === "Product Offering Manager" ? (
+                <span>View all (ProductOffering)</span>
+              ) : (
+                <span>View all</span>
+              )}
             </div>
           </a>
         </div>

@@ -140,6 +140,7 @@ const productOrderSchema = new Schema({
   ponr: { type: Boolean, required: false, default: false },
   soldProducts: { type: Array(soldProductsSchema), required: false },
   "@type": { type: String, required: true, default: "ProductOrder" },
+  read: { type: Boolean, default: false },
 });
 
 const ProductOrderModel = model<IProductOrderDocument>(

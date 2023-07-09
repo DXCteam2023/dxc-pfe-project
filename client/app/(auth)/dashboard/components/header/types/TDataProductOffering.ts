@@ -5,7 +5,11 @@ export type TDataProductOffering = {
   name: string;
   description: string;
   status: string;
+  state: string;
+  number: string;
   internalVersion: string;
   orderDate: string;
   lastUpdate: string;
+  created: string;
+  read: Boolean;
 };
