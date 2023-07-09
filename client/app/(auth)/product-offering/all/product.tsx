@@ -218,34 +218,43 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const handleSubmitEditRe: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    console.log("clicked");
     try {
-      // Make sure to replace the placeholders with the actual values
-      const id = product.id;
-      const po = {
-        status: "Retired",
-      };
-      try {
-        const productOffering = await axios
-          .get(`${AXIOS_URL}/api/product-offering/${id}`)
-          .then((res) => res.data)
-          .catch((e) => console.log(e));
+      console.log("clicked try");
+      const poExternalId = product.externalId;
+      const response = await axios.patch(
+        `${AXIOS_URL}/api/product-offering/retire/${poExternalId}`,
+      );
 
-        const poId = productOffering._id;
-
-        const updatePo = await axios
-          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
-          .then((res) => res.data)
-          .catch((error) => console.log({ error }));
-
-        console.log("Updated Product Offering:", updatePo);
-        setModalOpen(false);
-        window.location.reload();
-      } catch (e) {
-        console.log("Axios error:", e);
+      console.log("Updated Product Offering:", response.data);
+      if (response.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "Done",
+          text: response.data.message,
+        });
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      // Handle any other errors
+      setModalOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    } catch (error: any) {
+      console.log("Axios error:", error);
+      if (
+        error.response ||
+        error.response.status >= 400 ||
+        error.response.status <= 500 ||
+        axios.isAxiosError(error)
+      ) {
+        const axiosError = error as AxiosError;
+        Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: error.response.data.message
+            ? error.response.data.message
+            : axiosError,
+        });
+      }
     }
   };
 
@@ -278,12 +287,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           className="text-green-500"
           size={25}
         /> */}
-        <button
-          className="btn btn-sm btn-info"
-          onClick={() => setModalOpen(true)}
-        >
-          Update
-        </button>
+        {product.status === "draft" || product.status === "In Draft" ? (
+          <button
+            className="btn btn-sm btn-info"
+            onClick={() => setModalOpen(true)}
+          >
+            Update
+          </button>
+        ) : null}
         &nbsp;
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <form onSubmit={handleSubmitEditProOf}>
