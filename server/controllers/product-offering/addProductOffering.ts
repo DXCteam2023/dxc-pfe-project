@@ -37,6 +37,8 @@ export default async function addProductOffering(req: Request, res: Response) {
       prodSpecCharValueUse: req.body.prodSpecCharValueUse,
       number: number,
       id: "", // Placeholder for the actual _id value
+      created: Date.now(),
+      createdBy: req.body.createdBy,
     });
     // Save the product to the database
     const savedProduct = await product.save();

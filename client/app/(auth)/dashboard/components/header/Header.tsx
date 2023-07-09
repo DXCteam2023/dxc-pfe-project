@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
+import { AiFillCheckCircle } from "react-icons/ai";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import avatar from "../../../../../public/assets/avatar.png";
 import image from "../../../../../public/assets/wifi-survey2.jpg";
@@ -910,7 +911,7 @@ const Header = () => {
       <button
         id="dropdownNotificationButton"
         data-dropdown-toggle="dropdownNotification"
-        className="inline-flex items-center w-11 h-11   p-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  text-white-400 align-middle rounded-full hover:text-white hover:bg-purple-200 focus:outline-nonerounded-full text-sm font-medium text-center  focus:outline-none relative"
+        className="inline-flex items-center w-11 h-11 p-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  text-white-400 align-middle rounded-full hover:text-white hover:bg-purple-200 focus:outline-nonerounded-full text-sm font-medium text-center  focus:outline-none relative"
         type="button"
         onClick={handleDropdownToggle}
       >
@@ -964,7 +965,7 @@ const Header = () => {
         <div
           id="dropdownNotification"
           // className="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow transition ease-out duration-100"
-          className="fixed right-20 top-20 z-20 border border-gray-300 rounded-lg max-h-60 overflow-y-auto" // Add max height and overflow-y
+          className="fixed right-20 top-20 z-20 border border-gray-300 rounded-lg max-h-100 overflow-y-auto" // Add max height and overflow-y
           aria-labelledby="dropdownNotificationButton"
         >
           <div className="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 ">
@@ -1015,43 +1016,49 @@ const Header = () => {
                 })
               ) : localUser &&
                 JSON.parse(localUser).profile === "Commercial Agent" ? (
-                notifProductOrder.reverse().map((productOrder, index) => {
-                  return (
-                    <>
-                      <div className="flex justify-between py-4 px-6 rounded-lg">
-                        <div
-                          key={index}
-                          className="flex items-center space-x-4"
-                        >
-                          <div className="flex flex-col space-y-1">
-                            <span className="text-sm">
-                              <p
-                                onClick={() =>
-                                  handleProductOrderClick(productOrder._id)
-                                }
-                              >
-                                The product order&nbsp;
-                                <a
-                                  href={`/customer-order/product/${productOrder._id}`}
-                                  className="text-blue-600"
+                notifProductOrder
+                  .sort((order1, order2) => {
+                    const date1 = new Date(order1.created).getTime();
+                    const date2 = new Date(order2.created).getTime();
+                    return date2 - date1;
+                  })
+                  .map((productOrder, index) => {
+                    return (
+                      <>
+                        <div className="flex justify-between py-4 px-6 rounded-lg">
+                          <div
+                            key={index}
+                            className="flex items-center space-x-4"
+                          >
+                            <div className="flex flex-col space-y-1">
+                              <span className="text-sm">
+                                <p
+                                  onClick={() =>
+                                    handleProductOrderClick(productOrder._id)
+                                  }
                                 >
-                                  {productOrder.orderNumber}
-                                </a>
-                                &nbsp;is approved
-                              </p>
-                            </span>
+                                  The product order&nbsp;
+                                  <a
+                                    href={`/customer-order/product/${productOrder._id}`}
+                                    className="text-blue-600"
+                                  >
+                                    {productOrder.orderNumber}
+                                  </a>
+                                  &nbsp;is approved
+                                </p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                            {getTimeElapsed(productOrder.created)}
                           </div>
                         </div>
-                        <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
-                          {getTimeElapsed(productOrder.created)}
-                        </div>
-                      </div>
-                      {index !== notifProductOrder.length - 1 && (
-                        <hr className="border-b-[1px] my-4 border-gray" />
-                      )}
-                    </>
-                  );
-                })
+                        {index !== notifProductOrder.length - 1 && (
+                          <hr className="border-b-[1px] my-4 border-gray" />
+                        )}
+                      </>
+                    );
+                  })
               ) : localUser &&
                 JSON.parse(localUser).profile === "Product Offering Manager" ? (
                 notifProductOffering.reverse().map((productOffering, index) => {
@@ -1064,28 +1071,28 @@ const Header = () => {
                         >
                           <div className="flex flex-col space-y-1">
                             <span className="text-sm">
-                              <p
-                                onClick={() =>
-                                  handleProductOfferingClick(
-                                    productOffering._id,
-                                  )
-                                }
+                              The product offering&nbsp;
+                              <a
+                                href={`/product-offering/${productOffering._id}`}
+                                className="text-blue-600"
                               >
-                                The productOffering&nbsp;
-                                <a
-                                  href={`/product-offering/${productOffering._id}`}
-                                  className="text-blue-600"
-                                >
-                                  {productOffering.number}
-                                </a>
-                                &nbsp;is Published
-                              </p>
+                                {productOffering.name}
+                              </a>
+                              &nbsp;has been Published
                             </span>
                           </div>
                         </div>
                         <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
                           {getTimeElapsed(productOffering.created)}
                         </div>
+                        <button
+                          onClick={() =>
+                            handleProductOfferingClick(productOffering._id)
+                          }
+                          className="text-green-500"
+                        >
+                          <AiFillCheckCircle />
+                        </button>
                       </div>
                       {index !== notifProductOffering.length - 1 && (
                         <hr className="border-b-[1px] my-4 border-gray" />

@@ -52,6 +52,12 @@ interface RelatedProductSpec {
   productSpecCharacteristic: ProductCharacteristic[];
 }
 
+let loggedUser = { userID: "" };
+
+if (typeof window !== "undefined") {
+  loggedUser = JSON.parse(localStorage.getItem("user") || '{ userID: "" }');
+}
+
 export default function NewProductOfferingPage() {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -271,6 +277,7 @@ export default function NewProductOfferingPage() {
             priceType: productOfferingPrice.priceType,
           },
         ],
+        createdBy: loggedUser.userID,
       };
 
       console.log("Product Data:", productData);
