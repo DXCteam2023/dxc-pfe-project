@@ -1,5 +1,9 @@
 import Swal from "sweetalert2";
-import { archiveProductOffering, publishProductOffering } from "../utils";
+import {
+  archiveProductOffering,
+  publishProductOffering,
+  retireProductOffering,
+} from "../utils";
 
 const handlePublishProductOfferin = (id: string) => {
   Swal.fire({
@@ -33,6 +37,22 @@ const handleArchiveProductOffering = (id: string) => {
   });
 };
 
+const handleRetireProductOffering = (id: string) => {
+  Swal.fire({
+    title: "Are you sure?",
+    html: "You are about to retire a published product offering.",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#5f249f",
+    confirmButtonText: "Confirm",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      retireProductOffering(id);
+    }
+  });
+};
+
 export default function ProductOfferingHeader({
   productOffering,
 }: {
@@ -53,32 +73,45 @@ export default function ProductOfferingHeader({
               ? "bg-orange-400"
               : productOffering?.status === "archived"
               ? "bg-purple-400"
-              : "")
+              : productOffering?.status === "retired"
+              ? "bg-red-500"
+              : null)
           }
         >
           {productOffering?.status}
         </span>
       </div>
       <div className="action-buttons flex gap-4">
-        {productOffering?.status !== "published" ? (
+        {productOffering?.status === "draft" ? (
           <button
-            className="bg-green-400 py-1 px-3 rounded-md font-medium hover:bg-green-500 shadow-sm hover:shadow-md duration-300"
+            className="bg-green-400 py-1 px-3 rounded-md font-medium text-white hover:bg-green-500 shadow-sm hover:shadow-md duration-300"
             onClick={() =>
               handlePublishProductOfferin(productOffering.externalId)
             }
           >
             Publish
           </button>
-        ) : (
+        ) : productOffering?.status === "published" ? (
           <button
-            className="bg-orange-300 py-1 px-3 rounded-md font-medium hover:bg-orange-400 shadow-sm hover:shadow-md duration-300"
+            className="bg-red-500 py-1 px-3 rounded-md font-medium text-white hover:bg-red-600 shadow-sm hover:shadow-md duration-300"
+            onClick={() =>
+              handleRetireProductOffering(productOffering.externalId)
+            }
+          >
+            Retire
+          </button>
+        ) : null}
+        {productOffering?.status === "retired" ||
+        productOffering?.status === "published" ? (
+          <button
+            className="bg-purple-500 py-1 px-3 rounded-md font-medium text-white hover:bg-purple-600 shadow-sm hover:shadow-md duration-300"
             onClick={() =>
               handleArchiveProductOffering(productOffering.externalId)
             }
           >
             Archive
           </button>
-        )}
+        ) : null}
       </div>
     </header>
   );

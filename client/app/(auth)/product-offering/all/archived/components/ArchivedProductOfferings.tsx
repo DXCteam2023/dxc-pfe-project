@@ -91,29 +91,32 @@ const ArchivedProductOfferings = () => {
                   <table className="min-w-full leading-normal">
                     <thead>
                       <tr>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           name
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold  uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold  uppercase tracking-wider">
                           description
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        {/* <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           lastUpdate
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           version
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           productOfferingTerm
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        </th> */}
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           productSpecification
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           status
                         </th>
-                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
                           category
+                        </th>
+                        <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-xs font-semibold uppercase tracking-wider">
+                          Action
                         </th>
                       </tr>
                     </thead>
@@ -136,11 +139,16 @@ const ArchivedProductOfferings = () => {
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                   <div className="flex items-center">
                                     <div className="ml-3">
-                                      <p className="text-gray-900 whitespace-no-wrap">
+                                      <button
+                                        className="no-underline hover:underline decoration-sky-600 hover:decoration-blue-400 ..."
+                                        onClick={() => {
+                                          window.location.href = `/product-offering/${order._id}`;
+                                        }}
+                                      >
                                         <a className="text-blue-500 hover:text-blue-700 text-main-color">
                                           {order.name}
                                         </a>
-                                      </p>
+                                      </button>
                                     </div>
                                   </div>
                                 </td>
@@ -150,7 +158,7 @@ const ArchivedProductOfferings = () => {
                                     {order.description}
                                   </p>
                                 </td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                   <p className="text-gray-900 whitespace-no-wrap">
                                     {order.lastUpdate}
                                   </p>
@@ -173,7 +181,7 @@ const ArchivedProductOfferings = () => {
                                       </p>
                                     </div>
                                   </div>
-                                </td>
+                                </td> */}
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                   <div className="flex items-center">
                                     <div className="ml-3">
@@ -185,7 +193,7 @@ const ArchivedProductOfferings = () => {
                                 </td>
 
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <p className="text-gray-900 whitespace-no-wrap">
+                                  <p className="text-red-900 bg-yellow-200 shadow-yellow-300 whitespace-no-wrap text-center py-1 rounded-full font-medium">
                                     {order.status}
                                   </p>
                                 </td>
@@ -193,6 +201,16 @@ const ArchivedProductOfferings = () => {
                                   <p className="text-gray-900 whitespace-no-wrap">
                                     {order.category[0].name}
                                   </p>
+                                </td>
+                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                  <button
+                                    onClick={() => {
+                                      window.location.href = `/product-offering/${order._id}`;
+                                    }}
+                                    className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
+                                  >
+                                    <span>Details</span>
+                                  </button>
                                 </td>
                               </tr>
                             );
