@@ -7,6 +7,7 @@ import {
   getProductOfferings,
   publishProductOffering,
   updateProductOffering,
+  retireProductOffering,
 } from "../controllers/product-offering";
 
 const productOfferingRoute = Router();
@@ -20,6 +21,8 @@ productOfferingRoute.post("/", addProductOffering);
 productOfferingRoute.patch("/update/:id", updateProductOffering);
 
 productOfferingRoute.patch("/publish/servicenow/:id", publishProductOffering);
+
+productOfferingRoute.patch("/retire/:id", retireProductOffering);
 
 productOfferingRoute.post("/archive/:id", archiveProductOffering);
 

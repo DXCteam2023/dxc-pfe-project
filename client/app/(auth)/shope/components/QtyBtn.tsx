@@ -1,7 +1,7 @@
 import React from "react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Button } from "./elements";
-
+import { ShoppingBagIcon, ShoppingCartIcon , HeartIcon} from "@heroicons/react/24/solid";
 interface Props {
   onIncrease: () => void;
   onDecrease: () => void;
@@ -11,7 +11,8 @@ const QtyBtn = (props: Props) => {
   return (
     <div className="flex gap-2 justify-center items-center">
       <Button variant="danger" className="w-12 h-10" onClick={props.onDecrease}>
-        {props.qty === 1 ? <TrashIcon className="w-4" /> : "-"}
+        {/* {props.qty === 1 ? <TrashIcon className="w-4" /> : "-"} */}
+        <TrashIcon className="w-4" />
       </Button>
       <p>{props.qty}</p>
       <Button
@@ -19,7 +20,8 @@ const QtyBtn = (props: Props) => {
         variant="success"
         onClick={props.onIncrease}
       >
-        +
+        <HeartIcon className="" />
+        {/* + */}
       </Button>
     </div>
   );
