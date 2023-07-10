@@ -8,6 +8,7 @@ import {
   publishProductOffering,
   updateProductOffering,
   retireProductOffering,
+  updateProductOffering,
 } from "../controllers/product-offering";
 
 const productOfferingRoute = Router();
