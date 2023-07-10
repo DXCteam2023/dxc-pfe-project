@@ -6,6 +6,7 @@ import {
   getProductOfferingById,
   getProductOfferings,
   publishProductOffering,
+  updateProductOffering,
   retireProductOffering,
 } from "../controllers/product-offering";
 
@@ -16,6 +17,8 @@ productOfferingRoute.get("/", getProductOfferings);
 productOfferingRoute.get("/:id", getProductOfferingById);
 
 productOfferingRoute.post("/", addProductOffering);
+
+productOfferingRoute.patch("/update/:id", updateProductOffering);
 
 productOfferingRoute.patch("/publish/servicenow/:id", publishProductOffering);
 
