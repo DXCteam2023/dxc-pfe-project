@@ -501,24 +501,28 @@ const Header = () => {
       await markProductOrderAsRead(id);
     }
   };
-  const updateProductOffering = async (id: any, updates: any) => {
+  const updateProductOffering = async (id: string, updates: any) => {
     try {
       const response = await axios.patch(
-        `${AXIOS_URL}/api/product-offering/${id}`,
+        `${AXIOS_URL}/api/product-offering/update/${id}`,
         updates,
       );
-      if (response) {
-        // Handle the response and update the incidents state if necessary
+
+      if (response.data) {
+        // Handle the successful response from the API
+        console.log("Product offering updated successfully:", response.data);
       } else {
         console.error("Empty response received");
       }
     } catch (error) {
-      console.error("Error updating incident:", error);
+      console.error("Error updating product offering:", error);
     }
   };
+
   const markProductOfferingAsRead = async (id: string) => {
+    // console.log(id);
     try {
-      // Update the product offering in the backend
+      // Update the product offering in the database
       await updateProductOffering(id, { read: true });
 
       // Update the product offerings locally
@@ -536,6 +540,7 @@ const Header = () => {
       console.error("Error updating product offering:", error);
     }
   };
+
   const handleProductOfferingClick = async (id: string) => {
     // Find the clicked product offering
     const clickedProductOffering = productOfferings.find(
@@ -976,22 +981,25 @@ const Header = () => {
             <div className="overflow-y-auto max-h-60">
               {localUser &&
               JSON.parse(localUser).profile === "Administrator" ? (
-                notifIncident.reverse().map((incident, index) => {
-                  return (
-                    <>
-                      <div className="flex justify-between py-4 px-6 rounded-lg">
-                        <div
-                          key={index}
-                          className="flex items-center space-x-4"
-                        >
-                          <div className="flex flex-col space-y-1">
-                            <span className="font-bold">{incident.caller}</span>
-                            <span className="text-sm">
-                              <p
-                                onClick={() =>
-                                  handleIncidentClick(incident._id)
-                                }
-                              >
+                notifIncident
+                  .sort((incident1, incident2) => {
+                    const date1 = new Date(incident1.createdAt).getTime();
+                    const date2 = new Date(incident2.createdAt).getTime();
+                    return date2 - date1;
+                  })
+                  .map((incident, index) => {
+                    return (
+                      <>
+                        <div className="flex justify-between py-4 px-6 rounded-lg">
+                          <div
+                            key={index}
+                            className="flex items-center space-x-4"
+                          >
+                            <div className="flex flex-col space-y-1">
+                              <span className="font-bold">
+                                {incident.caller}
+                              </span>
+                              <span className="text-sm">
                                 A new incident &nbsp;
                                 <a
                                   className="text-blue-600"
@@ -1000,20 +1008,25 @@ const Header = () => {
                                   {incident.incidentNumber}
                                 </a>
                                 &nbsp; has been created
-                              </p>
-                            </span>
+                              </span>
+                            </div>
                           </div>
+                          <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                            {getTimeElapsed(incident.createdAt)}
+                          </div>
+                          <button
+                            onClick={() => handleIncidentClick(incident._id)}
+                            className="text-green-500"
+                          >
+                            <AiFillCheckCircle />
+                          </button>
                         </div>
-                        <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
-                          {getTimeElapsed(incident.createdAt)}
-                        </div>
-                      </div>
-                      {index !== notifIncident.length - 1 && (
-                        <hr className="border-b-[1px] my-4 border-gray" />
-                      )}
-                    </>
-                  );
-                })
+                        {index !== notifIncident.length - 1 && (
+                          <hr className="border-b-[1px] my-4 border-gray" />
+                        )}
+                      </>
+                    );
+                  })
               ) : localUser &&
                 JSON.parse(localUser).profile === "Commercial Agent" ? (
                 notifProductOrder
@@ -1032,26 +1045,28 @@ const Header = () => {
                           >
                             <div className="flex flex-col space-y-1">
                               <span className="text-sm">
-                                <p
-                                  onClick={() =>
-                                    handleProductOrderClick(productOrder._id)
-                                  }
+                                The product order&nbsp;
+                                <a
+                                  href={`/customer-order/product/${productOrder._id}`}
+                                  className="text-blue-600"
                                 >
-                                  The product order&nbsp;
-                                  <a
-                                    href={`/customer-order/product/${productOrder._id}`}
-                                    className="text-blue-600"
-                                  >
-                                    {productOrder.orderNumber}
-                                  </a>
-                                  &nbsp;is approved
-                                </p>
+                                  {productOrder.orderNumber}
+                                </a>
+                                &nbsp;is approved
                               </span>
                             </div>
                           </div>
                           <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
                             {getTimeElapsed(productOrder.created)}
                           </div>
+                          <button
+                            onClick={() =>
+                              handleProductOrderClick(productOrder._id)
+                            }
+                            className="text-green-500"
+                          >
+                            <AiFillCheckCircle />
+                          </button>
                         </div>
                         {index !== notifProductOrder.length - 1 && (
                           <hr className="border-b-[1px] my-4 border-gray" />
@@ -1061,45 +1076,51 @@ const Header = () => {
                   })
               ) : localUser &&
                 JSON.parse(localUser).profile === "Product Offering Manager" ? (
-                notifProductOffering.reverse().map((productOffering, index) => {
-                  return (
-                    <>
-                      <div className="flex justify-between py-4 px-6 rounded-lg">
-                        <div
-                          key={index}
-                          className="flex items-center space-x-4"
-                        >
-                          <div className="flex flex-col space-y-1">
-                            <span className="text-sm">
-                              The product offering&nbsp;
-                              <a
-                                href={`/product-offering/${productOffering._id}`}
-                                className="text-blue-600"
-                              >
-                                {productOffering.name}
-                              </a>
-                              &nbsp;has been Published
-                            </span>
+                notifProductOffering
+                  .sort((order1, order2) => {
+                    const date1 = new Date(order1.created).getTime();
+                    const date2 = new Date(order2.created).getTime();
+                    return date2 - date1;
+                  })
+                  .map((productOffering, index) => {
+                    return (
+                      <>
+                        <div className="flex justify-between py-4 px-6 rounded-lg">
+                          <div
+                            key={index}
+                            className="flex items-center space-x-4"
+                          >
+                            <div className="flex flex-col space-y-1">
+                              <span className="text-sm">
+                                The product offering&nbsp;
+                                <a
+                                  href={`/product-offering/${productOffering._id}`}
+                                  className="text-blue-600"
+                                >
+                                  {productOffering.name}
+                                </a>
+                                &nbsp;has been Published
+                              </span>
+                            </div>
                           </div>
+                          <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
+                            {getTimeElapsed(productOffering.created)}
+                          </div>
+                          <button
+                            onClick={() =>
+                              handleProductOfferingClick(productOffering._id)
+                            }
+                            className="text-green-500"
+                          >
+                            <AiFillCheckCircle />
+                          </button>
                         </div>
-                        <div className="flex-none px-4 py-2 text-green-600 text-xs md:text-sm">
-                          {getTimeElapsed(productOffering.created)}
-                        </div>
-                        <button
-                          onClick={() =>
-                            handleProductOfferingClick(productOffering._id)
-                          }
-                          className="text-green-500"
-                        >
-                          <AiFillCheckCircle />
-                        </button>
-                      </div>
-                      {index !== notifProductOffering.length - 1 && (
-                        <hr className="border-b-[1px] my-4 border-gray" />
-                      )}
-                    </>
-                  );
-                })
+                        {index !== notifProductOffering.length - 1 && (
+                          <hr className="border-b-[1px] my-4 border-gray" />
+                        )}
+                      </>
+                    );
+                  })
               ) : (
                 <div className="flex px-4 py-3 hover:bg-gray-100">
                   No Notifications
