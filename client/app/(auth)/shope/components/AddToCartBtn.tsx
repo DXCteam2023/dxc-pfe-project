@@ -1,5 +1,12 @@
 "use client";
+
 import React from "react";
+import {
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  HeartIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
 import { Product } from "../interfaces";
 import {
   decrement,
@@ -8,10 +15,8 @@ import {
 } from "../store/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { Button } from "./elements";
-import { ShoppingBagIcon, ShoppingCartIcon , HeartIcon, TbHeartsOff} from "@heroicons/react/24/solid";
 import QtyBtn from "./QtyBtn";
 import LoveBtn from "./LoveBtn";
-import { TrashIcon } from "@heroicons/react/24/solid";
 
 interface Props {
   product: Product;
@@ -30,7 +35,7 @@ const AddToCartBtn = (props: Props) => {
           Add To Cart
         </Button> */}
         <Button onClick={() => dispatch(increment(props.product))}>
-        {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+          {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
                                
                             <path fill-rule="evenodd"
@@ -40,17 +45,11 @@ const AddToCartBtn = (props: Props) => {
                       
                         
                         </svg> */}
-<div className="transition ease-in duration-300 bg-white hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1">
-      <HeartIcon className="" />
-     
-    </div>
-
-
-                        </Button>
-                      
+          <div className="transition ease-in duration-300 bg-white hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1">
+            <HeartIcon className="" />
+          </div>
+        </Button>
       </div>
-      
-      
     );
   return (
     // <QtyBtn
@@ -59,27 +58,25 @@ const AddToCartBtn = (props: Props) => {
     //   qty={qty}
     // />
     <LoveBtn
-    onDecrease={() => dispatch(decrement(props.product))}
-    onIncrease={() => dispatch(increment(props.product))}
-    qty={qty}
-  />
-// {/* <div className="flex gap-2 justify-center items-center">
-//       <Button variant="danger" className="w-12 h-10" onClick={props.onDecrease}>
-//         {/* {props.qty === 1 ? <TrashIcon className="w-4" /> : "-"} */}
-//         <TrashIcon className="w-4" />
-//       </Button>
-//       <p>{props.qty}</p>
-//       <Button
-//         className="w-12 h-10"
-//         variant="success"
-//         onClick={props.onIncrease}
-//       >
-//         <HeartIcon className="" />
-//         {/* + */}
-//       </Button>
-//     </div> */}
-
-
+      onDecrease={() => dispatch(decrement(props.product))}
+      onIncrease={() => dispatch(increment(props.product))}
+      qty={qty}
+    />
+    // {/* <div className="flex gap-2 justify-center items-center">
+    //       <Button variant="danger" className="w-12 h-10" onClick={props.onDecrease}>
+    //         {/* {props.qty === 1 ? <TrashIcon className="w-4" /> : "-"} */}
+    //         <TrashIcon className="w-4" />
+    //       </Button>
+    //       <p>{props.qty}</p>
+    //       <Button
+    //         className="w-12 h-10"
+    //         variant="success"
+    //         onClick={props.onIncrease}
+    //       >
+    //         <HeartIcon className="" />
+    //         {/* + */}
+    //       </Button>
+    //     </div> */}
   );
 };
 

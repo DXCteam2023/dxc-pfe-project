@@ -6,7 +6,7 @@ import {
   getUsers,
   updateUser,
   authUser,
-  getSimilarProfiles
+  getSimilarProfiles,
 } from "../controllers/user";
 
 const userRoute = Router();

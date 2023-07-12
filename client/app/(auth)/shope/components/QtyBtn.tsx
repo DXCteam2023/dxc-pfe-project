@@ -1,7 +1,12 @@
 import React from "react";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import {
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  HeartIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
 import { Button } from "./elements";
-import { ShoppingBagIcon, ShoppingCartIcon , HeartIcon} from "@heroicons/react/24/solid";
+
 interface Props {
   onIncrease: () => void;
   onDecrease: () => void;

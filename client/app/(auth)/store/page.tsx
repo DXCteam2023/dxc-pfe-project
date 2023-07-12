@@ -37,7 +37,6 @@
 
 //     return (
 
-     
 //         <div className="container">
 //             <h1>Cart : {Cart}</h1>
 //             <div className="grid sm:grid-cols-1 gap-4 md:grid-cols-4">
