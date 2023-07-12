@@ -6,7 +6,6 @@ import {
   getProductOfferingById,
   getProductOfferings,
   publishProductOffering,
-  updateProductOffering,
   retireProductOffering,
   updateProductOffering,
 } from "../controllers/product-offering";

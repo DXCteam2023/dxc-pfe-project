@@ -1,6 +1,10 @@
 "use client";
 
-import { ShoppingBagIcon, ShoppingCartIcon , HeartIcon} from "@heroicons/react/24/solid";
+import {
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  HeartIcon,
+} from "@heroicons/react/24/solid";
 import React from "react";
 import {
   totalCartItemsSelector,
@@ -16,7 +20,7 @@ const CartBtn = (props: Props) => {
   return (
     <div className={`${props.className} relative`}>
       {/* <HeartIcon className="w-9 text-slate-600" /> */}
-      <HeartIcon className="transition ease-in duration-100 bg-white hover:text-red-600 shadow hover:shadow-md text-purple-600 rounded-full w-9 h-9 text-center p-1"  />
+      <HeartIcon className="transition ease-in duration-100 bg-white hover:text-red-600 shadow hover:shadow-md text-purple-600 rounded-full w-9 h-9 text-center p-1" />
       {!!totalItems && (
         <div
           key={totalItems}
