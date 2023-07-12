@@ -88,8 +88,8 @@ const SavedProductsList: React.FC<{ savedProducts: SavedProduct[] }> = ({
                       savedProducts.find(
                         (p) => p.productId === product.productId,
                       )
-                        ? "#34D399"
-                        : "#2c3e50"
+                        ? "purple"
+                        : "gray"
                     }
                     fill="none"
                     strokeLinecap="round"
@@ -127,19 +127,19 @@ const SavedProductsList: React.FC<{ savedProducts: SavedProduct[] }> = ({
               </div>
               <div className="p-4">
                 <div className="flex items-center">
-                  <h2 className="focus:outline-none text-lg font-semibold">
+                  <h2 className="focus:outline-none text-lg font-semibold line-clamp-1">
                     {product.name}
                   </h2>
                   <p className="focus:outline-none  tiem-end text-xs text-gray-600 pl-5">
                     <Link
                       href={`/product-specification/${product._id}`}
-                      className=" button text-sm bg-blue-400 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
+                      className=" button text-sm bg-blue-600 text-white font-semibold py-2 px-2 rounded-r flex items-end transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300"
                     >
                       Details
                     </Link>
                   </p>
                 </div>
-                <p className="focus:outline-none text-xs text-gray-600 mt-2">
+                <p className="focus:outline-none text-xs text-gray-600 mt-2 line-clamp-1">
                   {product.description}
                 </p>
                 <div className="flex mt-4">
@@ -154,12 +154,12 @@ const SavedProductsList: React.FC<{ savedProducts: SavedProduct[] }> = ({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between py-4">
+                {/* <div className="flex items-center justify-between py-4">
                   <h2 className="focus:outline-none text-indigo-700 text-xs font-semibold">
                     {product.lastUpdate}
                   </h2>
                   <h3 className="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

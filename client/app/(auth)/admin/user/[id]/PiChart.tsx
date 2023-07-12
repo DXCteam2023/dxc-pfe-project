@@ -44,24 +44,21 @@ const PieChart = () => {
             },
           ],
         },
-        options: {}, // Add additional options to customize the chart here
+        options: {},
       });
 
       return () => {
-        // Clean up the chart when the component is unmounted
         chart.destroy();
       };
     }
   }, [users]);
 
   function getUserLabels() {
-    // Get unique user profiles or roles
     const uniqueValues = Array.from(new Set(users.map((user) => user.profile)));
     return uniqueValues;
   }
 
   function getUserCounts() {
-    // Count users for each profile or role
     const userCounts = getUserLabels().map(
       (label) => users.filter((user) => user.profile === label).length,
     );

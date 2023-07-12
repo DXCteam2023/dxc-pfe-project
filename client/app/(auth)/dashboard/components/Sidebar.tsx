@@ -73,7 +73,7 @@ const Sidebar = () => {
         {data.map((item) => (
           <Link href={item.path} key={item.id}>
             <div className="cursor-pointer p-3 inline-flex items-center">
-              <div className="border rounded-md   text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-white w-[30px] h-[30px] flex items-center justify-center md:flex tracking-tight">
+              <div className="border rounded-md   text-white bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 bg-white w-[30px] h-[30px] flex items-center justify-center md:flex tracking-tight">
                 {item.icon}
               </div>
               {/* Appel à une fonction renderIcon pour afficher l'icône correspondante */}

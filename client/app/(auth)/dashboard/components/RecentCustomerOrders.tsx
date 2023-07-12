@@ -4,7 +4,7 @@ import axios from "axios";
 import * as dotenv from "dotenv";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
+import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import result from "../../../../public/assets/search.png";
 
 dotenv.config();
@@ -167,7 +167,15 @@ const BarChart = () => {
                       <option value="new">New</option>
                       <option value="in_progress">In progress</option>
                       <option value="completed">Completed</option>
-                      <option value="cancellation_received">Canceled</option>
+                      <option value="rejected">Rejected</option>
+                      <option value="assessing_cancellation">
+                        Assessing Cancellation
+                      </option>
+
+                      <option value="cancellation_received">
+                        Cancellation In Progress
+                      </option>
+                      <option value="canceled">Canceled</option>
                     </select>
                   </div>
                 </div>
@@ -185,14 +193,14 @@ const BarChart = () => {
                   <table className="text-left w-full border-collapse">
                     <thead>
                       <tr>
-                        <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
+                        {/* <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           <label className="inline-flex items-center">
                             <input
                               type="checkbox"
                               className="form-checkbox text-gray-800"
                             />
                           </label>
-                        </th>
+                        </th> */}
                         <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
                           Number
                         </th>
@@ -223,7 +231,7 @@ const BarChart = () => {
                         .map((order: any, index: number) => {
                           return (
                             <tr key={index}>
-                              <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
+                              {/* <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
                                 <button
                                   onClick={() => togglePinProduct(order._id)}
                                   className={`font-bold  ${
@@ -232,20 +240,33 @@ const BarChart = () => {
                                       : "text-black"
                                   }`}
                                 >
-                                  {/* <FontAwesomeIcon icon={faThumbtack} /> */}
+                                  <FontAwesomeIcon icon={faThumbtack} />
                                 </button>
-                              </td>
-                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                              </td> */}
+                              <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5  border-t border-gray-200 px-3 text-md ">
                                 <div className="flex items-center">
+                                  <p className="text-gray-900 whitespace-no-wrap">
+                                    <a
+                                      href={`/customer-order/product/${order._id}`}
+                                      className="text-blue-500 hover:text-blue-700 text-main-color"
+                                    >
+                                      {order.orderNumber}
+                                    </a>
+                                  </p>
                                   <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
-                                      <a
-                                        href={`/customer-order/product/${order._id}`}
-                                        className="text-blue-500 hover:text-blue-700 text-main-color"
-                                      >
-                                        {order.orderNumber}
-                                      </a>
-                                    </p>
+                                    <button
+                                      onClick={() =>
+                                        togglePinProduct(order._id)
+                                      }
+                                      className={`font-bold ${
+                                        pinnedProductOrders.includes(order._id)
+                                          ? "text-purple-500"
+                                          : "text-purple-800"
+                                      }`}
+                                      style={{ transform: "rotate(+65deg)" }}
+                                    >
+                                      <FontAwesomeIcon icon={faThumbtack} />
+                                    </button>
                                   </div>
                                 </div>
                               </td>
@@ -255,12 +276,12 @@ const BarChart = () => {
                                   {order.account}
                                 </p>
                               </td> */}
-                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5  border-t border-gray-200 px-3 text-md text-center">
                                 <p className="text-indigo-900  font-semibold whitespace-no-wrap">
                                   {new Date(order.orderDate).toDateString()}
                                 </p>
                               </td>
-                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-t border-gray-200 px-3 text-md text-center">
                                 <span
                                   className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                     order.state,
@@ -280,7 +301,17 @@ const BarChart = () => {
                                     {order.state === "in_progress"
                                       ? "In Progress"
                                       : order.state === "cancellation_received"
+                                      ? "Cancellation in progress"
+                                      : order.state === "assessing_cancellation"
+                                      ? "Assessing Cancellation"
+                                      : order.state === "canceled"
                                       ? "Canceled"
+                                      : order.state === "rejected"
+                                      ? "Rejected"
+                                      : order.state === "draft"
+                                      ? "Draft"
+                                      : order.state === "new"
+                                      ? "New"
                                       : order.state}
                                   </span>
                                 </span>
@@ -295,10 +326,10 @@ const BarChart = () => {
                                   </div>
                                 </div>
                               </td> */}
-                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-t border-gray-200 px-3 text-md text-center">
                                 <div className="flex items-center">
                                   <div className="ml-3">
-                                    <p className="text-gray-900 whitespace-no-wrap">
+                                    <p className="text-gray-900 font-semibold  whitespace-no-wrap">
                                       {new Date(
                                         order.requestedStartDate,
                                       ).toDateString()}
@@ -307,14 +338,14 @@ const BarChart = () => {
                                 </div>
                               </td>
 
-                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-dashed border-t border-gray-200 px-3 text-md ">
-                                <p className="text-gray-900 whitespace-no-wrap">
+                              <td className="px-5 py-5 border p-2  border-grey-light px-5 py-5 border-t border-gray-200 px-3 text-md  text-center">
+                                <p className="text-gray-900 font-semibold  whitespace-no-wrap">
                                   {new Date(
                                     order.requestedCompletionDate,
                                   ).toDateString()}
                                 </p>
                               </td>
-                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-md">
+                              <td className="px-5 py-5 border-b border-gray-200 bg-white text-md text-center">
                                 <p className="text-pink-700 font-semibold whitespace-no-wrap">
                                   {order.createdBy}
                                 </p>
