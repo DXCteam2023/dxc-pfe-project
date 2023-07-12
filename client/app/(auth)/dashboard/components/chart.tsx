@@ -133,9 +133,9 @@ const BarChart = () => {
           <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
         </div>
       ) : (
-        <div className="mx-auto py-4 text-center">
+        <div className=" mt-14 mx-auto py-4 text-center">
           <canvas ref={chartRef} />
-          <p className="mt-2 text-purple-600 font-semibold">
+          <p className=" mt-12 text-indigo-800 font-semibold">
             Product Orders By Month
           </p>
         </div>

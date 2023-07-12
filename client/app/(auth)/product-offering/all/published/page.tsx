@@ -7,17 +7,14 @@ import publishedProductOfferings from "./data";
 export default function PublishedProductOfferingsPage() {
   return (
     <div className="archived-product-offerings">
-      <div className="flex">
+      <div className="bg-gray-100 flex">
         <Sidebar />
-        <div
-          className="relative overflow-x-auto shadow-md sm:rounded-lg w-full"
-          style={{ padding: 60 }}
-        >
+        <div className="bg-white  min-h-screen-100 w-5/6">
           <Header />
           <h1 className="text-center text-blue-700 text-4xl font-bold my-5">
             Published Product Offerings
           </h1>
-          <div className="flex items-center justify-between py-4 bg-white">
+          <div className=" mx-4 flex items-center justify-between py-4 bg-white">
             <label className="sr-only">Search</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -39,14 +36,14 @@ export default function PublishedProductOfferingsPage() {
                 type="text"
                 id="table-search-users"
                 className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search for users"
+                placeholder="Search ....."
               />
             </div>
           </div>
-          <table className="w-full text-sm text-left text-gray-500">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <table className="mx-4 w-full text-sm text-left text-gray-500">
+            <thead className="text-xs text-white uppercase bg-purple-800">
               <tr>
-                <th scope="col" className="p-4">
+                {/* <th scope="col" className="p-4">
                   <div className="flex items-center">
                     <input
                       id="checkbox-all-search"
@@ -55,10 +52,10 @@ export default function PublishedProductOfferingsPage() {
                     />
                     <label className="sr-only">checkbox</label>
                   </div>
-                </th>
-                <th scope="col" className="px-6 py-3">
+                </th> */}
+                {/* <th scope="col" className="px-6 py-3">
                   Number
-                </th>
+                </th> */}
                 <th scope="col" className="px-6 py-3">
                   Display name
                 </th>
@@ -69,7 +66,7 @@ export default function PublishedProductOfferingsPage() {
                   Product specification
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Monthly recurring charges
+                  Price
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Version
@@ -83,7 +80,7 @@ export default function PublishedProductOfferingsPage() {
               {publishedProductOfferings.map((item, index) => {
                 return (
                   <tr className="bg-white border-b hover:bg-gray-50">
-                    <td className="w-4 p-4">
+                    {/* <td className="w-4 p-4">
                       <div className="flex items-center">
                         <input
                           id="checkbox-table-search-1"
@@ -92,13 +89,13 @@ export default function PublishedProductOfferingsPage() {
                         />
                         <label className="sr-only">checkbox</label>
                       </div>
-                    </td>
-                    <th
+                    </td> */}
+                    {/* <th
                       scope="row"
                       className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
                     >
                       {item.number}
-                    </th>
+                    </th> */}
                     <td className="px-6 py-4">{item.display_name}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center">

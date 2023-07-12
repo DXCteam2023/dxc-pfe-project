@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
+import Footer from "../../dashboard/components/Footer";
 import result from "../../../../public/assets/search.png";
 
 // Importing utility functions
@@ -446,14 +447,14 @@ const SingleProductSpecificationPage = ({
                               <table className="w-full">
                                 <thead>
                                   <tr className="bg-gray-100 border-b">
-                                    <th className="py-4 px-3 text-center bg-purple-800 text-white">
+                                    {/* <th className="py-4 px-3 text-center bg-purple-800 text-white">
                                       <label className="inline-flex items-center">
                                         <input
                                           type="checkbox"
                                           className="form-checkbox text-gray-800"
                                         />
                                       </label>
-                                    </th>
+                                    </th> */}
                                     <th className="py-4 px-6 text-center bg-purple-800 text-white">
                                       Display Name
                                     </th>
@@ -483,7 +484,7 @@ const SingleProductSpecificationPage = ({
                                         key={offering.id}
                                         className="border-b"
                                       >
-                                        <td>
+                                        {/* <td>
                                           <button
                                             onClick={() =>
                                               togglePinProduct(offering.id)
@@ -500,21 +501,41 @@ const SingleProductSpecificationPage = ({
                                               icon={faThumbtack}
                                             />
                                           </button>
-                                        </td>
-                                        <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                        </td> */}
+                                        <td className="px-5 py-5 border p-2 border-grey-light border-dashed border-t border-gray-200 text-md ">
                                           <div className="flex items-center">
+                                            <p className="text-gray-900 whitespace-no-wrap text-main-color">
+                                              <a
+                                                href={`/product-offering/${offering._id}`}
+                                                className="text-blue-500 hover:text-blue-700"
+                                              >
+                                                {offering.name}
+                                              </a>
+                                            </p>
                                             <div className="ml-3">
-                                              <p className="text-gray-900 whitespace-no-wrap text-main-color">
-                                                <a
-                                                  href={`/product-offering/${offering._id}`}
-                                                  className="text-blue-500 hover:text-blue-700"
-                                                >
-                                                  {offering.name}
-                                                </a>
-                                              </p>
+                                              <button
+                                                onClick={() =>
+                                                  togglePinProduct(offering.id)
+                                                }
+                                                className={`font-bold ${
+                                                  pinnedProducts.includes(
+                                                    offering.id,
+                                                  )
+                                                    ? "text-purple-500"
+                                                    : "text-purple-800"
+                                                }`}
+                                                style={{
+                                                  transform: "rotate(65deg)",
+                                                }}
+                                              >
+                                                <FontAwesomeIcon
+                                                  icon={faThumbtack}
+                                                />
+                                              </button>
                                             </div>
                                           </div>
                                         </td>
+
                                         <td className="py-4 px-6 text-gray-900 border p-2  border-grey-light">
                                           {offering.description}
                                         </td>
@@ -783,6 +804,9 @@ const SingleProductSpecificationPage = ({
               </div>
             </div>
           )}
+          <div>
+            <Footer />
+          </div>
         </div>
       </div>
     </div>

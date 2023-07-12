@@ -276,13 +276,13 @@ const TableProductOfferings = () => {
                             .map((product, index) => {
                               return (
                                 <tr key={index}>
-                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-t border-gray-200 text-md ">
                                     <div className="flex items-center">
                                       <div className="ml-3">
                                         <p className="text-gray-900 whitespace-no-wrap text-main-color">
                                           <a
                                             href={`/product-offering/${product._id}`}
-                                            className="text-blue-500 hover:text-blue-700"
+                                            className="text-blue-800 hover:text-blue-700"
                                           >
                                             {product.name}
                                           </a>
@@ -290,17 +290,17 @@ const TableProductOfferings = () => {
                                       </div>
                                     </div>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-t border-gray-200 text-md ">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       {product.description}
                                     </p>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-t border-gray-200 text-md text-center">
                                     <p className="text-gray-900 whitespace-no-wrap">
                                       {product.internalVersion}
                                     </p>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light border-t border-gray-200 text-md ">
                                     <span
                                       className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
                                         product.status,
@@ -321,7 +321,7 @@ const TableProductOfferings = () => {
                                       </span>
                                     </span>
                                   </td>
-                                  <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200 text-md ">
+                                  <td className="px-5 py-5 border p-2  border-grey-light  border-t border-gray-200 text-md ">
                                     <p className="text-indigo-700  font-semibold whitespace-no-wrap">
                                       {new Date(
                                         product.lastUpdate,
@@ -359,8 +359,8 @@ const TableProductOfferings = () => {
                                                   (p) =>
                                                     p.productId === product._id,
                                                 )
-                                                  ? "#34D399"
-                                                  : "#2c3e50"
+                                                  ? "purple"
+                                                  : "gray"
                                               }
                                               onClick={() =>
                                                 handleSaveButtonClick(
@@ -405,7 +405,7 @@ const TableProductOfferings = () => {
                                             <h2 className="text-lg mr-auto cursor-pointer text-gray-800 hover:text-purple-500 truncate">
                                               {product.description}
                                             </h2>
-                                            <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div>
+                                            {/* <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div> */}
                                           </div>
                                         </div>
                                         <div className="text-xl text-white font-semibold mt-1">
@@ -438,7 +438,7 @@ const TableProductOfferings = () => {
                                               onClick={() => {
                                                 window.location.href = `/product-offering/${product._id}`;
                                               }}
-                                              className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
+                                              className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
                                             >
                                               <span>View Details</span>
                                             </button>
@@ -476,7 +476,7 @@ const TableProductOfferings = () => {
                         </tbody>
                       </table>
                     )}
-                    <div className="bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+                    <div className=" mt-8 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                       <span className="text-xs xs:text-sm text-gray-900">
                         Showing {indexOfFirstOrder + 1} to{" "}
                         {Math.min(indexOfLastOrder, recentOffers.length)} of{" "}

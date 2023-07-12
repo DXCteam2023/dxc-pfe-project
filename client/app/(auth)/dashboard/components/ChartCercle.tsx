@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Chart, registerables } from "chart.js";
-import { ClockLoader } from "react-spinners";
-import Loader from "react-loader-spinner";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -114,7 +112,7 @@ const DoughnutChart = () => {
           <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
         </div>
       ) : (
-        <div className="mx-auto w-2/3 text-center">
+        <div className=" w-3/4 mx-auto  text-center">
           <canvas ref={chartRef} />
           <p className="mt-2 p-3 text-indigo-800 font-semibold">
             Product Offering By State

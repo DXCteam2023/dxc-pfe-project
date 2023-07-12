@@ -8,6 +8,7 @@ import Image from "next/image";
 import StatistiqueSpecification from "./statistiqueSpecification";
 import Sidebar from "../../dashboard/components/Sidebar";
 import Header from "../../dashboard/components/header/Header";
+import Footer from "../../dashboard/components/Footer";
 import image from "../../../../public/assets/wifi-survey2.jpg";
 import SavedProductSpecifications from "./SavedProducts";
 import { getProductSpecifications } from "../utils";
@@ -335,17 +336,17 @@ export default function AllProductSpecificationsPage({
                                 .map((product: any, index: number) => {
                                   return (
                                     <tr key={index}>
-                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className="border p-2 border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md">
                                         <p className="text-blue-800 font-semibold whitespace-no-wrap font-lg text-semibold leading-6">
                                           {product.name}
                                         </p>
                                       </td>
-                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className="border p-2 border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md text-center">
                                         <p className="text-puprle-700 whitespace-no-wrap font-semibold">
                                           {product.version}
                                         </p>
                                       </td>
-                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className="border p-2 border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="">
                                             <p className="text-md text-gray-900 hover:text-gray-600 leading-6">
@@ -354,7 +355,7 @@ export default function AllProductSpecificationsPage({
                                           </div>
                                         </div>
                                       </td>
-                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className="border p-2 border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="">
                                             <span
@@ -379,7 +380,7 @@ export default function AllProductSpecificationsPage({
                                           </div>
                                         </div>
                                       </td>
-                                      <td className="border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className="border border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="ml-3">
                                             <p className="text-md text-green-700 font-semibold hover:text-gray-600 leading-6">
@@ -388,7 +389,7 @@ export default function AllProductSpecificationsPage({
                                           </div>
                                         </div>
                                       </td>
-                                      <td className="border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className="border border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md">
                                         <div className="flex items-center">
                                           <div className="ml-3">
                                             <p className="text-md text-red-700  font-semibold hover:text-gray-600 leading-6">
@@ -397,7 +398,7 @@ export default function AllProductSpecificationsPage({
                                           </div>
                                         </div>
                                       </td>
-                                      <td className="px-5 py-5 border p-2 border-grey-light px-5 py-5 border-dashed border-t border-gray-300 px-3 text-md">
+                                      <td className=" border border-grey-light px-5 py-5 border-t border-gray-300 px-3 text-md">
                                         <div className="flex item-center justify-center">
                                           <Link
                                             href={`/product-specification/${product._id}`}
@@ -452,8 +453,8 @@ export default function AllProductSpecificationsPage({
                                                 (p) =>
                                                   p.productId === product.id,
                                               )
-                                                ? "#34D399"
-                                                : "#2c3e50"
+                                                ? "purple"
+                                                : "gray"
                                             }
                                             fill="none"
                                             strokeLinecap="round"
@@ -496,7 +497,7 @@ export default function AllProductSpecificationsPage({
                                       </div>
                                       <div className="p-4">
                                         <div className="flex items-center">
-                                          <h2 className="focus:outline-none text-lg font-semibold">
+                                          <h2 className="focus:outline-none text-lg font-semibold line-clamp-1">
                                             {product.name}
                                           </h2>
                                           <p className="focus:outline-none  tiem-end text-xs text-gray-600 pl-5">
@@ -508,7 +509,7 @@ export default function AllProductSpecificationsPage({
                                             </Link>
                                           </p>
                                         </div>
-                                        <p className="focus:outline-none text-xs text-gray-600 mt-2">
+                                        <p className="focus:outline-none text-xs text-gray-600 mt-2 line-clamp-1">
                                           {product.description}
                                         </p>
                                         <div className="flex mt-4">
@@ -523,12 +524,12 @@ export default function AllProductSpecificationsPage({
                                             </p>
                                           </div>
                                         </div>
-                                        <div className="flex items-center justify-between py-4">
+                                        {/* <div className="flex items-center justify-between py-4">
                                           <h2 className="focus:outline-none text-indigo-700 text-xs font-semibold">
-                                            {product.lastUpdate}
+                                            Last Update On: {product.lastUpdate}
                                           </h2>
                                           <h3 className="focus:outline-none text-indigo-700 text-xl font-semibold"></h3>
-                                        </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                   </div>
@@ -585,7 +586,7 @@ export default function AllProductSpecificationsPage({
                           </table>
                         )}
 
-                        <div className="text-center">
+                        <div className="mt-4 text-center">
                           <span className="text-xs xs:text-sm text-gray-900">
                             Showing {indexOfFirstOrder + 1} to{" "}
                             {Math.min(indexOfLastOrder, filteredProds.length)}{" "}
@@ -617,6 +618,7 @@ export default function AllProductSpecificationsPage({
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );

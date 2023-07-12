@@ -4,6 +4,7 @@ import { CircleLoader } from "react-spinners";
 import * as dotenv from "dotenv";
 import CercleChart from "./ChartCercle";
 import ChartProduct from "./ProductChart";
+import OrderByStats from "./OrderByStats";
 import Chartt from "./chart";
 
 dotenv.config();
@@ -28,6 +29,9 @@ interface ProductOfferings {
 const AllCharts = () => {
   const [productOfferings, setProductOfferings] = useState<ProductOfferings[]>(
     [],
+  );
+  const [currentChart, setCurrentChart] = useState<"OrderByStats" | "Chartt">(
+    "OrderByStats",
   );
   const [comparisonResult, setComparisonResult] = useState("");
   useEffect(() => {
@@ -73,7 +77,11 @@ const AllCharts = () => {
       console.error("Erreur lors de la récupération des produits :", error);
     }
   }
-
+  const handleCardClick = () => {
+    setCurrentChart(
+      currentChart === "OrderByStats" ? "Chartt" : "OrderByStats",
+    );
+  };
   function compareTotals(totals: { [key: string]: number }): string | number {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
@@ -135,16 +143,34 @@ const AllCharts = () => {
     <div>
       <div className="px-6 pt-6 2xl:container">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <div className="py-8 px-6 space-y-6 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
+              <div className="bg-white">
+                <CercleChart />
+              </div>
+              {/* <h5 className=" mt-8 text-xl text-gray-700 text-center">
+                Published
+              </h5>
+              <div className="my-4">
+                <h3 className="text-3xl font-bold text-gray-800 text-center">
+                  {percentPublichedProductOfferings}%
+                </h3>
+                <span className="text-gray-500">
+                  Compared to last week $13,988
+                </span>
+              </div> */}
+            </div>
+          </div>
           <div className="md:col-span-2 lg:col-span-1">
-            <div className="h-full py-8 px-6 space-y-6 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
-              <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
+            <div className=" py-8 px-6 space-y-6 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
+              <div className=" bg-white ">
                 <ChartProduct />
               </div>
-              <div className="mt-6">
+              <div className="">
                 <h5 className="text-xl text-gray-700 text-center">
                   Total Products
                 </h5>
-                <div className="mt-2 flex justify-center gap-4">
+                <div className="flex justify-center gap-4">
                   <h3 className="text-3xl font-bold text-gray-700">
                     {totalProductOfferings}
                   </h3>
@@ -192,34 +218,25 @@ const AllCharts = () => {
               </div>
             </div>
           </div>
+
           <div>
-            <div className="h-full py-6 px-6 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-mdbg-white">
-              <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
-                <CercleChart />
+            <div
+              className="py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md"
+              onClick={handleCardClick}
+            >
+              <div className="bg-white">
+                {currentChart === "OrderByStats" ? (
+                  <OrderByStats />
+                ) : (
+                  <Chartt />
+                )}
+                {/* <OrderByStats /> */}
               </div>
-              <h5 className=" mt-8 text-xl text-gray-700 text-center">
-                Published
-              </h5>
-              <div className="my-4">
-                <h3 className="text-3xl font-bold text-gray-800 text-center">
-                  {percentPublichedProductOfferings}%
-                </h3>
-                {/* <span className="text-gray-500">
-                  Compared to last week $13,988
-                </span> */}
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="lg:h-full py-8 px-6 text-gray-600 rounded-xl hover:scale-105 duration-500 bg-white shadow-indigo-100 shadow-md">
-              <div className="h-96 py-8 px-6 space-y-6 rounded-xl duration-500 bg-white shadow-indigo-100 shadow-md">
-                <Chartt />
-              </div>
-              <div className="mt-14">
-                <h5 className="text-xl text-gray-600 text-center">
+
+              {/* <h5 className="text-xl text-gray-600 text-center">
                   Total Revenues
-                </h5>
-                <div className="mt-2 flex justify-center gap-4">
+                </h5> */}
+              {/* <div className="mt-2 flex justify-center gap-4">
                   <h3 className="text-3xl font-bold text-gray-700">$23,988</h3>
                   <div className="flex items-end gap-1 text-green-500">
                     <svg
@@ -235,11 +252,10 @@ const AllCharts = () => {
                     </svg>
                     <span>2%</span>
                   </div>
-                </div>
-                {/* <span className="block text-center text-gray-500">
+                </div> */}
+              {/* <span className="block text-center text-gray-500">
                   Compared to last week $13,988
                 </span> */}
-              </div>
             </div>
           </div>
         </div>

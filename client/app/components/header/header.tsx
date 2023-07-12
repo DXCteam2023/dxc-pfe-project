@@ -91,7 +91,6 @@ export default function Header(props: { styleElements: propsType }) {
   useEffect(() => {
     let tokenUser;
     let user;
-    // Get the value from local storage if it exists
     tokenUser = localStorage.getItem("token") || "";
     setToken(tokenUser);
 
@@ -120,7 +119,7 @@ export default function Header(props: { styleElements: propsType }) {
   return (
     <header>
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-12"
+        className="mx-auto flex items-center justify-between p-4 lg:px-12"
         aria-label="Global"
       >
         <div className="flex lg:flex-1 ">
@@ -148,17 +147,14 @@ export default function Header(props: { styleElements: propsType }) {
           <Popover.Group className="items-center hidden lg:flex lg:gap-x-12">
             <Link
               href="/"
-              className={
-                "text-sm font-semibold leading-6 " +
-                props.styleElements.linksColor
-              }
+              className={"text-md leading-6 " + props.styleElements.linksColor}
             >
               Home
             </Link>
             <Popover className="relative">
               <Popover.Button
                 className={
-                  "flex items-center gap-x-1 text-sm font-semibold leading-6 " +
+                  "flex items-center gap-x-1 text-md  leading-6 " +
                   props.styleElements.linksColor
                 }
               >
@@ -187,16 +183,16 @@ export default function Header(props: { styleElements: propsType }) {
                         key={item.name}
                         className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
                       >
-                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-purple-800 group-hover:bg-white">
                           <item.icon
-                            className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                            className="h-6 w-6 text-white group-hover:text-indigo-600"
                             aria-hidden="true"
                           />
                         </div>
                         <div className="flex-auto">
                           <Link
                             href={item.href}
-                            className="block font-semibold text-blue-900"
+                            className="block font-semibold text-purple-800"
                           >
                             {item.name}
                             <span className="absolute inset-0" />
@@ -208,15 +204,15 @@ export default function Header(props: { styleElements: propsType }) {
                       </div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-purple-800">
                     {callsToAction.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-white hover:bg-gray-100"
                       >
                         <item.icon
-                          className="h-5 w-5 flex-none text-gray-400"
+                          className="h-5 w-5 flex-none text-white"
                           aria-hidden="true"
                         />
                         {item.name}
@@ -229,7 +225,7 @@ export default function Header(props: { styleElements: propsType }) {
             <Popover className="relative">
               <Popover.Button
                 className={
-                  "flex items-center gap-x-1 text-sm font-semibold leading-6 " +
+                  "flex items-center gap-x-1 text-md  leading-6 " +
                   props.styleElements.linksColor
                 }
               >
@@ -258,16 +254,16 @@ export default function Header(props: { styleElements: propsType }) {
                         key={item.name}
                         className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
                       >
-                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-purple-800 group-hover:bg-white">
                           <item.icon
-                            className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                            className="h-6 w-6 text-white group-hover:text-indigo-600"
                             aria-hidden="true"
                           />
                         </div>
                         <div className="flex-auto">
                           <Link
                             href={item.href}
-                            className="block font-semibold text-blue-900"
+                            className="block font-semibold text-purple-800"
                           >
                             {item.name}
                             <span className="absolute inset-0" />
@@ -279,15 +275,15 @@ export default function Header(props: { styleElements: propsType }) {
                       </div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-purple-800">
                     {callsToAction.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
+                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-white hover:bg-gray-100"
                       >
                         <item.icon
-                          className="h-5 w-5 flex-none text-gray-400"
+                          className="h-5 w-5 flex-none text-white"
                           aria-hidden="true"
                         />
                         {item.name}
@@ -300,19 +296,13 @@ export default function Header(props: { styleElements: propsType }) {
 
             <Link
               href="/about"
-              className={
-                "text-sm font-semibold leading-6 " +
-                props.styleElements.linksColor
-              }
+              className={"text-md leading-6 " + props.styleElements.linksColor}
             >
               About US
             </Link>
             <Link
               href="/contact"
-              className={
-                "text-sm font-semibold leading-6 " +
-                props.styleElements.linksColor
-              }
+              className={"text-md  leading-6 " + props.styleElements.linksColor}
             >
               Contact Us
             </Link>
@@ -323,17 +313,13 @@ export default function Header(props: { styleElements: propsType }) {
                 href=""
                 onClick={handleLogout}
                 className={
-                  "text-sm font-semibold leading-6 " +
-                  props.styleElements.linksColor
+                  "text-md  leading-6 " + props.styleElements.linksColor
                 }
               >
                 Logout
               </Link>
             ) : (
-              <Link
-                href="/login"
-                className="text-sm font-semibold leading-6 text-white"
-              >
+              <Link href="/login" className="text-md  leading-6 text-white">
                 <login.icon
                   className={"h-10 w-10 " + props.styleElements.linksColor}
                 />
@@ -442,8 +428,7 @@ export default function Header(props: { styleElements: propsType }) {
                     href=""
                     onClick={handleLogout}
                     className={
-                      "text-sm font-semibold leading-6 " +
-                      props.styleElements.linksColor
+                      "text-md leading-6 " + props.styleElements.linksColor
                     }
                   >
                     Logout

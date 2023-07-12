@@ -122,9 +122,9 @@ const ChartProduct = () => {
           <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
         </div>
       ) : (
-        <div className="mx-auto py-4 text-center ">
-          <canvas ref={chartRef} className="h-96" />
-          <p className="mt-2 p-9 text-indigo-800 font-semibold">
+        <div className=" mx-auto py-4 text-center ">
+          <canvas ref={chartRef} />
+          <p className=" text-indigo-800 font-semibold">
             Product Offerings by Month
           </p>
         </div>

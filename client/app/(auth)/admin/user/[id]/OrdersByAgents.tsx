@@ -6,55 +6,40 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const AXIOS_URL = process.env.NEXT_PUBLIC_AXIOS_URL;
-
-interface ProductOfferings {
-  link: string;
-  name: string;
-  description: string;
-  state: string;
+interface ProductOrders {
   createdBy: string;
-  internalVersion: string;
-  orderDate: string;
-  lastUpdate: string;
 }
-
 Chart.register(...registerables);
-
-const DoughnutChart = () => {
+const OrdersByAgents = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
-  const [productOfferings, setProductOfferings] = useState<ProductOfferings[]>(
-    [],
-  );
+  const [productOrders, setProductOrders] = useState<ProductOrders[]>([]);
   const [chartInstance, setChartInstance] = useState<Chart<
     "doughnut",
     number[],
     string
   > | null>(null);
-
   useEffect(() => {
-    getProductOfferings();
+    getProductOrders();
   }, []);
 
-  async function getProductOfferings() {
+  async function getProductOrders() {
     try {
-      const response = await axios.get(`${AXIOS_URL}/api/product-offering`);
-      const allProductOfferings = response.data;
-      setProductOfferings(allProductOfferings);
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des produits offerts :",
-        error,
+      const response = await axios.get(
+        `${AXIOS_URL}/api/customer-order/product`,
       );
+      const productsData = response.data;
+      setProductOrders(productsData);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des produits :", error);
     }
   }
-
   useEffect(() => {
     if (chartRef.current) {
       const ctx = chartRef.current.getContext("2d");
 
       const nameCounts: { [key: string]: number } = {};
-      productOfferings.forEach((productOffering) => {
-        const { createdBy } = productOffering;
+      productOrders.forEach((productOrder) => {
+        const { createdBy } = productOrder;
         if (
           createdBy &&
           Object.prototype.hasOwnProperty.call(nameCounts, createdBy)
@@ -99,16 +84,15 @@ const DoughnutChart = () => {
         console.error("Le contexte de rendu du canvas est null.");
       }
     }
-  }, [productOfferings]);
-
+  }, [productOrders]);
   return (
     <div className="mx-auto  text-center">
       <canvas ref={chartRef} />
       <p className="mt-2 text-gray-600 font-semibold">
-        Product Offering By Managers
+        Product Orders By Agents
       </p>
     </div>
   );
 };
 
-export default DoughnutChart;
+export default OrdersByAgents;

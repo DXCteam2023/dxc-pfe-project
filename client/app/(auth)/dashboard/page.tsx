@@ -35,31 +35,14 @@ export default function DashboardHome() {
       <Sidebar />
       <div className="bg-white min-h-screen-100 w-5/6 ">
         <Header />
-        <div className=" mx-4 py-5 bg-gradient-to-r from-white via-purple-200 to-white  rounded-l-lg ">
+        <div className=" mx-4 py-5">
           <Cards />
           <AllCharts />
-          {/* <StatisticCards /> */}
         </div>
-
-        {/* <div className=" flex justify-center p-2 ">
-          <div className="mx-3 w-1/2  mt-1 item-end  p-8">
-            <div className=" item-end  bg-white rounded-lg shadow-xl ">
-              <CercleChart />
-            </div>
-          </div>
-          <div className="mx-3 w-1/2  mt-1 item-end  py-8">
-            <div className=" item-end  bg-white rounded-lg shadow-xl ">
-              <ChartProduct />
-            </div>
-          </div>
-        </div> */}
         <div className="mx-3 mt-1 item-end   rounded-lg  p-8">
           <TableProductOfferings />
         </div>
         <div className=" mx-9 mt-4 flex p-2 ">
-          {/* <div className="py-16 w-1/2 rounded-lg shadow-xl p-8">
-            <Chartt />
-          </div> */}
           <div className="mx-3 w-full rounded-lg shadow-xl p-8">
             <BarChart />
           </div>

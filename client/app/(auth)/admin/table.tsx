@@ -3,11 +3,12 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import Image from "next/image";
 import Link from "next/link";
 import { FaEye } from "react-icons/fa";
 import * as dotenv from "dotenv";
 import UpdateUserForm from "./updateUserForm";
+import result from "../../../public/assets/search.png";
 
 dotenv.config();
 
@@ -230,7 +231,27 @@ const Table = () => {
                 </div>
                 {users.length === 0 ? (
                   <div className="flex justify-center items-center">
-                    <div className="rounded-full border-t-4 border-blue-500 border-opacity-50 h-12 w-12 animate-spin"></div>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td colSpan={6} className="text-center">
+                            <div className="flex justify-center items-center">
+                              <Image
+                                src={result}
+                                alt="Just a flower"
+                                className="w-1/4 h-1/4 object-fill rounded-2xl"
+                              />
+                              <br />
+                            </div>
+                            <div className="ml-4">
+                              <p className="text-gray-900 font-bold text-xl">
+                                No Result Found ...
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 ) : (
                   <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -248,20 +269,20 @@ const Table = () => {
                                 />
                               </label>
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800  text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Username
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Profile
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800  text-white text-left text-xs font-semibold uppercase tracking-wider">
                               Role
                             </th>
-                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white text-left text-xs font-semibold uppercase tracking-wider">
                               UserID
                             </th>
 
-                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  text-white text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-5 py-3 border-b-2 border-purple-200 bg-purple-800 text-white  text-xs font-semibold uppercase tracking-wider">
                               Actions
                             </th>
                           </tr>
@@ -270,93 +291,102 @@ const Table = () => {
                         <tbody>
                           {filteredUsers
                             .slice(indexOfFirstOrder, indexOfLastOrder)
-                            .map((user: TUser, index: number) => (
-                              <tr key={user._id}>
-                                <td className="border-dashed border-t border-gray-200 px-3">
-                                  <label className="inline-flex items-center">
-                                    <input
-                                      type="checkbox"
-                                      className="form-checkbox text-gray-800"
-                                      checked={selectedUsers.includes(user._id)}
-                                      onChange={(event) =>
-                                        handleCheckboxChange(
-                                          event.currentTarget.checked,
-                                          user._id,
-                                        )
-                                      }
-                                    />
-                                  </label>
-                                </td>
-                                <td className="border-dashed border-t border-gray-200 px-3">
-                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                    {user.username}
-                                  </span>
-                                </td>
-                                <td className="border-dashed border-t border-gray-200 px-3">
-                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                    {user.profile}
-                                  </span>
-                                </td>
-                                <td className="border-dashed border-t border-gray-200 px-3">
-                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                    {user.role}
-                                  </span>
-                                </td>
-                                <td className="border-dashed border-t border-gray-200 px-3">
-                                  <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
-                                    {user.userID}
-                                  </span>
-                                </td>
-
-                                <td className="border-dashed border-t border-gray-200 px-3">
-                                  <div className="flex">
-                                    <Link href={`/admin/user/${user._id}`}>
-                                      <FaEye className="text-blue-500 text-lg" />
-                                    </Link>
-
-                                    <button
-                                      className="mx-2 w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
-                                      //value={currentUser.id}
-                                      onClick={() => handleEditUser(user)}
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="green"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                            .map((user: TUser, index: number) => {
+                              if (user.profile !== "Administrator") {
+                                return (
+                                  <tr key={user._id}>
+                                    <td className="border-dashed border-t border-gray-200 px-3">
+                                      <label className="inline-flex items-center">
+                                        <input
+                                          type="checkbox"
+                                          className="form-checkbox text-gray-800"
+                                          checked={selectedUsers.includes(
+                                            user._id,
+                                          )}
+                                          onChange={(event) =>
+                                            handleCheckboxChange(
+                                              event.currentTarget.checked,
+                                              user._id,
+                                            )
+                                          }
                                         />
-                                      </svg>
-                                    </button>
+                                      </label>
+                                    </td>
+                                    <td className="border-dashed border-t border-gray-200 px-3">
+                                      <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                        {user.username}
+                                      </span>
+                                    </td>
+                                    <td className="border-dashed border-t border-gray-200 px-3">
+                                      <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                        {user.profile}
+                                      </span>
+                                    </td>
+                                    <td className="border-dashed border-t border-gray-200 px-3">
+                                      <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                        {user.role}
+                                      </span>
+                                    </td>
+                                    <td className="border-dashed border-t border-gray-200 px-3">
+                                      <span className="text-gray-700 hover:text-gray-500 cursor-pointer">
+                                        {user.userID}
+                                      </span>
+                                    </td>
 
-                                    <button
-                                      className="mx-2 w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
-                                      onClick={() => handleDeleteUser(user._id)}
-                                    >
-                                      {" "}
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="red"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                        />
-                                      </svg>
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
+                                    <td className="border-dashed border-t border-gray-200 px-3">
+                                      <div className="flex">
+                                        <Link href={`/admin/user/${user._id}`}>
+                                          <FaEye className="text-blue-500 text-lg" />
+                                        </Link>
+
+                                        <button
+                                          className="mx-2 w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                          //value={currentUser.id}
+                                          onClick={() => handleEditUser(user)}
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="green"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                            />
+                                          </svg>
+                                        </button>
+
+                                        <button
+                                          className="mx-2 w-5 mr-2 transform hover:text-purple-500 hover:scale-110"
+                                          onClick={() =>
+                                            handleDeleteUser(user._id)
+                                          }
+                                        >
+                                          {" "}
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="red"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                              return null;
+                            })}
                         </tbody>
                       </table>
                     </div>

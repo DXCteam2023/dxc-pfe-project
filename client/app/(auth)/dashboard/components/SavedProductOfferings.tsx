@@ -51,7 +51,7 @@ const SavedProductOfferingsList: React.FC<{
 }> = ({ savedProductOfferings }) => {
   return (
     <div>
-      <h2 className="text-md text-purple-800 font-semibold">
+      <h2 className=" mt-4 text-md text-purple-800 font-semibold">
         Saved Product Offerings
       </h2>
       <div className="flex flex-wrap">
@@ -60,7 +60,7 @@ const SavedProductOfferingsList: React.FC<{
             key={offering._id}
             //className="bg-white rounded shadow-lg  p-4"
           >
-            <div className="container ">
+            <div className="mx-2 mt-2 container ">
               <div className="max-w-md w-full bg-white shadow-lg rounded-xl p-6">
                 <div className="flex flex-col">
                   <div className="">
@@ -76,8 +76,8 @@ const SavedProductOfferingsList: React.FC<{
                               savedProductOfferings.find(
                                 (p) => p.productId === offering._id,
                               )
-                                ? "#34D399"
-                                : "#2c3e50"
+                                ? "purple"
+                                : "gray"
                             }
                             // onClick={() => handleSaveButtonClick(offering._id)}
                           >
@@ -110,15 +110,15 @@ const SavedProductOfferingsList: React.FC<{
                           <span className="text-gray-400 whitespace-nowrap mr-3">
                             4.60
                           </span>
-                          <span className="mr-2 text-gray-400">
+                          <span className="test-md text-gray-400">
                             {offering.name}
                           </span>
                         </div>
                         <div className="flex items-center w-full justify-between min-w-0 ">
-                          <h2 className="text-lg mr-auto cursor-pointer text-gray-800 hover:text-purple-500 truncate">
+                          <h2 className="text-lg mr-auto cursor-pointer text-purple-800  font-semibold hover:text-purple-500 truncate">
                             {offering.description}
                           </h2>
-                          <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div>
+                          {/* <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div> */}
                         </div>
                       </div>
                       <div className="text-xl text-white font-semibold mt-1">
@@ -151,7 +151,7 @@ const SavedProductOfferingsList: React.FC<{
                             onClick={() => {
                               window.location.href = `/product-offering/${offering._id}`;
                             }}
-                            className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
+                            className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
                           >
                             <span>View Details</span>
                           </button>

@@ -671,7 +671,7 @@ const Header = () => {
                                         <span className="text-gray-400 whitespace-nowrap mr-3">
                                           4.60
                                         </span>
-                                        <span className="mr-2  text-gray-800 w-40 h-8 ">
+                                        <span className="mr-2  text-gray-800 w-40 h-8  ">
                                           {offering.description}
                                         </span>
                                       </div>
@@ -679,7 +679,6 @@ const Header = () => {
                                         <h2 className="mt-8 text-lg mr-auto cursor-pointer text-gray-400  hover:text-purple-500 truncate">
                                           {offering.name}
                                         </h2>
-                                        <div className="flex items-center bg-green-400 text-white text-xs px-8 py-1 ml-3 rounded-lg"></div>
                                       </div>
                                     </div>
                                     <div className="text-xl text-white font-semibold mt-1">
@@ -714,7 +713,7 @@ const Header = () => {
                                           onClick={() => {
                                             window.location.href = `/product-offering/${offering._id}`;
                                           }}
-                                          className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-purple-500 w-35 h-8 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
+                                          className="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 w-35 h-8 hover:shadow-lg tracking-wider text-white rounded-full hover:bg-purple-600"
                                         >
                                           <span className="text-center mx-2">
                                             View Details
@@ -916,7 +915,7 @@ const Header = () => {
       <button
         id="dropdownNotificationButton"
         data-dropdown-toggle="dropdownNotification"
-        className="inline-flex items-center w-11 h-11 p-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  text-white-400 align-middle rounded-full hover:text-white hover:bg-purple-200 focus:outline-nonerounded-full text-sm font-medium text-center  focus:outline-none relative"
+        className="inline-flex items-center w-11 h-11 p-2 bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400  text-white-400 align-middle rounded-full hover:text-white hover:bg-purple-200 focus:outline-nonerounded-full text-sm font-medium text-center  focus:outline-none relative"
         type="button"
         onClick={handleDropdownToggle}
       >
@@ -1250,7 +1249,7 @@ const Header = () => {
                       type="submit"
                       className={classNames(
                         active
-                          ? "bg-gradient-to-r from-purple-200 via-purple-purple300 to-pink-100 text-gray-900"
+                          ? "bg-gradient-to-r from-purple-200 via-purple-purple-300 to-pink-100 text-gray-900"
                           : "text-gray-700",
                         "block w-full px-4 py-2 text-left text-sm",
                       )}
