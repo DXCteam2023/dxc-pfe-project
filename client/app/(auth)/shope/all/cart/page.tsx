@@ -12,23 +12,19 @@ const CartPage = () => {
   const totalPrice = useAppSelector(TotalPriceSelector);
   return (
     <div className="p-2">
-     
       <div>
         <Header />
-       
-{/* <div className="sliderAx h-auto"> */}
-{/* <Sliderpro /> */}
-{/* </div> */}
-    
-    
+
+        {/* <div className="sliderAx h-auto"> */}
+        {/* <Sliderpro /> */}
+        {/* </div> */}
       </div>
       <div>
-     
-      <h1 className="text-center text-blue-700 text-4xl font-bold my-5">
-           Favorites List
+        <h1 className="text-center text-blue-700 text-4xl font-bold my-5">
+          Favorites List
         </h1>
       </div>
-      
+
       {cartItems.map((item) => (
         <CartItemCard cartItem={item} />
       ))}
