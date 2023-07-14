@@ -1,3 +1,4 @@
+import { MdCancel } from "react-icons/md";
 import { BsFillPatchCheckFill } from "react-icons/bs";
 import { IoIosArchive, IoMdRemoveCircle } from "react-icons/io";
 import ProductOfferingCharacteristics from "./characteristics";
@@ -24,9 +25,11 @@ export default function ProductOfferingInfos({
           <BsFillPatchCheckFill className="me-3 text-green-500" />
         ) : productOffering?.status === "draft" ? (
           <IoMdRemoveCircle className="me-3 text-orange-400" />
-        ) : (
+        ) : productOffering?.status === "archived" ? (
           <IoIosArchive className="me-3 text-purple-400" />
-        )}
+        ) : productOffering?.status === "retired" ? (
+          <MdCancel className="me-3 text-red-500" />
+        ) : null}
         {productOffering?.name}
       </h1>
       <div className="px-4 sm:px-0">

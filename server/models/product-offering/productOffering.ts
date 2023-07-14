@@ -65,7 +65,7 @@ const prodSpecCharValueUseSchema = new Schema({
     type: Array(productSpecCharacteristicValueSchema),
     required: false,
   },
-  productSpecification:{
+  productSpecification: {
     id: { type: String, required: false },
     name: { type: String, required: false },
     version: { type: String, required: false },
@@ -89,6 +89,7 @@ const productOfferingSchema = new Schema({
   internalId: { type: String, required: false },
   lastUpdate: { type: String, required: false, default: "" },
   name: { type: String, required: false },
+  read: { type: Boolean, default: false },
   /*productSpecCharacteristic: {
     type: Array(productSpecCharacteristicSchema),
     required: false,
@@ -106,8 +107,8 @@ const productOfferingSchema = new Schema({
   validFor: { type: validForSchema, required: false },
   version: { type: String, required: false },
   status: { type: String, required: false }, //this
-  // createdBy: { type: String, required: true },
-  // created: { type: Date, required: true, default: Date.now() },
+  createdBy: { type: String, required: true },
+  created: { type: Date, required: true, default: Date.now() },
 });
 
 const ProductOfferingModel = model<IProductOfferingDocument>(

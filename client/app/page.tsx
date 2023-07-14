@@ -52,14 +52,18 @@ export default function Home() {
           homeStyles.container + " " + poppins.className + " container mx-auto "
         }
       >
-        <h1 className={homeStyles.h1}>Welcome to</h1>
-        <h2 className={homeStyles.h2}>DXC TECHNOLOGY MAROC,</h2>
-        <p className={poppins.className}>
+        <h1 className="text-8xl font-semibold text-gray-400">Welcome to</h1>
+        <h2 className=" mt-5 text-3xl text-purple-700 font-semibold">
+          DXC TECHNOLOGY MAROC,
+        </h2>
+        <p className="mt-6 text-md ">
           Where technology meets innovation. We are a leading IT company <br />
           dedicated to providing cutting-edge solutions and services <br />
           to empower businesses and individuals in the digital age.
         </p>
-        <button className={homeStyles.button}>Learn more</button>
+        <button className="mt-6 w-1/6 flex rounded-full items-center justify-center text-center bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 bg-white text-white px-4 py-3 rounded text-md space-x-2 transition duration-100">
+          Learn more
+        </button>
       </div>
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div
@@ -172,7 +176,7 @@ export default function Home() {
               <div className="text-lg font-bold sm:text-xl md:text-2xl">
                 IT Infrastructure Management
               </div>
-              <p className="text-sm text-black">
+              <p className="text-md text-black">
                 We provide end-to-end management of your IT infrastructure,
                 including network design and implementation, server
                 administration, data storage solutions, and proactive
@@ -196,7 +200,7 @@ export default function Home() {
               <div className="text-lg font-bold sm:text-xl md:text-2xl">
                 Cloud Solutions
               </div>
-              <p className="text-sm text-black">
+              <p className="text-md text-black">
                 Harness the power of the cloud with our comprehensive range of
                 cloud services, including cloud migration, infrastructure as a
                 service (IaaS), software as a service (SaaS), and cloud security
@@ -232,11 +236,11 @@ export default function Home() {
         </div>
       </div>
       <div className="relative isolate overflow-hidden bg-purple-900 py-24 sm:py-32">
-        <Image
+        {/* <Image
           src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
           alt=""
           className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
-        />
+        /> */}
         <div
           className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
           aria-hidden="true"

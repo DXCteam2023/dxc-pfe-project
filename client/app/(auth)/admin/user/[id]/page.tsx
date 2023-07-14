@@ -10,6 +10,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import * as dotenv from "dotenv";
 import Sidebar from "../../../dashboard/components/Sidebar";
 import Header from "../../../dashboard/components/header/Header";
+import Footer from "../../../dashboard/components/Footer";
 import couver from "../../../../../public/assets/couver.jpeg";
 import avatar from "../../../../../public/assets/avatar.png";
 import result from "../../../../../public/assets/search.png";
@@ -110,29 +111,12 @@ const Page = ({
       const response = await axios.get(`${AXIOS_URL}/api/user/${id}`);
       const userData = response.data;
 
-      const responseIncidents = await axios.get(`${AXIOS_URL}/api/incidents`);
-      const incidentData = responseIncidents.data;
-
-      const notifIncident = incidentData.filter((incident: any) => {
-        return (
-          !incident.read &&
-          (incident.state === "New" || incident.state === "In Progress") &&
-          incident.userID === id
-        );
-      });
-
       const notifProductOrder = products.filter((productOrder) => {
         return productOrder.state === "new" && productOrder.createdBy === id;
       });
-
-      console.log("Incidents non lus:", notifIncident);
-      console.log("Commandes de produit nouvelles:", notifProductOrder);
-      console.log("incidentData:", responseIncidents.data);
-
       setUser(userData);
       getProductOrders(userData.userID);
       getProductOfferings(userData.userID);
-
       const profile = userData.profile;
       const similarProfilesResponse = await axios.get(
         `${AXIOS_URL}/api/user/similar-profile/${profile}`,
@@ -263,7 +247,7 @@ const Page = ({
     }
   }
   const totalProductOfferings = productOfferings.length;
-  const ordersPerPage = 4;
+  const ordersPerPage = 8;
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const handleNextPage = () => {
@@ -485,7 +469,7 @@ const Page = ({
                     <div className="flex items-center space-x-4 mt-2">
                       <button
                         onClick={openModal}
-                        className="flex items-center bg-purple-800 hover:bg-purple-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
+                        className="flex items-center bg-orange-500 hover:bg-orange-400 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -631,6 +615,54 @@ const Page = ({
                       </ul>
                     </div>
                     <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                      <h4 className="text-xl text-gray-900 font-bold">
+                        Charts
+                      </h4>
+                      {user.profile === "Product Offering Manager" ? (
+                        <div>
+                          {" "}
+                          <div className="flex justify-center">
+                            <div className="w-2/4 flex justify-center">
+                              <UserChart userID={user.userID} />
+                            </div>
+                          </div>
+                          <p className=" mt-2 text-center text-gray-800 font-semibold">
+                            The manager
+                            <span className="text-blue-700 font-semibold">
+                              {" "}
+                              {user.userID}
+                            </span>{" "}
+                            has created{" "}
+                            <span className="text-indigo-500 font-semibold">
+                              {percent}%
+                            </span>{" "}
+                            of the total product offers.
+                          </p>
+                        </div>
+                      ) : (
+                        <div>
+                          {" "}
+                          <div className="flex justify-center ">
+                            <div className="w-full flex justify-center  ">
+                              <AgentChart userID={user.userID} />
+                            </div>
+                          </div>
+                          <p className="mt-2 text-center text-gray-800 font-semibold">
+                            The agent
+                            <span className="text-blue-700 font-semibold">
+                              {" "}
+                              {user.userID}
+                            </span>{" "}
+                            has created{" "}
+                            <span className="text-indigo-500 font-semibold">
+                              {Math.round(percentOrders)}%
+                            </span>{" "}
+                            of the total product orders.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
                       <div className="relative ">
                         <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
                         <div className="bg-white p-3 hover:shadow">
@@ -711,102 +743,6 @@ const Page = ({
                                 </table>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
-                      <h4 className="text-xl text-gray-900 font-bold">
-                        All Notifications
-                      </h4>
-                      <div className="relative px-4">
-                        <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
-
-                        <div className="flex items-center w-full my-6 -ml-1.5">
-                          <div className="w-1/12 z-10">
-                            <div className="w-3.5 h-3.5 bg-purple-500  rounded-full"></div>
-                          </div>
-                          <div className="w-11/12">
-                            <p className="text-sm">
-                              Profile informations changed.
-                            </p>
-                            <p className="text-xs text-gray-500">3 min ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full my-6 -ml-1.5">
-                          <div className="w-1/12 z-10">
-                            <div className="w-3.5 h-3.5 bg-purple-500  rounded-full"></div>
-                          </div>
-                          <div className="w-11/12">
-                            <p className="text-sm">
-                              Connected with{" "}
-                              <a href="#" className="text-blue-600 font-bold">
-                                Colby Covington
-                              </a>
-                              .
-                            </p>
-                            <p className="text-xs text-gray-500">15 min ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full my-6 -ml-1.5">
-                          <div className="w-1/12 z-10">
-                            <div className="w-3.5 h-3.5 bg-purple-500  rounded-full"></div>
-                          </div>
-                          <div className="w-11/12">
-                            <p className="text-sm">
-                              Invoice{" "}
-                              <a href="#" className="text-blue-600 font-bold">
-                                #4563
-                              </a>{" "}
-                              was created.
-                            </p>
-                            <p className="text-xs text-gray-500">57 min ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full my-6 -ml-1.5">
-                          <div className="w-1/12 z-10">
-                            <div className="w-3.5 h-3.5 bg-purple-500  rounded-full"></div>
-                          </div>
-                          <div className="w-11/12">
-                            <p className="text-sm">
-                              Message received from{" "}
-                              <a href="#" className="text-blue-600 font-bold">
-                                Cecilia Hendric
-                              </a>
-                              .
-                            </p>
-                            <p className="text-xs text-gray-500">1 hour ago</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full my-6 -ml-1.5">
-                          <div className="w-1/12 z-10">
-                            <div className="w-3.5 h-3.5 bg-purple-500  rounded-full"></div>
-                          </div>
-                          <div className="w-11/12">
-                            <p className="text-sm">
-                              New order received{" "}
-                              <a href="#" className="text-blue-600 font-bold">
-                                #OR9653
-                              </a>
-                              .
-                            </p>
-                            <p className="text-xs text-gray-500">2 hours ago</p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center w-full my-6 -ml-1.5">
-                          <div className="w-1/12 z-10">
-                            <div className="w-3.5 h-3.5 bg-purple-500  rounded-full"></div>
-                          </div>
-                          <div className="w-11/12">
-                            <p className="text-sm">
-                              Message received from{" "}
-                              <a href="#" className="text-blue-600 font-bold">
-                                Jane Stillman
-                              </a>
-                              .
-                            </p>
-                            <p className="text-xs text-gray-500">2 hours ago</p>
                           </div>
                         </div>
                       </div>
@@ -986,8 +922,8 @@ const Page = ({
                                                   pinnedProductOrders.includes(
                                                     product._id,
                                                   )
-                                                    ? "text-blue-600"
-                                                    : "text-black"
+                                                    ? "text-purple-600"
+                                                    : "text-purple-800"
                                                 }`}
                                               >
                                                 <FontAwesomeIcon
@@ -1076,7 +1012,7 @@ const Page = ({
                                     </div>
                                   </div>
                                 </div>
-                                <div className="flex justify-center">
+                                {/* <div className="flex justify-center">
                                   <div className="w-2/4 flex justify-center">
                                     <UserChart userID={user.userID} />
                                   </div>
@@ -1092,7 +1028,7 @@ const Page = ({
                                     {percent}%
                                   </span>{" "}
                                   of the total product offers.
-                                </p>
+                                </p> */}
                               </div>
                             ) : user.profile === "Commercial Agent" ? (
                               <div className="bg-white my-6 mx-auto">
@@ -1241,8 +1177,8 @@ const Page = ({
                                                 pinnedProductOrders.includes(
                                                   product._id,
                                                 )
-                                                  ? "text-blue-600"
-                                                  : "text-black"
+                                                  ? "text-purple-600"
+                                                  : "text-purple-800"
                                               }`}
                                             >
                                               <FontAwesomeIcon
@@ -1283,7 +1219,18 @@ const Page = ({
                                                   ? "In Progress"
                                                   : product.state ===
                                                     "cancellation_received"
+                                                  ? "Cancellation in progress"
+                                                  : product.state ===
+                                                    "assessing_cancellation"
+                                                  ? "Assessing Cancellation"
+                                                  : product.state === "canceled"
                                                   ? "Canceled"
+                                                  : product.state === "rejected"
+                                                  ? "Rejected"
+                                                  : product.state === "draft"
+                                                  ? "Draft"
+                                                  : product.state === "new"
+                                                  ? "New"
                                                   : product.state}
                                               </span>
                                             </span>
@@ -1332,7 +1279,7 @@ const Page = ({
                                   </div>
                                 </div>
 
-                                <div className="flex justify-center ">
+                                {/* <div className="flex justify-center ">
                                   <div className="w-full flex justify-center  ">
                                     <AgentChart userID={user.userID} />
                                   </div>
@@ -1348,7 +1295,7 @@ const Page = ({
                                     {Math.round(percentOrders)}%
                                   </span>{" "}
                                   of the total product orders.
-                                </p>
+                                </p> */}
                               </div>
                             ) : user.profile === "Administrator" ? (
                               <div className="flex flex-col p-2">
@@ -1357,115 +1304,6 @@ const Page = ({
                                   <h4 className="text-xl text-gray-900 font-bold">
                                     Activities
                                   </h4>
-                                  {/* <table className="text-left w-full border-collapse">
-                                  <thead>
-                                    <tr>
-                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white ">
-                                        <label className="inline-flex items-center">
-                                          <input
-                                            type="checkbox"
-                                            className="form-checkbox text-gray-800"
-                                          />
-                                        </label>
-                                      </th>
-                                      <th className="py-4 px-6 bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
-                                        NUMBER
-                                      </th>
-                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
-                                        ORDER DATE
-                                      </th>
-                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
-                                        STATE
-                                      </th>
-                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
-                                        Start Date
-                                      </th>
-                                      <th className="py-4 px-6 text-center bg-purple-800 font-bold uppercase text-sm text-white border-b border-grey-light">
-                                        Completion Date
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {sortedProductOrders
-                                      .slice(
-                                        indexOfFirstOrder,
-                                        indexOfLastOrder,
-                                      )
-                                      .map((product, index) => (
-                                        <tr
-                                          className="hover:bg-grey-lighter"
-                                          key={index}
-                                        >
-                                          <td className="px-5 py-5 border p-2  border-grey-light border-dashed border-t border-gray-200  text-md ">
-                                            <button
-                                              onClick={() =>
-                                                togglePinProduct(product._id)
-                                              }
-                                              className={`font-bold  ${
-                                                pinnedProductOrders.includes(
-                                                  product._id,
-                                                )
-                                                  ? "text-blue-600"
-                                                  : "text-black"
-                                              }`}
-                                            >
-                                              <FontAwesomeIcon
-                                                icon={faThumbtack}
-                                              />
-                                            </button>
-                                          </td>
-                                          <td className="py-4 px-6 text-center text-blue-400 border-b border-grey-light">
-                                            <a
-                                              href={`/customer-order/product/${product._id}`}
-                                            >
-                                              {product.orderNumber}
-                                            </a>
-                                          </td>
-                                          <td className="py-4 px-6 text-indigo-800 font-semibold border-b border-grey-light">
-                                            {new Date(
-                                              product.orderDate,
-                                            ).toDateString()}
-                                          </td>
-                                          <td className="py-4 px-6 text-center border-b border-grey-light">
-                                            <span
-                                              className={`relative inline-block px-3 py-1 font-semibold ${getStateTextColor(
-                                                product.state,
-                                              )} leading-tight`}
-                                            >
-                                              <span
-                                                aria-hidden
-                                                className={`absolute inset-0 ${getStateBgColor(
-                                                  product.state,
-                                                )} rounded-full`}
-                                              ></span>
-                                              <span
-                                                className={`relative inset-0 ${getStateTextColor(
-                                                  product.state,
-                                                )} rounded-full`}
-                                              >
-                                                {product.state === "in_progress"
-                                                  ? "In Progress"
-                                                  : product.state ===
-                                                    "cancellation_received"
-                                                  ? "Canceled"
-                                                  : product.state}
-                                              </span>
-                                            </span>
-                                          </td>
-                                          <td className="py-4 px-6 text-center text-green-700 font-semibold border-b border-grey-light">
-                                            {new Date(
-                                              product.requestedStartDate,
-                                            ).toDateString()}
-                                          </td>
-                                          <td className="py-4 px-6 text-center  text-red-600 font-semibold border-b border-grey-light">
-                                            {new Date(
-                                              product.requestedCompletionDate,
-                                            ).toDateString()}
-                                          </td>
-                                        </tr>
-                                      ))}
-                                  </tbody>
-                                </table> */}
                                   <div className=" flex w-full">
                                     <div className="w-1/2  rounded-lg shadow-xl p-8">
                                       <LineChart />
@@ -1506,6 +1344,7 @@ const Page = ({
               </div>
             </div>
           )}
+          <Footer />
         </div>
       </div>
     </div>

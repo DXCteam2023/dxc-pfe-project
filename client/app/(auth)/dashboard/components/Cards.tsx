@@ -60,8 +60,8 @@ const Cards = () => {
     <div>
       <div className="mx-5 flex flex-wrap my-5">
         <div className="w-full lg:w-1/3 p-2">
-          <div className="flex items-center flex-row w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md p-3">
-            <div className="flex text-indigo-500 items-center bg-white p-2 rounded-md flex-none w-8 h-8 md:w-12 md:h-12 ">
+          <div className="flex items-center flex-row w-full bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 rounded-md p-3">
+            <div className="flex text-purple-800 items-center bg-white p-2 rounded-md flex-none w-8 h-8 md:w-12 md:h-12 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -94,7 +94,7 @@ const Cards = () => {
           </div>
         </div>
         <div className="w-full md:w-1/2 lg:w-1/3 p-2 ">
-          <div className="flex items-center flex-row w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md p-3">
+          <div className="flex items-center flex-row w-full bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 rounded-md p-3">
             <div className="flex text-indigo-500 items-center bg-white p-2 rounded-md flex-none w-8 h-8 md:w-12 md:h-12 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +131,7 @@ const Cards = () => {
           </div>
         </div>
         <div className="w-full md:w-1/2 lg:w-1/3 p-2">
-          <div className="flex items-center flex-row w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md p-3">
+          <div className="flex items-center flex-row w-full bg-gradient-to-r from-purple-800 via-purple-700 to-pink-400 rounded-md p-3">
             <div className="flex text-indigo-500 items-center bg-white p-2 rounded-md flex-none w-8 h-8 md:w-12 md:h-12 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

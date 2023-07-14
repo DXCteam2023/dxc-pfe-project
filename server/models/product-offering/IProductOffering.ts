@@ -53,7 +53,7 @@ type ProdSpecCharValueUse = {
   valueType?: string;
 };
 export default interface IProductOfferingDocument {
-  // _id: string;
+  _id: string;
   number: string;
   category: Category[];
   channel: Channel[];
@@ -72,6 +72,6 @@ export default interface IProductOfferingDocument {
   validFor: ValidFor;
   version?: string;
   status?: string;
-  // createdBy: String;
-  // created: Date;
+  createdBy: String;
+  created: Date;
 }

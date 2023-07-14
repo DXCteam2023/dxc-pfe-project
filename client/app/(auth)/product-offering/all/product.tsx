@@ -7,8 +7,10 @@ import {
 import { FormEventHandler, useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { GrStatusDisabled, GrView } from "react-icons/gr";
+import Swal from "sweetalert2";
 import axios, { AxiosError } from "axios";
 import * as dotenv from "dotenv";
+import Link from "next/link";
 import IProductOfferingDocument from "../../../../../server/models/product-offering/IProductOffering";
 import Modal from "./Modal";
 
@@ -28,6 +30,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const [productDescription, setProductDescription] = useState<String>(
     product.description,
   );
+  const [productID, setProductID] = useState<String>(product._id);
   const [openModalRetired, setOpenModalRetired] = useState<boolean>(false);
   const [openModalPublish, setOpenModalPublish] = useState<boolean>(false);
   const [category, setCategory] = useState<{ id: string; name?: string }[]>(
@@ -87,7 +90,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       const res = await fetch(`${AXIOS_URL}/api/product-offering/`)
         .then((data) => data.json())
         .catch((e) => console.log(e));
-      console.log(res);
+      // console.log(res);
       setProducts(res);
     } catch (error) {
       console.error(error);
@@ -156,36 +159,58 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       const id = product.externalId;
       console.log(id);
 
-      const url = `http://localhost:5000/api/product-offering/${id}`;
-      await axios.patch(url);
-
+      const url = `${AXIOS_URL}/api/product-offering/publish/servicenow/${id}`;
+      const response = await axios.patch(url);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Done",
+          text: response.data.message,
+        });
+      }
+      setOpenModalPublish(false);
       // Handle the successful response
-    } catch (error) {
+    } catch (error: any) {
       console.error("An error occurred:", error);
+      if (
+        error.response ||
+        error.response.status >= 400 ||
+        error.response.status <= 500 ||
+        axios.isAxiosError(error)
+      ) {
+        const axiosError = error as AxiosError;
+        Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: error.response.data.message
+            ? error.response.data.message
+            : axiosError,
+        });
+      }
 
       // Handle different types of errors
-      if (axios.isAxiosError(error)) {
-        // Axios error
-        const axiosError = error as AxiosError;
-        if (axiosError.response) {
-          // The request was made and the server responded with a status code
-          console.error("Response status:", axiosError.response.status);
-          console.error("Response data:", axiosError.response.data);
-          // Handle specific status codes or error messages
-        } else if (axiosError.request) {
-          // The request was made but no response was received
-          console.error("No response received:", axiosError.request);
-          // Handle the lack of response
-        } else {
-          // Something else happened while setting up the request
-          console.error("Error setting up the request:", axiosError.message);
-          // Handle other errors
-        }
-      } else {
-        // Other unknown error
-        console.error("Unknown error:", error);
-        // Handle other errors
-      }
+      // if (axios.isAxiosError(error)) {
+      //   // Axios error
+      //   const axiosError = error as AxiosError;
+      //   if (axiosError.response) {
+      //     // The request was made and the server responded with a status code
+      //     console.error("Response status:", axiosError.response.status);
+      //     console.error("Response data:", axiosError.response.data);
+      //     // Handle specific status codes or error messages
+      //   } else if (axiosError.request) {
+      //     // The request was made but no response was received
+      //     console.error("No response received:", axiosError.request);
+      //     // Handle the lack of response
+      //   } else {
+      //     // Something else happened while setting up the request
+      //     console.error("Error setting up the request:", axiosError.message);
+      //     // Handle other errors
+      //   }
+      // } else {
+      //   // Other unknown error
+      //   console.error("Unknown error:", error);
+      //   // Handle other errors
+      // }
 
       // Display an error message to the user or perform any other error handling
     }
@@ -193,34 +218,43 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const handleSubmitEditRe: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    console.log("clicked");
     try {
-      // Make sure to replace the placeholders with the actual values
-      const id = product.id;
-      const po = {
-        status: "Retired",
-      };
-      try {
-        const productOffering = await axios
-          .get(`${AXIOS_URL}/api/product-offering/${id}`)
-          .then((res) => res.data)
-          .catch((e) => console.log(e));
+      console.log("clicked try");
+      const poExternalId = product.externalId;
+      const response = await axios.patch(
+        `${AXIOS_URL}/api/product-offering/retire/${poExternalId}`,
+      );
 
-        const poId = productOffering._id;
-
-        const updatePo = await axios
-          .patch(`${AXIOS_URL}/api/product-offering/${poId}`, po)
-          .then((res) => res.data)
-          .catch((error) => console.log({ error }));
-
-        console.log("Updated Product Offering:", updatePo);
-        setModalOpen(false);
-        window.location.reload();
-      } catch (e) {
-        console.log("Axios error:", e);
+      console.log("Updated Product Offering:", response.data);
+      if (response.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "Done",
+          text: response.data.message,
+        });
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      // Handle any other errors
+      setModalOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    } catch (error: any) {
+      console.log("Axios error:", error);
+      if (
+        error.response ||
+        error.response.status >= 400 ||
+        error.response.status <= 500 ||
+        axios.isAxiosError(error)
+      ) {
+        const axiosError = error as AxiosError;
+        Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: error.response.data.message
+            ? error.response.data.message
+            : axiosError,
+        });
+      }
     }
   };
 
@@ -253,12 +287,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           className="text-green-500"
           size={25}
         /> */}
-        <button
-          className="btn btn-sm btn-info"
-          onClick={() => setModalOpen(true)}
-        >
-          Update
-        </button>
+        {product.status === "draft" || product.status === "In Draft" ? (
+          <button
+            className="btn btn-sm btn-info"
+            onClick={() => setModalOpen(true)}
+          >
+            Update
+          </button>
+        ) : null}
         &nbsp;
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <form onSubmit={handleSubmitEditProOf}>
@@ -401,8 +437,14 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           className="text-blue-500"
           size={25}
         /> */}
-        <button className="btn btn-sm btn-active">View</button>
-        <Modal modalOpen={modalOpenView} setModalOpen={setModalOpenView}>
+        <Link
+          href={`/product-offering/${productID}`}
+          className="btn btn-sm btn-active"
+        >
+          View
+        </Link>
+        {/* <button className="btn btn-sm btn-active">View</button> */}
+        {/* <Modal modalOpen={modalOpenView} setModalOpen={setModalOpenView}>
           <form onSubmit={handleSubmitEditProOf}>
             <h3 className="font-bold text-lg">Product details</h3>
             <div className="grid">
@@ -455,7 +497,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             </div>
             <div></div>
           </form>
-        </Modal>
+        </Modal> */}
       </td>
     </tr>
   );

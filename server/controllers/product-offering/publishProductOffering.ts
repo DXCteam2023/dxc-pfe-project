@@ -22,23 +22,28 @@ export default async function publishProductOffering(
       headers: { "Content-Type": "application/json" },
     });
 
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
       console.log("Product offering published successfully in ServiceNow.");
+      res.status(200).send({
+        message: "Product offering published successfully.",
+        productOffering: response.data,
+      });
     } else {
-      console.error(
-        "Failed to publish the Product offering in ServiceNow",
-        response.data
-      );
+      res.status(404).send({
+        message: "Failed to publish the Product offering or Record not found",
+      });
     }
 
-    res.status(201).send({
-      message: "Product published successfully",
-      productOffering: response.data,
-    });
+    // if (response.status === 201) {
+    //   res.status(201).send({
+    //     message: "Product published successfully",
+    //     productOffering: response.data,
+    //   });
+    // }
   } catch (error) {
-    console.error("An error occurred:", error.response);
-    res
-      .status(500)
-      .send({ message: "Internal server error - publishing product" });
+    console.error("An error occurred:", error);
+    res.status(500).send({
+      message: "Internal server error - error while publishing product",
+    });
   }
 }
