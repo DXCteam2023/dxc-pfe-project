@@ -183,8 +183,10 @@ const NewCustomerOrderContextProvider = ({
           }
         },
       );
-    }
-    setProductOrders(updateF(productOrders));
+    };
+    const tmp = updateF(productOrders);
+    console.log("result", tmp, productOrders);
+    setProductOrders(tmp);
   };
 
   const deleteProductOffering = (index: number) => {

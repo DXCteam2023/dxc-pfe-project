@@ -11,6 +11,12 @@ import {
 } from "../context/new-customer-order-context";
 import ProductOfferingItem from "./ProductOfferingItem";
 import AddOrderItemModal from "./AddOrderItemModal";
+import Details from "./Details";
+import Characteristics from "./Characteristics";
+import generateCreateOrderRequestBody from "../utils/generateCreateOrderRequestBody";
+
+const DETAILS = "DETAILS";
+const CHARACTERISTICS = "CHARACTERISTICS";
 
 export default function ConfigureProduct() {
   const route = useRouter();
@@ -20,6 +26,8 @@ export default function ConfigureProduct() {
   const [selected, setSelected] = useState<any>();
 
   const [showAddOrderItemModal, setShowAddOrderItemModal] = useState(false);
+
+  const [selectedTab, setSelectedTab] = useState(DETAILS);
 
   useEffect(() => {
     if (selected?.offering?.generatedId) {
@@ -35,15 +43,38 @@ export default function ConfigureProduct() {
     }
   }, [myContext?.productOrders, selected?.offering?.generatedId]);
 
-  const handleContinueOnClick = () => {
-    route.push("/customer-order/product/new/review-order");
+  const handleSaveOnClick = () => {
+    // prepare all data (request body)
+    const requestBody = generateCreateOrderRequestBody(myContext);
+    console.log("handleConfigureOnClick requestBody", requestBody);
+
+    // call instance to create order
+    //const result = await ProductOrderServices.createOrder(requestBody);
+
+    // read response
+    //const updatedData = readCreateOrderResponse(result.data.productOrder);
+
+    // store updated data
+    //myContext.updateProductOrdersOnCreateOrder(updatedData);
+
+    // route.push("/customer-order/product/new/review-order");
   };
 
-  const handleOfferingItemOnSelect = (offering: any, location: OptionType) => {
-    console.log("handleOfferingItemOnSelect", offering, location);
+  const handleOfferingItemOnSelect = (
+    offering: any,
+    location: OptionType,
+    characteristicName?: string,
+  ) => {
+    console.log(
+      "handleOfferingItemOnSelect",
+      offering,
+      location,
+      characteristicName,
+    );
     setSelected({
       offering,
       location,
+      characteristicName,
     });
   };
   const handleQuantityOnChange = (value: string) => {
@@ -64,15 +95,14 @@ export default function ConfigureProduct() {
   };
 
   const handleAddOrderItemOnAdd = (item: any) => {
-    const updatedOffering = item.offering
-    updatedOffering.selectedCharacteristicsIds.push(item.id)
-    console.log("data",item, updatedOffering)
+    const updatedOffering = item.offering;
+    updatedOffering.selectedCharacteristicsIds.push(item.id);
+    console.log("data", item, updatedOffering);
     myContext.updateSelectedProductOrderOfferingById(
       item.locationId,
       item.offering.generatedId,
-      updatedOffering
-
-    )
+      updatedOffering,
+    );
     setShowAddOrderItemModal(false);
   };
 
@@ -80,6 +110,32 @@ export default function ConfigureProduct() {
     setShowAddOrderItemModal(false);
   };
 
+  const handleDetailsOnClick = () => {
+    setSelectedTab(DETAILS);
+  };
+  const handleCharacteristicsOnClick = () => {
+    setSelectedTab(CHARACTERISTICS);
+  };
+
+  const handleCharacteristicValueChange = (option: any) => {
+    const updatedOffering = selected.offering;
+    const updatedOptionsCharacteristics =
+      updatedOffering.optionsCharacteristics.map((option2: any) => {
+        if (option2.name === option.name) {
+          return { ...option2, value: option.value };
+        }
+        return option2;
+      });
+
+    updatedOffering.optionsCharacteristics = updatedOptionsCharacteristics;
+    console.log("dlsjldjl hala", updatedOptionsCharacteristics, option);
+    myContext.updateSelectedProductOrderOfferingById(
+      selected.locationId,
+      updatedOffering.generatedId,
+      updatedOffering,
+    );
+  };
+  const handleDeleteOrderItemOnClick = () => {};
   return (
     <SubLayout
       leftChildren={
@@ -87,7 +143,10 @@ export default function ConfigureProduct() {
           <div className="flex gap-4 justify-between items-center p-4">
             <h4 className="font-extrabold">Items</h4>
             <span className="flex gap-4 justify-between items-center">
-              <BsFillTrash3Fill className="cursor-pointer" />
+              <BsFillTrash3Fill
+                className="cursor-pointer"
+                onClick={handleDeleteOrderItemOnClick}
+              />
               <BsPlusLg
                 className="cursor-pointer"
                 onClick={handleAddOrderItemOnClick}
@@ -115,8 +174,12 @@ export default function ConfigureProduct() {
                     ?.offerings?.map((offering) => (
                       <ProductOfferingItem
                         item={offering}
-                        onSelect={() =>
-                          handleOfferingItemOnSelect(offering, location)
+                        onSelect={(characteristicName?: any) =>
+                          handleOfferingItemOnSelect(
+                            offering,
+                            location,
+                            characteristicName,
+                          )
                         }
                         selected={selected}
                       />
@@ -129,114 +192,48 @@ export default function ConfigureProduct() {
       }
       rightChildren={
         <>
-          <div>
-            <h4 className="font-extrabold">Order Line Item</h4>
-            <div>
-              <div className="flex justify-center gap-4">
-                <InputText
-                  slug="number"
-                  title="Number"
-                  required={false}
-                  placeholder="Number"
-                  value={selected?.offering?.generatedId}
-                  disabled={true}
-                />
-                <InputText
-                  slug="Location"
-                  title="Location"
-                  required={false}
-                  placeholder="Location"
-                  value={selected?.location.label}
-                  disabled={true}
-                />
-              </div>
-              <div className="flex justify-center gap-4">
-                <InputText
-                  slug="Product Offering"
-                  title="Product Offering"
-                  required={false}
-                  placeholder="Product Offering"
-                  value={selected?.offering?.label}
-                  disabled={true}
-                />
-                <InputText
-                  slug="Product Specification"
-                  title="Product Specification"
-                  required={false}
-                  placeholder="Product Specification"
-                  value={
-                    selected?.offering?.productOfferingObject
-                      ?.productSpecification?.name
-                  }
-                  disabled={true}
-                />
-              </div>
-              <div className="flex justify-center gap-4 w-1/2 pr-2">
-                <InputText
-                  slug="Ordered Quantity"
-                  title="Ordered Quantity"
-                  required={false}
-                  placeholder="Ordered Quantity"
-                  value={selected?.offering?.quantity}
-                  onChange={handleQuantityOnChange}
-                />
-              </div>
+          <div className="flex gap-2 justify-start items-center border-b-2 border-silver">
+            <div
+              onClick={handleDetailsOnClick}
+              className={`cursor-pointer ${
+                selectedTab === DETAILS ? "text-[#2c755e] font-black" : ""
+              }`}
+            >
+              Details
+            </div>
+            <div
+              onClick={handleCharacteristicsOnClick}
+              className={`cursor-pointer ${
+                selectedTab === CHARACTERISTICS
+                  ? "text-[#2c755e] font-black"
+                  : ""
+              }`}
+            >
+              Characteristics
             </div>
           </div>
-          <div>
-            <h4 className="font-extrabold">Pricing</h4>
-            <div className="flex justify-center gap-4">
-              <InputText
-                slug="Monthly Recurring Changes Per Unit"
-                title={`Monthly Recurring Changes Per Unit (${selected?.offering?.productOfferingObject?.productOfferingPrice?.[0]?.price?.taxIncludedAmount?.unit})`}
-                required={false}
-                placeholder="Monthly Recurring Changes Per Unit"
-                value={
-                  selected?.offering?.productOfferingObject
-                    ?.productOfferingPrice[0].price.taxIncludedAmount.value
-                }
-                disabled={true}
-              />
-              <InputText
-                slug="Total Price"
-                title="Total Price"
-                required={false}
-                placeholder="Total Price"
-                value={
-                  ((selected?.offering?.productOfferingObject
-                    ?.productOfferingPrice?.[0]?.price?.taxIncludedAmount
-                    ?.value || 0) +
-                    (selected?.offering?.productOfferingObject
-                      ?.productOfferingPrice?.[1]?.price?.taxIncludedAmount
-                      ?.value || 0)) *
-                  (selected?.offering?.quantity || 1)
-                }
-                disabled={true}
-              />
-            </div>
-            <div className="flex justify-center gap-4 w-1/2 pr-2">
-              <InputText
-                slug="None Recuring Changes Per Unit"
-                title={`None Recuring Changes Per Unit (${selected?.offering?.productOfferingObject?.productOfferingPrice?.[1]?.price?.taxIncludedAmount?.unit})`}
-                required={false}
-                placeholder="None Recuring Changes Per Unit"
-                value={
-                  selected?.offering?.productOfferingObject
-                    ?.productOfferingPrice[1].price.taxIncludedAmount.value
-                }
-                disabled={true}
-              />
-            </div>
-          </div>
+          {selectedTab === DETAILS && (
+            <Details
+              selected={selected}
+              handleQuantityOnChange={handleQuantityOnChange}
+            />
+          )}
+          {selectedTab === CHARACTERISTICS && (
+            <Characteristics
+              characteristics={selected?.offering?.optionsCharacteristics}
+              offering={selected?.offering}
+              onCharacteristicValueChange={handleCharacteristicValueChange}
+            />
+          )}
         </>
       }
       bottomChildren={
         <div>
           <button
-            onClick={handleContinueOnClick}
+            onClick={handleSaveOnClick}
             className="rounded-md bg-[#5f249f] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#5f249f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5f249f]"
           >
-            Continue
+            Save
           </button>
         </div>
       }

@@ -8,10 +8,15 @@ export default function ProductOfferingItem({ item, onSelect, selected }: any) {
   useEffect(() => {
     const mandatoryPlusSelectedCharacteristics =
       item?.optionsCharacteristics.filter(
-        (item: any) =>
-          item.isMandatory ||
-          item?.selectedCharacteristicsIds?.includes(item.id),
-      );console.log('mandatoryPlusSelectedCharacteristics',mandatoryPlusSelectedCharacteristics,item)
+        (characteristic: any) =>
+          characteristic.isMandatory ||
+          item?.selectedCharacteristicsIds?.includes(characteristic.id),
+      );
+    console.log(
+      "mandatoryPlusSelectedCharacteristics",
+      mandatoryPlusSelectedCharacteristics,
+      item,
+    );
     // characteristics(with all properties) that are selected
     const tmp2 = item?.productOfferingObject?.prodSpecCharValueUse.filter(
       (item: any) =>
@@ -20,25 +25,31 @@ export default function ProductOfferingItem({ item, onSelect, selected }: any) {
         ),
     );
     setSelectedCharcteristics(tmp2);
-  }, [
-    item?.productOfferingObject?.prodSpecCharValueUse,
-    item?.optionsCharacteristics,
-    item?.selectedCharacteristicsIds,
-  ]);
-
+  }, [item]);
+  console.log(
+    "conditions",
+    selected?.offering?.generatedId === item?.generatedId,
+    !selected?.characteristicName,
+    selected,
+  );
   return (
     <div>
       <div
         className={`p-1 pb-0 pl-4 border-b-2 cursor-pointer ${
-          selected?.offering?.generatedId === item?.generatedId
+          selected?.offering?.generatedId === item?.generatedId &&
+          !selected?.characteristicName
             ? "border-l-2 border-l-[#2c755e] bg-[#daeae7]"
             : ""
         }`}
-        onClick={onSelect}
+        onClick={() => onSelect()}
       >
         {item?.productOfferingObject?.productSpecification?.name}
       </div>
-      <ProductOfferingCharacteristics items={selectedCharcteristics} />
+      <ProductOfferingCharacteristics
+        items={selectedCharcteristics}
+        onSelect={onSelect}
+        selected={selected}
+      />
     </div>
   );
 }
